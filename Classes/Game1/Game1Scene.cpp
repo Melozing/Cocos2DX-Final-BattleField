@@ -1,4 +1,4 @@
-#include "Splash.h"
+#include "Game1/Game1Scene.h"
 #include "Enemy/FlyingBullet.h"
 #include "Enemy/FallingRock.h"
 #include "Enemy/RandomBoom.h"
@@ -9,14 +9,14 @@
 
 USING_NS_CC;
 
-Scene* Splash::createScene() {
+Scene* Game1Scene::createScene() {
     auto scene = Scene::create();
-    auto layer = Splash::create();
+    auto layer = Game1Scene::create();
     scene->addChild(layer);
     return scene;
 }
 
-bool Splash::init() {
+bool Game1Scene::init() {
     if (!Scene::init()) {
         return false;
     }
@@ -34,7 +34,7 @@ bool Splash::init() {
     this->addChild(background);
 
     // Create player
-    _player = Player::createPlayer();
+    _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     addChild(_player);
 
@@ -100,14 +100,14 @@ bool Splash::init() {
     return true;
 }
 
-void Splash::update(float delta) {
+void Game1Scene::update(float delta) {
     background->update(delta);
     for (auto enemy : _enemyPool) {
         onEnemyOutOfBounds(enemy);
     }
 }
 
-void Splash::handlePlayerMovement() {
+void Game1Scene::handlePlayerMovement() {
     if (_movingUp) {
         _player->moveUp();
     }
@@ -122,7 +122,7 @@ void Splash::handlePlayerMovement() {
     }
 }
 
-void Splash::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
+void Game1Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
     Enemy* enemy = EnemyPool::getInstance()->getEnemy();
     if (enemy) {
         enemy->setPosition(position);
@@ -138,14 +138,14 @@ void Splash::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& posit
     }
 }
 
-void Splash::returnEnemyToPool(cocos2d::Node* enemy) {
+void Game1Scene::returnEnemyToPool(cocos2d::Node* enemy) {
     enemy->setVisible(false);
     enemy->stopAllActions();
     // Add the enemy back to the pool for reuse
     EnemyPool::getInstance()->returnEnemy(static_cast<Enemy*>(enemy));
 }
 
-void Splash::onEnemyOutOfBounds(cocos2d::Node* enemy) {
+void Game1Scene::onEnemyOutOfBounds(cocos2d::Node* enemy) {
     auto enemyPos = enemy->getPosition();
     auto screenSize = cocos2d::Director::getInstance()->getVisibleSize();
 
@@ -154,7 +154,7 @@ void Splash::onEnemyOutOfBounds(cocos2d::Node* enemy) {
     }
 }
 
-void Splash::scheduleEnemySpawning() {
+void Game1Scene::scheduleEnemySpawning() {
     this->schedule([this](float dt) {
         if (_player) {
             auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -178,7 +178,7 @@ void Splash::scheduleEnemySpawning() {
 
 }
 
-void Splash::SpawnFallingRockAndBomb(cocos2d::Size size) {
+void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
     float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
     float centerX = size.width / 2;
     float halfRestrictedWidth = restrictedWidth / 2;
@@ -206,7 +206,7 @@ void Splash::SpawnFallingRockAndBomb(cocos2d::Size size) {
     }
 }
 
-void Splash::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
+void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
     Vec2 spawnPosition = directionLeft ? Vec2(-50, _player->getPosition().y) : Vec2(size.width + 50, _player->getPosition().y);
 
     auto flyingBullet = FlyingBullet::create();
@@ -228,7 +228,7 @@ void Splash::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
 }
 
 
-void Splash::SpawnRandomBoom(cocos2d::Size size) {
+void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
        // Define the width and height of the restricted movement area
     float restrictedWidth = 100.0f; // The width of the restricted movement area
     float restrictedHeight = size.height - 100.0f; // The height of the restricted movement area

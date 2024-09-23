@@ -7,13 +7,13 @@
 			<key>falling_rock1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{231,0},{229,230}}</string>
+				<string>{{231,0},{228,230}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{6,0},{229,230}}</string>
+				<string>{{7,0},{228,230}}</string>
 				<key>sourceSize</key>
 				<string>{242,231}</string>
 			</dict>
@@ -21,13 +21,13 @@
 			<key>falling_rock2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,230},{230,229}}</string>
+				<string>{{0,229},{230,228}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{6,1},{230,229}}</string>
+				<string>{{6,1},{230,228}}</string>
 				<key>sourceSize</key>
 				<string>{242,231}</string>
 			</dict>
@@ -35,13 +35,13 @@
 			<key>falling_rock3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{231,231},{229,230}}</string>
+				<string>{{231,231},{228,230}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{7,0},{229,230}}</string>
+				<string>{{7,0},{228,230}}</string>
 				<key>sourceSize</key>
 				<string>{242,231}</string>
 			</dict>
@@ -49,13 +49,13 @@
 			<key>falling_rock4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{230,229}}</string>
+				<string>{{0,0},{230,228}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{6,0},{230,229}}</string>
+				<string>{{6,1},{230,228}}</string>
 				<key>sourceSize</key>
 				<string>{242,231}</string>
 			</dict>

@@ -1,11 +1,11 @@
-﻿#include "Player.h"
+﻿#include "Game1/Player/PlayerGame1.h"
 #include "Constants/Constants.h"
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
 
 USING_NS_CC;
 
-bool Player::init()
+bool PlayerGame1::init()
 {
     if (!Sprite::init())
     {
@@ -36,7 +36,7 @@ bool Player::init()
     return true;
 }
 
-void Player::takeDamage()
+void PlayerGame1::takeDamage()
 {
     if (canTakeDamage()) {
         _health -= 1; 
@@ -51,15 +51,15 @@ void Player::takeDamage()
     }
 }
 
-bool Player::canTakeDamage()
+bool PlayerGame1::canTakeDamage()
 {
     float currentTime = Director::getInstance()->getTotalFrames();
     return (currentTime - _lastDamageTime) >= _damageCooldown * 60;  
 }
 
-Player* Player::createPlayer()
+PlayerGame1* PlayerGame1::createPlayer()
 {
-    Player* player = new (std::nothrow) Player();
+    PlayerGame1* player = new (std::nothrow) PlayerGame1();
     if (player && player->init())
     {
         player->autorelease();
@@ -70,7 +70,7 @@ Player* Player::createPlayer()
     return nullptr;
 }
 
-void Player::initAnimation()
+void PlayerGame1::initAnimation()
 {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/Canon.plist");
 
@@ -86,7 +86,7 @@ void Player::initAnimation()
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void Player::moveUp()
+void PlayerGame1::moveUp()
 {
     Vec2 position = this->getPosition();
     if (position.y + Constants::PLAYER_MOVESPEED < maxY) {
@@ -95,7 +95,7 @@ void Player::moveUp()
     }
 }
 
-void Player::moveDown()
+void PlayerGame1::moveDown()
 {
     Vec2 position = this->getPosition();
     if (position.y - Constants::PLAYER_MOVESPEED > minY) {
@@ -104,7 +104,7 @@ void Player::moveDown()
     }
 }
 
-void Player::moveLeft()
+void PlayerGame1::moveLeft()
 {
     Vec2 position = this->getPosition();
     if (position.x - Constants::PLAYER_MOVESPEED > minX) {
@@ -113,7 +113,7 @@ void Player::moveLeft()
     }
 }
 
-void Player::moveRight()
+void PlayerGame1::moveRight()
 {
     Vec2 position = this->getPosition();
     if (position.x + Constants::PLAYER_MOVESPEED < maxX) {

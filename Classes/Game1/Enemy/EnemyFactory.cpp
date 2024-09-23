@@ -1,7 +1,7 @@
-#include "EnemyFactory.h"
-#include "Enemy/FlyingBullet.h"
-#include "Enemy/FallingRock.h"
-#include "Enemy/RandomBoom.h"
+#include "Game1/Enemy/EnemyFactory.h"
+#include "Game1/Enemy/FlyingBullet.h"
+#include "Game1/Enemy/FallingRock.h"
+#include "Game1/Enemy/RandomBoom.h"
 
 Enemy* EnemyFactory::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
     Enemy* enemy = nullptr;

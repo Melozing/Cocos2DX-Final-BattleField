@@ -1,20 +1,20 @@
-#ifndef __SPLASH_SCENE_H__
-#define __SPLASH_SCENE_H__
+#ifndef __GAME1SCENE_SCENE_H__
+#define __GAME1SCENE_SCENE_H__
 
 #include "cocos2d.h"
 #include "Background/Background.h"
-#include "Player/Player.h"
+#include "Game1/Player/PlayerGame1.h"
 #include "Enemy/FlyingBullet.h"
 #include "Enemy/FallingRock.h"
 #include "Enemy/RandomBoom.h"
 #include "Enemy/EnemyFactory.h"
 #include "Enemy/EnemyPool.h"
 
-class Splash : public cocos2d::Scene {
+class Game1Scene : public cocos2d::Scene {
 public:
     static cocos2d::Scene* createScene();
     virtual bool init();
-    CREATE_FUNC(Splash);
+    CREATE_FUNC(Game1Scene);
 
     virtual void update(float delta);
 
@@ -42,7 +42,7 @@ private:
     void SpawnRandomBoom(cocos2d::Size size);
 
     // Player instance
-    Player* _player;
+    PlayerGame1* _player;
     // Background instance
     Background* background;
     // Flag variables for player movement
@@ -53,4 +53,4 @@ private:
     cocos2d::SpriteBatchNode* _spriteBatchNode;
 };
 
-#endif // __SPLASH_SCENE_H__
+#endif // __GAME1SCENE_SCENE_H__

@@ -1,7 +1,8 @@
 #include "MainMenuScene.h"
 #include <string>
 #include "cocos2d.h"
-#include "Splash.h"
+#include "Game1/Game1Scene.h"
+#include "Game2/Game2Scene.h"
 #include "ui/CocosGUI.h"
 #include "Controller/SpriteController.h"
 
@@ -99,7 +100,7 @@ void MainMenu::startLoading() {
             // Delay before switching scenes
             this->runAction(Sequence::create(
                 CallFunc::create([]() {
-                    auto gameScene = Splash::createScene();
+                    auto gameScene = Game2Scene::createScene();
                     Director::getInstance()->replaceScene(TransitionFade::create(0.5, gameScene));
                     }),
                 nullptr

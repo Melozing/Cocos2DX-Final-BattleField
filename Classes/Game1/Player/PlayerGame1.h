@@ -1,13 +1,13 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __PLAYERGAME1_H__
+#define __PLAYERGAME1_H__
 
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
 
-class Player : public cocos2d::Sprite, public SpriteController
+class PlayerGame1 : public cocos2d::Sprite, public SpriteController
 {
 public:
-    static Player* createPlayer();
+    static PlayerGame1* createPlayer();
 
     virtual bool init() override;
 
@@ -16,14 +16,6 @@ public:
     void moveDown();
     void moveLeft();
     void moveRight();
-
-    void setBoundary(float minX, float maxX, float minY, float maxY)
-    {
-        this->minX = minX;
-        this->maxX = maxX;
-        this->minY = minY;
-        this->maxY = maxY;
-    }
 
     void takeDamage();  
     bool canTakeDamage(); 
@@ -37,4 +29,4 @@ private:
     float _lastDamageTime = 0.0f;  
 };
 
-#endif // __PLAYER_H__
+#endif // __PLAYERGAME1_H__

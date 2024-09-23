@@ -2,7 +2,7 @@
 #define __ENEMY_FACTORY_H__
 
 #include "cocos2d.h"
-#include "Enemy/Enemy.h"
+#include "Game1/Enemy/Enemy.h"
 
 class EnemyFactory {
 public:
