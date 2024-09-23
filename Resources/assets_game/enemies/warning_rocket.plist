@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>warning_rocket1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{351,1409},{350,352}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{350,352}}</string>
+				<key>sourceSize</key>
+				<string>{350,352}</string>
+			</dict>
+
+			<key>warning_rocket2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1409},{350,354}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{350,354}}</string>
+				<key>sourceSize</key>
+				<string>{350,354}</string>
+			</dict>
+
+			<key>warning_rocket3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1058},{353,350}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{353,350}}</string>
+				<key>sourceSize</key>
+				<string>{353,350}</string>
+			</dict>
+
+			<key>warning_rocket4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{375,350}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{375,350}}</string>
+				<key>sourceSize</key>
+				<string>{375,350}</string>
+			</dict>
+
+			<key>warning_rocket5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,351},{368,350}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{368,350}}</string>
+				<key>sourceSize</key>
+				<string>{368,350}</string>
+			</dict>
+
+			<key>warning_rocket6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,702},{368,355}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{368,355}}</string>
+				<key>sourceSize</key>
+				<string>{368,355}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{1024,2048}</string>
+			<key>textureFileName</key>
+			<string>warning_rocket.png</string>
+			</dict>
+		</dict>
+</plist>
