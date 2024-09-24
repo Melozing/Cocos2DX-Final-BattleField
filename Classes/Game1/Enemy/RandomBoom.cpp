@@ -86,6 +86,11 @@ void RandomBoom::launchMissile(const Vec2& targetPosition) {
     _missileSprite->runAction(Sequence::create(moveToTarget, hitTargetCallback, nullptr));
 }
 
+Size RandomBoom::GetSize() {
+    return GetContentSizeSprite(_warningSprite);
+}
+
+
 void RandomBoom::onMissileHitTarget() {
     if (!_warningSprite || !_missileSprite) {
         CCLOG("Warning sprite or missile sprite is null. Cannot create explosion.");
@@ -95,6 +100,17 @@ void RandomBoom::onMissileHitTarget() {
     if (!explosionSprite) {
         explosionSprite = Sprite::createWithSpriteFrameName("explosions1.png");
         explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.08f));
+
+        Size scaledSize = _warningSprite->getContentSize() * _warningSprite->getScale();
+
+        auto explosionBody = PhysicsBody::createBox(scaledSize);
+        explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
+        explosionBody->setContactTestBitmask(true);
+        explosionBody->setDynamic(false);
+
+        explosionSprite->setPhysicsBody(explosionBody);
+        explosionSprite->setPosition(explosionBody->getPosition());
+
         _spriteBatchNodeExplosion->addChild(explosionSprite);
     }
     

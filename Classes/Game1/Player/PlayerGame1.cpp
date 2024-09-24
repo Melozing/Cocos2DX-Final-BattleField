@@ -68,7 +68,7 @@ void PlayerGame1::OnCollisionWithEnemy(int enemyDamage)
         if (attributes->IsDead())
         {
             // Call GameOver method from GameController singleton
-            GameController::getInstance()->GameOver();
+            GameController::getInstance()->GameOver(attributes);
         }
     }
 }
@@ -102,7 +102,7 @@ void PlayerGame1::initAnimation()
     auto spriteBatchNode = SpriteBatchNode::create("assets_game/player/Canon.png");
     this->addChild(spriteBatchNode);
     
-    auto modelCharac = Sprite::createWithSpriteFrameName("Canon1.png");
+    modelCharac = Sprite::createWithSpriteFrameName("Canon1.png");
     //SpriteController::updateSpriteScale(modelCharac, 0.25f)
     modelCharac->setScale(0.25f);
     spriteBatchNode->addChild(modelCharac);
@@ -110,6 +110,11 @@ void PlayerGame1::initAnimation()
     auto animateCharac = Animate::create(createAnimation("Canon", 15, 0.07f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
+
+Size PlayerGame1::GetSize() {
+    return GetContentSizeSprite(modelCharac);
+}
+
 
 void PlayerGame1::moveUp()
 {

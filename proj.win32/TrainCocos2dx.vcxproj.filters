@@ -90,6 +90,9 @@
     <ClCompile Include="..\Classes\Game2\Game2Scene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\PlayerAttributes\PlayerAttributes.cpp">
+      <Filter>src\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Game2Scene.h">
       <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PlayerAttributes\PlayerAttributes.h">
+      <Filter>src\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

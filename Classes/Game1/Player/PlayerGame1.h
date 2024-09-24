@@ -21,6 +21,7 @@ public:
 
     void takeDamage();  
     bool canTakeDamage(); 
+    Size GetSize();
 
     float boundaryPadding;
     void OnCollisionWithEnemy(int enemyDamage);            // Handles collision with enemy
@@ -32,6 +33,7 @@ private:
     float _lastDamageTime = 0.0f;  
     PlayerAttributes* attributes;   // Pointer to PlayerAttributes object
     GameController* gameController; // Pointer to GameController object
+    Sprite* modelCharac;
 };
 
 #endif // __PLAYERGAME1_H__

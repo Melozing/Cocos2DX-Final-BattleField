@@ -15,6 +15,7 @@ public:
 
     float getSpeed() const { return _speed; }
     void initAnimation(bool fromLeft);
+    Size GetSize();
 
     virtual ~FlyingBullet();
 
@@ -25,6 +26,7 @@ private:
     std::string pngFile;
     bool isLoaded = false;
 
+    cocos2d::Sprite* modelCharac;
     cocos2d::SpriteBatchNode* spriteBatchNode;
     cocos2d::SpriteBatchNode* spriteBatchNodeLeft;
     cocos2d::SpriteBatchNode* spriteBatchNodeRight;

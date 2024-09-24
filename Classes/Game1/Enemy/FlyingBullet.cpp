@@ -27,6 +27,10 @@ bool FlyingBullet::init() {
     return true;
 }
 
+Size FlyingBullet::GetSize() {
+    return GetContentSizeSprite(modelCharac);
+}
+
 void FlyingBullet::initAnimation(bool fromLeft) {
     std::string spriteFrameName = fromLeft ? "flying_bullet1.png" : "flying_bullet_left1.png";
     spriteBatchNode = fromLeft ? spriteBatchNodeRight : spriteBatchNodeLeft;
@@ -35,7 +39,7 @@ void FlyingBullet::initAnimation(bool fromLeft) {
         this->addChild(spriteBatchNode);
     }
 
-    auto modelCharac = Sprite::createWithSpriteFrameName(spriteFrameName);
+    modelCharac = Sprite::createWithSpriteFrameName(spriteFrameName);
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.05f));
     spriteBatchNode->addChild(modelCharac);
 

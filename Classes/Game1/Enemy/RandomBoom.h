@@ -13,6 +13,7 @@ public:
     void showWarning(const cocos2d::Vec2& position);
     void launchMissile(const cocos2d::Vec2& targetPosition);
     void onMissileHitTarget();
+    Size GetSize();
     CREATE_FUNC(RandomBoom);
     virtual ~RandomBoom();
 private:
