@@ -21,6 +21,7 @@ public:
     float getSpeed() const { return _speed; }
     void initAnimation();
     void removeWhenOutOfScreen();
+    Size GetSize();
 
     virtual ~FallingRock();
 

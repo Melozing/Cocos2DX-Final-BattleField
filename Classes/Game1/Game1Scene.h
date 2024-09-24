@@ -19,6 +19,14 @@ public:
     virtual void update(float delta);
 
 private:
+    cocos2d::PhysicsWorld *world;
+    void setPhysicWorld(cocos2d::PhysicsWorld* m_world) 
+    {
+        world = m_world;
+    };
+
+    PlayerAttributes* _playerAttributes; // To manage player health
+    bool _canTakeDamage; // Flag to manage damage timing
     std::vector<FlyingBullet*> _flyingBullets;
     std::vector<FallingRock*> _fallingRocks;
     std::vector<RandomBoom*> _randomBooms;
@@ -51,6 +59,10 @@ private:
     std::vector<cocos2d::Node*> _enemyPool;
     // Sprite batch node to optimize rendering
     cocos2d::SpriteBatchNode* _spriteBatchNode;
+
+    void checkCollisions();
+    void setPhysicsBodyChar(PhysicsBody* physicBody, int num);
+    bool onContactBegin(PhysicsContact& contact);
 };
 
 #endif // __GAME1SCENE_SCENE_H__

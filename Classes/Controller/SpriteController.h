@@ -13,6 +13,7 @@ public:
     void changeAnimation(const std::string& namePrefix, int numOrder);
     static float updateSpriteScale(Sprite* sprite, float size);
     static float calculateScreenRatio(float ratio);
+    Size GetContentSizeSprite(Sprite* sprite);
 private:
     // Sprite and animation
     Sprite* modelCharac;

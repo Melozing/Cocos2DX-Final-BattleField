@@ -100,7 +100,7 @@ void MainMenu::startLoading() {
             // Delay before switching scenes
             this->runAction(Sequence::create(
                 CallFunc::create([]() {
-                    auto gameScene = Game2Scene::createScene();
+                    auto gameScene = Game1Scene::createScene();
                     Director::getInstance()->replaceScene(TransitionFade::create(0.5, gameScene));
                     }),
                 nullptr

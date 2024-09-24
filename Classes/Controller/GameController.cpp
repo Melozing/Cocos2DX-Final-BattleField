@@ -14,10 +14,15 @@ GameController* GameController::getInstance()
 }
 
 // Handles the game over event
-void GameController::GameOver()
+void GameController::GameOver(PlayerAttributes* playerAttributes)
 {
     // Logic for game over (e.g., displaying a message)
     std::cout << "Game Over!" << std::endl;
+
+    // Log the player's final health
+    if (playerAttributes) {
+        std::cout << "Player's final health: " << playerAttributes->GetHealth() << std::endl;
+    }
 }
 
 // Handles victory event

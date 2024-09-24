@@ -6,12 +6,15 @@
 #include "Enemy/EnemyPool.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
+#include "Controller/GameController.h" // Ensure GameController is included
 
 USING_NS_CC;
 
 Scene* Game1Scene::createScene() {
-    auto scene = Scene::create();
+    auto scene = Scene::createWithPhysics(); // Create scene with physics
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
+    layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
     return scene;
 }
@@ -20,9 +23,19 @@ bool Game1Scene::init() {
     if (!Scene::init()) {
         return false;
     }
+    _canTakeDamage = false;
+    _playerAttributes = new PlayerAttributes(3); // Initialize player attributes
+    _canTakeDamage = true; // Allow damage initially
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    auto edgeBody = cocos2d::PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT,0);
+    edgeBody->setCollisionBitmask(0x03);
+    edgeBody->setContactTestBitmask(true);
+    auto edgeNode = Node::create();
+    edgeNode->setPosition(Vec2(visibleSize.width/2,visibleSize.height/2));
+    edgeNode->setPhysicsBody(edgeBody);
+    addChild(edgeNode);
 
     // Initialize enemy pool
     EnemyPool::getInstance()->initPool("FlyingBullet", 10);
@@ -36,11 +49,17 @@ bool Game1Scene::init() {
     // Create player
     _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+
+    auto playerBody = PhysicsBody::createBox(_player->GetSize());
+    setPhysicsBodyChar(playerBody,0x01);
+    _player->setPhysicsBody(playerBody);
+    
     addChild(_player);
 
     // Handle player movement
     _movingUp = _movingDown = _movingLeft = _movingRight = false;
 
+    // Keyboard listener for player movement
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         switch (keyCode) {
@@ -90,6 +109,11 @@ bool Game1Scene::init() {
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+
     this->schedule([this](float dt) {
         handlePlayerMovement();
         }, "update_key_schedule");
@@ -97,8 +121,63 @@ bool Game1Scene::init() {
     this->scheduleUpdate(); // Schedule the update function to be called each frame
     this->scheduleEnemySpawning(); // Ensure enemies are scheduled for spawning
 
+    this->schedule([this](float dt) {
+        checkCollisions();
+        }, "collision_check_key");
+
     return true;
 }
+
+void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody,int num) {
+    physicBody->setCollisionBitmask(num);
+    physicBody->setContactTestBitmask(true);
+    physicBody->setDynamic(false);
+}
+
+bool Game1Scene::onContactBegin(PhysicsContact& contact) {
+    auto bodyA = contact.getShapeA()->getBody();
+    auto bodyB = contact.getShapeB()->getBody();
+
+    // Check for player vs enemy collisions
+    if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
+        (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
+
+        if (_canTakeDamage) {
+            CCLOG("Collision detected!");
+            _playerAttributes->TakeDamage(1); // Reduce player health
+            _canTakeDamage = false;
+
+            // Schedule to allow damage again after 1 second
+            this->scheduleOnce([this](float) {
+                _canTakeDamage = true;
+                }, 1.0f, "damage_delay_key");
+        }
+    }
+
+    return true;
+}
+
+void Game1Scene::checkCollisions() {
+    for (auto enemy : _enemyPool) {
+        if (enemy->isVisible() && _player->getBoundingBox().intersectsRect(enemy->getBoundingBox())) {
+            // Log the collision
+            CCLOG("Collision detected with enemy!");
+
+            // Call TakeDamage method on PlayerAttributes
+            _playerAttributes->TakeDamage(1); // Reduce player health
+            CCLOG("Player health after damage: %d", _playerAttributes->GetHealth());
+
+            // Check if the player is dead
+            if (_playerAttributes->IsDead()) {
+                CCLOG("Player is dead!");
+                GameController::getInstance()->GameOver(_playerAttributes); // Pass player attributes
+                // Optionally stop enemy movement or perform additional logic
+            }
+        }
+    }
+}
+
+
 
 void Game1Scene::update(float delta) {
     background->update(delta);
@@ -175,8 +254,8 @@ void Game1Scene::scheduleEnemySpawning() {
             SpawnRandomBoom(visibleSize);
         }
         }, 4.0f, "random_boom_spawn_key");
-
 }
+
 
 void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
     float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
@@ -202,6 +281,11 @@ void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
     auto fallingRock = FallingRock::create();
     if (fallingRock) {
         fallingRock->spawn(spawnPosition);
+        auto size = fallingRock->GetSize();
+        auto fallingRockBody = PhysicsBody::createCircle(size.width / 2); // Adjust for radius
+
+        setPhysicsBodyChar(fallingRockBody, 0x02);
+        fallingRock->setPhysicsBody(fallingRockBody);
         this->addChild(fallingRock);
     }
 }
@@ -214,12 +298,16 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
         flyingBullet->initAnimation(directionLeft);
         flyingBullet->setPosition(spawnPosition);
 
-        float targetX = directionLeft ? size.width + 50 : -50; 
+        float targetX = directionLeft ? size.width + 50 : -50;
         auto moveAction = MoveTo::create(Constants::FLYING_BULLET_SPEED, Vec2(targetX, _player->getPosition().y));
 
         auto sequence = Sequence::create(moveAction, CallFunc::create([flyingBullet]() {
-            flyingBullet->removeFromParent(); 
+            flyingBullet->removeFromParent();
             }), nullptr);
+
+        auto flyingBulletBody = PhysicsBody::createBox(flyingBullet->GetSize());
+        setPhysicsBodyChar(flyingBulletBody, 0x02);
+        flyingBullet->setPhysicsBody(flyingBulletBody);
 
         flyingBullet->runAction(sequence);
         this->addChild(flyingBullet);
@@ -229,7 +317,7 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
 
 
 void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
-       // Define the width and height of the restricted movement area
+    // Define the width and height of the restricted movement area
     float restrictedWidth = 100.0f; // The width of the restricted movement area
     float restrictedHeight = size.height - 100.0f; // The height of the restricted movement area
     float centerX = size.width / 2;
@@ -259,3 +347,4 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
         this->addChild(randomBoom);
     }
 }
+

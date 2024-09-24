@@ -1,4 +1,5 @@
 #include "PlayerAttributes.h"
+#include <iostream>
 
 // Constructor to initialize player's health
 PlayerAttributes::PlayerAttributes(int initialHealth) : health(initialHealth) {}
@@ -8,6 +9,9 @@ void PlayerAttributes::TakeDamage(int damage)
 {
     health -= damage;
     if (health < 0) health = 0;
+
+    // Debug output
+    std::cout << "Player took damage. Current health: " << health << std::endl;
 }
 
 // Method to check if player is dead (health <= 0)

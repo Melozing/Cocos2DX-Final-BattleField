@@ -40,6 +40,10 @@ bool FallingRock::init() {
     return true;
 }
 
+Size FallingRock::GetSize() {
+    return GetContentSizeSprite(_currentSprite);
+}
+
 void FallingRock::initAnimation() {
     std::string spriteFrameName;
 
