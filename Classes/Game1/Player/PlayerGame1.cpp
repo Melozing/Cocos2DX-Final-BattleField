@@ -51,11 +51,36 @@ void PlayerGame1::takeDamage()
     }
 }
 
+// Add a new method to handle collision with enemies
+void PlayerGame1::OnCollisionWithEnemy(int enemyDamage)
+{
+    // Check if player can take damage
+    if (canTakeDamage() && !attributes->IsDead())
+    {
+        // Reduce health based on the enemy's damage
+        attributes->TakeDamage(enemyDamage);
+        _lastDamageTime = Director::getInstance()->getTotalFrames(); // Update the last damage time
+
+        // Log the player's current health
+        CCLOG("Player health: %d", attributes->GetHealth());
+
+        // Check if player is dead
+        if (attributes->IsDead())
+        {
+            // Call GameOver method from GameController singleton
+            GameController::getInstance()->GameOver();
+        }
+    }
+}
+
+// Update the canTakeDamage function to use PlayerAttributes' health state
 bool PlayerGame1::canTakeDamage()
 {
     float currentTime = Director::getInstance()->getTotalFrames();
-    return (currentTime - _lastDamageTime) >= _damageCooldown * 60;  
+    // Allow damage if enough time has passed and the player is not dead
+    return (currentTime - _lastDamageTime) >= _damageCooldown * 60 && !attributes->IsDead();
 }
+
 
 PlayerGame1* PlayerGame1::createPlayer()
 {
