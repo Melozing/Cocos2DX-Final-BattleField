@@ -17,6 +17,7 @@ public:
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
     //game2
+    static const float BulletSpeed;
     static const float PlayerSpeed;
     static const float PlayerScale;
     static const int InitialPosX;

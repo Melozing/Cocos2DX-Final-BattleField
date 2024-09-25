@@ -31,6 +31,9 @@
     <Filter Include="src\utils">
       <UniqueIdentifier>{f6bc2651-ea34-4798-bfb7-b8ab73290b5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Bullet">
+      <UniqueIdentifier>{6c30be57-c649-417d-a9b9-744e2cf7a5a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,8 +102,8 @@
     <ClCompile Include="..\Classes\utils\MathFunction.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\utils\Rotator.cpp">
-      <Filter>src\utils</Filter>
+    <ClCompile Include="..\Classes\Game2\Bullet\Bullet.cpp">
+      <Filter>src\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,8 +173,8 @@
     <ClInclude Include="..\Classes\utils\MathFunction.h">
       <Filter>src\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\utils\Rotator.h">
-      <Filter>src\utils</Filter>
+    <ClInclude Include="..\Classes\Game2\Bullet\Bullet.h">
+      <Filter>src\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
