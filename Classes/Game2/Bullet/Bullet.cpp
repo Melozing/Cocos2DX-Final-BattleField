@@ -32,7 +32,7 @@ Bullet* Bullet::createBullet(const Vec2& direction, float speed)
 
 bool Bullet::init()
 {
-    if (!Sprite::initWithFile("assets_game/shot.png"))
+    if (!Sprite::initWithFile("assets_game/player/shot.png"))
     {
         CCLOG("Failed to load bullet image");
         return false;

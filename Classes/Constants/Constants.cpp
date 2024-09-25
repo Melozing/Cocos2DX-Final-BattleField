@@ -12,7 +12,7 @@ const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
 const float Constants::PLAYER_MOVESPEED = 2.0f;
 
 //game2
-const float Constants::BulletSpeed = 50.f;
+const float Constants::BulletSpeed = 750.f;
 const float Constants::PlayerSpeed = 200.0f;
 const float Constants::PlayerScale = 0.5f;
 const int Constants::InitialPosX = 100;
