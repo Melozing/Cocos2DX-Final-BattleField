@@ -31,6 +31,8 @@ private:
     std::vector<FallingRock*> _fallingRocks;
     std::vector<RandomBoom*> _randomBooms;
 
+    std::vector<cocos2d::Sprite*> _healthSprites;
+
     // Handles player movement based on input
     void handlePlayerMovement();
     // Spawns enemies of different types
@@ -43,11 +45,13 @@ private:
     void scheduleEnemySpawning();
     // Spawns FallingRock and RandomBoom enemies
     void SpawnFallingRockAndBomb(cocos2d::Size size);
-    void removeFallingRock(FallingRock* fallingRock);
     // Spawns FlyingBullet enemies
     void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
     // Spawns RandomBoom enemies
     void SpawnRandomBoom(cocos2d::Size size);
+
+    void initHealthSprites(); // Method to initialize health sprites
+    void updateHealthSprites();
 
     // Player instance
     PlayerGame1* _player;

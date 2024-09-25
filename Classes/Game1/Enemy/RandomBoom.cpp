@@ -107,10 +107,9 @@ void RandomBoom::onMissileHitTarget() {
         explosionBody->setGravityEnable(false);
         explosionBody->setDynamic(false);
         explosionSprite->setPhysicsBody(explosionBody);
+        explosionSprite->setPosition(_missileSprite->getPosition());
         _spriteBatchNodeExplosion->addChild(explosionSprite);
     }
-    CCLOG("Missile position: %f, %f", _missileSprite->getPosition().x, _missileSprite->getPosition().y);
-    explosionSprite->setPosition(_missileSprite->getPosition());
 
     auto explosionAnimation = createAnimation("explosions", 10, 0.07f);
     auto animate = Animate::create(explosionAnimation);

@@ -6,10 +6,11 @@
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
 //ENEMY
 const float Constants::FLYING_BULLET_SPEED = 8.0f;
-//Player
+//PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
 const float Constants::PLAYER_MOVESPEED = 2.0f;
+const int Constants::PLAYER_HEALTH = 3;
 
 //game2
 const float Constants::PlayerSpeed = 200.0f;

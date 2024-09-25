@@ -1,4 +1,5 @@
 #include "Controller/GameController.h"
+#include "cocos2d.h"
 
 // Initialize the static instance
 GameController* GameController::instance = nullptr;
@@ -13,22 +14,27 @@ GameController* GameController::getInstance()
     return instance;
 }
 
+GameController::GameController()
+{
+    CCLOG("GameController initialized."); // Log initialization message
+}
+
 // Handles the game over event
 void GameController::GameOver(PlayerAttributes* playerAttributes)
 {
     // Logic for game over (e.g., displaying a message)
-    std::cout << "Game Over!" << std::endl;
+    CCLOG("Game Over!"); // Log game over message
 
     // Log the player's final health
     if (playerAttributes) {
-        std::cout << "Player's final health: " << playerAttributes->GetHealth() << std::endl;
+        CCLOG("Player's final health: %d", playerAttributes->GetHealth()); // Log final health
     }
 }
 
 // Handles victory event
 void GameController::Victory()
 {
-    std::cout << "Victory!" << std::endl;
+    CCLOG("Victory!"); // Log victory message
 }
 
 // Updates game status based on elapsed time

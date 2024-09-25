@@ -12,7 +12,7 @@ USING_NS_CC;
 
 Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
     layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
@@ -23,17 +23,18 @@ bool Game1Scene::init() {
     if (!Scene::init()) {
         return false;
     }
-    _canTakeDamage = false;
+
     _playerAttributes = new PlayerAttributes(3); // Initialize player attributes
     _canTakeDamage = true; // Allow damage initially
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
-    auto edgeBody = cocos2d::PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT,0);
+    // Create edge physics body
+    auto edgeBody = cocos2d::PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 0);
     edgeBody->setCollisionBitmask(0x03);
     edgeBody->setContactTestBitmask(true);
     auto edgeNode = Node::create();
-    edgeNode->setPosition(Vec2(visibleSize.width/2,visibleSize.height/2));
+    edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
 
@@ -49,11 +50,11 @@ bool Game1Scene::init() {
     // Create player
     _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    initHealthSprites(); // Initialize health sprites
 
     auto playerBody = PhysicsBody::createBox(_player->GetSize());
-    setPhysicsBodyChar(playerBody,0x01);
+    setPhysicsBodyChar(playerBody, 0x01);
     _player->setPhysicsBody(playerBody);
-    
     addChild(_player);
 
     // Handle player movement
@@ -113,7 +114,7 @@ bool Game1Scene::init() {
     contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-
+    // Schedule player movement handling
     this->schedule([this](float dt) {
         handlePlayerMovement();
         }, "update_key_schedule");
@@ -121,20 +122,17 @@ bool Game1Scene::init() {
     this->scheduleUpdate(); // Schedule the update function to be called each frame
     this->scheduleEnemySpawning(); // Ensure enemies are scheduled for spawning
 
-    this->schedule([this](float dt) {
-        checkCollisions();
-        }, "collision_check_key");
-
     return true;
 }
 
-void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody,int num) {
+void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
     physicBody->setContactTestBitmask(true);
     physicBody->setDynamic(false);
 }
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
+    if (_playerAttributes->IsDead()) return true;
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
 
@@ -147,37 +145,42 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
             _playerAttributes->TakeDamage(1); // Reduce player health
             _canTakeDamage = false;
 
+            // Update health sprites based on current health
+            updateHealthSprites();
+
             // Schedule to allow damage again after 1 second
             this->scheduleOnce([this](float) {
                 _canTakeDamage = true;
                 }, 1.0f, "damage_delay_key");
+
+            // Check if the player is dead
+            if (_playerAttributes->IsDead()) {
+                CCLOG("Player is dead!");
+                CCLOG("Calling Game Over...");
+                GameController::getInstance()->GameOver(_playerAttributes); // Transition to game over screen
+            }
         }
     }
 
     return true;
 }
 
-void Game1Scene::checkCollisions() {
-    for (auto enemy : _enemyPool) {
-        if (enemy->isVisible() && _player->getBoundingBox().intersectsRect(enemy->getBoundingBox())) {
-            // Log the collision
-            CCLOG("Collision detected with enemy!");
-
-            // Call TakeDamage method on PlayerAttributes
-            _playerAttributes->TakeDamage(1); // Reduce player health
-            CCLOG("Player health after damage: %d", _playerAttributes->GetHealth());
-
-            // Check if the player is dead
-            if (_playerAttributes->IsDead()) {
-                CCLOG("Player is dead!");
-                GameController::getInstance()->GameOver(_playerAttributes); // Pass player attributes
-                // Optionally stop enemy movement or perform additional logic
-            }
+void Game1Scene::updateHealthSprites() {
+    int currentHealth = _playerAttributes->GetHealth();
+    for (int i = 0; i < _healthSprites.size(); i++) {
+        if (i < currentHealth) {
+            _healthSprites[i]->setVisible(true); // Show sprite if player has health
+        }
+        else {
+            auto fadeOut = FadeOut::create(0.5f); // 1 second to fade out
+            auto hideSprite = CallFunc::create([this, i]() {
+                _healthSprites[i]->setVisible(false); // Hide the sprite after fade out
+                });
+            auto sequence = Sequence::create(fadeOut, hideSprite, nullptr); // Create sequence
+            _healthSprites[i]->runAction(sequence); // Run fade out action
         }
     }
 }
-
-
 
 void Game1Scene::update(float delta) {
     background->update(delta);
@@ -256,7 +259,6 @@ void Game1Scene::scheduleEnemySpawning() {
         }, 4.0f, "random_boom_spawn_key");
 }
 
-
 void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
     float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
     float centerX = size.width / 2;
@@ -311,10 +313,19 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
 
         flyingBullet->runAction(sequence);
         this->addChild(flyingBullet);
-
     }
 }
 
+void Game1Scene::initHealthSprites() {
+    auto visibleSize = Director::getInstance()->getVisibleSize(); // Get the visible size of the window
+    for (int i = 0; i < Constants::PLAYER_HEALTH; i++) { // Loop for player health sprites
+        auto healthSprite = Sprite::create("assets_game/player/HP_Dot.png"); // Load health sprite
+        healthSprite->setScale(SpriteController::updateSpriteScale(healthSprite, 0.1f));
+        healthSprite->setPosition(Vec2(50 + i * 100, visibleSize.height - 50)); // Set position for each health sprite
+        this->addChild(healthSprite); // Add sprite to the scene
+        _healthSprites.push_back(healthSprite); // Store sprite in vector
+    }
+}
 
 void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
     // Define the width and height of the restricted movement area
@@ -347,4 +358,3 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
         this->addChild(randomBoom);
     }
 }
-
