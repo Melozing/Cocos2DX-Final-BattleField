@@ -13,7 +13,7 @@ public:
     void UpdateGameStatus(float elapsedTime); // Updates game status based on elapsed time
 
 private:
-    GameController() {} // Private constructor for singleton
+    GameController(); // Private constructor for singleton
     static GameController* instance; // Static instance of the singleton
     float gameTime = 0.0f; // Track game time
 };

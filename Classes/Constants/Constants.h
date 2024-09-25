@@ -10,10 +10,11 @@ public:
     static const float ENEMY_SCALE_MEDIUM;
     static const float ENEMY_SCALE_LARGE;
     static const float FLYING_BULLET_SPEED;
-    // Player
+    // PlayerGame1
     static const float PLAYER_RESTRICTEDWIDTH;
     static const float PLAYER_RESTRICTEDHEIGHT;
     static const float PLAYER_MOVESPEED;
+    static const int PLAYER_HEALTH;
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
     //game2

@@ -105,6 +105,9 @@
     <ClCompile Include="..\Classes\Game2\Bullet\Bullet.cpp">
       <Filter>src\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scene\SceneLoading.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Bullet\Bullet.h">
       <Filter>src\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\SceneLoading.h">
+      <Filter>src\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
