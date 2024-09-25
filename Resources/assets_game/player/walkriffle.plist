@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Walk_riffle_000.png</key>
+            <key>walkriffle0.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -19,7 +19,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Walk_riffle_001.png</key>
+            <key>walkriffle1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -34,7 +34,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Walk_riffle_002.png</key>
+            <key>walkriffle2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -49,7 +49,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Walk_riffle_003.png</key>
+            <key>walkriffle3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -64,7 +64,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Walk_riffle_004.png</key>
+            <key>walkriffle4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -79,7 +79,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Walk_riffle_005.png</key>
+            <key>walkriffle5.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -104,13 +104,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>maingame.png</string>
+            <string>walkriffle.png</string>
             <key>size</key>
             <string>{496,468}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d197d30ebc3e884854bcc138dab2860d:21fb44e7c1de12295611167eaa14c80e:c73d4839f2575e516ec0680e5d072066$</string>
+            <string>$TexturePacker:SmartUpdate:99c5748924973d29139c31105ee24b17:21fb44e7c1de12295611167eaa14c80e:3604d12d4a3e0c1a3bc112a5e46d3b53$</string>
             <key>textureFileName</key>
-            <string>maingame.png</string>
+            <string>walkriffle.png</string>
         </dict>
     </dict>
 </plist>

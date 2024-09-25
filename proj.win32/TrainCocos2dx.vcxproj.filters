@@ -28,6 +28,9 @@
     <Filter Include="src\Scene">
       <UniqueIdentifier>{55db5daf-b5de-4a9e-982c-a455d94f2aeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{f6bc2651-ea34-4798-bfb7-b8ab73290b5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,6 +96,12 @@
     <ClCompile Include="..\Classes\PlayerAttributes\PlayerAttributes.cpp">
       <Filter>src\Player</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\utils\MathFunction.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\Rotator.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -157,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\PlayerAttributes\PlayerAttributes.h">
       <Filter>src\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\MathFunction.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\Rotator.h">
+      <Filter>src\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

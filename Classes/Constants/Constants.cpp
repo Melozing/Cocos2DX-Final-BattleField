@@ -11,3 +11,9 @@ const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
 const float Constants::PLAYER_MOVESPEED = 2.0f;
 
+//game2
+const float Constants::PlayerSpeed = 200.0f;
+const float Constants::PlayerScale = 0.5f;
+const int Constants::InitialPosX = 100;
+const int Constants::InitialPosY = 100;
+const float Constants::AnimationFrameDelay = 0.1f;
