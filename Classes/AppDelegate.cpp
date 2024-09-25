@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "MainMenuScene.h"
+#include "Controller/GameController.h"
 
  // #define USE_AUDIO_ENGINE 1
 
@@ -50,8 +51,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     if (!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        //glview = GLViewImpl::createWithFullScreen("Test123");
-        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, 1280, 720));;
+        glview = GLViewImpl::createWithFullScreen("Test123");
+        //glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, 1280, 720));;
 #else
         glview = GLViewImpl::create("Test123");
 #endif
@@ -82,6 +83,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+    GameController::getInstance();
     // create a scene. it's an autorelease object
     auto scene = MainMenu::createScene();
 

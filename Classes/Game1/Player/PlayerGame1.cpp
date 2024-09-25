@@ -103,8 +103,8 @@ void PlayerGame1::initAnimation()
     this->addChild(spriteBatchNode);
     
     modelCharac = Sprite::createWithSpriteFrameName("Canon1.png");
-    //SpriteController::updateSpriteScale(modelCharac, 0.25f)
-    modelCharac->setScale(0.25f);
+    SpriteController::updateSpriteScale(modelCharac, 0.05f);
+    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.15f));
     spriteBatchNode->addChild(modelCharac);
 
     auto animateCharac = Animate::create(createAnimation("Canon", 15, 0.07f));
