@@ -170,6 +170,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\PlayerAttributes\PlayerAttributes.cpp" />
+    <ClCompile Include="..\Classes\utils\MathFunction.cpp" />
+    <ClCompile Include="..\Classes\utils\Rotator.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +195,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\PlayerAttributes\PlayerAttributes.h" />
+    <ClInclude Include="..\Classes\utils\MathFunction.h" />
+    <ClInclude Include="..\Classes\utils\Rotator.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

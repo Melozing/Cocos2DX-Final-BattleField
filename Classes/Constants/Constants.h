@@ -1,6 +1,6 @@
 #ifndef __CONSTANTS_H__
 #define __CONSTANTS_H__
-#include"cocos2d.h";
+#include "cocos2d.h";
 
 class Constants {
 public:
@@ -16,6 +16,13 @@ public:
     static const float PLAYER_MOVESPEED;
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
+    //game2
+    static const float PlayerSpeed;
+    static const float PlayerScale;
+    static const int InitialPosX;
+    static const int InitialPosY;
+    static const float AnimationFrameDelay;
+
 };
 
 #endif // __CONSTANTS_H__

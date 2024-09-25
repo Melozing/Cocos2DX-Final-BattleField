@@ -2,6 +2,7 @@
 #define __PlayerGame2_H__
 
 #include "cocos2d.h"
+#include "utils/Rotator.h"
 
 class PlayerGame2 : public cocos2d::Sprite
 {
@@ -26,11 +27,16 @@ public:
     void update(float delta);
 
 private:
+    void Rotate(const int x, const int y);
+    void createWalkAnimation();
+
     cocos2d::Vec2 _mousePos;
     cocos2d::Vec2 _velocity;
+    cocos2d::Vec2 _direction;
     float _speed;
-    bool _isMoving; // Add this line
-    cocos2d::Animate* _animate; // Add this line
+    bool _isMoving;
+    cocos2d::Action* _walkAnimation;
+    Rotator _rotator;
 };
 
 #endif // __PlayerGame2_H__

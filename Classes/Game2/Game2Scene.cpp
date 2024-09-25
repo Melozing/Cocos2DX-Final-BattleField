@@ -1,4 +1,4 @@
-// SplashScene.cpp
+// Game2Scene.cpp
 #include "Game2/Game2Scene.h"
 #include "Game2/Player/PlayerGame2.h"
 #include "Game2/Cursor/Cursor.h"
@@ -14,11 +14,18 @@ bool Game2Scene::init()
 {
     if (!Scene::init())
     {
+        CCLOG("Failed to initialize Scene");
         return false;
     }
 
     auto player = PlayerGame2::createPlayerGame2();
+    if (!player)
+    {
+        CCLOG("Failed to create PlayerGame2");
+        return false;
+    }
     this->addChild(player);
+    CCLOG("PlayerGame2 added to Game2Scene");
 
     auto eventListener = EventListenerKeyboard::create();
 
@@ -61,11 +68,18 @@ bool Game2Scene::init()
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 
     Director::getInstance()->getOpenGLView()->setCursorVisible(false);
+
     _cursor = Cursor::create("assets_game/player/tam.png");
+    if (!_cursor)
+    {
+        CCLOG("Failed to create Cursor");
+        return false;
+    }
     this->addChild(_cursor);
     this->schedule([this](float delta) {
         _cursor->updateCursor(delta);
         }, "update_cursor_key");
 
+    CCLOG("Game2Scene initialized successfully");
     return true;
 }

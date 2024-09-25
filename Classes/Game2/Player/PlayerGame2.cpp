@@ -1,32 +1,54 @@
 ﻿#include "Game2/Player/PlayerGame2.h"
+#include "Constants/Constants.h"
+#include "utils/MathFunction.h"
+#include "utils/Rotator.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
 
-PlayerGame2::PlayerGame2() : _mousePos(Vec2::ZERO), _velocity(Vec2::ZERO), _speed(100.0f), _isMoving(false) {}
-PlayerGame2::~PlayerGame2() {}
-
-bool PlayerGame2::init()
+PlayerGame2::PlayerGame2() : _mousePos(Vec2::ZERO), _velocity(Vec2::ZERO), _direction(Vec2::ZERO), _speed(Constants::PlayerSpeed), _isMoving(false), _rotator(&_mousePos, &_direction)
 {
+    _rotator.Init(&this->getPosition(), &_direction);
+}
+
+PlayerGame2::~PlayerGame2()
+{
+}
+
+PlayerGame2* PlayerGame2::createPlayerGame2()
+{
+    PlayerGame2* Player = new (std::nothrow) PlayerGame2();
+    if (Player && Player->init())
+    {
+        Player->autorelease();
+        return Player;
+    }
+    else
+    {
+        delete Player;
+        return nullptr;
+    }
+}
+
+bool PlayerGame2::init() {
     // Load the sprite frames
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/maingame.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/walkriffle.plist");
 
     // Check if the sprite frame exists in the cache
-    auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Walk_riffle_000.png");
-    if (!spriteFrame)
-    {
-        CCLOG("Sprite frame 'Walk_riffle_000.png' not found in the cache");
+    auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("walkriffle0.png");
+    if (!spriteFrame) {
+        CCLOG("Sprite frame 'walkriffle0.png' not found in the cache");
         return false;
     }
 
     // Initialize the sprite with the sprite frame
-    if (!Sprite::initWithSpriteFrame(spriteFrame))
-    {
+    if (!Sprite::initWithSpriteFrame(spriteFrame)) {
+        CCLOG("Failed to initialize sprite with sprite frame");
         return false;
     }
-    
-    this->setPosition(Vec2(100, 100));
-    this->setScale(0.25f);
+
+    this->setPosition(Vec2(Constants::InitialPosX, Constants::InitialPosY));
+    this->setScale(Constants::PlayerScale);
     this->setAnchorPoint(Vec2(0.5, 0.5)); // Set anchor point at the head of the character
 
     // Add mouse event listener
@@ -43,49 +65,30 @@ bool PlayerGame2::init()
     // Schedule update method
     this->scheduleUpdate();
 
-    // Create animation
+    // Create the walk animation
+    createWalkAnimation();
+
+    CCLOG("PlayerGame2 initialized successfully");
+    return true;
+}
+
+void PlayerGame2::createWalkAnimation()
+{
     Vector<SpriteFrame*> animFrames;
-    for (int i = 0; i < 10; i++) // Assuming you have 10 frames for the walk animation
+    char str[100] = { 0 };
+    for (int i = 0; i < 10; i++)
     {
-        std::string frameName = "Walk_riffle_" + StringUtils::format("%03d", i) + ".png";
-        SpriteFrame* frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName);
+        sprintf(str, "walkriffle%d.png", i);
+        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
         if (frame)
         {
             animFrames.pushBack(frame);
         }
-        else
-        {
-            CCLOG("Frame %s not found", frameName.c_str());
-        }
     }
 
-    if (!animFrames.empty())
-    {
-        auto animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
-        _animate = Animate::create(animation);
-        _animate->retain();
-    }
-    else
-    {
-        CCLOG("No frames found for animation");
-    }
-
-    return true;
-}
-
-PlayerGame2* PlayerGame2::createPlayerGame2()
-{
-    PlayerGame2* Player = new (std::nothrow) PlayerGame2();
-    if (Player && Player->init())
-    {
-        Player->autorelease();
-        return Player;
-    }
-    else
-    {
-        delete Player;
-        return nullptr;
-    }
+    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
+    _walkAnimation = RepeatForever::create(Animate::create(animation));
+    _walkAnimation->retain();
 }
 
 void PlayerGame2::onMouseMove(Event* event)
@@ -176,40 +179,17 @@ void PlayerGame2::stopHorizontalMovement()
 
 void PlayerGame2::update(float delta)
 {
-    // Cập nhật vị trí dựa trên vận tốc
     Vec2 position = this->getPosition();
     position += _velocity * _speed * delta;
     this->setPosition(position);
-
-    // Chuyển đổi vị trí chuột từ hệ tọa độ màn hình sang hệ tọa độ OpenGL
     auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-    Vec2 PlayerGame2Pos = this->getPosition();
-    Vec2 direction = mousePos - PlayerGame2Pos;
-
-    // Tính toán góc quay từ hướng
-    float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
-
-    // Điều chỉnh góc quay để đảm bảo nhân vật luôn hướng về phía chuột
-    this->setRotation(-angle + 90);
-
-    // Lật hình ảnh nếu cần thiết
-    if (angle > 90 || angle < -90)
-    {
-        this->setFlippedY(true);
-    }
-    else
-    {
-        this->setFlippedY(false);
-    }
-
-    // Chạy hoạt ảnh khi di chuyển
+    Rotate(mousePos.x, mousePos.y);
     if (_isMoving)
     {
         if (!this->getActionByTag(1))
         {
-            auto animateAction = RepeatForever::create(_animate);
-            animateAction->setTag(1);
-            this->runAction(animateAction);
+            _walkAnimation->setTag(1);
+            this->runAction(_walkAnimation);
         }
     }
     else
@@ -218,7 +198,12 @@ void PlayerGame2::update(float delta)
     }
 }
 
-
-
-
-
+void PlayerGame2::Rotate(const int x, const int y)
+{
+    Vec2 pos = this->getPosition();
+    Vec2 dirToFace = Vec2(x, y) - pos;
+    dirToFace.normalize();
+    _rotator.RotateToDirection(dirToFace);
+    float angle = MathFunction::GetDirInDegreesPositive(dirToFace);
+    this->setRotation(-angle + 90);
+}

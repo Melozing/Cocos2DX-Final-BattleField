@@ -78,7 +78,6 @@ void MainMenu::startLoading() {
     auto loadingPos = loadingBar->getPosition();
     border->setAnchorPoint(Vec2(0.5f, 0.5f));
     border->setScale(loadingBar->getScale());
-    //CCLOG("%f", SpriteController::calculateScreenRatio(0.005f));
     float loadingBarHeight = loadingBar->getContentSize().height * loadingBar->getScaleY() + loadingBar->getScaleY();
     loadingPos.y += loadingBarHeight;
     border->setPosition(loadingPos); // Align with the loading bar
@@ -100,14 +99,16 @@ void MainMenu::startLoading() {
             // Delay before switching scenes
             this->runAction(Sequence::create(
                 CallFunc::create([]() {
-                    auto gameScene = Game1Scene::createScene();
+                    CCLOG("Loading complete, transitioning to Game2Scene");
+                    auto gameScene = Game2Scene::createScene();
                     Director::getInstance()->replaceScene(TransitionFade::create(0.5, gameScene));
                     }),
                 nullptr
             ));
         }
-    }, 0.2f / 60.0f, "loading_bar_update_key"); // Update every frame
+        }, 0.2f / 60.0f, "loading_bar_update_key"); // Update every frame
 }
+
 
 bool MainMenu::onTouchBegan(Touch* touch, Event* unused_event)
 {
