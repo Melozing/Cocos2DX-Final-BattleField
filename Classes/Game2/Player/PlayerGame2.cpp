@@ -1,14 +1,18 @@
-﻿#include "Game2/Player/PlayerGame2.h"
+﻿// PlayerGame2.cpp
+#include "PlayerGame2.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
-#include "utils/Rotator.h"
 #include "cocos2d.h"
+#include "Game2/Bullet/Bullet.h"
 
 USING_NS_CC;
 
-PlayerGame2::PlayerGame2() : _mousePos(Vec2::ZERO), _velocity(Vec2::ZERO), _direction(Vec2::ZERO), _speed(Constants::PlayerSpeed), _isMoving(false), _rotator(&_mousePos, &_direction)
+PlayerGame2::PlayerGame2()
+    : _mousePos(Vec2::ZERO),
+    _velocity(Vec2::ZERO),
+    _speed(Constants::PlayerSpeed),
+    _isMoving(false)
 {
-    _rotator.Init(&this->getPosition(), &_direction);
 }
 
 PlayerGame2::~PlayerGame2()
@@ -54,6 +58,7 @@ bool PlayerGame2::init() {
     // Add mouse event listener
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
+    mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame2::onMouseDown, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     // Add keyboard event listener
@@ -95,6 +100,18 @@ void PlayerGame2::onMouseMove(Event* event)
 {
     EventMouse* e = (EventMouse*)event;
     _mousePos = Vec2(e->getCursorX(), e->getCursorY());
+}
+
+void PlayerGame2::onMouseDown(Event* event)
+{
+    EventMouse* e = (EventMouse*)event;
+    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
+    {
+        auto mousePos = Director::getInstance()->convertToGL(_mousePos);
+        Vec2 pos = this->getPosition();
+        Vec2 dirToShoot = mousePos - pos;
+        shootBullet(dirToShoot);
+    }
 }
 
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -182,8 +199,7 @@ void PlayerGame2::update(float delta)
     Vec2 position = this->getPosition();
     position += _velocity * _speed * delta;
     this->setPosition(position);
-    auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-    Rotate(mousePos.x, mousePos.y);
+    RotateToMouse();
     if (_isMoving)
     {
         if (!this->getActionByTag(1))
@@ -198,12 +214,19 @@ void PlayerGame2::update(float delta)
     }
 }
 
-void PlayerGame2::Rotate(const int x, const int y)
+void PlayerGame2::RotateToMouse()
 {
+    auto mousePos = Director::getInstance()->convertToGL(_mousePos);
     Vec2 pos = this->getPosition();
-    Vec2 dirToFace = Vec2(x, y) - pos;
+    Vec2 dirToFace = mousePos - pos;
     dirToFace.normalize();
-    _rotator.RotateToDirection(dirToFace);
     float angle = MathFunction::GetDirInDegreesPositive(dirToFace);
     this->setRotation(-angle + 90);
+}
+
+void PlayerGame2::shootBullet(const Vec2& direction)
+{
+    auto bullet = Bullet::createBullet(direction, Constants::BulletSpeed);
+    bullet->setPosition(this->getPosition());
+    this->getParent()->addChild(bullet);
 }
