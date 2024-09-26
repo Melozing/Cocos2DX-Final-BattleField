@@ -229,4 +229,5 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     auto bullet = Bullet::createBullet(direction, Constants::BulletSpeed);
     bullet->setPosition(this->getPosition());
     this->getParent()->addChild(bullet);
+    bullet->setRotation(this->getRotation());
 }
