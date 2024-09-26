@@ -100,7 +100,7 @@ void MainMenu::startLoading() {
             this->runAction(Sequence::create(
                 CallFunc::create([]() {
                     CCLOG("Loading complete, transitioning to Game2Scene");
-                    auto gameScene = Game1Scene::createScene();
+                    auto gameScene = Game2Scene::createScene();
                     Director::getInstance()->replaceScene(TransitionFade::create(0.5, gameScene));
                     }),
                 nullptr
