@@ -6,8 +6,7 @@
 
 USING_NS_CC;
 
-class MainMenu : public Scene
-{
+class MainMenu : public Scene {
 public:
     static Scene* createScene();
     virtual bool init() override;
@@ -15,12 +14,8 @@ public:
     CREATE_FUNC(MainMenu);
 
 private:
-    void startLoading();
-    bool onTouchBegan(Touch* touch, Event* unused_event);
-    bool onTouchMoved(Touch* touch, Event* unused_event);
-    bool onTouchEnded(Touch* touch, Event* unused_event);
-
-    cocos2d::ui::LoadingBar* loadingBar;
+    void startLoading(); // Function to start loading the next scene
+    Scene* nextScene;
 };
 
 #endif // __MAINMENU_SCENE_H__

@@ -6,19 +6,21 @@
 
 USING_NS_CC;
 
-class LoadingScene : public Scene
-{
+class LoadingScene : public Scene {
 public:
-    static Scene* createScene();
+    static Scene* createScene(const std::string& sceneName);
 
     virtual bool init() override;
 
     CREATE_FUNC(LoadingScene);
 
     void startLoading();
+    void setNextSceneName(const std::string& sceneName);
 
 private:
     ui::LoadingBar* loadingBar;
+    Sprite* border;
+    std::string nextSceneName; // Store the name of the next scene
 };
 
 #endif // __LOADING_SCENE_H__

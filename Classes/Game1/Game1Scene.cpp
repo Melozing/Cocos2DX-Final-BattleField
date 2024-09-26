@@ -53,7 +53,7 @@ bool Game1Scene::init() {
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 
     _healthPlayerGame1 = HealthPlayerGame1::createHealth();
-    _healthPlayerGame1->initHealthSprite`s(_playerAttributes->GetHealth());
+    _healthPlayerGame1->initHealthSprites(_playerAttributes->GetHealth());
     this->addChild(_healthPlayerGame1);
 
     auto playerBody = PhysicsBody::createBox(_player->GetSize());
