@@ -34,6 +34,9 @@
     <Filter Include="src\Bullet">
       <UniqueIdentifier>{6c30be57-c649-417d-a9b9-744e2cf7a5a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\PlayerHealth">
+      <UniqueIdentifier>{b0209af1-01b7-487b-8044-544a741901eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,8 +108,11 @@
     <ClCompile Include="..\Classes\Game2\Bullet\Bullet.cpp">
       <Filter>src\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Scene\SceneLoading.cpp">
+    <ClCompile Include="..\Classes\Scene\LoadingScene.cpp">
       <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Player\HealthPlayerGame1.cpp">
+      <Filter>src\PlayerHealth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,8 +185,11 @@
     <ClInclude Include="..\Classes\Game2\Bullet\Bullet.h">
       <Filter>src\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Scene\SceneLoading.h">
+    <ClInclude Include="..\Classes\Scene\LoadingScene.h">
       <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Player\HealthPlayerGame1.h">
+      <Filter>src\PlayerHealth</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

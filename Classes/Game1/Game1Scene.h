@@ -9,6 +9,7 @@
 #include "Enemy/RandomBoom.h"
 #include "Enemy/EnemyFactory.h"
 #include "Enemy/EnemyPool.h"
+#include "Game1/Player/HealthPlayerGame1.h"
 
 class Game1Scene : public cocos2d::Scene {
 public:
@@ -31,7 +32,6 @@ private:
     std::vector<FallingRock*> _fallingRocks;
     std::vector<RandomBoom*> _randomBooms;
 
-    std::vector<cocos2d::Sprite*> _healthSprites;
 
     // Handles player movement based on input
     void handlePlayerMovement();
@@ -50,9 +50,6 @@ private:
     // Spawns RandomBoom enemies
     void SpawnRandomBoom(cocos2d::Size size);
 
-    void initHealthSprites(); // Method to initialize health sprites
-    void updateHealthSprites();
-
     // Player instance
     PlayerGame1* _player;
     // Background instance
@@ -63,6 +60,7 @@ private:
     std::vector<cocos2d::Node*> _enemyPool;
     // Sprite batch node to optimize rendering
     cocos2d::SpriteBatchNode* _spriteBatchNode;
+    HealthPlayerGame1* _healthPlayerGame1;
 
     void checkCollisions();
     void setPhysicsBodyChar(PhysicsBody* physicBody, int num);

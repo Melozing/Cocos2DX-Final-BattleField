@@ -4,6 +4,7 @@
 #include "Enemy/RandomBoom.h"
 #include "Enemy/EnemyFactory.h"
 #include "Enemy/EnemyPool.h"
+#include "Game1/Player/HealthPlayerGame1.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
 #include "Controller/GameController.h" // Ensure GameController is included
@@ -50,7 +51,10 @@ bool Game1Scene::init() {
     // Create player
     _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    initHealthSprites(); // Initialize health sprites
+
+    _healthPlayerGame1 = HealthPlayerGame1::createHealth();
+    _healthPlayerGame1->initHealthSprites(_playerAttributes->GetHealth());
+    this->addChild(_healthPlayerGame1);
 
     auto playerBody = PhysicsBody::createBox(_player->GetSize());
     setPhysicsBodyChar(playerBody, 0x01);
@@ -146,7 +150,7 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
             _canTakeDamage = false;
 
             // Update health sprites based on current health
-            updateHealthSprites();
+            _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
 
             // Schedule to allow damage again after 1 second
             this->scheduleOnce([this](float) {
@@ -163,23 +167,6 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     }
 
     return true;
-}
-
-void Game1Scene::updateHealthSprites() {
-    int currentHealth = _playerAttributes->GetHealth();
-    for (int i = 0; i < _healthSprites.size(); i++) {
-        if (i < currentHealth) {
-            _healthSprites[i]->setVisible(true); // Show sprite if player has health
-        }
-        else {
-            auto fadeOut = FadeOut::create(0.5f); // 1 second to fade out
-            auto hideSprite = CallFunc::create([this, i]() {
-                _healthSprites[i]->setVisible(false); // Hide the sprite after fade out
-                });
-            auto sequence = Sequence::create(fadeOut, hideSprite, nullptr); // Create sequence
-            _healthSprites[i]->runAction(sequence); // Run fade out action
-        }
-    }
 }
 
 void Game1Scene::update(float delta) {
@@ -268,15 +255,16 @@ void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
 
     int spawnOption = rand() % 3;
     Vec2 spawnPosition;
+    CCLOG("%f", SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING));
     switch (spawnOption) {
     case 0:
-        spawnPosition = Vec2(centerX, size.height + 50);
+        spawnPosition = Vec2(centerX, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
         break;
     case 1:
-        spawnPosition = Vec2(maxX - 10, size.height + 50);
+        spawnPosition = Vec2(maxX - SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
         break;
     case 2:
-        spawnPosition = Vec2(minX + 10, size.height + 50);
+        spawnPosition = Vec2(minX + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
         break;
     }
 
@@ -313,17 +301,6 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
 
         flyingBullet->runAction(sequence);
         this->addChild(flyingBullet);
-    }
-}
-
-void Game1Scene::initHealthSprites() {
-    auto visibleSize = Director::getInstance()->getVisibleSize(); // Get the visible size of the window
-    for (int i = 0; i < Constants::PLAYER_HEALTH; i++) { // Loop for player health sprites
-        auto healthSprite = Sprite::create("assets_game/player/HP_Dot.png"); // Load health sprite
-        healthSprite->setScale(SpriteController::updateSpriteScale(healthSprite, 0.1f));
-        healthSprite->setPosition(Vec2(50 + i * 100, visibleSize.height - 50)); // Set position for each health sprite
-        this->addChild(healthSprite); // Add sprite to the scene
-        _healthSprites.push_back(healthSprite); // Store sprite in vector
     }
 }
 
