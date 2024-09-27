@@ -63,13 +63,6 @@ void PlayerGame1::OnCollisionWithEnemy(int enemyDamage)
 
         // Log the player's current health
         CCLOG("Player health: %d", attributes->GetHealth());
-
-        // Check if player is dead
-        if (attributes->IsDead())
-        {
-            // Call GameOver method from GameController singleton
-            GameController::getInstance()->GameOver(attributes);
-        }
     }
 }
 

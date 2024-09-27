@@ -12,7 +12,7 @@ const float Constants::FALLINGROCK_PADDING = 0.006f;
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
 const float Constants::PLAYER_MOVESPEED = 1.2f;
-const int Constants::PLAYER_HEALTH = 3;
+const int Constants::PLAYER_HEALTH = 1;
 
 const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
 const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;

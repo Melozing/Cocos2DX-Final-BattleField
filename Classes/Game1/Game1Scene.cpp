@@ -21,16 +21,12 @@ Scene* Game1Scene::createScene() {
 }
 
 bool Game1Scene::init() {
-    if (!Scene::init()) {
-        return false;
-    }
+    if (!Scene::init()) return false;
 
-    _playerAttributes = new PlayerAttributes(3); // Initialize player attributes
-    _canTakeDamage = true; // Allow damage initially
+    _playerAttributes = new PlayerAttributes(1);
+    _canTakeDamage = true;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
-
-    // Create edge physics body
     auto edgeBody = cocos2d::PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 0);
     edgeBody->setCollisionBitmask(0x03);
     edgeBody->setContactTestBitmask(true);
@@ -39,19 +35,15 @@ bool Game1Scene::init() {
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
 
-    // Initialize enemy pool
     EnemyPool::getInstance()->initPool("FlyingBullet", 10);
     EnemyPool::getInstance()->initPool("FallingRock", 5);
     EnemyPool::getInstance()->initPool("RandomBoom", 5);
 
-    // Create background
     background = Background::createBackground("assets_game/gameplay/background.png", 150.0f);
     this->addChild(background);
 
-    // Create player
     _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-
     _healthPlayerGame1 = HealthPlayerGame1::createHealth();
     _healthPlayerGame1->initHealthSprites(_playerAttributes->GetHealth());
     this->addChild(_healthPlayerGame1);
@@ -61,54 +53,34 @@ bool Game1Scene::init() {
     _player->setPhysicsBody(playerBody);
     addChild(_player);
 
-    // Handle player movement
     _movingUp = _movingDown = _movingLeft = _movingRight = false;
 
-    // Keyboard listener for player movement
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case EventKeyboard::KeyCode::KEY_W:
-            _movingUp = true;
-            break;
+        case EventKeyboard::KeyCode::KEY_W: _movingUp = true; break;
         case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        case EventKeyboard::KeyCode::KEY_S:
-            _movingDown = true;
-            break;
+        case EventKeyboard::KeyCode::KEY_S: _movingDown = true; break;
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_A:
-            _movingLeft = true;
-            break;
+        case EventKeyboard::KeyCode::KEY_A: _movingLeft = true; break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        case EventKeyboard::KeyCode::KEY_D:
-            _movingRight = true;
-            break;
-        default:
-            break;
+        case EventKeyboard::KeyCode::KEY_D: _movingRight = true; break;
+        default: break;
         }
         };
 
     listener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case EventKeyboard::KeyCode::KEY_W:
-            _movingUp = false;
-            break;
+        case EventKeyboard::KeyCode::KEY_W: _movingUp = false; break;
         case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        case EventKeyboard::KeyCode::KEY_S:
-            _movingDown = false;
-            break;
+        case EventKeyboard::KeyCode::KEY_S: _movingDown = false; break;
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_A:
-            _movingLeft = false;
-            break;
+        case EventKeyboard::KeyCode::KEY_A: _movingLeft = false; break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        case EventKeyboard::KeyCode::KEY_D:
-            _movingRight = false;
-            break;
-        default:
-            break;
+        case EventKeyboard::KeyCode::KEY_D: _movingRight = false; break;
+        default: break;
         }
         };
 
@@ -118,16 +90,13 @@ bool Game1Scene::init() {
     contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    // Schedule player movement handling
-    this->schedule([this](float dt) {
-        handlePlayerMovement();
-        }, "update_key_schedule");
-
-    this->scheduleUpdate(); // Schedule the update function to be called each frame
-    this->scheduleEnemySpawning(); // Ensure enemies are scheduled for spawning
-
+    this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");
+    this->scheduleUpdate();
+    this->scheduleEnemySpawning();
+    this->scheduleCollectibleSpawning();
     return true;
 }
+
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
@@ -141,11 +110,8 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
 
-    // Check for player vs enemy collisions
     if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
         (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
-
-        // Handle player taking damage
         if (_canTakeDamage) {
             CCLOG("Collision detected with enemy!");
             _playerAttributes->TakeDamage(1);
@@ -153,27 +119,35 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
             _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
             this->scheduleOnce([this](float) { _canTakeDamage = true; }, 1.0f, "damage_delay_key");
 
-            if (_playerAttributes->IsDead()) {
-                GameController::getInstance()->GameOver(_playerAttributes);
-            }
+            this->checkGameOver();
         }
     }
 
-    // Check for player vs collectible item collisions
     if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x03) ||
         (bodyA->getCollisionBitmask() == 0x03 && bodyB->getCollisionBitmask() == 0x01)) {
-
-        // Handle collectible item pickup
         auto collectible = static_cast<CollectibleItem*>(bodyA->getNode() == _player ? bodyB->getNode() : bodyA->getNode());
         if (collectible) {
-            collectible->removeFromParentAndCleanup(true); // Remove the collectible item
-            // Optionally, you can add logic to update player score or health here
+            collectible->removeFromParentAndCleanup(true);
         }
     }
 
     return true;
 }
 
+void Game1Scene::checkGameOver() {
+    if (_playerAttributes->IsDead()) {
+        GameController::getInstance()->GameOver(_playerAttributes,
+            []() {
+                // Custom action for retrying in Game1
+                auto newScene = Game1Scene::createScene();
+                Director::getInstance()->replaceScene(newScene);
+            },
+            []() {
+                // Custom action for exiting the game
+                Director::getInstance()->end();
+            });
+    }
+}
 
 void Game1Scene::update(float delta) {
     background->update(delta);
@@ -183,18 +157,10 @@ void Game1Scene::update(float delta) {
 }
 
 void Game1Scene::handlePlayerMovement() {
-    if (_movingUp) {
-        _player->moveUp();
-    }
-    if (_movingDown) {
-        _player->moveDown();
-    }
-    if (_movingLeft) {
-        _player->moveLeft();
-    }
-    if (_movingRight) {
-        _player->moveRight();
-    }
+    if (_movingUp) _player->moveUp();
+    if (_movingDown) _player->moveDown();
+    if (_movingLeft) _player->moveLeft();
+    if (_movingRight) _player->moveRight();
 }
 
 void Game1Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
@@ -250,14 +216,6 @@ void Game1Scene::scheduleEnemySpawning() {
             SpawnRandomBoom(visibleSize);
         }
         }, 4.0f, "random_boom_spawn_key");
-
-    // Schedule collectible item spawning
-    this->schedule([this](float dt) {
-        if (_player) {
-            auto visibleSize = Director::getInstance()->getVisibleSize();
-            SpawnCollectibleItem(visibleSize);
-        }
-        }, 5.0f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 
 
@@ -284,14 +242,19 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
 
     usedPositions.push_back(spawnPosition);
 
-    auto fallingRock = FallingRock::create();
-    if (fallingRock) {
-        fallingRock->spawn(spawnPosition);
-        auto size = fallingRock->GetSize();
-        auto fallingRockBody = PhysicsBody::createCircle(size.width / 2);
-        setPhysicsBodyChar(fallingRockBody, 0x02);
-        fallingRock->setPhysicsBody(fallingRockBody);
-        this->addChild(fallingRock);
+    if (!isPositionOccupied(spawnPosition)) {
+        auto fallingRock = FallingRock::create();
+        if (fallingRock) {
+            fallingRock->spawn(spawnPosition);
+            auto size = fallingRock->GetSize();
+            auto fallingRockBody = PhysicsBody::createCircle(size.width / 2);
+            setPhysicsBodyChar(fallingRockBody, 0x02);
+            fallingRock->setPhysicsBody(fallingRockBody);
+            this->addChild(fallingRock);
+        }
+    }
+    else {
+        CCLOG("Position occupied for FallingRock at (%f, %f)", spawnPosition.x, spawnPosition.y);
     }
 }
 
@@ -333,14 +296,14 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
 
     Vec2 spawnPosition;
     switch (spawnOption) {
-    case 0: // Spawn in the center
-        spawnPosition = Vec2(centerX, size.height + 50); // Center of the restricted area
+    case 0:
+        spawnPosition = Vec2(centerX, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
         break;
-    case 1: // Spawn near the right edge
-        spawnPosition = Vec2(maxX - 10, size.height + 50); // Right edge
+    case 1:
+        spawnPosition = Vec2(maxX - SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
         break;
-    case 2: // Spawn near the left edge
-        spawnPosition = Vec2(minX + 10, size.height + 50); // Left edge
+    case 2:
+        spawnPosition = Vec2(minX + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
         break;
     }
 
@@ -352,41 +315,85 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
 }
 
 void Game1Scene::SpawnCollectibleItem(Size size) {
+    float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
     float centerX = size.width / 2;
+    float halfRestrictedWidth = restrictedWidth / 2;
+    float minX = centerX - halfRestrictedWidth;
+    float maxX = centerX + halfRestrictedWidth;
+
     Vec2 spawnPosition;
     bool positionFound = false;
+    int maxAttempts = 10;
 
-    while (!positionFound) {
-        int spawnOption = rand() % 3;
+    // Try to find a valid spawn position within a limited number of attempts
+    for (int attempts = 0; attempts < maxAttempts; ++attempts) {
+        int spawnOption = rand() % 3; // Randomly select a spawn option
         switch (spawnOption) {
         case 0:
             spawnPosition = Vec2(centerX, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
             break;
         case 1:
-            spawnPosition = Vec2(centerX + 50, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
+            spawnPosition = Vec2(minX + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
             break;
         case 2:
-            spawnPosition = Vec2(centerX - 50, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
+            spawnPosition = Vec2(maxX - SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
             break;
         }
 
-        if (std::find(usedPositions.begin(), usedPositions.end(), spawnPosition) == usedPositions.end()) {
-            positionFound = true;
+        // Check if this position is already occupied
+        if (!isPositionOccupied(spawnPosition)) {
+            positionFound = true; // Valid position found
+            break; // Exit loop if a valid position is found
         }
     }
 
-    auto collectible = CollectibleItem::create();
-    if (collectible) {
-        collectible->spawn(spawnPosition);
-        auto size = collectible->GetSize();
-        auto collectibleBody = PhysicsBody::createCircle(size.width / 2);
-        setPhysicsBodyChar(collectibleBody, 0x03);
-        collectible->setPhysicsBody(collectibleBody);
-        this->addChild(collectible);
+    // If a valid position is found, create and spawn the collectible item
+    if (positionFound) {
+        auto collectible = CollectibleItem::create();
+        if (collectible) {
+            collectible->spawn(spawnPosition); // Set the spawn position
+            auto size = collectible->GetSize(); // Get the size for physics body
+            auto collectibleBody = PhysicsBody::createCircle(size.width / 2); // Create a physics body
+            setPhysicsBodyChar(collectibleBody, 0x03); // Set collision properties
+            collectible->setPhysicsBody(collectibleBody); // Attach body to the item
+            this->addChild(collectible); // Add the collectible to the scene
+            trackUsedPosition(spawnPosition); // Track the used position to avoid future conflicts
+        }
+    }
+    else {
+        // Log a message if no valid spawn position is found
+        CCLOG("No valid spawn position found for CollectibleItem after %d attempts.", maxAttempts);
     }
 }
+
 
 void Game1Scene::trackUsedPosition(const Vec2& position) {
     usedPositions.push_back(position);
 }
+
+// Schedule the spawning of collectible items
+void Game1Scene::scheduleCollectibleSpawning() {
+    this->schedule([this](float dt) {
+        SpawnCollectibleItem(Director::getInstance()->getVisibleSize()); // Call the function to spawn items
+        }, 5.0f, "collectible_item_spawn_key"); // Adjust the interval as needed
+}
+
+bool Game1Scene::isPositionOccupied(const Vec2& position) {
+    for (auto child : this->getChildren()) {
+        // Check for CollectibleItem
+        if (auto collectible = dynamic_cast<CollectibleItem*>(child)) {
+            if (collectible->getPosition().distance(position) < collectible->GetSize().width) {
+                return true; // Position is occupied
+            }
+        }
+        // Check for FallingRock
+        else if (auto fallingRock = dynamic_cast<FallingRock*>(child)) {
+            if (fallingRock->getPosition().distance(position) < fallingRock->GetSize().width) {
+                return true; // Position is occupied
+            }
+        }
+    }
+    return false; // Position is free
+}
+
 
