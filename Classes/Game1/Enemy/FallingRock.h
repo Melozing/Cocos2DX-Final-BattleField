@@ -24,7 +24,6 @@ public:
     Size GetSize();
 
     virtual ~FallingRock();
-
 private:
     cocos2d::SpriteBatchNode* _spriteBatchNodeRock;
     cocos2d::SpriteBatchNode* _spriteBatchNodeLandmine;

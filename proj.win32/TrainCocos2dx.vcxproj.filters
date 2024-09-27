@@ -37,6 +37,9 @@
     <Filter Include="src\PlayerHealth">
       <UniqueIdentifier>{b0209af1-01b7-487b-8044-544a741901eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Items">
+      <UniqueIdentifier>{f9310f16-26c7-4a8e-906f-f4861a892bff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,6 +120,9 @@
     <ClCompile Include="..\Classes\Controller\SceneController.cpp">
       <Filter>src\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\CollectibleItem.cpp">
+      <Filter>src\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -196,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Controller\SceneController.h">
       <Filter>src\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\CollectibleItem.h">
+      <Filter>src\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
