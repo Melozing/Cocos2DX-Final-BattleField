@@ -137,6 +137,7 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     if (_playerAttributes->IsDead()) return true;
+
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
 
@@ -144,30 +145,35 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
         (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
 
+        // Handle player taking damage
         if (_canTakeDamage) {
-            CCLOG("Collision detected!");
-            _playerAttributes->TakeDamage(1); // Reduce player health
+            CCLOG("Collision detected with enemy!");
+            _playerAttributes->TakeDamage(1);
             _canTakeDamage = false;
-
-            // Update health sprites based on current health
             _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
+            this->scheduleOnce([this](float) { _canTakeDamage = true; }, 1.0f, "damage_delay_key");
 
-            // Schedule to allow damage again after 1 second
-            this->scheduleOnce([this](float) {
-                _canTakeDamage = true;
-                }, 1.0f, "damage_delay_key");
-
-            // Check if the player is dead
             if (_playerAttributes->IsDead()) {
-                CCLOG("Player is dead!");
-                CCLOG("Calling Game Over...");
-                GameController::getInstance()->GameOver(_playerAttributes); // Transition to game over screen
+                GameController::getInstance()->GameOver(_playerAttributes);
             }
+        }
+    }
+
+    // Check for player vs collectible item collisions
+    if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x03) ||
+        (bodyA->getCollisionBitmask() == 0x03 && bodyB->getCollisionBitmask() == 0x01)) {
+
+        // Handle collectible item pickup
+        auto collectible = static_cast<CollectibleItem*>(bodyA->getNode() == _player ? bodyB->getNode() : bodyA->getNode());
+        if (collectible) {
+            collectible->removeFromParentAndCleanup(true); // Remove the collectible item
+            // Optionally, you can add logic to update player score or health here
         }
     }
 
     return true;
 }
+
 
 void Game1Scene::update(float delta) {
     background->update(delta);
@@ -244,9 +250,18 @@ void Game1Scene::scheduleEnemySpawning() {
             SpawnRandomBoom(visibleSize);
         }
         }, 4.0f, "random_boom_spawn_key");
+
+    // Schedule collectible item spawning
+    this->schedule([this](float dt) {
+        if (_player) {
+            auto visibleSize = Director::getInstance()->getVisibleSize();
+            SpawnCollectibleItem(visibleSize);
+        }
+        }, 5.0f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 
-void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
+
+void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
     float centerX = size.width / 2;
     float halfRestrictedWidth = restrictedWidth / 2;
@@ -255,7 +270,6 @@ void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
 
     int spawnOption = rand() % 3;
     Vec2 spawnPosition;
-    CCLOG("%f", SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING));
     switch (spawnOption) {
     case 0:
         spawnPosition = Vec2(centerX, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
@@ -268,12 +282,13 @@ void Game1Scene::SpawnFallingRockAndBomb(cocos2d::Size size) {
         break;
     }
 
+    usedPositions.push_back(spawnPosition);
+
     auto fallingRock = FallingRock::create();
     if (fallingRock) {
         fallingRock->spawn(spawnPosition);
         auto size = fallingRock->GetSize();
-        auto fallingRockBody = PhysicsBody::createCircle(size.width / 2); // Adjust for radius
-
+        auto fallingRockBody = PhysicsBody::createCircle(size.width / 2);
         setPhysicsBodyChar(fallingRockBody, 0x02);
         fallingRock->setPhysicsBody(fallingRockBody);
         this->addChild(fallingRock);
@@ -335,3 +350,43 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
         this->addChild(randomBoom);
     }
 }
+
+void Game1Scene::SpawnCollectibleItem(Size size) {
+    float centerX = size.width / 2;
+    Vec2 spawnPosition;
+    bool positionFound = false;
+
+    while (!positionFound) {
+        int spawnOption = rand() % 3;
+        switch (spawnOption) {
+        case 0:
+            spawnPosition = Vec2(centerX, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
+            break;
+        case 1:
+            spawnPosition = Vec2(centerX + 50, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
+            break;
+        case 2:
+            spawnPosition = Vec2(centerX - 50, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
+            break;
+        }
+
+        if (std::find(usedPositions.begin(), usedPositions.end(), spawnPosition) == usedPositions.end()) {
+            positionFound = true;
+        }
+    }
+
+    auto collectible = CollectibleItem::create();
+    if (collectible) {
+        collectible->spawn(spawnPosition);
+        auto size = collectible->GetSize();
+        auto collectibleBody = PhysicsBody::createCircle(size.width / 2);
+        setPhysicsBodyChar(collectibleBody, 0x03);
+        collectible->setPhysicsBody(collectibleBody);
+        this->addChild(collectible);
+    }
+}
+
+void Game1Scene::trackUsedPosition(const Vec2& position) {
+    usedPositions.push_back(position);
+}
+

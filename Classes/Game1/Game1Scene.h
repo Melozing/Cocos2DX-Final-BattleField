@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Background/Background.h"
+#include "Game1/Items/CollectibleItem.h"
 #include "Game1/Player/PlayerGame1.h"
 #include "Enemy/FlyingBullet.h"
 #include "Enemy/FallingRock.h"
@@ -49,6 +50,7 @@ private:
     void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
     // Spawns RandomBoom enemies
     void SpawnRandomBoom(cocos2d::Size size);
+    void SpawnCollectibleItem(cocos2d::Size size);
 
     // Player instance
     PlayerGame1* _player;
@@ -62,9 +64,12 @@ private:
     cocos2d::SpriteBatchNode* _spriteBatchNode;
     HealthPlayerGame1* _healthPlayerGame1;
 
+    std::vector<Vec2> usedPositions;
+
     void checkCollisions();
     void setPhysicsBodyChar(PhysicsBody* physicBody, int num);
     bool onContactBegin(PhysicsContact& contact);
+    void trackUsedPosition(const Vec2& position);
 };
 
 #endif // __GAME1SCENE_SCENE_H__

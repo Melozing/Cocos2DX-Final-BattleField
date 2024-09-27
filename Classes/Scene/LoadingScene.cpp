@@ -67,5 +67,5 @@ void LoadingScene::startLoading() {
                 CCLOG("Scene not found: %s", nextSceneName.c_str());
             }
         }
-        }, 0.2f / 60.0f, "loading_bar_update_key");
+        }, 0.5f / 60.0f, "loading_bar_update_key");
 }
