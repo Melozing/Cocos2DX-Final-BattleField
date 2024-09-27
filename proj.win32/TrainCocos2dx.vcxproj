@@ -173,6 +173,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
+    <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp" />
     <ClCompile Include="..\Classes\PlayerAttributes\PlayerAttributes.cpp" />
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\utils\MathFunction.cpp" />
@@ -202,6 +203,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\MainMenuScene.h" />
+    <ClInclude Include="..\Classes\Panel\GameOverPanel.h" />
     <ClInclude Include="..\Classes\PlayerAttributes\PlayerAttributes.h" />
     <ClInclude Include="..\Classes\Scene\LoadingScene.h" />
     <ClInclude Include="..\Classes\utils\MathFunction.h" />

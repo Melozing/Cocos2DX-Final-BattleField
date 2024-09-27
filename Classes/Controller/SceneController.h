@@ -16,7 +16,7 @@ public:
 
     // Register a scene with its name and creation function
     void registerScene(const std::string& sceneName, std::function<Scene* ()> createFunc);
-
+    void registerScenes();
     // Create a scene by its name
     Scene* createScene(const std::string& sceneName);
 

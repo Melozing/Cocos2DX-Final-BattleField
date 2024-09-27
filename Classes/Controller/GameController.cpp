@@ -1,5 +1,8 @@
-#include "Controller/GameController.h"
+#include "GameController.h"
+#include "Panel/GameOverPanel.h"
 #include "cocos2d.h"
+
+USING_NS_CC;
 
 // Initialize the static instance
 GameController* GameController::instance = nullptr;
@@ -15,14 +18,22 @@ GameController* GameController::getInstance()
 }
 
 // Handles the game over event
-void GameController::GameOver(PlayerAttributes* playerAttributes)
-{
-    // Logic for game over (e.g., displaying a message)
-    CCLOG("Game Over!"); // Log game over message
+void GameController::GameOver(PlayerAttributes* playerAttributes, const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
+    // Start the fade out process
+    auto director = Director::getInstance();
+    auto runningScene = director->getRunningScene();
 
-    // Log the player's final health
-    if (playerAttributes) {
-        CCLOG("Player's final health: %d", playerAttributes->GetHealth()); // Log final health
+    if (runningScene) {
+        // Create the GameOverPanel with the provided callbacks
+        auto panel = GameOverPanel::createPanel(retryAction, exitAction);
+        if (panel) {
+            runningScene->addChild(panel, 100); // Ensure it's on top
+            panel->setOpacity(0); // Start invisible
+            panel->runAction(FadeIn::create(1.0f)); // Fade in over 1 second
+        }
+
+        // Slow down the game (example of decreasing speed gradually)
+        this->slowDownGame();
     }
 }
 
@@ -40,4 +51,25 @@ void GameController::UpdateGameStatus(float elapsedTime)
     {
         Victory(); // Call victory method
     }
+}
+
+// Slow down the game gradually
+void GameController::slowDownGame() {
+    // Gradually slow down the game, for example, by reducing time step
+    float slowDuration = 3.0f; // Duration of the slowdown
+    float initialSpeed = Director::getInstance()->getAnimationInterval();
+    float finalSpeed = initialSpeed * 2.0f; // Final speed (2x slower)
+
+    // Schedule a lambda function to decrease speed
+    auto director = Director::getInstance();
+    director->getScheduler()->schedule([=](float dt) mutable {
+        float currentSpeed = director->getAnimationInterval();
+        if (currentSpeed < finalSpeed) {
+            director->setAnimationInterval(currentSpeed + (finalSpeed - initialSpeed) * dt / slowDuration);
+        }
+        else {
+            director->setAnimationInterval(finalSpeed);
+            director->getScheduler()->unschedule("slowDown", this); // Stop the scheduler when done
+        }
+        }, this, 0.0f, false, "slowDown");
 }

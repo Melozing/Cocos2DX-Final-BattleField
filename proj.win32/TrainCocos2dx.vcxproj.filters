@@ -40,6 +40,9 @@
     <Filter Include="src\Items">
       <UniqueIdentifier>{f9310f16-26c7-4a8e-906f-f4861a892bff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Panel">
+      <UniqueIdentifier>{437cedd3-cb47-4d24-a179-ec323ff2e4bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,6 +126,9 @@
     <ClCompile Include="..\Classes\Game1\Items\CollectibleItem.cpp">
       <Filter>src\Items</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp">
+      <Filter>src\Panel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -205,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\CollectibleItem.h">
       <Filter>src\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\GameOverPanel.h">
+      <Filter>src\Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

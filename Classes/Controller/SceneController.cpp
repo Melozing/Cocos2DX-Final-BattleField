@@ -34,3 +34,13 @@ Scene* SceneController::createScene(const std::string& sceneName) {
 void SceneController::registerScene(const std::string& sceneName, std::function<Scene* ()> createFunc) {
     sceneMap[sceneName] = createFunc;
 }
+
+void SceneController::registerScenes() {
+    registerScene("Game1Scene", []() {
+        return Game1Scene::createScene();
+        });
+
+    registerScene("Game2Scene", []() {
+        return Game2Scene::createScene();
+        });
+}

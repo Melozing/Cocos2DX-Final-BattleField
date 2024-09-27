@@ -17,59 +17,43 @@ public:
     static cocos2d::Scene* createScene();
     virtual bool init();
     CREATE_FUNC(Game1Scene);
-
     virtual void update(float delta);
 
 private:
-    cocos2d::PhysicsWorld *world;
-    void setPhysicWorld(cocos2d::PhysicsWorld* m_world) 
-    {
-        world = m_world;
-    };
+    cocos2d::PhysicsWorld* world;
+    void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
 
-    PlayerAttributes* _playerAttributes; // To manage player health
-    bool _canTakeDamage; // Flag to manage damage timing
+    PlayerAttributes* _playerAttributes;
+    bool _canTakeDamage;
     std::vector<FlyingBullet*> _flyingBullets;
     std::vector<FallingRock*> _fallingRocks;
     std::vector<RandomBoom*> _randomBooms;
-
-
-    // Handles player movement based on input
-    void handlePlayerMovement();
-    // Spawns enemies of different types
-    void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
-    // Returns an enemy to the pool and makes it invisible
-    void returnEnemyToPool(cocos2d::Node* enemy);
-    // Handles enemies going out of bounds
-    void onEnemyOutOfBounds(cocos2d::Node* enemy);
-    // Schedules the spawning of different types of enemies
-    void scheduleEnemySpawning();
-    // Spawns FallingRock and RandomBoom enemies
-    void SpawnFallingRockAndBomb(cocos2d::Size size);
-    // Spawns FlyingBullet enemies
-    void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
-    // Spawns RandomBoom enemies
-    void SpawnRandomBoom(cocos2d::Size size);
-    void SpawnCollectibleItem(cocos2d::Size size);
-
-    // Player instance
-    PlayerGame1* _player;
-    // Background instance
-    Background* background;
-    // Flag variables for player movement
-    bool _movingUp, _movingDown, _movingLeft, _movingRight;
-    // Enemy pool for reusing enemies
+    std::vector<Vec2> usedPositions;
     std::vector<cocos2d::Node*> _enemyPool;
-    // Sprite batch node to optimize rendering
-    cocos2d::SpriteBatchNode* _spriteBatchNode;
+    PlayerGame1* _player;
+    Background* background;
     HealthPlayerGame1* _healthPlayerGame1;
 
-    std::vector<Vec2> usedPositions;
+    bool _movingUp, _movingDown, _movingLeft, _movingRight;
+
+    void handlePlayerMovement();
+    void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
+    void returnEnemyToPool(cocos2d::Node* enemy);
+    void onEnemyOutOfBounds(cocos2d::Node* enemy);
+    void scheduleEnemySpawning();
+    void SpawnFallingRockAndBomb(cocos2d::Size size);
+    void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
+    void SpawnRandomBoom(cocos2d::Size size);
+    void SpawnCollectibleItem(cocos2d::Size size);
+    bool isPositionOccupied(const Vec2& position);
+    void trackUsedPosition(const Vec2& position);
+    void scheduleCollectibleSpawning();
 
     void checkCollisions();
-    void setPhysicsBodyChar(PhysicsBody* physicBody, int num);
-    bool onContactBegin(PhysicsContact& contact);
-    void trackUsedPosition(const Vec2& position);
+    void setPhysicsBodyChar(cocos2d::PhysicsBody* physicBody, int num);
+    bool onContactBegin(cocos2d::PhysicsContact& contact);
+
+    void checkGameOver();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

@@ -86,17 +86,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
-    SceneController::getInstance()->registerScene("Game1Scene", []() {
-        return Game1Scene::createScene();
-        });
-
-    SceneController::getInstance()->registerScene("Game2Scene", []() {
-        return Game2Scene::createScene();
-        });
-
-
     GameController::getInstance();
-    SceneController::getInstance();
+    SceneController::getInstance()->registerScenes();
     // create a scene. it's an autorelease object
     auto scene = MainMenu::createScene();
 
