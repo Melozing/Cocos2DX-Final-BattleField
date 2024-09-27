@@ -1,6 +1,9 @@
 #include "AppDelegate.h"
 #include "MainMenuScene.h"
 #include "Controller/GameController.h"
+#include "Controller/SceneController.h"
+#include "Game1/Game1Scene.h"
+#include "Game2/Game2Scene.h"
 
  // #define USE_AUDIO_ENGINE 1
 
@@ -82,6 +85,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     register_all_packages();
+
+    SceneController::getInstance()->registerScene("Game1Scene", []() {
+        return Game1Scene::createScene();
+        });
+
+    SceneController::getInstance()->registerScene("Game2Scene", []() {
+        return Game2Scene::createScene();
+        });
+
 
     GameController::getInstance();
     // create a scene. it's an autorelease object

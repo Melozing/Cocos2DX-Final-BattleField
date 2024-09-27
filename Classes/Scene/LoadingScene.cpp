@@ -1,8 +1,8 @@
 #include "LoadingScene.h"
 #include "Game1/Game1Scene.h"
 #include "Game2/Game2Scene.h"
-
-USING_NS_CC;
+#include "Controller/SceneController.h"
+#include "Controller/SpriteController.h"
 
 Scene* LoadingScene::createScene(const std::string& sceneName) {
     auto scene = LoadingScene::create();
@@ -48,39 +48,24 @@ void LoadingScene::setNextSceneName(const std::string& sceneName) {
     nextSceneName = sceneName;
 }
 
-Scene* createSceneByName(const std::string& sceneName) {
-    if (sceneName == "Game1") {
-        return Game1Scene::createScene();
-    }
-    else if (sceneName == "Game2") {
-        return Game2Scene::createScene();
-    }
-    // Add more scenes as needed
-    return nullptr; // Return nullptr if no matching scene is found
-}
-
 void LoadingScene::startLoading() {
     this->schedule([this](float dt) {
         float percent = loadingBar->getPercent();
-        percent += 0.5f; // Increase by 0.5 for smoothness
+        percent += 0.5f; // Increase loading percentage
         loadingBar->setPercent(percent);
 
         if (percent >= 100) {
             loadingBar->setPercent(100);
             this->unschedule("loading_bar_update_key");
 
-            this->runAction(Sequence::create(
-                CallFunc::create([this]() {
-                    Scene* nextScene = createSceneByName(nextSceneName);
-                    if (nextScene) {
-                        Director::getInstance()->replaceScene(TransitionFade::create(0.5, nextScene));
-                    }
-                    else {
-                        CCLOG("Scene not found: %s", nextSceneName.c_str());
-                    }
-                    }),
-                nullptr
-            ));
+            // Use SceneController to get the scene
+            auto nextScene = SceneController::getInstance()->getScene(nextSceneName);
+            if (nextScene) {
+                Director::getInstance()->replaceScene(TransitionFade::create(0.5, nextScene));
+            }
+            else {
+                CCLOG("Scene not found: %s", nextSceneName.c_str());
+            }
         }
         }, 0.2f / 60.0f, "loading_bar_update_key");
 }
