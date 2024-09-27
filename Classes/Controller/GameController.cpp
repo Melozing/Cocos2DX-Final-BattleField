@@ -14,11 +14,6 @@ GameController* GameController::getInstance()
     return instance;
 }
 
-GameController::GameController()
-{
-    CCLOG("GameController initialized."); // Log initialization message
-}
-
 // Handles the game over event
 void GameController::GameOver(PlayerAttributes* playerAttributes)
 {

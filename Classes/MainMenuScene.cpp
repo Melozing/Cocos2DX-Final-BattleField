@@ -1,4 +1,5 @@
 #include "MainMenuScene.h"
+#include "Controller/SceneController.h"
 #include "Scene/LoadingScene.h"
 #include "Game1/Game1Scene.h"
 
@@ -27,6 +28,6 @@ bool MainMenu::init() {
 }
 
 void MainMenu::startLoading() {
-    auto loadingScene = LoadingScene::createScene("Game1");
+    auto loadingScene = LoadingScene::createScene("Game2Scene"); // Use the new scene name
     Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene)); // Replace with LoadingScene
 }

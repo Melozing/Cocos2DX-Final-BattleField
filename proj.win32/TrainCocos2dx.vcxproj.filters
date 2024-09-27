@@ -114,6 +114,9 @@
     <ClCompile Include="..\Classes\Game1\Player\HealthPlayerGame1.cpp">
       <Filter>src\PlayerHealth</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SceneController.cpp">
+      <Filter>src\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Player\HealthPlayerGame1.h">
       <Filter>src\PlayerHealth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SceneController.h">
+      <Filter>src\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
