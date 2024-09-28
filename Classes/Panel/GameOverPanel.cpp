@@ -3,7 +3,8 @@
 
 USING_NS_CC;
 
-GameOverPanel* GameOverPanel::createPanel(const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
+GameOverPanel* GameOverPanel::createPanel(const std::function<void()>& retryAction,
+    const std::function<void()>& exitAction) {
     GameOverPanel* panel = new GameOverPanel();
     if (panel && panel->init(retryAction, exitAction)) {
         panel->autorelease(); // Manage memory automatically
@@ -15,7 +16,8 @@ GameOverPanel* GameOverPanel::createPanel(const std::function<void()>& retryActi
     }
 }
 
-bool GameOverPanel::init(const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
+bool GameOverPanel::init(const std::function<void()>& retryAction,
+    const std::function<void()>& exitAction) {
     if (!Layer::init()) {
         return false;
     }
@@ -25,7 +27,6 @@ bool GameOverPanel::init(const std::function<void()>& retryAction, const std::fu
 
     setupUI(); // Set up the user interface
 
-    // Initial opacity to 0 for fade-in effect
     this->setOpacity(0);
     this->runAction(FadeIn::create(1.0f)); // Fade in over 1 second
 
@@ -65,16 +66,14 @@ void GameOverPanel::setupUI() {
 
 void GameOverPanel::onRetryButtonClicked(Ref* sender) {
     if (retryAction) {
-        // Call the retry action
-        retryAction();
+        retryAction(); // Call the retry action
     }
     fadeOutAndRemove(); // Fade out and then remove the panel
 }
 
 void GameOverPanel::onExitButtonClicked(Ref* sender) {
     if (exitAction) {
-        // Call the exit action
-        exitAction();
+        exitAction(); // Call the exit action
     }
     fadeOutAndRemove(); // Fade out and then remove the panel
 }

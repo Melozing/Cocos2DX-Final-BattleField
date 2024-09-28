@@ -15,6 +15,7 @@ public:
 
 private:
     cocos2d::Sprite* _currentSprite; // Sprite representing the item
+    float _spriteScale;
     float _speed = 150.0f; // Speed of falling item
     void removeWhenOutOfScreen();
 };

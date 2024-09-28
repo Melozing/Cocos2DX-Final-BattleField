@@ -22,7 +22,7 @@ Scene* Game1Scene::createScene() {
 
 bool Game1Scene::init() {
     if (!Scene::init()) return false;
-
+    _isGameOver = false;
     _playerAttributes = new PlayerAttributes(1);
     _canTakeDamage = true;
 
@@ -136,18 +136,19 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
+        _isGameOver = true;
         GameController::getInstance()->GameOver(_playerAttributes,
-            []() {
-                // Custom action for retrying in Game1
-                auto newScene = Game1Scene::createScene();
-                Director::getInstance()->replaceScene(newScene);
-            },
             []() {
                 // Custom action for exiting the game
                 Director::getInstance()->end();
+            },
+            []() -> Scene* {
+                // Return a new instance of Game1Scene
+                return Game1Scene::createScene();
             });
     }
 }
+
 
 void Game1Scene::update(float delta) {
     background->update(delta);
@@ -157,11 +158,13 @@ void Game1Scene::update(float delta) {
 }
 
 void Game1Scene::handlePlayerMovement() {
+    if (_isGameOver) return;
     if (_movingUp) _player->moveUp();
     if (_movingDown) _player->moveDown();
     if (_movingLeft) _player->moveLeft();
     if (_movingRight) _player->moveRight();
 }
+
 
 void Game1Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
     Enemy* enemy = EnemyPool::getInstance()->getEnemy();

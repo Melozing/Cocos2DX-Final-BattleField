@@ -6,9 +6,11 @@
 
 class GameOverPanel : public cocos2d::Layer {
 public:
-    static GameOverPanel* createPanel(const std::function<void()>& retryAction, const std::function<void()>& exitAction);
+    static GameOverPanel* createPanel(const std::function<void()>& retryAction,
+        const std::function<void()>& exitAction);
 
-    virtual bool init(const std::function<void()>& retryAction, const std::function<void()>& exitAction);
+    virtual bool init(const std::function<void()>& retryAction,
+        const std::function<void()>& exitAction);
 
 private:
     std::function<void()> retryAction; // Callback for retry action
