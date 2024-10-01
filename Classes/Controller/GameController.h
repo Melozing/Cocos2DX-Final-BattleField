@@ -1,26 +1,24 @@
-#ifndef GAMECONTROLLER_H
-#define GAMECONTROLLER_H
+#ifndef __GAME_CONTROLLER_H__
+#define __GAME_CONTROLLER_H__
 
-#include "PlayerAttributes/PlayerAttributes.h"
 #include "cocos2d.h"
+
+class PlayerAttributes;
 
 class GameController {
 public:
-    static GameController* getInstance(); // Singleton access method
+    static GameController* getInstance();
 
-    void GameOver(PlayerAttributes* playerAttributes,
-        const std::function<void()>& exitAction,
-        const std::function<cocos2d::Scene* ()>& createSceneFunc); // Handles game over event
-
-    void Victory(); // Handles victory event
-    void UpdateGameStatus(float elapsedTime); // Updates game status based on elapsed time
+    void GameOver(PlayerAttributes* playerAttributes, const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc);
+    void Victory();
+    void UpdateGameStatus(float elapsedTime);
 
 private:
-    GameController(); // Private constructor for singleton
-    static GameController* instance; // Static instance for singleton
-    float gameTime = 0.0f; // Variable to track game time
+    GameController();
+    static GameController* instance;
+    float gameTime;
 
-    void slowDownGame(); // Slow down the game gradually
+    void slowDownGame();
 };
 
-#endif // GAMECONTROLLER_H
+#endif // __GAME_CONTROLLER_H__

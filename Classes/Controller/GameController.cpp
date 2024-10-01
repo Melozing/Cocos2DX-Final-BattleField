@@ -1,7 +1,5 @@
-#include "GameController.h"
-#include "Game1/Game1Scene.h"
-#include "Game2/Game2Scene.h"
 #include "Panel/GameOverPanel.h"
+#include "Controller/GameController.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -10,7 +8,7 @@ USING_NS_CC;
 GameController* GameController::instance = nullptr;
 
 // Private constructor for singleton
-GameController::GameController() {
+GameController::GameController() : gameTime(0.0f) {
     // Initialization code can go here if needed
 }
 
@@ -24,6 +22,11 @@ GameController* GameController::getInstance() {
 
 // Handles the game over event
 void GameController::GameOver(PlayerAttributes* playerAttributes, const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc) {
+    if (playerAttributes == nullptr) {
+        CCLOG("PlayerAttributes is null!");
+        return;
+    }
+
     auto director = Director::getInstance();
     auto runningScene = director->getRunningScene();
 
@@ -47,7 +50,6 @@ void GameController::GameOver(PlayerAttributes* playerAttributes, const std::fun
         this->slowDownGame();
     }
 }
-
 
 // Handles victory event
 void GameController::Victory() {
