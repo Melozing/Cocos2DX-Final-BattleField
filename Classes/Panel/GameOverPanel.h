@@ -1,25 +1,15 @@
-#ifndef GAMEOVERPANEL_H
-#define GAMEOVERPANEL_H
+// GameOverPanel.h
+#ifndef __GAME_OVER_PANEL_H__
+#define __GAME_OVER_PANEL_H__
 
 #include "cocos2d.h"
-#include <functional>
 
 class GameOverPanel : public cocos2d::Layer {
 public:
-    static GameOverPanel* createPanel(const std::function<void()>& retryAction, const std::function<void()>& exitAction);
-
-    virtual bool init(const std::function<void()>& retryAction, const std::function<void()>& exitAction);
+    static GameOverPanel* createPanel(const std::function<void()>& retryCallback, const std::function<void()>& exitCallback);
 
 private:
-    std::function<void()> retryAction; // Callback for retry action
-    std::function<void()> exitAction;  // Callback for exit action
-
-    void setupUI(); // Setup UI elements
-
-    void onRetryButtonClicked(cocos2d::Ref* sender); // Callback for retry button
-    void onExitButtonClicked(cocos2d::Ref* sender);  // Callback for exit button
-
-    void fadeOutAndRemove(); // Handle fade out and removal of the panel
+    bool init(const std::function<void()>& retryCallback, const std::function<void()>& exitCallback);
 };
 
-#endif // GAMEOVERPANEL_H
+#endif // __GAME_OVER_PANEL_H__

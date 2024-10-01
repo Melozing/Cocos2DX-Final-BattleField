@@ -33,6 +33,7 @@ private:
     PlayerGame1* _player;
     Background* background;
     HealthPlayerGame1* _healthPlayerGame1;
+    bool _isGameOver;
 
     bool _movingUp, _movingDown, _movingLeft, _movingRight;
 

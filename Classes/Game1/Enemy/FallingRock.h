@@ -31,7 +31,7 @@ private:
 
     SpriteType _spriteType; // Enum to hold the type of sprite (ROCK or LANDMINE)
     float _speed = 75.0f;
-    float _spriteScale = 1.0f;
+    float _spriteScale;
     float _animationDelay = 0.1f;
     bool _hasLandedOnMine = false;  // Flag for landing on mine
 };

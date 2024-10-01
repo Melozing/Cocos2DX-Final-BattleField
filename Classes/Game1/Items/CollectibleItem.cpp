@@ -15,7 +15,8 @@ bool CollectibleItem::init() {
     // Load sprite frames for the item
     _currentSprite = Sprite::create("assets_game/items/items_health.png");
     this->addChild(_currentSprite);
-
+    _spriteScale = SpriteController::updateSpriteScale(_currentSprite, 0.08f); // Scale for rock
+    _currentSprite->setScale(_spriteScale);
     // Schedule update to run every frame
     this->scheduleUpdate();
 
