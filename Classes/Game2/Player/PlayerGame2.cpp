@@ -21,33 +21,19 @@ PlayerGame2::~PlayerGame2()
 
 PlayerGame2* PlayerGame2::createPlayerGame2()
 {
-    PlayerGame2* Player = new (std::nothrow) PlayerGame2();
-    if (Player && Player->init())
+    PlayerGame2* player = new (std::nothrow) PlayerGame2();
+    if (player && player->init())
     {
-        Player->autorelease();
-        return Player;
+        player->autorelease();
+        player->initAnimation();
+        return player;
     }
-    else
-    {
-        delete Player;
-        return nullptr;
-    }
+    CC_SAFE_DELETE(player);
+    return nullptr;
 }
 
 bool PlayerGame2::init() {
-    // Load the sprite frames
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/walkriffle.plist");
-
-    // Check if the sprite frame exists in the cache
-    auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("walkriffle0.png");
-    if (!spriteFrame) {
-        CCLOG("Sprite frame 'walkriffle0.png' not found in the cache");
-        return false;
-    }
-
-    // Initialize the sprite with the sprite frame
-    if (!Sprite::initWithSpriteFrame(spriteFrame)) {
-        CCLOG("Failed to initialize sprite with sprite frame");
+    if (!Sprite::init()) {
         return false;
     }
 
@@ -70,36 +56,45 @@ bool PlayerGame2::init() {
     // Schedule update method
     this->scheduleUpdate();
 
-    // Create the walk animation
-    createWalkAnimation();
-
-    CCLOG("PlayerGame2 initialized successfully");
     return true;
 }
 
-void PlayerGame2::createWalkAnimation()
+void PlayerGame2::initAnimation()
 {
-    Vector<SpriteFrame*> animFrames;
-    char str[100] = { 0 };
-    for (int i = 0; i < 10; i++)
-    {
-        sprintf(str, "walkriffle%d.png", i);
-        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
-        if (frame)
-        {
-            animFrames.pushBack(frame);
-        }
-    }
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/walkriffle.plist");
 
-    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _walkAnimation = RepeatForever::create(Animate::create(animation));
-    _walkAnimation->retain();
+    auto spriteBatchNode = SpriteBatchNode::create("assets_game/player/walkriffle.png");
+    this->addChild(spriteBatchNode);
+
+    modelCharac = Sprite::createWithSpriteFrameName("walkriffle0.png");
+    SpriteController::updateSpriteScale(modelCharac, 0.05f);
+    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.25f));
+
+    spriteBatchNode->addChild(modelCharac);
+
+    auto animateCharac = Animate::create(createAnimation("walkriffle", 5, 0.07f));
+    modelCharac->runAction(RepeatForever::create(animateCharac));
+}
+
+void PlayerGame2::startMovementAnimation()
+{
+    if (!this->getActionByTag(1))
+    {
+        auto animateCharac = Animate::create(createAnimation("walkriffle", 5, 0.07f));
+        auto repeatAnimate = RepeatForever::create(animateCharac);
+        repeatAnimate->setTag(1);
+        modelCharac->runAction(repeatAnimate);
+    }
 }
 
 void PlayerGame2::onMouseMove(Event* event)
 {
     EventMouse* e = (EventMouse*)event;
     _mousePos = Vec2(e->getCursorX(), e->getCursorY());
+
+    // Invert the y-coordinate
+    auto winSize = Director::getInstance()->getWinSize();
+    _mousePos.y = winSize.height - _mousePos.y;
 }
 
 void PlayerGame2::onMouseDown(Event* event)
@@ -202,15 +197,11 @@ void PlayerGame2::update(float delta)
     RotateToMouse();
     if (_isMoving)
     {
-        if (!this->getActionByTag(1))
-        {
-            _walkAnimation->setTag(1);
-            this->runAction(_walkAnimation);
-        }
+        startMovementAnimation();
     }
     else
     {
-        this->stopActionByTag(1);
+        modelCharac->stopActionByTag(1);
     }
 }
 
