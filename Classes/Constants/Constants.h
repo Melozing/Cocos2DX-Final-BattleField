@@ -22,9 +22,16 @@ public:
     static const float BulletSpeed;
     static const float PlayerSpeed;
     static const float PlayerScale;
+    static const int InitialEnemyPosX;
+    static const int InitialEnemyPosY;
+    static const float EnemySpeed;
+    static const float EnemyScale;
+    static const float AttackRange;
+    static const float AnimationFrameDelay;
+    static const int BulletTag;
+    static const int EnemyTag;
     static const int InitialPosX;
     static const int InitialPosY;
-    static const float AnimationFrameDelay;
 
 };
 
