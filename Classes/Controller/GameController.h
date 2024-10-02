@@ -16,7 +16,7 @@ public:
     void pauseGame();
     void resumeGame();
     bool isPaused() const;
-    void replayGame(); // Add method to replay the game
+    void replayGame(); // Method to replay the game
 
 private:
     GameController();
@@ -25,7 +25,8 @@ private:
     bool gameOver;
     bool paused;
 
-    void slowDownGame();
+    void resetGameState(); // Method to reset the game state
 };
 
 #endif // __GAME_CONTROLLER_H__
+
