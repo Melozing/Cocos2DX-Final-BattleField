@@ -5,14 +5,14 @@
 
 USING_NS_CC;
 
-Scene* Game2Scene::createScene()
-{
-    return Game2Scene::create();
+cocos2d::Scene* Game2Scene::createScene() {
+    auto scene = Game2Scene::create();
+    return scene;
 }
 
 bool Game2Scene::init()
 {
-    if (!Scene::init())
+    if (!BaseScene::init())
     {
         CCLOG("Failed to initialize Scene");
         return false;

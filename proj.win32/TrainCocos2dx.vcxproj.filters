@@ -43,6 +43,9 @@
     <Filter Include="src\Panel">
       <UniqueIdentifier>{437cedd3-cb47-4d24-a179-ec323ff2e4bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UXUI">
+      <UniqueIdentifier>{ac4203b3-0586-4f6b-ba69-d8d6a4016278}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,9 +56,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MainMenuScene.cpp">
-      <Filter>src\Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Game1Scene.cpp">
       <Filter>src\Scene</Filter>
@@ -129,6 +129,15 @@
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp">
       <Filter>src\Panel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Button\PauseButton.cpp">
+      <Filter>src\UXUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\BaseScene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -139,9 +148,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MainMenuScene.h">
-      <Filter>src\Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Game1Scene.h">
       <Filter>src\Scene</Filter>
@@ -214,6 +220,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h">
       <Filter>src\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\MainMenuScene.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Button\PauseButton.h">
+      <Filter>src\UXUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\BaseScene.h">
+      <Filter>src\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
