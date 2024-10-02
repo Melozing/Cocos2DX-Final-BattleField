@@ -7,10 +7,10 @@
 
 USING_NS_CC;
 
-class SceneController : public cocos2d::Sprite {
+class SceneController : public cocos2d::Ref {
 public:
     static SceneController* getInstance();
-    virtual bool init() override;
+    virtual bool init();
 
     Scene* getScene(const std::string& sceneName);
 

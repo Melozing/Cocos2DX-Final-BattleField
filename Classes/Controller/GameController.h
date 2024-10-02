@@ -12,11 +12,18 @@ public:
     void GameOver(PlayerAttributes* playerAttributes, const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc);
     void Victory();
     void UpdateGameStatus(float elapsedTime);
+    bool isGameOver() const;
+    void pauseGame();
+    void resumeGame();
+    bool isPaused() const;
+    void replayGame(); // Add method to replay the game
 
 private:
     GameController();
     static GameController* instance;
     float gameTime;
+    bool gameOver;
+    bool paused;
 
     void slowDownGame();
 };

@@ -1,11 +1,11 @@
 #include "AppDelegate.h"
-#include "MainMenuScene.h"
+#include "Scene/MainMenuScene.h"
 #include "Controller/GameController.h"
 #include "Controller/SceneController.h"
 #include "Game1/Game1Scene.h"
 #include "Game2/Game2Scene.h"
 
- // #define USE_AUDIO_ENGINE 1
+// #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
 #include "audio/include/AudioEngine.h"
@@ -55,12 +55,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if (!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         //glview = GLViewImpl::createWithFullScreen("Test123");
-        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, 1280, 720));;
+        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, 1280, 720));
 #else
         glview = GLViewImpl::create("Test123");
 #endif
         director->setOpenGLView(glview);
     }
+
+    // Show the mouse cursor
+    glview->setCursorVisible(true);
 
     // turn on display FPS
     director->setDisplayStats(true);

@@ -1,6 +1,7 @@
 #include "Button/PauseButton.h"
 #include "ui/CocosGUI.h"
 #include "Game1/Game1Scene.h"
+#include "Controller/GameController.h"
 
 USING_NS_CC;
 
@@ -13,7 +14,9 @@ bool PauseButton::init() {
     auto pauseButton = ui::Button::create("assets_game/UXUI/Buttons/Pause_BTN.png", "assets_game/UXUI/Buttons/Pause_BTN_Active.png");
     pauseButton->setPosition(Vec2(50, 50)); // Set the position of the pause button
     pauseButton->addClickEventListener([this](Ref* sender) {
-        this->pauseGame();
+        if (!GameController::getInstance()->isGameOver()) { // Check if the game is not over
+            this->pauseGame();
+        }
         });
     this->addChild(pauseButton, 1); // Set z-order to 1
 
@@ -27,7 +30,7 @@ bool PauseButton::init() {
     this->addChild(_pausePanel, 2); // Set z-order to 2
 
     // Create the continue button
-    auto continueButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Play_BTN_Active.png");
+    auto continueButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png");
     continueButton->setPosition(Vec2(_pausePanel->getContentSize().width / 2, _pausePanel->getContentSize().height / 2));
     continueButton->addClickEventListener([this](Ref* sender) {
         this->continueGame();

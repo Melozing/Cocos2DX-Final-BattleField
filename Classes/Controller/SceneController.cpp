@@ -9,15 +9,14 @@ SceneController* SceneController::getInstance()
     if (instance == nullptr)
     {
         instance = new SceneController();
+        instance->init();
     }
     return instance;
 }
 
 bool SceneController::init() {
-
     return true;
 }
-
 
 Scene* SceneController::getScene(const std::string& sceneName) {
     return createScene(sceneName); // Use your createScene method to get the scene.

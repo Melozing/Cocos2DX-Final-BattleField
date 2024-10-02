@@ -26,7 +26,6 @@ Size SpriteController::GetContentSizeSprite(Sprite* sprite) {
     return scaledSize;
 }
 
-
 void SpriteController::changeAnimation(const std::string& namePrefix, int numOrder)
 {
     animation = createAnimation(namePrefix, numOrder, 0.035f);

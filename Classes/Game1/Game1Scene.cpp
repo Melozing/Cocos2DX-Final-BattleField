@@ -55,13 +55,6 @@ bool Game1Scene::init() {
     _player->setPhysicsBody(playerBody);
     addChild(_player);
 
-    _pauseButton = PauseButton::create(); // Initialize the pause button
-    _pauseButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    float padding = 10.0f; // Adjust the padding as needed
-    _pauseButton->setPosition(Vec2(origin.x + visibleSize.width - _pauseButton->getContentSize().width / 2 - padding,
-        origin.y + visibleSize.height - _pauseButton->getContentSize().height / 2 - padding));
-    this->addChild(_pauseButton, 1);
-
     _movingUp = _movingDown = _movingLeft = _movingRight = false;
 
     auto listener = EventListenerKeyboard::create();
@@ -115,6 +108,7 @@ bool Game1Scene::init() {
     this->scheduleCollectibleSpawning();
     return true;
 }
+
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
