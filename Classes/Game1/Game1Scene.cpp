@@ -149,20 +149,22 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
         _isGameOver = true;
-        GameController::getInstance()->GameOver(_playerAttributes,
-            []() {
-                // Custom action for exiting the game
-                Director::getInstance()->end();
-            },
-            []() -> Scene* {
-                // Return a new instance of Game1Scene
-                return Game1Scene::createScene();
-            });
+         GameController::getInstance()->GameOver(_playerAttributes,
+             []() {
+                 // Custom action for exiting the game
+                 Director::getInstance()->end();
+             },
+             []() -> Scene* {
+                 // Return a new instance of Game1Scene
+                 return Game1Scene::createScene();
+             });
     }
 }
 
 
+
 void Game1Scene::update(float delta) {
+    CCLOG("Update method called with delta: %f", delta);
     background->update(delta);
     for (auto enemy : _enemyPool) {
         onEnemyOutOfBounds(enemy);
