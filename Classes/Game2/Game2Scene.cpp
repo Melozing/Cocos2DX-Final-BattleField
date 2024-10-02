@@ -2,11 +2,21 @@
 #include "Game2/Game2Scene.h"
 #include "Game2/Player/PlayerGame2.h"
 #include "Game2/Cursor/Cursor.h"
+#include "Game2/Enemy/MeleeEnemyGame2.h" // Include the enemy header
 
 USING_NS_CC;
 
 cocos2d::Scene* Game2Scene::createScene() {
-    auto scene = Game2Scene::create();
+    // Create a scene with physics enabled
+    auto scene = Scene::createWithPhysics();
+
+    // Optionally, you can set debug draw to see the physics shapes
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
+    // Create the layer and add it to the scene
+    auto layer = Game2Scene::create();
+    scene->addChild(layer);
+
     return scene;
 }
 
@@ -79,6 +89,17 @@ bool Game2Scene::init()
     this->schedule([this](float delta) {
         _cursor->updateCursor(delta);
         }, "update_cursor_key");
+
+    // Add an enemy to the scene for testing
+    auto enemy = MeleeEnemyGame2::createMeleeEnemyGame2();
+    if (!enemy)
+    {
+        CCLOG("Failed to create MeleeEnemyGame2");
+        return false;
+    }
+    enemy->setPosition(Vec2(200, 200));
+    this->addChild(enemy);
+    CCLOG("MeleeEnemyGame2 added to Game2Scene");
 
     CCLOG("Game2Scene initialized successfully");
     return true;

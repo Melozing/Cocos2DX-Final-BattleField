@@ -138,6 +138,9 @@
     <ClCompile Include="..\Classes\Scene\BaseScene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp">
+      <Filter>src\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\BaseScene.h">
       <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h">
+      <Filter>src\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

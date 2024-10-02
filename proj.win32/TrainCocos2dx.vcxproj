@@ -170,6 +170,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp" />
     <ClCompile Include="..\Classes\Game2\Bullet\Bullet.cpp" />
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp" />
+    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Game2Scene.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
@@ -202,6 +203,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h" />
     <ClInclude Include="..\Classes\Game2\Bullet\Bullet.h" />
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h" />
+    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h" />
     <ClInclude Include="..\Classes\Game2\Game2Scene.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />

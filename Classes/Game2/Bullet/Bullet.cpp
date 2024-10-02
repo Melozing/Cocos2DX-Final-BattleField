@@ -1,6 +1,6 @@
 // Bullet.cpp
 #include "Game2/Bullet/Bullet.h"
-
+#include "Constants/Constants.h"
 USING_NS_CC;
 
 Bullet::Bullet()
@@ -38,9 +38,17 @@ bool Bullet::init()
         return false;
     }
 
+    // Add PhysicsBody to the bullet
+    auto physicsBody = PhysicsBody::createCircle(this->getContentSize().width / 2);
+    physicsBody->setContactTestBitmask(true);
+    this->setPhysicsBody(physicsBody);
+
+    this->setTag(Constants::BulletTag); // Set the tag for the bullet
+
     this->scheduleUpdate();
     return true;
 }
+
 
 void Bullet::update(float delta)
 {
