@@ -1,4 +1,5 @@
 #include "Game1/Game1Scene.h"
+#include "Button/PauseButton.h"
 #include "Enemy/FlyingBullet.h"
 #include "Enemy/FallingRock.h"
 #include "Enemy/RandomBoom.h"
@@ -11,7 +12,7 @@
 
 USING_NS_CC;
 
-Scene* Game1Scene::createScene() {
+cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
     scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
@@ -21,12 +22,13 @@ Scene* Game1Scene::createScene() {
 }
 
 bool Game1Scene::init() {
-    if (!Scene::init()) return false;
+    if (!BaseScene::init()) return false;
     _isGameOver = false;
     _playerAttributes = new PlayerAttributes(1);
     _canTakeDamage = true;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
     auto edgeBody = cocos2d::PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 0);
     edgeBody->setCollisionBitmask(0x03);
     edgeBody->setContactTestBitmask(true);
@@ -53,6 +55,13 @@ bool Game1Scene::init() {
     _player->setPhysicsBody(playerBody);
     addChild(_player);
 
+    _pauseButton = PauseButton::create(); // Initialize the pause button
+    _pauseButton->setAnchorPoint(Vec2(0.5f, 0.5f));
+    float padding = 10.0f; // Adjust the padding as needed
+    _pauseButton->setPosition(Vec2(origin.x + visibleSize.width - _pauseButton->getContentSize().width / 2 - padding,
+        origin.y + visibleSize.height - _pauseButton->getContentSize().height / 2 - padding));
+    this->addChild(_pauseButton, 1);
+
     _movingUp = _movingDown = _movingLeft = _movingRight = false;
 
     auto listener = EventListenerKeyboard::create();
@@ -66,6 +75,16 @@ bool Game1Scene::init() {
         case EventKeyboard::KeyCode::KEY_A: _movingLeft = true; break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
         case EventKeyboard::KeyCode::KEY_D: _movingRight = true; break;
+        case EventKeyboard::KeyCode::KEY_ESCAPE:
+            if (_pauseButton && !_pauseButton->isPaused()) { // Check if _pauseButton is not nullptr
+                _pauseButton->pauseGame();
+            }
+            break;
+        case EventKeyboard::KeyCode::KEY_ENTER:
+            if (_pauseButton && _pauseButton->isPaused()) { // Check if _pauseButton is not nullptr
+                _pauseButton->continueGame();
+            }
+            break;
         default: break;
         }
         };
@@ -96,7 +115,6 @@ bool Game1Scene::init() {
     this->scheduleCollectibleSpawning();
     return true;
 }
-
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);

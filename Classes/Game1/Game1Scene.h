@@ -1,7 +1,6 @@
 #ifndef __GAME1SCENE_SCENE_H__
 #define __GAME1SCENE_SCENE_H__
 
-#include "cocos2d.h"
 #include "Background/Background.h"
 #include "Game1/Items/CollectibleItem.h"
 #include "Game1/Player/PlayerGame1.h"
@@ -11,11 +10,13 @@
 #include "Enemy/EnemyFactory.h"
 #include "Enemy/EnemyPool.h"
 #include "Game1/Player/HealthPlayerGame1.h"
+#include "Button/PauseButton.h"
+#include "Scene/BaseScene.h"
 
-class Game1Scene : public cocos2d::Scene {
+class Game1Scene : public BaseScene {
 public:
     static cocos2d::Scene* createScene();
-    virtual bool init();
+    virtual bool init() override;
     CREATE_FUNC(Game1Scene);
     virtual void update(float delta);
 
@@ -37,6 +38,8 @@ private:
 
     bool _movingUp, _movingDown, _movingLeft, _movingRight;
 
+    PauseButton* _pauseButton; // Add PauseButton member
+
     void handlePlayerMovement();
     void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
     void returnEnemyToPool(cocos2d::Node* enemy);
@@ -55,6 +58,9 @@ private:
     bool onContactBegin(cocos2d::PhysicsContact& contact);
 
     void checkGameOver();
+
+    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // Add key press handler
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // Add key release handler
 };
 
 #endif // __GAME1SCENE_SCENE_H__
