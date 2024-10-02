@@ -1,41 +1,54 @@
-// GameOverPanel.cpp
 #include "GameOverPanel.h"
 #include "ui/CocosGUI.h"
+#include "Controller/GameController.h"
 
 USING_NS_CC;
 
-GameOverPanel* GameOverPanel::createPanel(const std::function<void()>& retryCallback, const std::function<void()>& exitCallback) {
-    GameOverPanel* panel = new (std::nothrow) GameOverPanel();
-    if (panel && panel->init(retryCallback, exitCallback)) {
-        panel->autorelease();
-        return panel;
-    }
-    delete panel;
-    return nullptr;
+GameOverPanel* GameOverPanel::createPanel(const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
+    return GameOverPanel::create(retryAction, exitAction);
 }
 
-bool GameOverPanel::init(const std::function<void()>& retryCallback, const std::function<void()>& exitCallback) {
+GameOverPanel* GameOverPanel::create(const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
+    GameOverPanel* ret = new (std::nothrow) GameOverPanel();
+    if (ret && ret->init(retryAction, exitAction)) {
+        ret->autorelease();
+        return ret;
+    }
+    else {
+        delete ret;
+        return nullptr;
+    }
+}
+
+bool GameOverPanel::init(const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
     if (!Layer::init()) {
         return false;
     }
 
-    // Create a semi-transparent background
-    auto background = LayerColor::create(Color4B(0, 0, 0, 180));
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+
+    // Create background
+    auto background = ui::Layout::create();
+    background->setContentSize(visibleSize);
+    background->setBackGroundColorType(ui::Layout::BackGroundColorType::SOLID);
+    background->setBackGroundColor(Color3B(0, 0, 0));
+    background->setBackGroundColorOpacity(150);
     this->addChild(background);
 
-    // Create Retry button
+    // Create retry button
     auto retryButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png");
-    retryButton->setPosition(Vec2(Director::getInstance()->getVisibleSize() / 2) + Vec2(0, 50));
-    retryButton->addClickEventListener([retryCallback](Ref* sender) {
-        retryCallback();
+    retryButton->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 50));
+    retryButton->addClickEventListener([retryAction](Ref* sender) {
+        retryAction();
         });
     this->addChild(retryButton);
 
-    // Create Exit button
-    auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Menu_BTN.png", "assets_game/UXUI/Panel/Menu_BTN_Active.png");
-    exitButton->setPosition(Vec2(Director::getInstance()->getVisibleSize() / 2) - Vec2(0, 50));
-    exitButton->addClickEventListener([exitCallback](Ref* sender) {
-        exitCallback();
+    // Create exit button
+    auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png");
+    exitButton->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 50));
+    exitButton->addClickEventListener([exitAction](Ref* sender) {
+        exitAction();
         });
     this->addChild(exitButton);
 
