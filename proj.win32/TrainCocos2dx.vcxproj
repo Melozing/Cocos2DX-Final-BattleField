@@ -151,6 +151,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Button\PauseButton.cpp" />
     <ClCompile Include="..\Classes\Constants\Constants.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
     <ClCompile Include="..\Classes\Controller\SceneController.cpp" />
@@ -172,15 +173,17 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game2\Game2Scene.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
-    <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp" />
     <ClCompile Include="..\Classes\PlayerAttributes\PlayerAttributes.cpp" />
+    <ClCompile Include="..\Classes\Scene\BaseScene.cpp" />
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp" />
+    <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\utils\MathFunction.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\Button\PauseButton.h" />
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
     <ClInclude Include="..\Classes\Controller\SceneController.h" />
@@ -202,10 +205,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game2\Game2Scene.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
-    <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h" />
     <ClInclude Include="..\Classes\PlayerAttributes\PlayerAttributes.h" />
+    <ClInclude Include="..\Classes\Scene\BaseScene.h" />
     <ClInclude Include="..\Classes\Scene\LoadingScene.h" />
+    <ClInclude Include="..\Classes\Scene\MainMenuScene.h" />
     <ClInclude Include="..\Classes\utils\MathFunction.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

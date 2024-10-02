@@ -3,12 +3,12 @@
 
 #include "cocos2d.h"
 #include "Cursor/Cursor.h"
-class Game2Scene : public cocos2d::Scene
-{
+#include "Scene/BaseScene.h"
+
+class Game2Scene : public BaseScene {
 public:
     static cocos2d::Scene* createScene();
-
-    virtual bool init();
+    virtual bool init() override;
     CREATE_FUNC(Game2Scene);
 private:
     Cursor* _cursor;
