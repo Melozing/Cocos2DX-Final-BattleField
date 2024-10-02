@@ -1,7 +1,9 @@
+// PlayerGame2.h
 #pragma once
 #include "cocos2d.h"
+#include "Controller/SpriteController.h"
 
-class PlayerGame2 : public cocos2d::Sprite
+class PlayerGame2 : public cocos2d::Sprite, public SpriteController
 {
 public:
     PlayerGame2();
@@ -17,18 +19,19 @@ public:
     void stopVerticalMovement();
     void stopHorizontalMovement();
     void shootBullet(const cocos2d::Vec2& direction);
+
 private:
-    void createWalkAnimation();
     void onMouseMove(cocos2d::Event* event);
     void onMouseDown(cocos2d::Event* event);
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-    
     void RotateToMouse();
+    void initAnimation();
+    void startMovementAnimation(); // Add this line
 
     cocos2d::Vec2 _mousePos;
     cocos2d::Vec2 _velocity;
     float _speed;
     bool _isMoving;
-    cocos2d::RepeatForever* _walkAnimation;
+    Sprite* modelCharac;
 };

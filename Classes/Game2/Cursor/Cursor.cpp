@@ -35,6 +35,9 @@ void Cursor::updateCursor(float delta) {
     // Get the window size
     auto winSize = Director::getInstance()->getWinSize();
 
+    // Invert the y-coordinate
+    mousePos.y = winSize.height - mousePos.y;
+
     // Clamp the mouse position within the window boundaries
     mousePos.x = std::max(0.0f, std::min(mousePos.x, winSize.width));
     mousePos.y = std::max(0.0f, std::min(mousePos.y, winSize.height));
