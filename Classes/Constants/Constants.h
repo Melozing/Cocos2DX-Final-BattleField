@@ -18,7 +18,9 @@ public:
     static const float PLAYER_HEALTH_PADDING_Y;
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
-    //game2
+    //Game1
+    static const float TIME_TO_WIN;
+    //Game2
     static const float BulletSpeed;
     static const float PlayerSpeed;
     static const float PlayerScale;

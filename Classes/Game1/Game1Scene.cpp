@@ -8,7 +8,9 @@
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
-#include "Controller/GameController.h" // Ensure GameController is included
+#include "Controller/GameController.h"
+#include "ui/UILoadingBar.h"
+#include <ctime> 
 
 USING_NS_CC;
 
@@ -23,8 +25,11 @@ cocos2d::Scene* Game1Scene::createScene() {
 
 bool Game1Scene::init() {
     if (!BaseScene::init()) return false;
+
+    srand(static_cast<unsigned int>(time(nullptr)));
+
     _isGameOver = false;
-    _playerAttributes = new PlayerAttributes(1);
+    _playerAttributes = new PlayerAttributes(Constants::PLAYER_HEALTH);
     _canTakeDamage = true;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -96,6 +101,17 @@ bool Game1Scene::init() {
         }
         };
 
+    _loadingBar = ui::LoadingBar::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
+    _loadingBar->setPercent(0); // Start with 0%
+    _loadingBar->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + _loadingBar->getContentSize().height + SpriteController::calculateScreenRatio(0.05f)));
+    this->addChild(_loadingBar);
+
+    // Schedule the update for the loading bar
+    this->schedule([this](float dt) {
+        updateLoadingBar(dt);
+        }, "loading_bar_update_key");
+
+
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     auto contactListener = EventListenerPhysicsContact::create();
@@ -161,10 +177,23 @@ void Game1Scene::checkGameOver() {
     }
 }
 
+void Game1Scene::updateLoadingBar(float dt) {
+    if (_isGameOver) return;
 
+    // Update the loading bar percentage
+    float currentPercent = _loadingBar->getPercent();
+    float increment = (dt / Constants::TIME_TO_WIN) * 100.0f; // Constants::TIME_TO_WIN is the time required to win
+    currentPercent += increment;
+
+    if (currentPercent >= 100.0f) {
+        currentPercent = 100.0f;
+        GameController::getInstance()->Victory();
+    }
+
+    _loadingBar->setPercent(currentPercent);
+}
 
 void Game1Scene::update(float delta) {
-    CCLOG("Update method called with delta: %f", delta);
     background->update(delta);
     for (auto enemy : _enemyPool) {
         onEnemyOutOfBounds(enemy);
