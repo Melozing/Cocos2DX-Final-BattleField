@@ -29,7 +29,7 @@ bool Game1Scene::init() {
     srand(static_cast<unsigned int>(time(nullptr)));
 
     _isGameOver = false;
-    _playerAttributes = new PlayerAttributes(Constants::PLAYER_HEALTH);
+    _playerAttributes = &PlayerAttributes::getInstance(); // Use singleton instance
     _canTakeDamage = true;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -101,6 +101,7 @@ bool Game1Scene::init() {
         }
         };
 
+
     _loadingBar = ui::LoadingBar::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
     _loadingBar->setPercent(0); // Start with 0%
     _loadingBar->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + _loadingBar->getContentSize().height + SpriteController::calculateScreenRatio(0.05f)));
@@ -122,6 +123,7 @@ bool Game1Scene::init() {
     this->scheduleUpdate();
     this->scheduleEnemySpawning();
     this->scheduleCollectibleSpawning();
+
     return true;
 }
 
@@ -164,16 +166,15 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
+        GameController::getInstance()->GameOver(
+            []() {
+                Director::getInstance()->end();
+            },
+            []() -> Scene* {
+                return Game1Scene::createScene();
+            }
+        );
         _isGameOver = true;
-         GameController::getInstance()->GameOver(_playerAttributes,
-             []() {
-                 // Custom action for exiting the game
-                 Director::getInstance()->end();
-             },
-             []() -> Scene* {
-                 // Return a new instance of Game1Scene
-                 return Game1Scene::createScene();
-             });
     }
 }
 

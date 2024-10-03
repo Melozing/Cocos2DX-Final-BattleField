@@ -5,13 +5,26 @@ class PlayerAttributes
 {
 private:
     int health;  // Player's health
+    int ammo;    // Player's ammo
+
+    // Private constructor to prevent instantiation
+    PlayerAttributes(int initialHealth, int initialAmmo);
 
 public:
-    PlayerAttributes(int initialHealth);  // Constructor
+    // Delete copy constructor and assignment operator
+    PlayerAttributes(const PlayerAttributes&) = delete;
+    PlayerAttributes& operator=(const PlayerAttributes&) = delete;
+
+    // Static method to get the singleton instance
+    static PlayerAttributes& getInstance();
+
     void TakeDamage(int damage);          // Reduces player's health
     bool IsDead() const;                  // Checks if player is dead
     int GetHealth() const;                // Returns the current health
     void SetHealth(int newHealth);        // Sets the player's health to a specific value
+
+    int GetAmmo() const;                  // Returns the current ammo
+    void SetAmmo(int newAmmo);            // Sets the player's ammo to a specific value
 };
 
 #endif // PLAYERATTRIBUTES_H

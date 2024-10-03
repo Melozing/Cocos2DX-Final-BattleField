@@ -2,8 +2,8 @@
 #include "Controller/SceneController.h"
 #include "Panel/GameOverPanel.h"
 #include "Panel/PausePanel.h"
-#include "Panel/VictoryPanel.h" 
-#include "Constants/Constants.h" 
+#include "Panel/VictoryPanel.h"
+#include "Constants/Constants.h"
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
@@ -24,11 +24,8 @@ GameController* GameController::getInstance() {
 }
 
 // Handles the game over event
-void GameController::GameOver(PlayerAttributes* playerAttributes, const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc) {
-    if (playerAttributes == nullptr) {
-        CCLOG("PlayerAttributes is null!");
-        return;
-    }
+void GameController::GameOver(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc) {
+    auto& playerAttributes = PlayerAttributes::getInstance();
 
     auto director = Director::getInstance();
     auto runningScene = director->getRunningScene();
@@ -68,14 +65,14 @@ void GameController::Victory() {
                 Director::getInstance()->end();
                 });
 
-        if (victoryPanel) {
-            runningScene->addChild(victoryPanel, 100);
-            victoryPanel->setOpacity(0);
-            victoryPanel->runAction(FadeIn::create(1.0f));
-        }
+            if (victoryPanel) {
+                runningScene->addChild(victoryPanel, 100);
+                victoryPanel->setOpacity(0);
+                victoryPanel->runAction(FadeIn::create(1.0f));
+            }
 
-        director->pause();
-        gameOver = true;
+            director->pause();
+            gameOver = true;
     }
 }
 
