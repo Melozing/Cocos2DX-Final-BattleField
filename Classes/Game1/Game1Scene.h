@@ -12,6 +12,7 @@
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Button/PauseButton.h"
 #include "Scene/BaseScene.h"
+#include "ui/UILoadingBar.h" // Include UILoadingBar
 
 class Game1Scene : public BaseScene {
 public:
@@ -39,6 +40,7 @@ private:
     bool _movingUp, _movingDown, _movingLeft, _movingRight;
 
     PauseButton* _pauseButton; // Add PauseButton member
+    cocos2d::ui::LoadingBar* _loadingBar; // Add LoadingBar member
 
     void handlePlayerMovement();
     void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
@@ -61,6 +63,8 @@ private:
 
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // Add key press handler
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // Add key release handler
+
+    void updateLoadingBar(float dt); // Add updateLoadingBar method declaration
 };
 
 #endif // __GAME1SCENE_SCENE_H__
