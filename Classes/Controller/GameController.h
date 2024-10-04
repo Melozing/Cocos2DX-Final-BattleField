@@ -2,14 +2,13 @@
 #define __GAME_CONTROLLER_H__
 
 #include "cocos2d.h"
-
-class PlayerAttributes;
+#include "PlayerAttributes/PlayerAttributes.h"
 
 class GameController {
 public:
     static GameController* getInstance();
 
-    void GameOver(PlayerAttributes* playerAttributes, const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc);
+    void GameOver(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc);
     void Victory();
     void UpdateGameStatus(float elapsedTime);
     bool isGameOver() const;

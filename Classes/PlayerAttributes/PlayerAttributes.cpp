@@ -1,37 +1,49 @@
-#include "PlayerAttributes.h"
-#include <iostream>
+// PlayerAttributes.cpp
+#include "PlayerAttributes/PlayerAttributes.h"
+#include "Constants/Constants.h"
+#include "cocos2d.h"
 
-// Constructor to initialize player's health
-PlayerAttributes::PlayerAttributes(int initialHealth) : health(initialHealth) {}
+// Private constructor to initialize player's attributes
+PlayerAttributes::PlayerAttributes(int initialHealth, int initialAmmo) : health(initialHealth), ammo(initialAmmo) {}
 
-// Method to reduce player's health
+// Static method to get the singleton instance
+PlayerAttributes& PlayerAttributes::getInstance()
+{
+    static PlayerAttributes instance(Constants::PLAYER_HEALTH, 0); // Example initial values
+    return instance;
+}
+
 void PlayerAttributes::TakeDamage(int damage)
 {
     health -= damage;
     if (health < 0) health = 0;
-
-    // Debug output
-    std::cout << "Player took damage. Current health: " << health << std::endl;
+    CCLOG("Player took damage. Current health: %d", health);
 }
 
-// Method to check if player is dead (health <= 0)
 bool PlayerAttributes::IsDead() const
 {
     return health <= 0;
 }
 
-// Method to get the current health of the player
 int PlayerAttributes::GetHealth() const
 {
     return health;
 }
 
-// Method to set the player's health to a specific value
 void PlayerAttributes::SetHealth(int newHealth)
 {
-    health = newHealth;  // Update health with the new value
-    if (health < 0) health = 0;  // Ensure health doesn't go below 0
+    health = newHealth;
+    if (health < 0) health = 0;
+    CCLOG("Player's health set. Current health: %d", health);
+}
 
-    // Debug output
-    std::cout << "Player's health set. Current health: " << health << std::endl;
+int PlayerAttributes::GetAmmo() const
+{
+    return ammo;
+}
+
+void PlayerAttributes::SetAmmo(int newAmmo)
+{
+    ammo = newAmmo;
+    CCLOG("Player's ammo set. Current ammo: %d", ammo);
 }

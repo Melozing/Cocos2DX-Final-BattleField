@@ -165,7 +165,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp" />
     <ClCompile Include="..\Classes\Game1\Game1Scene.cpp" />
+    <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp" />
     <ClCompile Include="..\Classes\Game1\Items\CollectibleItem.cpp" />
+    <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\HealthPlayerGame1.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp" />
     <ClCompile Include="..\Classes\Game2\Bullet\Bullet.cpp" />
@@ -200,7 +202,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h" />
     <ClInclude Include="..\Classes\Game1\Game1Scene.h" />
+    <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h" />
     <ClInclude Include="..\Classes\Game1\Items\CollectibleItem.h" />
+    <ClInclude Include="..\Classes\Game1\Items\HealthItem.h" />
     <ClInclude Include="..\Classes\Game1\Player\HealthPlayerGame1.h" />
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h" />
     <ClInclude Include="..\Classes\Game2\Bullet\Bullet.h" />

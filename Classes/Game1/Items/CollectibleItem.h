@@ -2,22 +2,19 @@
 #define __COLLECTIBLE_ITEM_H__
 
 #include "cocos2d.h"
-#include "Controller/SpriteController.h"
 
-class CollectibleItem : public cocos2d::Node, public SpriteController {
+class CollectibleItem : public cocos2d::Node {
 public:
-    static CollectibleItem* create(); // Factory method to create an instance
-    virtual bool init() override; // Initialize the item
-    void spawn(const cocos2d::Vec2& startPosition); // Set the spawn position
-    void update(float delta); // Update method for item behavior
-    Size GetSize();
-    ~CollectibleItem(); // Destructor
-
-private:
-    cocos2d::Sprite* _currentSprite; // Sprite representing the item
-    float _spriteScale;
-    float _speed = 150.0f; // Speed of falling item
+    virtual bool init() override;
+    virtual void applyEffect() = 0; // Pure virtual function
+    void spawn(const cocos2d::Vec2& position);
+    cocos2d::Size GetSize() const;
+    void update(float delta) override;
     void removeWhenOutOfScreen();
+
+protected:
+    cocos2d::Sprite* _currentSprite;
+    float _speed = 150.0f; // Example speed value
 };
 
 #endif // __COLLECTIBLE_ITEM_H__
