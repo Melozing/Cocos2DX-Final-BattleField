@@ -153,6 +153,9 @@
     <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp">
       <Filter>src\Items</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
+      <Filter>src\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
       <Filter>src\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
+      <Filter>src\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

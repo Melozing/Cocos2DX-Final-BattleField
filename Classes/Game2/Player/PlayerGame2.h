@@ -19,7 +19,7 @@ public:
     void stopVerticalMovement();
     void stopHorizontalMovement();
     void shootBullet(const cocos2d::Vec2& direction);
-
+	void die();
 private:
     void onMouseMove(cocos2d::Event* event);
     void onMouseDown(cocos2d::Event* event);

@@ -16,9 +16,9 @@ public:
     virtual void update(float delta) override;
 
     void moveToPlayer();
-    /*void attackPlayer();*/
+    void attackPlayer();
     void die();
-
+    void updateRotationToPlayer();
 private:
     void createIdleAnimation();
     void createWalkAnimation();
