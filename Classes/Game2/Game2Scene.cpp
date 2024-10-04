@@ -2,7 +2,8 @@
 #include "Game2/Game2Scene.h"
 #include "Game2/Player/PlayerGame2.h"
 #include "Game2/Cursor/Cursor.h"
-#include "Game2/Enemy/MeleeEnemyGame2.h" // Include the enemy header
+#include "Game2/Enemy/MeleeEnemyGame2.h"
+#include "Game2/Enemy/SniperEnemyGame2.h" // Include the sniper enemy header
 
 USING_NS_CC;
 
@@ -28,12 +29,18 @@ bool Game2Scene::init()
         return false;
     }
 
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    // Create and position the player at the center of the screen
     auto player = PlayerGame2::createPlayerGame2();
     if (!player)
     {
         CCLOG("Failed to create PlayerGame2");
         return false;
     }
+    player->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    player->setName("PlayerGame2"); // Set the name for the player
     this->addChild(player);
     CCLOG("PlayerGame2 added to Game2Scene");
 
@@ -90,16 +97,21 @@ bool Game2Scene::init()
         _cursor->updateCursor(delta);
         }, "update_cursor_key");
 
-    // Add an enemy to the scene for testing
-    auto enemy = MeleeEnemyGame2::createMeleeEnemyGame2();
-    if (!enemy)
-    {
-        CCLOG("Failed to create MeleeEnemyGame2");
-        return false;
-    }
-    enemy->setPosition(Vec2(200, 200));
-    this->addChild(enemy);
-    CCLOG("MeleeEnemyGame2 added to Game2Scene");
+    // Schedule enemy spawning every 3 seconds
+    this->schedule([this](float delta) {
+        auto enemy = SniperEnemyGame2::createSniperEnemyGame2();
+        if (enemy) {
+            // Set the enemy position at a fixed location (e.g., top center of the screen)
+            auto visibleSize = Director::getInstance()->getVisibleSize();
+            Vec2 origin = Director::getInstance()->getVisibleOrigin();
+            float x = origin.x + visibleSize.width / 2;
+            float y = origin.y + visibleSize.height - enemy->getContentSize().height / 2;
+            enemy->setPosition(Vec2(x, y));
+            this->addChild(enemy);
+            enemy->scheduleUpdate();
+            CCLOG("SniperEnemyGame2 spawned at (%f, %f)", x, y);
+        }
+        }, 3.0f, "spawn_enemy_key");
 
     CCLOG("Game2Scene initialized successfully");
     return true;
