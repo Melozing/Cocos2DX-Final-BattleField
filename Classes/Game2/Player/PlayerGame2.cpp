@@ -22,6 +22,7 @@ PlayerGame2::~PlayerGame2()
 PlayerGame2* PlayerGame2::createPlayerGame2()
 {
     PlayerGame2* player = new (std::nothrow) PlayerGame2();
+    player->setName("PlayerGame2");
     if (player && player->init())
     {
         player->autorelease();
@@ -41,6 +42,10 @@ bool PlayerGame2::init() {
     this->setScale(Constants::PlayerScale);
     this->setAnchorPoint(Vec2(0.5, 0.5)); // Set anchor point at the head of the character
 
+    auto physicsBody = PhysicsBody::createBox(this->getContentSize());
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setGravityEnable(false); // Disable gravity
+    this->setPhysicsBody(physicsBody);
     // Add mouse event listener
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
@@ -221,4 +226,9 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     bullet->setPosition(this->getPosition());
     this->getParent()->addChild(bullet);
     bullet->setRotation(this->getRotation());
+}
+void PlayerGame2::die()
+{
+    this->removeFromParent();
+    // Add any additional logic for player death, such as game over screen
 }

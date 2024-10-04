@@ -21,11 +21,11 @@ const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
 const float Constants::TIME_TO_WIN = 80.0f;
 
 //game2
-const float Constants::BulletSpeed = 750.f;
+const float Constants::BulletSpeed = 1500.f;
 const float Constants::PlayerSpeed = 200.0f;
-const float Constants::PlayerScale = 0.5f;
-const int Constants::InitialEnemyPosX = 100;
-const int Constants::InitialEnemyPosY = 100;
+const float Constants::PlayerScale = 0.7f;
+const int Constants::InitialEnemyPosX = 300;
+const int Constants::InitialEnemyPosY = 200;
 const float Constants::AnimationFrameDelay = 0.1f;
 const float Constants::EnemySpeed = 100.0f;
 const float Constants::AttackRange = 50.0f;
