@@ -5,6 +5,8 @@
 #include "Enemy/RandomBoom.h"
 #include "Enemy/EnemyFactory.h"
 #include "Enemy/EnemyPool.h"
+#include "Game1/Items/HealthItem.h"
+#include "Game1/Items/AmmoItem.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
@@ -101,17 +103,31 @@ bool Game1Scene::init() {
         }
         };
 
+    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
+    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
 
-    _loadingBar = ui::LoadingBar::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
-    _loadingBar->setPercent(0); // Start with 0%
-    _loadingBar->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + _loadingBar->getContentSize().height + SpriteController::calculateScreenRatio(0.05f)));
+    _loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
+    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT); // Or RIGHT, depending on your needs
+    _loadingBar->setRotation(-90);
+    _loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
+    _loadingBar->setPercent(0);
+    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the center
+    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2)); // Position at the center right of the screen
+
+    // Create and position the border
+    border = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
+    auto loadingPos = _loadingBar->getPosition();
+    border->setPosition(loadingPos);
+    border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
+    border->setRotation(-90);
+    border->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the bottom center
+    this->addChild(border); // Place border behind the loading bar
     this->addChild(_loadingBar);
 
     // Schedule the update for the loading bar
     this->schedule([this](float dt) {
         updateLoadingBar(dt);
         }, "loading_bar_update_key");
-
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
@@ -157,6 +173,8 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
         (bodyA->getCollisionBitmask() == 0x03 && bodyB->getCollisionBitmask() == 0x01)) {
         auto collectible = static_cast<CollectibleItem*>(bodyA->getNode() == _player ? bodyB->getNode() : bodyA->getNode());
         if (collectible) {
+            collectible->applyEffect(); // Apply the effect of the collectible item
+            _healthPlayerGame1->updateHealthSprites(PlayerAttributes::getInstance().GetHealth());
             collectible->removeFromParentAndCleanup(true);
         }
     }
@@ -208,7 +226,6 @@ void Game1Scene::handlePlayerMovement() {
     if (_movingLeft) _player->moveLeft();
     if (_movingRight) _player->moveRight();
 }
-
 
 void Game1Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
     Enemy* enemy = EnemyPool::getInstance()->getEnemy();
@@ -265,8 +282,7 @@ void Game1Scene::scheduleEnemySpawning() {
         }, 4.0f, "random_boom_spawn_key");
 }
 
-
-void Game1Scene::SpawnFallingRockAndBomb(Size size) {
+Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
     float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
     float centerX = size.width / 2;
     float halfRestrictedWidth = restrictedWidth / 2;
@@ -286,8 +302,12 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
         spawnPosition = Vec2(minX + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
         break;
     }
+    return spawnPosition;
+}
 
-    usedPositions.push_back(spawnPosition);
+
+void Game1Scene::SpawnFallingRockAndBomb(Size size) {
+    Vec2 spawnPosition = getRandomSpawnPosition(size);
 
     if (!isPositionOccupied(spawnPosition)) {
         auto fallingRock = FallingRock::create();
@@ -330,29 +350,7 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
 }
 
 void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
-    // Define the width and height of the restricted movement area
-    float restrictedWidth = 100.0f; // The width of the restricted movement area
-    float restrictedHeight = size.height - 100.0f; // The height of the restricted movement area
-    float centerX = size.width / 2;
-    float halfRestrictedWidth = restrictedWidth / 2;
-    float minX = centerX - halfRestrictedWidth;
-    float maxX = centerX + halfRestrictedWidth;
-
-    // Randomly decide the spawn location
-    int spawnOption = rand() % 3; // 0 for center, 1 for right edge, 2 for left edge
-
-    Vec2 spawnPosition;
-    switch (spawnOption) {
-    case 0:
-        spawnPosition = Vec2(centerX, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
-        break;
-    case 1:
-        spawnPosition = Vec2(maxX - SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
-        break;
-    case 2:
-        spawnPosition = Vec2(minX + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
-        break;
-    }
+    Vec2 spawnPosition = getRandomSpawnPosition(size);
 
     auto randomBoom = RandomBoom::create();
     if (randomBoom) {
@@ -361,57 +359,36 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
     }
 }
 
-void Game1Scene::SpawnCollectibleItem(Size size) {
-    float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
-    float centerX = size.width / 2;
-    float halfRestrictedWidth = restrictedWidth / 2;
-    float minX = centerX - halfRestrictedWidth;
-    float maxX = centerX + halfRestrictedWidth;
-
-    Vec2 spawnPosition;
-    bool positionFound = false;
-    int maxAttempts = 10;
-
-    // Try to find a valid spawn position within a limited number of attempts
-    for (int attempts = 0; attempts < maxAttempts; ++attempts) {
-        int spawnOption = rand() % 3; // Randomly select a spawn option
-        switch (spawnOption) {
-        case 0:
-            spawnPosition = Vec2(centerX, size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
-            break;
-        case 1:
-            spawnPosition = Vec2(minX + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
-            break;
-        case 2:
-            spawnPosition = Vec2(maxX - SpriteController::calculateScreenRatio(Constants::FALLINGROCK_PADDING), size.height + SpriteController::calculateScreenRatio(Constants::FALLINGROCK_START_Y));
-            break;
+void Game1Scene::SpawnCollectibleItem(const Size& size) {
+    Vec2 spawnPosition = getRandomSpawnPosition(size);
+    if (!isPositionOccupied(spawnPosition)) {
+        // Randomly choose between HealthItem and AmmoItem
+        CollectibleItem* item = nullptr;
+        if (rand() % 2 == 0) {
+            item = HealthItem::create();
+        }
+        else {
+            item = AmmoItem::create();
         }
 
-        // Check if this position is already occupied
-        if (!isPositionOccupied(spawnPosition)) {
-            positionFound = true; // Valid position found
-            break; // Exit loop if a valid position is found
-        }
-    }
+        if (item) {
+            item->spawn(spawnPosition);
 
-    // If a valid position is found, create and spawn the collectible item
-    if (positionFound) {
-        auto collectible = CollectibleItem::create();
-        if (collectible) {
-            collectible->spawn(spawnPosition); // Set the spawn position
-            auto size = collectible->GetSize(); // Get the size for physics body
-            auto collectibleBody = PhysicsBody::createCircle(size.width / 2); // Create a physics body
-            setPhysicsBodyChar(collectibleBody, 0x03); // Set collision properties
-            collectible->setPhysicsBody(collectibleBody); // Attach body to the item
-            this->addChild(collectible); // Add the collectible to the scene
-            trackUsedPosition(spawnPosition); // Track the used position to avoid future conflicts
+            // Create and set the physics body as a box with reduced size
+            Size reducedSize = Size(item->GetSize().width * 0.65, item->GetSize().height * 0.65); // Reduce size by 10%
+            auto itemBody = PhysicsBody::createBox(reducedSize);
+            setPhysicsBodyChar(itemBody, 0x03);
+            item->setPhysicsBody(itemBody);
+
+            this->addChild(item);
         }
-    }
-    else {
-        // Log a message if no valid spawn position is found
-        CCLOG("No valid spawn position found for CollectibleItem after %d attempts.", maxAttempts);
+        else {
+            CCLOG("Failed to create CollectibleItem");
+        }
     }
 }
+
+
 
 
 void Game1Scene::trackUsedPosition(const Vec2& position) {
@@ -421,7 +398,8 @@ void Game1Scene::trackUsedPosition(const Vec2& position) {
 // Schedule the spawning of collectible items
 void Game1Scene::scheduleCollectibleSpawning() {
     this->schedule([this](float dt) {
-        SpawnCollectibleItem(Director::getInstance()->getVisibleSize()); // Call the function to spawn items
+        Size visibleSize = Director::getInstance()->getVisibleSize();
+        this->SpawnCollectibleItem(visibleSize); // Call the function to spawn items
         }, 5.0f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 

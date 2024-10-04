@@ -28,12 +28,27 @@ void HealthPlayerGame1::initHealthSprites(int health) {
 
 void HealthPlayerGame1::updateHealthSprites(int health) {
     int currentHealth = health;
+
+    // Ensure the number of health sprites matches the current health
+    if (currentHealth > _healthSprites.size()) {
+        int additionalSprites = currentHealth - _healthSprites.size();
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        for (int i = 0; i < additionalSprites; ++i) {
+            auto healthSprite = Sprite::create("assets_game/player/HP_Dot.png");
+            healthSprite->setScale(SpriteController::updateSpriteScale(healthSprite, 0.1f));
+            healthSprite->setPosition(Vec2(SpriteController::calculateScreenRatio(Constants::PLAYER_HEALTH_PADDING_X_START) + (_healthSprites.size() + i) * SpriteController::calculateScreenRatio(Constants::PLAYER_HEALTH_PADDING_X), visibleSize.height - SpriteController::calculateScreenRatio(Constants::PLAYER_HEALTH_PADDING_Y)));
+            this->addChild(healthSprite);
+            _healthSprites.push_back(healthSprite);
+        }
+    }
+
+    // Update visibility of health sprites
     for (int i = 0; i < _healthSprites.size(); i++) {
         if (i < currentHealth) {
             _healthSprites[i]->setVisible(true); // Show sprite if player has health
         }
         else {
-            auto fadeOut = FadeOut::create(0.5f); // 1 second to fade out
+            auto fadeOut = FadeOut::create(0.5f); // 0.5 second to fade out
             auto hideSprite = CallFunc::create([this, i]() {
                 _healthSprites[i]->setVisible(false); // Hide the sprite after fade out
                 });

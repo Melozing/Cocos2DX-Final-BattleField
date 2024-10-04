@@ -66,9 +66,9 @@ void GameController::Victory() {
                 });
 
             if (victoryPanel) {
-                runningScene->addChild(victoryPanel, 100);
                 victoryPanel->setOpacity(0);
-                victoryPanel->runAction(FadeIn::create(1.0f));
+                victoryPanel->runAction(FadeIn::create(1.5f));
+                runningScene->addChild(victoryPanel, 100);
             }
 
             director->pause();

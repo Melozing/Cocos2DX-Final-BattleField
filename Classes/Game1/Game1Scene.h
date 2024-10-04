@@ -12,7 +12,7 @@
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Button/PauseButton.h"
 #include "Scene/BaseScene.h"
-#include "ui/UILoadingBar.h" // Include UILoadingBar
+#include "ui/UILoadingBar.h"
 
 class Game1Scene : public BaseScene {
 public:
@@ -39,8 +39,9 @@ private:
 
     bool _movingUp, _movingDown, _movingLeft, _movingRight;
 
-    PauseButton* _pauseButton; // Add PauseButton member
-    cocos2d::ui::LoadingBar* _loadingBar; // Add LoadingBar member
+    PauseButton* _pauseButton;
+    cocos2d::ui::LoadingBar* _loadingBar;
+    Sprite* border;
 
     void handlePlayerMovement();
     void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
@@ -50,7 +51,6 @@ private:
     void SpawnFallingRockAndBomb(cocos2d::Size size);
     void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
     void SpawnRandomBoom(cocos2d::Size size);
-    void SpawnCollectibleItem(cocos2d::Size size);
     bool isPositionOccupied(const Vec2& position);
     void trackUsedPosition(const Vec2& position);
     void scheduleCollectibleSpawning();
@@ -61,10 +61,13 @@ private:
 
     void checkGameOver();
 
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // Add key press handler
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event); // Add key release handler
+    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
-    void updateLoadingBar(float dt); // Add updateLoadingBar method declaration
+    void updateLoadingBar(float dt);
+
+    void SpawnCollectibleItem(const Size& size);
+    Vec2 getRandomSpawnPosition(const Size& size);
 };
 
 #endif // __GAME1SCENE_SCENE_H__

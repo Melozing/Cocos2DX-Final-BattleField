@@ -19,12 +19,16 @@ bool LoadingScene::init() {
     auto origin = Director::getInstance()->getVisibleOrigin();
 
     // Create and position the loading bar
+    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
+    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_Border.png");
     loadingBar = ui::LoadingBar::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
     loadingBar->setPercent(0);
+    loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.57f));
     loadingBar->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + loadingBar->getContentSize().height + SpriteController::calculateScreenRatio(0.05f)));
 
     // Create and position the border
     border = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_Border.png");
+    border->setScale(SpriteController::updateSpriteScale(_spriteLoadingBorder, 0.6f));
     auto loadingPos = loadingBar->getPosition();
     float loadingBarHeight = loadingBar->getContentSize().height * loadingBar->getScaleY() + loadingBar->getScaleY();
     loadingPos.y += loadingBarHeight;
