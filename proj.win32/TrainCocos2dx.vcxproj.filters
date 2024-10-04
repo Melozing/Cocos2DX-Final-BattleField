@@ -147,6 +147,12 @@
     <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp">
       <Filter>src\Panel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp">
+      <Filter>src\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp">
+      <Filter>src\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -247,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Panel\VictoryPanel.h">
       <Filter>src\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h">
+      <Filter>src\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
+      <Filter>src\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
