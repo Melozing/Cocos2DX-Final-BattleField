@@ -34,7 +34,10 @@ public:
     static const int EnemyTag;
     static const int InitialPosX;
     static const int InitialPosY;
-
+    //game3
+    static const float GroundY;
+    static const float BackgroundSpeed ;
+    static const float PlayerScale3;
 };
 
 #endif // __CONSTANTS_H__
