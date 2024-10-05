@@ -18,7 +18,7 @@ const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
 const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
 //game1
-const float Constants::TIME_TO_WIN = 80.0f;
+const float Constants::TIME_TO_WIN = 15.0f;
 
 //game2
 const float Constants::BulletSpeed = 1500.f;

@@ -1,4 +1,3 @@
-// PlayerAttributes.cpp
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Constants/Constants.h"
 #include "cocos2d.h"
@@ -37,13 +36,10 @@ void PlayerAttributes::SetHealth(int newHealth)
     CCLOG("Player's health set. Current health: %d", health);
 }
 
-int PlayerAttributes::GetAmmo() const
+void PlayerAttributes::IncreaseHealth(int amount)
 {
-    return ammo;
-}
+    health += amount;
+    if (health >= Constants::PLAYER_HEALTH) health = Constants::PLAYER_HEALTH; // Ensure health does not exceed max value
 
-void PlayerAttributes::SetAmmo(int newAmmo)
-{
-    ammo = newAmmo;
-    CCLOG("Player's ammo set. Current ammo: %d", ammo);
+    CCLOG("Player's health increased. Current health: %d", health);
 }

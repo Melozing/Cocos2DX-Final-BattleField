@@ -31,6 +31,7 @@ bool Game1Scene::init() {
     srand(static_cast<unsigned int>(time(nullptr)));
 
     _isGameOver = false;
+	PlayerAttributes::getInstance().SetHealth(Constants::PLAYER_HEALTH); // Set player health (can be changed as needed
     _playerAttributes = &PlayerAttributes::getInstance(); // Use singleton instance
     _canTakeDamage = true;
 
@@ -174,7 +175,16 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
         auto collectible = static_cast<CollectibleItem*>(bodyA->getNode() == _player ? bodyB->getNode() : bodyA->getNode());
         if (collectible) {
             collectible->applyEffect(); // Apply the effect of the collectible item
-            _healthPlayerGame1->updateHealthSprites(PlayerAttributes::getInstance().GetHealth());
+
+            // Check the type of collectible item and apply the corresponding effect
+            if (auto healthItem = dynamic_cast<HealthItem*>(collectible)) {
+                _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
+            }
+            else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
+                _playerAttributes->SetAmmo(_playerAttributes->GetAmmo() + ammoItem->getAmmoValue()); // Increase player's ammo
+                // Update ammo display if you have one
+            }
+
             collectible->removeFromParentAndCleanup(true);
         }
     }

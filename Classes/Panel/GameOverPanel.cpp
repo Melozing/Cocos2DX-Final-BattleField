@@ -1,4 +1,4 @@
-#include "GameOverPanel.h"
+#include "Panel/GameOverPanel.h"
 #include "ui/CocosGUI.h"
 #include "Controller/GameController.h"
 

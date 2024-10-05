@@ -23,8 +23,9 @@ public:
     int GetHealth() const;                // Returns the current health
     void SetHealth(int newHealth);        // Sets the player's health to a specific value
 
-    int GetAmmo() const;                  // Returns the current ammo
-    void SetAmmo(int newAmmo);            // Sets the player's ammo to a specific value
+    void IncreaseHealth(int amount);      // Increases player's health
+    void SetAmmo(int ammo) { this->ammo = ammo; }
+    int GetAmmo() const { return ammo; }
 };
 
 #endif // PLAYERATTRIBUTES_H
