@@ -1,26 +1,27 @@
 // Bullet.cpp
-#include "Game3/Bullet/Bullet3.h"
+#include "Bullet/Bullet.h"
 #include "Constants/Constants.h"
 USING_NS_CC;
 
-Bullet3::Bullet3()
+Bullet::Bullet()
     : _direction(Vec2::ZERO),
-    _speed(0.0f)
+    _speed(0.0f),
+    _active(false)
 {
 }
 
-Bullet3::~Bullet3()
+Bullet::~Bullet()
 {
 }
 
-Bullet3* Bullet3::createBullet(const Vec2& direction, float speed)
+Bullet* Bullet::createBullet(const std::string& image, const Vec2& direction, float speed)
 {
-    Bullet3* bullet = new (std::nothrow) Bullet3();
-    if (bullet && bullet->init())
+    CCLOG("createBullet called");
+
+    Bullet* bullet = new (std::nothrow) Bullet();
+    if (bullet && bullet->initWithProperties(image, direction, speed))
     {
         bullet->autorelease();
-        bullet->setDirection(direction);
-        bullet->setSpeed(speed);
         return bullet;
     }
     else
@@ -30,11 +31,11 @@ Bullet3* Bullet3::createBullet(const Vec2& direction, float speed)
     }
 }
 
-bool Bullet3::init()
+bool Bullet::initWithProperties(const std::string& image, const Vec2& direction, float speed)
 {
-    if (!Sprite::initWithFile("assets_game/bullet/1.png"))
+    if (!Sprite::initWithFile(image))
     {
-        CCLOG("Failed to load bullet image");
+        CCLOG("Failed to load bullet image: %s", image.c_str());
         return false;
     }
 
@@ -45,13 +46,17 @@ bool Bullet3::init()
 
     this->setTag(Constants::BulletTag); // Set the tag for the bullet
 
+    setDirection(direction);
+    setSpeed(speed);
+
     this->scheduleUpdate();
     return true;
 }
 
-
-void Bullet3::update(float delta)
+void Bullet::update(float delta)
 {
+    if (!_active) return;
+
     Vec2 position = this->getPosition();
     position += _direction * _speed * delta;
     this->setPosition(position);
@@ -60,17 +65,34 @@ void Bullet3::update(float delta)
     auto winSize = Director::getInstance()->getWinSize();
     if (position.x < 0 || position.x > winSize.width || position.y < 0 || position.y > winSize.height)
     {
-        this->removeFromParentAndCleanup(true);
+        this->deactivate();
     }
 }
 
-void Bullet3::setDirection(const Vec2& direction)
+void Bullet::setDirection(const Vec2& direction)
 {
     _direction = direction;
     _direction.normalize();
 }
 
-void Bullet3::setSpeed(float speed)
+void Bullet::setSpeed(float speed)
 {
     _speed = speed;
+}
+
+void Bullet::activate()
+{
+    _active = true;
+    this->setVisible(true);
+}
+
+void Bullet::deactivate()
+{
+    _active = false;
+    this->setVisible(false);
+}
+
+bool Bullet::isActive() const
+{
+    return _active;
 }
