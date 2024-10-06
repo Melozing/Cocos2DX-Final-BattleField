@@ -56,9 +56,10 @@ bool PlayerGame3::init()
 void PlayerGame3::initAnimation()
 {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
-
+    
     modelCharac = Sprite::createWithSpriteFrameName("tank_1.png");
     this->addChild(modelCharac);
+   
 
     // Create idle animation (only needs 8 frames)
     auto idleAnimation = createAnimation("tank_", 30, 0.1f);

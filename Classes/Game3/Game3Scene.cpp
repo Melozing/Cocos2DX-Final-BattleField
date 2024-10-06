@@ -1,10 +1,13 @@
 ﻿#include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
+#include "Game3/enemy/EnemyPlan3.h"
+
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
 #include "Background/Background3.h"
 #include "Game2/Cursor/Cursor.h"
+
 
 
 USING_NS_CC;
@@ -24,7 +27,7 @@ bool Game3Scene::init() {
         return false;
     }
 
-    
+    // add sprite background
     auto background3 = Background3::createBackground("assets_game/gameplay/Game3.2.png");
     if (!background3) {
         return false; 
@@ -32,7 +35,7 @@ bool Game3Scene::init() {
 
     this->addChild(background3);
 
-
+    //add sprite playergame3
     auto player = PlayerGame3::createPlayerGame3();
     if (!player)
     {
@@ -41,7 +44,13 @@ bool Game3Scene::init() {
     }
     this->addChild(player);
    
-
+    //add sprite enemy game 3
+    auto enemyPlane = EnemyPlan3::createEnemyPlan3();
+    if (!enemyPlane) {
+        CCLOG("Failed to create EnemyPlane3");
+        return false;
+    }
+    this->addChild(enemyPlane);
 
    /* auto eventListener = EventListenerKeyboard::create();
 
