@@ -156,6 +156,21 @@
     <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
       <Filter>src\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Game3Scene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
+      <Filter>src\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Bullet\Bullet3.cpp">
+      <Filter>src\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
+      <Filter>src\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp">
+      <Filter>src\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -264,6 +279,21 @@
       <Filter>src\Items</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
+      <Filter>src\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Game3Scene.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
+      <Filter>src\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Bullet\Bullet3.h">
+      <Filter>src\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Background\Background3.h">
+      <Filter>src\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h">
       <Filter>src\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

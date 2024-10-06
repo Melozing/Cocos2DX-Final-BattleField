@@ -27,6 +27,6 @@ bool MainMenu::init() {
 }
 
 void MainMenu::startLoading() {
-    auto loadingScene = LoadingScene::createScene("Game2Scene"); // Use the new scene name
+    auto loadingScene = LoadingScene::createScene("Game2Scene");
     Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene)); // Replace with LoadingScene
 }

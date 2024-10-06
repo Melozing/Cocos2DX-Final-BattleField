@@ -1,6 +1,7 @@
 #include "SceneController.h"
 #include "Game1/Game1Scene.h"
 #include "Game2/Game2Scene.h"
+#include "Game3/Game3Scene.h"
 
 SceneController* SceneController::instance = nullptr;
 
@@ -41,5 +42,8 @@ void SceneController::registerScenes() {
 
     registerScene("Game2Scene", []() {
         return Game2Scene::createScene();
+        });
+    registerScene("Game3Scene", []() {
+        return Game3Scene::createScene();
         });
 }
