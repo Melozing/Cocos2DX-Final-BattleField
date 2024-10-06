@@ -151,6 +151,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Bullet\Bullet.cpp" />
+    <ClCompile Include="..\Classes\Bullet\BulletManager.cpp" />
+    <ClCompile Include="..\Classes\Bullet\BulletPool.cpp" />
     <ClCompile Include="..\Classes\Button\PauseButton.cpp" />
     <ClCompile Include="..\Classes\Constants\Constants.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
@@ -170,14 +173,12 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\HealthPlayerGame1.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp" />
-    <ClCompile Include="..\Classes\Game2\Bullet\Bullet.cpp" />
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Game2Scene.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp" />
     <ClCompile Include="..\Classes\Game3\Background\Background3.cpp" />
-    <ClCompile Include="..\Classes\Game3\Bullet\Bullet3.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp" />
     <ClCompile Include="..\Classes\Game3\Game3Scene.cpp" />
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp" />
@@ -194,6 +195,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\Bullet\Bullet.h" />
+    <ClInclude Include="..\Classes\Bullet\BulletManager.h" />
+    <ClInclude Include="..\Classes\Bullet\BulletPool.h" />
     <ClInclude Include="..\Classes\Button\PauseButton.h" />
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
@@ -213,14 +217,12 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Items\HealthItem.h" />
     <ClInclude Include="..\Classes\Game1\Player\HealthPlayerGame1.h" />
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h" />
-    <ClInclude Include="..\Classes\Game2\Bullet\Bullet.h" />
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h" />
     <ClInclude Include="..\Classes\Game2\Game2Scene.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h" />
     <ClInclude Include="..\Classes\Game3\Background\Background3.h" />
-    <ClInclude Include="..\Classes\Game3\Bullet\Bullet3.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h" />
     <ClInclude Include="..\Classes\Game3\Game3Scene.h" />
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h" />

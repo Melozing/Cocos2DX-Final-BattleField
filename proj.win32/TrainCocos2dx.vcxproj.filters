@@ -111,9 +111,6 @@
     <ClCompile Include="..\Classes\utils\MathFunction.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Bullet\Bullet.cpp">
-      <Filter>src\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
@@ -162,14 +159,20 @@
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
       <Filter>src\Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\Bullet\Bullet3.cpp">
-      <Filter>src\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
       <Filter>src\Background</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp">
       <Filter>src\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\Bullet.cpp">
+      <Filter>src\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\BulletPool.cpp">
+      <Filter>src\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
+      <Filter>src\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +239,6 @@
     <ClInclude Include="..\Classes\utils\MathFunction.h">
       <Filter>src\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Bullet\Bullet.h">
-      <Filter>src\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Scene\LoadingScene.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
@@ -287,14 +287,20 @@
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
       <Filter>src\Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game3\Bullet\Bullet3.h">
-      <Filter>src\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game3\Background\Background3.h">
       <Filter>src\Background</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h">
       <Filter>src\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\Bullet.h">
+      <Filter>src\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\BulletPool.h">
+      <Filter>src\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\BulletManager.h">
+      <Filter>src\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

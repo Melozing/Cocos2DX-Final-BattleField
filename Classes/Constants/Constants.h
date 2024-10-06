@@ -1,6 +1,6 @@
 #ifndef __CONSTANTS_H__
 #define __CONSTANTS_H__
-#include "cocos2d.h";
+#include "cocos2d.h"
 
 class Constants {
 public:

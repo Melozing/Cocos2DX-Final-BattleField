@@ -1,5 +1,7 @@
-﻿#include "PlayerGame3.h"
+﻿// PlayerGame3.cpp
+#include "PlayerGame3.h"
 #include "Constants/Constants.h"
+#include "Bullet/Bullet.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -7,14 +9,14 @@ USING_NS_CC;
 PlayerGame3::PlayerGame3()
     : _velocity(Vec2::ZERO),
     _speed(Constants::PlayerSpeed),
-    _isMoving(false)
+    _isMoving(false),
+    bulletManager(nullptr)
 {
 }
 
 PlayerGame3::~PlayerGame3()
 {
-    CC_SAFE_RELEASE(idleAnimate);
-    CC_SAFE_RELEASE(moveAnimate);
+    delete bulletManager;
 }
 
 PlayerGame3* PlayerGame3::createPlayerGame3()
@@ -58,12 +60,17 @@ bool PlayerGame3::init()
     keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerGame3::onKeyReleased, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
+    // Add mouse event listener
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame3::onMouseMove, this);
+    mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame3::onMouseDown, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     // Schedule update method
     this->scheduleUpdate();
+
+    // Initialize BulletManager
+    bulletManager = new BulletManager(100, "assets_game/player/1.png");
 
     return true;
 }
@@ -75,55 +82,8 @@ void PlayerGame3::initAnimation()
     modelCharac = Sprite::createWithSpriteFrameName("tank_1.png");
     this->addChild(modelCharac);
 
-    // Create idle animation (only needs 8 frames)
-    auto idleAnimation = createAnimation("tank_", 30, 0.1f);
-    idleAnimate = Animate::create(idleAnimation);
-    idleAnimate->retain();
-
-    // Create move animation (8 frames)
-    auto moveAnimation = createAnimation("tank_", 30, 0.07f);
-    moveAnimate = Animate::create(moveAnimation);
-    moveAnimate->retain();
-
-    // Start with idle animation
-    startIdleAnimation();
-}
-
-Animation* PlayerGame3::createAnimation(const std::string& name, int frameCount, float delay)
-{
-    Vector<SpriteFrame*> animFrames;
-    for (int i = 1; i <= frameCount; ++i) // Only iterate over available frames
-    {
-        std::string frameName = name + std::to_string(i) + ".png";
-        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName);
-        if (frame)
-        {
-            animFrames.pushBack(frame);
-        }
-    }
-    return Animation::createWithSpriteFrames(animFrames, delay);
-}
-
-void PlayerGame3::startMovementAnimation()
-{
-    if (!modelCharac->getActionByTag(1)) // Check if no animation is running
-    {
-        modelCharac->stopAllActions();
-        auto repeatAnimate = RepeatForever::create(moveAnimate);
-        repeatAnimate->setTag(1);
-        modelCharac->runAction(repeatAnimate);
-    }
-}
-
-void PlayerGame3::startIdleAnimation()
-{
-    if (!modelCharac->getActionByTag(1)) // Check if no animation is running
-    {
-        modelCharac->stopAllActions();
-        auto repeatAnimate = RepeatForever::create(idleAnimate);
-        repeatAnimate->setTag(1);
-        modelCharac->runAction(repeatAnimate);
-    }
+    auto animateCharac = Animate::create(createAnimation("tank_", 30, 0.07f));
+    modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
 void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -135,6 +95,9 @@ void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
         break;
     case EventKeyboard::KeyCode::KEY_D:
         moveRight();
+        break;
+    case EventKeyboard::KeyCode::KEY_SPACE:
+        shootBullet();
         break;
     default:
         break;
@@ -158,41 +121,18 @@ void PlayerGame3::moveLeft()
 {
     _velocity.x = -2;
     _isMoving = true;
-    startMovementAnimation();
 }
 
 void PlayerGame3::moveRight()
 {
     _velocity.x = 2;
     _isMoving = true;
-    startMovementAnimation();
 }
 
 void PlayerGame3::stopMovement()
 {
     _velocity.x = 0;
     _isMoving = false;
-    startIdleAnimation();
-}
-
-void PlayerGame3::update(float delta)
-{
-    Vec2 position = this->getPosition();
-    position += _velocity * _speed * delta;
-    this->setPosition(position);
-
-    // Only start animations when there's a change in movement
-    if (_isMoving && !modelCharac->getActionByTag(1))
-    {
-        startMovementAnimation();
-    }
-    else if (!_isMoving && !modelCharac->getActionByTag(1))
-    {
-        startIdleAnimation();
-    }
-
-    // Update turret rotation
-    updateTurretRotation(_mousePos);
 }
 
 void PlayerGame3::movePlayer(const Vec2& direction) {
@@ -217,13 +157,14 @@ void PlayerGame3::updateTurret() {
     updateTurretRotation(targetPosition);
 
     // Calculate angle from tank to mouse position
-    Vec2 direction = mousePosition - this->getPosition();
+    Vec2 direction = _mousePos - this->getPosition();
     float angle = direction.getAngle(); // Get angle between movement direction and X-axis
     angle = CC_RADIANS_TO_DEGREES(angle); // Convert from radians to degrees
 
     // Rotate turret
     setTurretRotation(angle);
 }
+
 void PlayerGame3::updateTurretRotation(const Vec2& targetPosition)
 {
     if (turretSprite)
@@ -246,15 +187,38 @@ void PlayerGame3::setTurretRotation(float angle)
     if (turretSprite)
     {
         // Adjust the angle so that the top of the turret points towards the target
-        turretSprite->setRotation(- angle + 90);
+        turretSprite->setRotation(-angle + 90);
     }
 }
 
+void PlayerGame3::onMouseDown(Event* event)
+{
+    EventMouse* e = (EventMouse*)event;
+    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
+    {
+        CCLOG("Mouse left button clicked");
+        shootBullet();
+    }
+}
 
+void PlayerGame3::shootBullet()
+{
+    CCLOG("shootBullet called");
 
+    // Calculate the direction from the turret to the mouse position
+    Vec2 direction = _mousePos - this->getPosition();
+    direction.normalize();
 
+    // Calculate the position of the turret's tip
+    float turretAngle = CC_DEGREES_TO_RADIANS(turretSprite->getRotation() - 90); // Adjust for the sprite's rotation
+    Vec2 turretTip = turretSprite->getPosition() + Vec2(cos(turretAngle), sin(turretAngle)) * turretSprite->getContentSize().height;
 
+    // Convert turretTip to world coordinates
+    Vec2 worldTurretTip = turretSprite->convertToWorldSpace(Vec2(turretSprite->getContentSize().width / 2, turretSprite->getContentSize().height));
 
+    // Use BulletManager to spawn bullet
+    bulletManager->SpawnBullet(worldTurretTip, direction, 1600.0f);
+}
 
 void PlayerGame3::onMouseMove(Event* event)
 {
@@ -264,4 +228,21 @@ void PlayerGame3::onMouseMove(Event* event)
     // Invert the y-coordinate
     auto winSize = Director::getInstance()->getWinSize();
     _mousePos.y = winSize.height - _mousePos.y;
+
+    CCLOG("Mouse moved to position: (%f, %f)", _mousePos.x, _mousePos.y);
 }
+
+void PlayerGame3::update(float delta)
+{
+    Vec2 position = this->getPosition();
+    position += _velocity * _speed * delta;
+    this->setPosition(position);
+
+    // Update BulletManager
+    bulletManager->Update(delta);
+
+    // Update turret rotation
+    updateTurretRotation(_mousePos);
+}
+
+
