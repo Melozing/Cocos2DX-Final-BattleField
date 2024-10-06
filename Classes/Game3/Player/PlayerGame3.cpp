@@ -41,13 +41,11 @@ bool PlayerGame3::init()
     this->setScale(Constants::PlayerScale3);
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
-
-
-    // Tạo sprite cho nòng súng và thêm vào xe tăng
+    // Create turret sprite and add to tank
     turretSprite = Sprite::create("assets_game/player/tank_barrel_2.png");
     if (turretSprite) {
-        // Đặt vị trí nòng súng tại điểm giữa phía trên của xe tăng
-        turretSprite->setPosition(Vec2((this->getContentSize().width / 2)+10, this->getContentSize().height+50.0f));
+        turretSprite->setAnchorPoint(Vec2(0.5, 0.13)); // Center-bottom
+        turretSprite->setPosition(Vec2((this->getContentSize().width / 2) + 10, this->getContentSize().height + 50.0f));
         this->addChild(turretSprite);
     }
     else {
@@ -59,7 +57,6 @@ bool PlayerGame3::init()
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame3::onKeyPressed, this);
     keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerGame3::onKeyReleased, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
-
 
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame3::onMouseMove, this);
@@ -74,10 +71,9 @@ bool PlayerGame3::init()
 void PlayerGame3::initAnimation()
 {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
-    
+
     modelCharac = Sprite::createWithSpriteFrameName("tank_1.png");
     this->addChild(modelCharac);
-   
 
     // Create idle animation (only needs 8 frames)
     auto idleAnimation = createAnimation("tank_", 30, 0.1f);
@@ -194,48 +190,39 @@ void PlayerGame3::update(float delta)
     {
         startIdleAnimation();
     }
-    // Cập nhật vị trí và góc nòng súng
 
-
-     // Cập nhật vị trí và góc nòng súng
-    updateTurretRotation(_mousePos); // Sử dụng đúng biến
-
+    // Update turret rotation
+    updateTurretRotation(_mousePos);
 }
 
 void PlayerGame3::movePlayer(const Vec2& direction) {
-    // Di chuyển player theo hướng đã chỉ định
+    // Move player in the specified direction
     this->setPosition(this->getPosition() + direction);
 
-    // Cập nhật vị trí của nòng súng mỗi khi xe tăng di chuyển
+    // Update turret position whenever the tank moves
     this->updateTurret();
 }
 
 void PlayerGame3::updateTurret() {
-    // Đảm bảo nòng súng di chuyển theo xe tăng
+    // Ensure the turret moves with the tank
     if (turretSprite) {
         turretSprite->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height));
     }
     if (turretSprite) {
-        float offsetY = 60.0f; // Tương đương 1 cm trong pixels
-        turretSprite->setPosition(Vec2(this->getContentSize().width , this->getContentSize().height + offsetY));
+        float offsetY = 60.0f; // Equivalent to 1 cm in pixels
+        turretSprite->setPosition(Vec2(this->getContentSize().width, this->getContentSize().height + offsetY));
     }
-    // Cập nhật góc xoay của nòng súng theo vị trí của chuột hoặc vị trí mục tiêu
-    Vec2 targetPosition = Vec2(/** lấy vị trí mục tiêu hoặc chuột **/);
+    // Update turret rotation based on mouse position or target position
+    Vec2 targetPosition = Vec2(/** get target or mouse position **/);
     updateTurretRotation(targetPosition);
 
-    // Tính toán góc từ xe tăng đến vị trí chuột
+    // Calculate angle from tank to mouse position
     Vec2 direction = mousePosition - this->getPosition();
-    float angle = direction.getAngle(); // Lấy góc giữa hướng di chuyển và trục X
-    angle = CC_RADIANS_TO_DEGREES(angle); // Chuyển đổi từ radian sang độ
+    float angle = direction.getAngle(); // Get angle between movement direction and X-axis
+    angle = CC_RADIANS_TO_DEGREES(angle); // Convert from radians to degrees
 
-    // Xoay nòng súng
+    // Rotate turret
     setTurretRotation(angle);
-}
-void PlayerGame3::setTurretRotation(float angle) {
-    // Xoay nòng súng theo góc chỉ định
-    if (turretSprite) {
-        turretSprite->setRotation(angle);
-    }
 }
 void PlayerGame3::updateTurretRotation(const Vec2& targetPosition)
 {
@@ -245,10 +232,29 @@ void PlayerGame3::updateTurretRotation(const Vec2& targetPosition)
         float angle = direction.getAngle();
         angle = CC_RADIANS_TO_DEGREES(angle);
 
-        // Xoay nòng súng
+        // Adjust the angle to be in the range [0, 180] degrees
+        if (angle < 0.0f) angle += 180.0f;
+        if (angle > 180.0f) angle = 180.0f;
+
+        // Rotate the turret
         setTurretRotation(angle);
     }
 }
+
+void PlayerGame3::setTurretRotation(float angle)
+{
+    if (turretSprite)
+    {
+        // Adjust the angle so that the top of the turret points towards the target
+        turretSprite->setRotation(- angle + 90);
+    }
+}
+
+
+
+
+
+
 
 void PlayerGame3::onMouseMove(Event* event)
 {
@@ -259,15 +265,3 @@ void PlayerGame3::onMouseMove(Event* event)
     auto winSize = Director::getInstance()->getWinSize();
     _mousePos.y = winSize.height - _mousePos.y;
 }
-
-//void PlayerGame3::onMouseDown(Event* event)
-//{
-//    EventMouse* e = (EventMouse*)event;
-//    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
-//    {
-//        auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-//        Vec2 pos = this->getPosition();
-//        Vec2 dirToShoot = mousePos - pos;
-//        shootBullet(dirToShoot);
-//    }
-//}
