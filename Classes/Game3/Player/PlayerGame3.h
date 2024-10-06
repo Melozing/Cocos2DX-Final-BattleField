@@ -23,7 +23,7 @@ public:
 
     void startMovementAnimation();
     void startIdleAnimation();
-
+    
 private:
     void initAnimation();
 

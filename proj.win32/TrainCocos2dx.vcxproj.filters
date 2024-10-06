@@ -168,6 +168,9 @@
     <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
       <Filter>src\Background</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp">
+      <Filter>src\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\Background\Background3.h">
       <Filter>src\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h">
+      <Filter>src\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
