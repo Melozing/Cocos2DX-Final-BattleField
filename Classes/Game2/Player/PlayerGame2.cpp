@@ -47,10 +47,10 @@ bool PlayerGame2::init() {
     physicsBody->setGravityEnable(false); // Disable gravity
     this->setPhysicsBody(physicsBody);
     // Add mouse event listener
-    auto mouseListener = EventListenerMouse::create();
+ auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
     mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame2::onMouseDown, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);   
 
     // Add keyboard event listener
     auto keyboardListener = EventListenerKeyboard::create();
