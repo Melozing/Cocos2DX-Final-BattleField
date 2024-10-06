@@ -9,7 +9,7 @@ public:
     static EnemyPlan3* createEnemyPlan3();
 
     virtual bool init();
-    void move();  
+    void move(const cocos2d::Size& visibleSize);
 
     CREATE_FUNC(EnemyPlan3);
 };
