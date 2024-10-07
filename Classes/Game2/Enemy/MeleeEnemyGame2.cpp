@@ -3,7 +3,7 @@
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "Game2/Player/PlayerGame2.h"
-#include "Game2/Bullet/Bullet.h"
+#include "Bullet/Bullet.h"
 
 USING_NS_CC;
 

@@ -3,7 +3,7 @@
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "cocos2d.h"
-#include "Game2/Bullet/Bullet.h"
+#include "Bullet/Bullet.h"
 
 USING_NS_CC;
 
@@ -11,12 +11,14 @@ PlayerGame2::PlayerGame2()
     : _mousePos(Vec2::ZERO),
     _velocity(Vec2::ZERO),
     _speed(Constants::PlayerSpeed),
-    _isMoving(false)
+    _isMoving(false),
+    bulletManager(nullptr)
 {
 }
 
 PlayerGame2::~PlayerGame2()
 {
+    delete bulletManager;
 }
 
 PlayerGame2* PlayerGame2::createPlayerGame2()
@@ -46,6 +48,7 @@ bool PlayerGame2::init() {
     physicsBody->setContactTestBitmask(true);
     physicsBody->setGravityEnable(false); // Disable gravity
     this->setPhysicsBody(physicsBody);
+
     // Add mouse event listener
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
@@ -61,8 +64,12 @@ bool PlayerGame2::init() {
     // Schedule update method
     this->scheduleUpdate();
 
+    // Khởi tạo BulletManager
+    bulletManager = new BulletManager(100, "assets_game/player/shot.png");
+
     return true;
 }
+
 
 void PlayerGame2::initAnimation()
 {
@@ -222,10 +229,10 @@ void PlayerGame2::RotateToMouse()
 
 void PlayerGame2::shootBullet(const Vec2& direction)
 {
-    auto bullet = Bullet::createBullet(direction, Constants::BulletSpeed);
-    bullet->setPosition(this->getPosition());
-    this->getParent()->addChild(bullet);
-    bullet->setRotation(this->getRotation());
+    CCLOG("shootBullet called");
+
+    Vec2 normalizedDirection = direction.getNormalized();
+    bulletManager->SpawnBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed);
 }
 void PlayerGame2::die()
 {
