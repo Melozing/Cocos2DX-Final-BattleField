@@ -11,14 +11,14 @@ const float Constants::FALLINGROCK_PADDING = 0.006f;
 //PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
-const float Constants::PLAYER_MOVESPEED = 2.0f;
+const float Constants::PLAYER_MOVESPEED = 3.0f;
 const int Constants::PLAYER_HEALTH = 3;
 
 const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
 const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
 //game1
-const float Constants::TIME_TO_WIN = 15.0f;
+const float Constants::TIME_TO_WIN = 120.0f;
 
 //game2
 const float Constants::BulletSpeed = 1500.f;

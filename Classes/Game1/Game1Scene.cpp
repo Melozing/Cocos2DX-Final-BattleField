@@ -180,10 +180,6 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
             if (auto healthItem = dynamic_cast<HealthItem*>(collectible)) {
                 _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
             }
-            else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
-                _playerAttributes->SetAmmo(_playerAttributes->GetAmmo() + ammoItem->getAmmoValue()); // Increase player's ammo
-                // Update ammo display if you have one
-            }
 
             collectible->removeFromParentAndCleanup(true);
         }
@@ -191,6 +187,7 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 
     return true;
 }
+
 
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
@@ -350,7 +347,8 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
             flyingBullet->removeFromParent();
             }), nullptr);
 
-        auto flyingBulletBody = PhysicsBody::createBox(flyingBullet->GetSize());
+        Size reducedSize = Size(flyingBullet->GetSize().width * 0.65, flyingBullet->GetSize().height * 0.65); // Reduce size by 10%
+        auto flyingBulletBody = PhysicsBody::createBox(reducedSize);
         setPhysicsBodyChar(flyingBulletBody, 0x02);
         flyingBullet->setPhysicsBody(flyingBulletBody);
 
