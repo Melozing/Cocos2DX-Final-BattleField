@@ -5,10 +5,8 @@
 
 SceneController* SceneController::instance = nullptr;
 
-SceneController* SceneController::getInstance()
-{
-    if (instance == nullptr)
-    {
+SceneController* SceneController::getInstance() {
+    if (instance == nullptr) {
         instance = new SceneController();
         instance->init();
     }
@@ -16,19 +14,20 @@ SceneController* SceneController::getInstance()
 }
 
 bool SceneController::init() {
+    registerScenes();
     return true;
 }
 
 Scene* SceneController::getScene(const std::string& sceneName) {
-    return createScene(sceneName); // Use your createScene method to get the scene.
+    return createScene(sceneName);
 }
 
 Scene* SceneController::createScene(const std::string& sceneName) {
     auto it = sceneMap.find(sceneName);
     if (it != sceneMap.end()) {
-        return it->second(); // Call the function to create the scene
+        return it->second();
     }
-    return nullptr; // Return nullptr if the scene is not found
+    return nullptr;
 }
 
 void SceneController::registerScene(const std::string& sceneName, std::function<Scene* ()> createFunc) {

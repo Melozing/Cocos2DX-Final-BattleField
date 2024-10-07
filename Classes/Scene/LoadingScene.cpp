@@ -4,16 +4,16 @@
 #include "Controller/SceneController.h"
 #include "Controller/SpriteController.h"
 
-Scene* LoadingScene::createScene(const std::string& sceneName) {
-    auto scene = LoadingScene::create();
-    scene->setNextSceneName(sceneName);
+Scene* LoadingScene::createScene(const std::string& nextSceneName) {
+    auto scene = Scene::create();
+    auto layer = LoadingScene::create();
+    layer->setNextSceneName(nextSceneName);
+    scene->addChild(layer);
     return scene;
 }
 
 bool LoadingScene::init() {
-    if (!Scene::init()) {
-        return false;
-    }
+    if (!Scene::init()) return false;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
@@ -45,6 +45,12 @@ bool LoadingScene::init() {
         startLoading();
         }, 0.5f, "start_loading_key"); // Delay before starting the loading
 
+    this->scheduleOnce([this](float) {
+        auto nextScene = SceneController::getInstance()->getScene(nextSceneName);
+        if (nextScene) {
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5, nextScene));
+        }
+        }, 2.0f, "loading_key");
     return true;
 }
 

@@ -31,6 +31,7 @@ bool Game1Scene::init() {
     srand(static_cast<unsigned int>(time(nullptr)));
 
     _isGameOver = false;
+	PlayerAttributes::getInstance().SetHealth(Constants::PLAYER_HEALTH); // Set player health (can be changed as needed
     _playerAttributes = &PlayerAttributes::getInstance(); // Use singleton instance
     _canTakeDamage = true;
 
@@ -174,13 +175,19 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
         auto collectible = static_cast<CollectibleItem*>(bodyA->getNode() == _player ? bodyB->getNode() : bodyA->getNode());
         if (collectible) {
             collectible->applyEffect(); // Apply the effect of the collectible item
-            _healthPlayerGame1->updateHealthSprites(PlayerAttributes::getInstance().GetHealth());
+
+            // Check the type of collectible item and apply the corresponding effect
+            if (auto healthItem = dynamic_cast<HealthItem*>(collectible)) {
+                _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
+            }
+
             collectible->removeFromParentAndCleanup(true);
         }
     }
 
     return true;
 }
+
 
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
@@ -340,7 +347,8 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
             flyingBullet->removeFromParent();
             }), nullptr);
 
-        auto flyingBulletBody = PhysicsBody::createBox(flyingBullet->GetSize());
+        Size reducedSize = Size(flyingBullet->GetSize().width * 0.65, flyingBullet->GetSize().height * 0.65); // Reduce size by 10%
+        auto flyingBulletBody = PhysicsBody::createBox(reducedSize);
         setPhysicsBodyChar(flyingBulletBody, 0x02);
         flyingBullet->setPhysicsBody(flyingBulletBody);
 

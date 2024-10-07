@@ -10,9 +10,6 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Background">
-      <UniqueIdentifier>{3e661f6c-f412-42af-9cf0-6438b5d93150}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Constants">
       <UniqueIdentifier>{b6ecde5c-bbce-4449-bf17-54d9eae09ce1}</UniqueIdentifier>
     </Filter>
@@ -34,17 +31,35 @@
     <Filter Include="src\Bullet">
       <UniqueIdentifier>{6c30be57-c649-417d-a9b9-744e2cf7a5a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\PlayerHealth">
-      <UniqueIdentifier>{b0209af1-01b7-487b-8044-544a741901eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Items">
       <UniqueIdentifier>{f9310f16-26c7-4a8e-906f-f4861a892bff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Panel">
-      <UniqueIdentifier>{437cedd3-cb47-4d24-a179-ec323ff2e4bb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\UXUI">
       <UniqueIdentifier>{ac4203b3-0586-4f6b-ba69-d8d6a4016278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UXUI\Background">
+      <UniqueIdentifier>{3e661f6c-f412-42af-9cf0-6438b5d93150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UXUI\Panel">
+      <UniqueIdentifier>{437cedd3-cb47-4d24-a179-ec323ff2e4bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\PlayerHealth">
+      <UniqueIdentifier>{b0209af1-01b7-487b-8044-544a741901eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Enemy\EnemyGame1">
+      <UniqueIdentifier>{e912a495-fd84-4c69-8b7c-42f4d19ee22a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Enemy\EnemyGame2">
+      <UniqueIdentifier>{c537c4c3-5228-4afc-bd55-e634aa85b349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Enemy\EnemyPool">
+      <UniqueIdentifier>{6826cb3a-b701-4e35-b0e1-ba8cb0d02a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Player\PlayerGame1">
+      <UniqueIdentifier>{e9128f5a-d130-4f6f-8b73-0f59d7a825bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Player\PlayerGame2">
+      <UniqueIdentifier>{7a0cbbf1-3080-47b3-8f8b-92badcc3ad05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,32 +75,8 @@
     <ClCompile Include="..\Classes\Game1\Game1Scene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp">
-      <Filter>src\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\Enemy.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\EnemyFactory.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\EnemyPool.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FallingRock.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Background\Background.cpp">
-      <Filter>src\Background</Filter>
+      <Filter>src\UXUI\Background</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Controller\GameController.cpp">
       <Filter>src\Controller</Filter>
@@ -95,12 +86,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Controller\SpriteController.cpp">
       <Filter>src\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
-      <Filter>src\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
-      <Filter>src\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Game2Scene.cpp">
       <Filter>src\Scene</Filter>
@@ -124,7 +109,7 @@
       <Filter>src\Items</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp">
-      <Filter>src\Panel</Filter>
+      <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp">
       <Filter>src\Scene</Filter>
@@ -135,14 +120,11 @@
     <ClCompile Include="..\Classes\Scene\BaseScene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp">
-      <Filter>src\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Panel\PausePanel.cpp">
-      <Filter>src\Panel</Filter>
+      <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp">
-      <Filter>src\Panel</Filter>
+      <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp">
       <Filter>src\Items</Filter>
@@ -150,8 +132,41 @@
     <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp">
       <Filter>src\Items</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingRock.cpp">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp">
+      <Filter>src\Enemy\EnemyGame2</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
-      <Filter>src\Enemy</Filter>
+      <Filter>src\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\Enemy.cpp">
+      <Filter>src\Enemy\EnemyPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\EnemyFactory.cpp">
+      <Filter>src\Enemy\EnemyPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\EnemyPool.cpp">
+      <Filter>src\Enemy\EnemyPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp">
+      <Filter>src\Player\PlayerGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
+      <Filter>src\Player\PlayerGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
+      <Filter>src\Player\PlayerGame2</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\Game3Scene.cpp">
       <Filter>src\Scene</Filter>
@@ -188,32 +203,8 @@
     <ClInclude Include="..\Classes\Game1\Game1Scene.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h">
-      <Filter>src\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\Enemy.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\EnemyFactory.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\EnemyPool.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FallingRock.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game1\Background\Background.h">
-      <Filter>src\Background</Filter>
+      <Filter>src\UXUI\Background</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Controller\GameController.h">
       <Filter>src\Controller</Filter>
@@ -223,12 +214,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Controller\SpriteController.h">
       <Filter>src\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
-      <Filter>src\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
-      <Filter>src\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Game2Scene.h">
       <Filter>src\Scene</Filter>
@@ -252,7 +237,7 @@
       <Filter>src\Items</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h">
-      <Filter>src\Panel</Filter>
+      <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\MainMenuScene.h">
       <Filter>src\Scene</Filter>
@@ -263,14 +248,11 @@
     <ClInclude Include="..\Classes\Scene\BaseScene.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h">
-      <Filter>src\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Panel\PausePanel.h">
-      <Filter>src\Panel</Filter>
+      <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Panel\VictoryPanel.h">
-      <Filter>src\Panel</Filter>
+      <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h">
       <Filter>src\Items</Filter>
@@ -278,8 +260,41 @@
     <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
       <Filter>src\Items</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingRock.h">
+      <Filter>src\Enemy\EnemyGame1</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
-      <Filter>src\Enemy</Filter>
+      <Filter>src\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h">
+      <Filter>src\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\Enemy.h">
+      <Filter>src\Enemy\EnemyPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\EnemyFactory.h">
+      <Filter>src\Enemy\EnemyPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\EnemyPool.h">
+      <Filter>src\Enemy\EnemyPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h">
+      <Filter>src\Player\PlayerGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
+      <Filter>src\Player\PlayerGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
+      <Filter>src\Player\PlayerGame2</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\Game3Scene.h">
       <Filter>src\Scene</Filter>

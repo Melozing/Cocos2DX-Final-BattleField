@@ -11,7 +11,9 @@ public:
     cocos2d::Size GetSize() const;
     void update(float delta) override;
     void removeWhenOutOfScreen();
-
+    virtual int getHealthValue() const {
+        return 0; // Default implementation, can be overridden by derived classes
+    }
 protected:
     cocos2d::Sprite* _currentSprite;
     float _speed = 150.0f; // Example speed value

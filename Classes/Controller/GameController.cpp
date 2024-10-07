@@ -65,14 +65,14 @@ void GameController::Victory() {
                 Director::getInstance()->end();
                 });
 
-            if (victoryPanel) {
-                victoryPanel->setOpacity(0);
-                victoryPanel->runAction(FadeIn::create(1.5f));
-                runningScene->addChild(victoryPanel, 100);
-            }
+        if (victoryPanel) {
+            victoryPanel->setOpacity(0);
+            victoryPanel->runAction(FadeIn::create(1.5f));
+            runningScene->addChild(victoryPanel, 100);
+        }
 
-            director->pause();
-            gameOver = true;
+        director->pause();
+        gameOver = true;
     }
 }
 

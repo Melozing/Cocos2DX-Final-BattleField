@@ -46,6 +46,7 @@ void HealthPlayerGame1::updateHealthSprites(int health) {
     for (int i = 0; i < _healthSprites.size(); i++) {
         if (i < currentHealth) {
             _healthSprites[i]->setVisible(true); // Show sprite if player has health
+            _healthSprites[i]->setOpacity(255); // Ensure the sprite is fully visible
         }
         else {
             auto fadeOut = FadeOut::create(0.5f); // 0.5 second to fade out

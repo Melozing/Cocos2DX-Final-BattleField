@@ -96,18 +96,31 @@ void RandomBoom::onMissileHitTarget() {
         CCLOG("Warning sprite or missile sprite is null. Cannot create explosion.");
         return;
     }
+    Vec2 position = _missileSprite->getPosition();
+
+    // Cleanup missile and warning sprites
+    if (_missileSprite) {
+        _missileSprite->removeFromParentAndCleanup(true);
+        _missileSprite = nullptr;
+    }
+
+    if (_warningSprite) {
+        _warningSprite->removeFromParentAndCleanup(true);
+        _warningSprite = nullptr;
+    }
 
     if (!explosionSprite) {
         explosionSprite = Sprite::createWithSpriteFrameName("explosions8.png");
         explosionSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
         explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.13f));
-        auto explosionBody = PhysicsBody::createBox(GetContentSizeSprite(explosionSprite));
+        Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width * 0.75, GetContentSizeSprite(explosionSprite).height * 0.70);
+        auto explosionBody = PhysicsBody::createBox(reducedSize);
         explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
         explosionBody->setContactTestBitmask(true);
         explosionBody->setGravityEnable(false);
         explosionBody->setDynamic(false);
         explosionSprite->setPhysicsBody(explosionBody);
-        explosionSprite->setPosition(_missileSprite->getPosition());
+        explosionSprite->setPosition(position);
         _spriteBatchNodeExplosion->addChild(explosionSprite);
     }
 
@@ -124,17 +137,6 @@ void RandomBoom::onMissileHitTarget() {
             }),
         nullptr
     ));
-
-    // Cleanup missile and warning sprites
-    if (_missileSprite) {
-        _missileSprite->removeFromParentAndCleanup(true);
-        _missileSprite = nullptr;
-    }
-
-    if (_warningSprite) {
-        _warningSprite->removeFromParentAndCleanup(true);
-        _warningSprite = nullptr;
-    }
 }
 
 RandomBoom::~RandomBoom() {
