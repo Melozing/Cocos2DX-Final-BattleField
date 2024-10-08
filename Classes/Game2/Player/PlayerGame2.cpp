@@ -12,6 +12,7 @@ PlayerGame2::PlayerGame2()
     _velocity(Vec2::ZERO),
     _speed(Constants::PlayerSpeed),
     _isMoving(false),
+    _isMouseDown(false),
     bulletManager(nullptr)
 {
 }
@@ -53,6 +54,7 @@ bool PlayerGame2::init() {
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
     mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame2::onMouseDown, this);
+    mouseListener->onMouseUp = CC_CALLBACK_1(PlayerGame2::onMouseUp, this); // Thêm sự kiện onMouseUp
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     // Add keyboard event listener
@@ -114,10 +116,27 @@ void PlayerGame2::onMouseDown(Event* event)
     EventMouse* e = (EventMouse*)event;
     if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
     {
+        _isMouseDown = true; // Đánh dấu rằng chuột đã được nhấn
+    }
+}
+
+void PlayerGame2::onMouseUp(Event* event)
+{
+    EventMouse* e = (EventMouse*)event;
+    if ((e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) && _isMouseDown)
+    {
+        // Chuyển đổi vị trí chuột sang tọa độ OpenGL
         auto mousePos = Director::getInstance()->convertToGL(_mousePos);
         Vec2 pos = this->getPosition();
+
+        // Tính toán hướng bắn
         Vec2 dirToShoot = mousePos - pos;
+
+        // Bắn viên đạn
         shootBullet(dirToShoot);
+
+        // Đặt lại trạng thái chuột
+        _isMouseDown = false;
     }
 }
 
