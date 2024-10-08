@@ -9,9 +9,11 @@
 #include "Game1/Items/AmmoItem.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
 #include "ui/UILoadingBar.h"
+#include "utils/MusicEvent.h"
 #include <ctime> 
 
 USING_NS_CC;
@@ -45,9 +47,9 @@ bool Game1Scene::init() {
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
 
-    EnemyPool::getInstance()->initPool("FlyingBullet", 10);
-    EnemyPool::getInstance()->initPool("FallingRock", 5);
-    EnemyPool::getInstance()->initPool("RandomBoom", 5);
+    EnemyPool::getInstance()->initPool("FlyingBullet", 20);
+    EnemyPool::getInstance()->initPool("FallingRock", 20);
+    EnemyPool::getInstance()->initPool("RandomBoom", 20);
 
     background = Background::createBackground("assets_game/gameplay/background.png", 150.0f);
     this->addChild(background);
@@ -66,6 +68,66 @@ bool Game1Scene::init() {
     _movingUp = _movingDown = _movingLeft = _movingRight = false;
 
     auto listener = EventListenerKeyboard::create();
+    setupMovementListener(listener);
+
+    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
+    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
+
+    _loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
+    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT); // Or RIGHT, depending on your needs
+    _loadingBar->setRotation(-90);
+    _loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
+    _loadingBar->setPercent(0);
+    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the center
+    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2)); // Position at the center right of the screen
+
+    // Create and position the border
+    border = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
+    auto loadingPos = _loadingBar->getPosition();
+    border->setPosition(loadingPos);
+    border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
+    border->setRotation(-90);
+    border->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the bottom center
+    this->addChild(border); // Place border behind the loading bar
+    this->addChild(_loadingBar);
+
+    if (!FileUtils::getInstance()->isFileExist(Constants::pathSoundTrackGame1)) {
+        CCLOG("Error: Music file does not exist!");
+        return false; // Stop initialization if the music file does not exist
+    }
+
+	SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1); // Play the music  
+	//SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true); // Play the music  
+    // Add a delay to ensure the music is fully loaded before querying its duration
+    this->scheduleOnce([this](float) {
+        musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
+        }, 0.5f, "get_music_duration_key");
+
+    // Schedule the update for the loading bar
+    this->schedule([this](float dt) {
+        updateLoadingBar(dt);
+        }, "loading_bar_update_key");
+    
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+    this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");
+    this->scheduleUpdate();
+    //this->scheduleEnemySpawning();
+    this->scheduleCollectibleSpawning();
+    // Schedule the music-based spawning
+    _musicAnalyzer = MusicAnalyzer::getInstance();
+    _musicAnalyzer->analyzeMusic(Constants::pathSoundTrackGame1);
+
+    this->schedule([this](float dt) { handleMusicBasedSpawning(dt); }, "music_based_spawning_key");
+
+    return true;
+}
+
+void Game1Scene::setupMovementListener(EventListenerKeyboard* listener) {
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -103,47 +165,7 @@ bool Game1Scene::init() {
         default: break;
         }
         };
-
-    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
-    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
-
-    _loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
-    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT); // Or RIGHT, depending on your needs
-    _loadingBar->setRotation(-90);
-    _loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
-    _loadingBar->setPercent(0);
-    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the center
-    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2)); // Position at the center right of the screen
-
-    // Create and position the border
-    border = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
-    auto loadingPos = _loadingBar->getPosition();
-    border->setPosition(loadingPos);
-    border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
-    border->setRotation(-90);
-    border->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the bottom center
-    this->addChild(border); // Place border behind the loading bar
-    this->addChild(_loadingBar);
-
-    // Schedule the update for the loading bar
-    this->schedule([this](float dt) {
-        updateLoadingBar(dt);
-        }, "loading_bar_update_key");
-
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
-
-    this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");
-    this->scheduleUpdate();
-    this->scheduleEnemySpawning();
-    this->scheduleCollectibleSpawning();
-
-    return true;
 }
-
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
@@ -197,30 +219,35 @@ void Game1Scene::checkGameOver() {
             },
             []() -> Scene* {
                 return Game1Scene::createScene();
-            }
+            },
+            Constants::pathSoundTrackGame1 // Add the soundtrack path here
         );
         _isGameOver = true;
     }
 }
+
 
 void Game1Scene::updateLoadingBar(float dt) {
     if (_isGameOver) return;
 
     // Update the loading bar percentage
     float currentPercent = _loadingBar->getPercent();
-    float increment = (dt / Constants::TIME_TO_WIN) * 100.0f; // Constants::TIME_TO_WIN is the time required to win
-    currentPercent += increment;
+    if (musicDuration > 0) {
+        float increment = (dt / musicDuration) * 100.0f;
+        currentPercent += increment;
 
-    if (currentPercent >= 100.0f) {
-        currentPercent = 100.0f;
-        GameController::getInstance()->Victory();
+        if (currentPercent >= 100.0f) {
+            currentPercent = 100.0f;
+            GameController::getInstance()->Victory();
+        }
+        _loadingBar->setPercent(currentPercent);
+
     }
-
-    _loadingBar->setPercent(currentPercent);
 }
 
 void Game1Scene::update(float delta) {
     background->update(delta);
+    _musicAnalyzer->update(delta);
     for (auto enemy : _enemyPool) {
         onEnemyOutOfBounds(enemy);
     }
@@ -240,13 +267,129 @@ void Game1Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& p
         enemy->setPosition(position);
         this->addChild(enemy);
         enemy->setVisible(true);
+        CCLOG("Enemy spawned from pool: %s at position (%f, %f)", enemyType.c_str(), position.x, position.y);
     }
     else {
         enemy = EnemyFactory::spawnEnemy(enemyType, position);
         if (enemy) {
             enemy->setPosition(position);
             this->addChild(enemy);
+            CCLOG("Enemy spawned from factory: %s at position (%f, %f)", enemyType.c_str(), position.x, position.y);
         }
+        else {
+            CCLOG("Failed to spawn enemy: %s", enemyType.c_str());
+        }
+    }
+}
+
+void Game1Scene::handleMusicBasedSpawning(float dt) {
+    auto events = _musicAnalyzer->getMusicEvents(dt);
+    for (const auto& event : events) {
+        spawnBasedOnMusicEvent(event);
+    }
+}
+
+void Game1Scene::spawnBasedOnMusicEvent(MusicEvent event) {
+    CCLOG("Music Event Type: %d", static_cast<int>(event.getType()));
+    static float lastSpawnTimeBullet = 0.0f; // Make lastSpawnTimeBullet static to retain its value between calls
+    static float lastSpawnTimeRandomBoom = 0.0f; // Make lastSpawnTimeRandomBoom static to retain its value between calls
+    static float lastSpawnTimeRockAndBoom = 0.0f; // Make lastSpawnTime static to retain its value between calls
+    float spawnCooldownBullet = 2.0f; // Cooldown time in seconds for bullets
+    float spawnCooldownRandomBoom = 1.5f; // Cooldown time in seconds for random booms
+    float spawnCooldownRockAndBoom = 1.7f; // General cooldown time in seconds
+    auto currentTime = Director::getInstance()->getTotalFrames() / 60.0f; // Assuming 60 FPS
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+
+    switch (event.getType()) {
+    case MusicEventType::BEAT:
+        CCLOG("Spawning FlyingBullet for BEAT event");
+        if (currentTime - lastSpawnTimeBullet < spawnCooldownBullet) {
+            return; // Skip spawning if cooldown has not passed
+        }
+        lastSpawnTimeBullet = currentTime;
+        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+        break;
+    case MusicEventType::KICK:
+        CCLOG("Spawning FallingRock for KICK event");
+        if (currentTime - lastSpawnTimeRockAndBoom < spawnCooldownRockAndBoom) {
+            return; // Skip spawning if cooldown has not passed
+        }
+        lastSpawnTimeRockAndBoom = currentTime;
+        SpawnFallingRockAndBomb(visibleSize);
+        break;
+    //case MusicEventType::SNARE:
+    //    CCLOG("Spawning RandomBoom for SNARE event");
+    //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
+    //        return; // Skip spawning if cooldown has not passed
+    //    }
+    //    lastSpawnTimeRandomBoom = currentTime;
+    //    SpawnRandomBoom(visibleSize);
+    //    break;
+    case MusicEventType::MELODY:
+        CCLOG("Spawning RandomBoom for MELODY event");
+         CCLOG("Spawning RandomBoom for SNARE event");
+        if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
+            return; // Skip spawning if cooldown has not passed
+        }
+        lastSpawnTimeRandomBoom = currentTime;
+        SpawnRandomBoom(visibleSize);
+        break;
+    /*case MusicEventType::LOW:
+        CCLOG("Spawning FlyingBullet for LOW frequency event");
+        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+        break;
+    case MusicEventType::MID:
+        CCLOG("Spawning FallingRock for MID frequency event");
+        SpawnFallingRockAndBomb(visibleSize);
+        break;
+    case MusicEventType::HIGH:
+        CCLOG("Spawning RandomBoom for HIGH frequency event");
+        SpawnRandomBoom(visibleSize);
+        break;
+    case MusicEventType::DROP:
+        CCLOG("Spawning FlyingBullet for DROP event");
+        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+        break;
+    case MusicEventType::RISE:
+        CCLOG("Spawning FallingRock for RISE event");
+        SpawnFallingRockAndBomb(visibleSize);
+        break;
+    case MusicEventType::CLAP:
+        CCLOG("Spawning RandomBoom for CLAP event");
+        SpawnRandomBoom(visibleSize);
+        break;
+    case MusicEventType::HAT:
+        CCLOG("Spawning RandomBoom for HAT event");
+        SpawnRandomBoom(visibleSize);
+        break;
+    case MusicEventType::BASS:
+        CCLOG("Spawning FlyingBullet for BASS event");
+        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+        break;
+    case MusicEventType::VOCAL:
+        CCLOG("Spawning RandomBoom for VOCAL event");
+        SpawnRandomBoom(visibleSize);
+        break;
+    case MusicEventType::SYNTH:
+        CCLOG("Spawning FlyingBullet for SYNTH event");
+        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+        break;
+    case MusicEventType::PAD:
+        CCLOG("Spawning RandomBoom for PAD event");
+        SpawnRandomBoom(visibleSize);
+        break;
+    case MusicEventType::FX:
+        CCLOG("Spawning FlyingBullet for FX event");
+        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+        break;
+    case MusicEventType::PERCUSSION:
+        CCLOG("Spawning RandomBoom for PERCUSSION event");
+        SpawnRandomBoom(visibleSize);
+        break;*/
+    default:
+        CCLOG("Unknown music event type");
+        break;
     }
 }
 
@@ -264,29 +407,6 @@ void Game1Scene::onEnemyOutOfBounds(cocos2d::Node* enemy) {
     if (enemyPos.x < 0 || enemyPos.x > screenSize.width || enemyPos.y < 0 || enemyPos.y > screenSize.height) {
         returnEnemyToPool(enemy);
     }
-}
-
-void Game1Scene::scheduleEnemySpawning() {
-    this->schedule([this](float dt) {
-        if (_player) {
-            auto visibleSize = Director::getInstance()->getVisibleSize();
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        }
-        }, 7.5f, "flying_bullet_spawn_key");
-
-    this->schedule([this](float dt) {
-        if (_player) {
-            auto visibleSize = Director::getInstance()->getVisibleSize();
-            SpawnFallingRockAndBomb(visibleSize);
-        }
-        }, 3.0f, "falling_rock_spawn_key");
-
-    this->schedule([this](float dt) {
-        if (_player) {
-            auto visibleSize = Director::getInstance()->getVisibleSize();
-            SpawnRandomBoom(visibleSize);
-        }
-        }, 4.0f, "random_boom_spawn_key");
 }
 
 Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
@@ -326,9 +446,6 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
             fallingRock->setPhysicsBody(fallingRockBody);
             this->addChild(fallingRock);
         }
-    }
-    else {
-        CCLOG("Position occupied for FallingRock at (%f, %f)", spawnPosition.x, spawnPosition.y);
     }
 }
 
@@ -395,9 +512,6 @@ void Game1Scene::SpawnCollectibleItem(const Size& size) {
         }
     }
 }
-
-
-
 
 void Game1Scene::trackUsedPosition(const Vec2& position) {
     usedPositions.push_back(position);

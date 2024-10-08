@@ -110,7 +110,7 @@ void RandomBoom::onMissileHitTarget() {
     }
 
     if (!explosionSprite) {
-        explosionSprite = Sprite::createWithSpriteFrameName("explosions8.png");
+        explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
         explosionSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
         explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.13f));
         Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width * 0.75, GetContentSizeSprite(explosionSprite).height * 0.70);
@@ -141,7 +141,7 @@ void RandomBoom::onMissileHitTarget() {
 
 RandomBoom::~RandomBoom() {
     // Remove sprite frames from cache when object is destroyed
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/warning_rocket.plist");
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/rocket.plist");
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/fx/explosions.plist");
+    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/warning_rocket.plist");
+    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/rocket.plist");
+    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/fx/explosions.plist");
 }

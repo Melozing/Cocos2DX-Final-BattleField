@@ -115,6 +115,6 @@ void FallingRock::removeWhenOutOfScreen() {
 
 FallingRock::~FallingRock() {
     // Remove sprite frames from cache when object is destroyed
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/falling_rock.plist");
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/landmine.plist");
+    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/falling_rock.plist");
+    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/landmine.plist");
 }

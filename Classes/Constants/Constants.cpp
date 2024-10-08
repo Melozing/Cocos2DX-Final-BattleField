@@ -19,6 +19,7 @@ const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
 //game1
 const float Constants::TIME_TO_WIN = 120.0f;
+const std::string Constants::pathSoundTrackGame1 = "assets_game/sounds/Game1/bg_music_game1.mp3";
 
 //game2
 const float Constants::BulletSpeed = 1500.f;

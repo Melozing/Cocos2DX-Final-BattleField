@@ -123,7 +123,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\uv\prebuilt\win32\*.*" "$(OutDir)"</Com
     </PreLinkEvent>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(EngineRoot)external\fmod\prebuilt\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -131,7 +131,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\uv\prebuilt\win32\*.*" "$(OutDir)"</Com
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <ModuleDefinitionFile>cocos2d.def</ModuleDefinitionFile>
-      <AdditionalDependencies>sqlite3.lib;libcurl.lib;websockets.lib;libcrypto.lib;libssl.lib;libmpg123.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;OpenAL32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sqlite3.lib;libcurl.lib;websockets.lib;libcrypto.lib;libssl.lib;libmpg123.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;OpenAL32.lib;version.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -382,6 +382,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\uv\prebuilt\win32\*.*" "$(OutDir)"</Com
     <ClCompile Include="..\..\external\flatbuffers\idl_gen_go.cpp" />
     <ClCompile Include="..\..\external\flatbuffers\idl_gen_text.cpp" />
     <ClCompile Include="..\..\external\flatbuffers\idl_parser.cpp" />
+    <ClCompile Include="..\..\external\fmod\FMODAudioEngine.cpp" />
     <ClCompile Include="..\..\external\md5\md5.c" />
     <ClCompile Include="..\..\external\poly2tri\common\shapes.cc" />
     <ClCompile Include="..\..\external\poly2tri\sweep\advancing_front.cc" />
@@ -963,6 +964,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\uv\prebuilt\win32\*.*" "$(OutDir)"</Com
     <ClInclude Include="..\..\external\flatbuffers\flatbuffers.h" />
     <ClInclude Include="..\..\external\flatbuffers\idl.h" />
     <ClInclude Include="..\..\external\flatbuffers\util.h" />
+    <ClInclude Include="..\..\external\fmod\FMODAudioEngine.h" />
     <ClInclude Include="..\..\external\json\document.h" />
     <ClInclude Include="..\..\external\json\filereadstream.h" />
     <ClInclude Include="..\..\external\json\filewritestream.h" />

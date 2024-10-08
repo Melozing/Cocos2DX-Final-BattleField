@@ -1,6 +1,7 @@
 #include "Panel/GameOverPanel.h"
 #include "ui/CocosGUI.h"
 #include "Controller/GameController.h"
+#include "Constants/Constants.h"
 
 USING_NS_CC;
 
