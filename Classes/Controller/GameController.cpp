@@ -1,6 +1,7 @@
 #include "Controller/GameController.h"
 #include "Controller/SceneController.h"
 #include "Panel/GameOverPanel.h"
+#include "utils/AudioUtils.h"
 #include "Panel/PausePanel.h"
 #include "Panel/VictoryPanel.h"
 #include "Constants/Constants.h"
@@ -24,19 +25,21 @@ GameController* GameController::getInstance() {
 }
 
 // Handles the game over event
-void GameController::GameOver(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc) {
+void GameController::GameOver(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc, const std::string& soundtrackPath) {
     auto& playerAttributes = PlayerAttributes::getInstance();
 
     auto director = Director::getInstance();
     auto runningScene = director->getRunningScene();
 
     if (runningScene) {
-        auto retryAction = [this, director, createSceneFunc]() {
+        auto retryAction = [this, director, createSceneFunc, soundtrackPath]() {
             this->resetGameState(); // Reset game state before replaying
             Scene* newScene = createSceneFunc();
             if (newScene) {
                 director->replaceScene(newScene);
             }
+            // Restart the music using the utility function with the provided soundtrack path
+            AudioUtils::restartMusic(soundtrackPath);
             };
 
         auto panel = GameOverPanel::createPanel(retryAction, exitAction);
@@ -120,6 +123,7 @@ void GameController::pauseGame() {
     }
 }
 
+
 // Add a method to resume the game
 void GameController::resumeGame() {
     if (paused) {
@@ -154,6 +158,18 @@ void GameController::replayGame() {
     }
 }
 
+void GameController::replayGame(const std::string& soundtrackPath) {
+    this->resetGameState(); // Reset game state before replaying
+    std::string currentSceneName = Director::getInstance()->getRunningScene()->getName();
+
+    auto newScene = SceneController::getInstance()->createScene(currentSceneName);
+    if (newScene) {
+        Director::getInstance()->replaceScene(newScene);
+    }
+
+    // Restart the music using the utility function with the provided soundtrack path
+    AudioUtils::restartMusic(soundtrackPath);
+}
 // Add a method to reset the game state
 void GameController::resetGameState() {
     auto director = Director::getInstance();

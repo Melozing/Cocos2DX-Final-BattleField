@@ -90,9 +90,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libcurl.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END);fmodL_vc.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END);$(EngineRoot)external\fmod\prebuilt\win32</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -158,6 +158,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Constants\Constants.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
     <ClCompile Include="..\Classes\Controller\SceneController.cpp" />
+    <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
     <ClCompile Include="..\Classes\Controller\SpriteController.cpp" />
     <ClCompile Include="..\Classes\Game1\Background\Background.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\Enemy.cpp" />
@@ -190,7 +191,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Scene\BaseScene.cpp" />
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp" />
+    <ClCompile Include="..\Classes\utils\AudioUtils.cpp" />
     <ClCompile Include="..\Classes\utils\MathFunction.cpp" />
+    <ClCompile Include="..\Classes\utils\MusicAnalyzer.cpp" />
+    <ClCompile Include="..\Classes\utils\MusicEvent.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +206,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
     <ClInclude Include="..\Classes\Controller\SceneController.h" />
+    <ClInclude Include="..\Classes\Controller\SoundController.h" />
     <ClInclude Include="..\Classes\Controller\SpriteController.h" />
     <ClInclude Include="..\Classes\Game1\Background\Background.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\Enemy.h" />
@@ -234,7 +239,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Scene\BaseScene.h" />
     <ClInclude Include="..\Classes\Scene\LoadingScene.h" />
     <ClInclude Include="..\Classes\Scene\MainMenuScene.h" />
+    <ClInclude Include="..\Classes\utils\AudioUtils.h" />
     <ClInclude Include="..\Classes\utils\MathFunction.h" />
+    <ClInclude Include="..\Classes\utils\MusicAnalyzer.h" />
+    <ClInclude Include="..\Classes\utils\MusicEvent.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

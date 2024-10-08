@@ -61,6 +61,9 @@
     <Filter Include="src\Player\PlayerGame2">
       <UniqueIdentifier>{7a0cbbf1-3080-47b3-8f8b-92badcc3ad05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\utils\Music">
+      <UniqueIdentifier>{c946621e-369e-407b-8ca8-8f9b8387e750}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,9 +177,6 @@
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
       <Filter>src\Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
-      <Filter>src\Background</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp">
       <Filter>src\Enemy</Filter>
     </ClCompile>
@@ -188,6 +188,19 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
       <Filter>src\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Background\Background3.cpp" />
+    <ClCompile Include="..\Classes\Controller\SoundController.cpp">
+      <Filter>src\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\MusicAnalyzer.cpp">
+      <Filter>src\utils\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\MusicEvent.cpp">
+      <Filter>src\utils\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\AudioUtils.cpp">
+      <Filter>src\utils\Music</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +315,6 @@
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
       <Filter>src\Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game3\Background\Background3.h">
-      <Filter>src\Background</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h">
       <Filter>src\Enemy</Filter>
     </ClInclude>
@@ -316,6 +326,19 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletManager.h">
       <Filter>src\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Background\Background3.h" />
+    <ClInclude Include="..\Classes\Controller\SoundController.h">
+      <Filter>src\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\MusicEvent.h">
+      <Filter>src\utils\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\MusicAnalyzer.h">
+      <Filter>src\utils\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\AudioUtils.h">
+      <Filter>src\utils\Music</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

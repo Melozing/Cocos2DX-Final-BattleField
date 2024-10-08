@@ -13,61 +13,89 @@
 #include "Button/PauseButton.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
+#include "utils/MusicAnalyzer.h"
+#include "Controller/SoundController.h"
+#include "utils/MusicEvent.h" 
 
 class Game1Scene : public BaseScene {
 public:
+    // Public methods
     static cocos2d::Scene* createScene();
     virtual bool init() override;
     CREATE_FUNC(Game1Scene);
     virtual void update(float delta);
 
 private:
+    // Physics world
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
 
+    // Player attributes
     PlayerAttributes* _playerAttributes;
+    PlayerGame1* _player;
+    HealthPlayerGame1* _healthPlayerGame1;
     bool _canTakeDamage;
+    bool _isGameOver;
+
+    // Background
+    Background* background;
+
+    // Enemy management
     std::vector<FlyingBullet*> _flyingBullets;
     std::vector<FallingRock*> _fallingRocks;
     std::vector<RandomBoom*> _randomBooms;
     std::vector<Vec2> usedPositions;
     std::vector<cocos2d::Node*> _enemyPool;
-    PlayerGame1* _player;
-    Background* background;
-    HealthPlayerGame1* _healthPlayerGame1;
-    bool _isGameOver;
 
-    bool _movingUp, _movingDown, _movingLeft, _movingRight;
+    // Music and sound
+    MusicAnalyzer* _musicAnalyzer;
+    SoundController* _soundController;
+    float musicDuration;
 
+    // UI elements
     PauseButton* _pauseButton;
     cocos2d::ui::LoadingBar* _loadingBar;
     Sprite* border;
 
+    // Player movement
+    bool _movingUp, _movingDown, _movingLeft, _movingRight;
     void handlePlayerMovement();
+    void setupMovementListener(EventListenerKeyboard* listener);
+
+    // Enemy spawning
     void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
     void returnEnemyToPool(cocos2d::Node* enemy);
     void onEnemyOutOfBounds(cocos2d::Node* enemy);
-    void scheduleEnemySpawning();
     void SpawnFallingRockAndBomb(cocos2d::Size size);
     void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
     void SpawnRandomBoom(cocos2d::Size size);
     bool isPositionOccupied(const Vec2& position);
     void trackUsedPosition(const Vec2& position);
-    void scheduleCollectibleSpawning();
+    void spawnNewEnemyType(const std::string& enemyType, const cocos2d::Vec2& position);
 
+    // Collectible spawning
+    void scheduleCollectibleSpawning();
+    void SpawnCollectibleItem(const Size& size);
+    Vec2 getRandomSpawnPosition(const Size& size);
+
+    // Collision handling
     void checkCollisions();
     void setPhysicsBodyChar(cocos2d::PhysicsBody* physicBody, int num);
     bool onContactBegin(cocos2d::PhysicsContact& contact);
 
+    // Game over handling
     void checkGameOver();
 
+    // Input handling
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
+    // UI updates
     void updateLoadingBar(float dt);
 
-    void SpawnCollectibleItem(const Size& size);
-    Vec2 getRandomSpawnPosition(const Size& size);
+    // Music-based spawning
+    void handleMusicBasedSpawning(float dt);
+    void spawnBasedOnMusicEvent(MusicEvent event);
 };
 
 #endif // __GAME1SCENE_SCENE_H__

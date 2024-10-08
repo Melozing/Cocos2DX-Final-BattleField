@@ -8,7 +8,7 @@ class GameController {
 public:
     static GameController* getInstance();
 
-    void GameOver(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc);
+    void GameOver(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
     void Victory();
     void UpdateGameStatus(float elapsedTime);
     bool isGameOver() const;
@@ -16,15 +16,15 @@ public:
     void resumeGame();
     bool isPaused() const;
     void replayGame();
+    void replayGame(const std::string& soundtrackPath);
 
 private:
     GameController();
     static GameController* instance;
+    void resetGameState();
     float gameTime;
     bool gameOver;
     bool paused;
-
-    void resetGameState();
 };
 
 #endif // __GAME_CONTROLLER_H__

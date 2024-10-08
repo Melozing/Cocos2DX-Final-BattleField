@@ -20,6 +20,7 @@ public:
     static const cocos2d::Size DESIGN_SIZE;
     //Game1
     static const float TIME_TO_WIN;
+    static const std::string pathSoundTrackGame1;
     //Game2
     static const float BulletSpeed;
     static const float PlayerSpeed;
