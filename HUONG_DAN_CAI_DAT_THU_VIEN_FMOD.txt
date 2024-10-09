@@ -10,3 +10,7 @@ Hiện tại trong project đã cấu hình xong linker, đường dẫn, chỉ 
 3. Copy file fmodL.dll folder Classes/File_Library của project vào folder \proj.win32\Debug.win32 khi build
 
 4. build lại project trong visual studio
+
+5. Copy và replace 2 file FMODAudioEngine.h và FMODAudioEngine.cpp từ folder Classes/File_Library của project vào folder "\cocos2d\external\fmod" của project
+
+6. Chạy chương trình và enjoy.
