@@ -12,7 +12,7 @@ MusicAnalyzer* MusicAnalyzer::getInstance() {
     return instance;
 }
 
-MusicAnalyzer::MusicAnalyzer() : musicFilePath(""), currentFrequency(0.0f), currentPitch(0.0f), isMusicPlaying(false), beatDetected(false) {
+MusicAnalyzer::MusicAnalyzer() : musicFilePath(""), currentFrequency(0.0f), currentPitch(0.0f), isMusicPlaying(false), beatDetected(false), soundID(-1) {
     spectrum.resize(512, 0.0f);
 }
 
@@ -22,8 +22,16 @@ void MusicAnalyzer::analyzeMusic(const std::string& filePath) {
     }
     musicFilePath = filePath; // Store the file path
     FMODAudioEngine::getInstance()->load(filePath); // Load sound without playing
-    FMODAudioEngine::getInstance()->playSound(filePath); // Play the sound
-    isMusicPlaying = true; // Set flag to indicate music is playing
+    soundID = FMODAudioEngine::getInstance()->playSound(filePath); // Play the sound and store soundID
+    isMusicPlaying = true; // Set flag to inWdicate music is playing
+}
+
+void MusicAnalyzer::stopMusic() {
+    if (!isMusicPlaying) {
+        return; // No music is playing, nothing to stop
+    }
+    FMODAudioEngine::getInstance()->stopSound(soundID); // Stop the sound using soundID
+    isMusicPlaying = false; // Update the flag
 }
 
 void MusicAnalyzer::update(float dt) {
@@ -117,4 +125,8 @@ float MusicAnalyzer::getCurrentPitch() const {
 
 bool MusicAnalyzer::isBeatDetected() const {
     return beatDetected;
+}
+
+float MusicAnalyzer::getMusicDuration(const std::string& filePath) {
+    return FMODAudioEngine::getInstance()->getSoundDuration(filePath);
 }

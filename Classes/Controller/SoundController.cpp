@@ -25,10 +25,9 @@ void SoundController::preloadMusic(const std::string& filePath) {
 }
 
 void SoundController::playMusic(const std::string& filePath, bool loop) {
-    if (!isMusicPlaying(filePath)) {
-        int audioId = AudioEngine::play2d(filePath, loop);
-        playingMusic[filePath] = audioId;
-    }
+    stopMusic(filePath);
+    int audioId = AudioEngine::play2d(filePath, loop);
+    playingMusic[filePath] = audioId;
 }
 
 void SoundController::stopMusic() {
@@ -71,6 +70,13 @@ void SoundController::scheduleSpawnEvents(const std::vector<float>& timestamps, 
 
 std::vector<float> SoundController::getFrequencyData() {
     return FMODAudioEngine::getInstance()->getFrequencyData();
+}
+
+void SoundController::setMusicVolume(const std::string& filePath, float volume) {
+    auto it = playingMusic.find(filePath);
+    if (it != playingMusic.end()) {
+        AudioEngine::setVolume(it->second, volume);
+    }
 }
 
 void SoundController::update(float dt) {

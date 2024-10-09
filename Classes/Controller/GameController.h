@@ -9,7 +9,7 @@ public:
     static GameController* getInstance();
 
     void GameOver(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
-    void Victory();
+    void Victory(const std::string& soundtrackPath);
     void UpdateGameStatus(float elapsedTime);
     bool isGameOver() const;
     void pauseGame();

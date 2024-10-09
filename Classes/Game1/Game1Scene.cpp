@@ -14,9 +14,11 @@
 #include "Controller/GameController.h"
 #include "ui/UILoadingBar.h"
 #include "utils/Music/MusicEvent.h"
+#include "audio/include/AudioEngine.h"
 #include <ctime> 
 
 USING_NS_CC;
+using namespace cocos2d::experimental;
 
 cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
@@ -96,8 +98,10 @@ bool Game1Scene::init() {
         return false; // Stop initialization if the music file does not exist
     }
 
-	SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1); // Play the music  
-	//SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true); // Play the music  
+    SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
+    SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
+    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
+
     // Add a delay to ensure the music is fully loaded before querying its duration
     this->scheduleOnce([this](float) {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
@@ -230,7 +234,6 @@ void Game1Scene::checkGameOver() {
 void Game1Scene::updateLoadingBar(float dt) {
     if (_isGameOver) return;
 
-    // Update the loading bar percentage
     float currentPercent = _loadingBar->getPercent();
     if (musicDuration > 0) {
         float increment = (dt / musicDuration) * 100.0f;
@@ -238,10 +241,9 @@ void Game1Scene::updateLoadingBar(float dt) {
 
         if (currentPercent >= 100.0f) {
             currentPercent = 100.0f;
-            GameController::getInstance()->Victory();
+            GameController::getInstance()->Victory(Constants::VICTORY_SOUNDTRACK_PATH);
         }
         _loadingBar->setPercent(currentPercent);
-
     }
 }
 
@@ -290,13 +292,12 @@ void Game1Scene::handleMusicBasedSpawning(float dt) {
 }
 
 void Game1Scene::spawnBasedOnMusicEvent(MusicEvent event) {
-    CCLOG("Music Event Type: %d", static_cast<int>(event.getType()));
     static float lastSpawnTimeBullet = 0.0f; // Make lastSpawnTimeBullet static to retain its value between calls
     static float lastSpawnTimeRandomBoom = 0.0f; // Make lastSpawnTimeRandomBoom static to retain its value between calls
     static float lastSpawnTimeRockAndBoom = 0.0f; // Make lastSpawnTime static to retain its value between calls
     float spawnCooldownBullet = 2.0f; // Cooldown time in seconds for bullets
-    float spawnCooldownRandomBoom = 1.5f; // Cooldown time in seconds for random booms
-    float spawnCooldownRockAndBoom = 1.7f; // General cooldown time in seconds
+    float spawnCooldownRandomBoom = 2.0f; // Cooldown time in seconds for random booms
+    float spawnCooldownRockAndBoom = 1.9f; // General cooldown time in seconds
     auto currentTime = Director::getInstance()->getTotalFrames() / 60.0f; // Assuming 60 FPS
 
     auto visibleSize = Director::getInstance()->getVisibleSize();

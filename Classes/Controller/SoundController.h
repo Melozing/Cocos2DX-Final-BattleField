@@ -14,6 +14,7 @@ public:
     void playMusic(const std::string& filePath, bool loop = false);
     void stopMusic();
     void stopMusic(const std::string& filePath);
+    void setMusicVolume(const std::string& filePath, float volume);
     void scheduleSpawnEvents(const std::vector<float>& timestamps, const std::vector<std::function<void()>>& spawnFunctions);
     bool isMusicPlaying(const std::string& filePath);
     float getMusicDuration(const std::string& filePath);

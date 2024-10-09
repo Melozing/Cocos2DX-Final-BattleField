@@ -5,7 +5,7 @@
 //SCREEN
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
 //ENEMY
-const float Constants::FLYING_BULLET_SPEED = 8.0f;
+const float Constants::FLYING_BULLET_SPEED = 3.0f;
 const float Constants::FALLINGROCK_START_Y = 0.05f;
 const float Constants::FALLINGROCK_PADDING = 0.006f;
 //PlayerGame1
@@ -41,3 +41,6 @@ const int Constants::InitialPosY = 100;
 const float Constants::GroundY = 70.0f;
 const float Constants::BackgroundSpeed = 50.0f;
 const float Constants::PlayerScale3 = 1.5f;
+
+//VictoryPanel
+const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victory/victory.mp3";
