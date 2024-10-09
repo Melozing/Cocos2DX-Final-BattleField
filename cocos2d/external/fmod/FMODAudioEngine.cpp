@@ -1,7 +1,7 @@
 #include "fmod/FMODAudioEngine.h"
 #include "cocos2d.h"
 
-void ERRCHECK_fn(FMOD_RESULT result, const char* file, int line) {
+void ERRCHECK_fn(FMOD_RESULT result, const char *file, int line) {
     if (result != FMOD_OK)
     {
         CCLOG("%s(%d): FMOD error %d", file, line, result);
@@ -20,7 +20,7 @@ FMODAudioEngine* FMODAudioEngine::getInstance()
         instance = new FMODAudioEngine();
         instance->lazyInit();
     }
-
+    
     return instance;
 }
 
@@ -32,16 +32,17 @@ void FMODAudioEngine::destroyInstance()
     }
 }
 
-FMODAudioEngine::FMODAudioEngine()
-    :_index(0)
-    , _eventListener(0)
-    , _pitch(1.0f)
-    , _system(NULL)
-    , _channelGroup(NULL)
-    , _channel(NULL)
-    , _dsp(NULL)
-{
 
+
+FMODAudioEngine::FMODAudioEngine()
+:_index(0)
+,_eventListener(0)
+,_pitch(1.0f)
+,_system(NULL)
+,_channelGroup(NULL)
+,_channel(NULL)
+{
+    
 }
 
 FMODAudioEngine::~FMODAudioEngine()
@@ -55,31 +56,25 @@ bool FMODAudioEngine::lazyInit()
 {
     FMOD_RESULT       result;
     unsigned int      version;
-    void* extradriverdata = 0;
-
+    void             *extradriverdata = 0;
+    
     result = FMOD::System_Create(&_system);
     ERRCHECK(result);
-
+    
     result = _system->init(32, FMOD_INIT_NORMAL, extradriverdata);
     ERRCHECK(result);
-
+    
     result = _system->getVersion(&version);
     ERRCHECK(result);
-
+    
     if (version < FMOD_VERSION)
     {
         CCLOG("FMOD lib version %08x doesn't match header version %08x", version, FMOD_VERSION);
     }
-
+    
     result = _system->createChannelGroup("AllSounds", &_channelGroup);
     ERRCHECK(result);
-
-    result = _system->createDSPByType(FMOD_DSP_TYPE_FFT, &_dsp);
-    ERRCHECK(result);
-
-    result = _channelGroup->addDSP(0, _dsp);
-    ERRCHECK(result);
-
+    
     Director::getInstance()->getScheduler()->scheduleUpdate(this, 0, false);
     return true;
 }
@@ -88,7 +83,7 @@ void FMODAudioEngine::update(float fDelta)
 {
     FMOD_RESULT result;
     result = _system->update();
-
+    
     auto it = _soundIDMap.begin();
     while (it != _soundIDMap.end())
     {
@@ -105,7 +100,7 @@ void FMODAudioEngine::update(float fDelta)
         {
             ERRCHECK(result);
         }
-
+        
         if (!paused && !isPlaying)
         {
             int nSoundID = it->first;
@@ -119,7 +114,7 @@ void FMODAudioEngine::update(float fDelta)
     }
 }
 
-void FMODAudioEngine::releaseSound(const std::string& filename)
+void FMODAudioEngine::releaseSound(const std::string &filename)
 {
     std::string key = FileUtils::getInstance()->fullPathForFilename(filename);
     auto it = _sounds.find(key);
@@ -148,10 +143,10 @@ void FMODAudioEngine::releaseAllSounds()
     _sounds.clear();
 }
 
-FMOD::Sound* FMODAudioEngine::load(const std::string& filename)
+FMOD::Sound* FMODAudioEngine::load(const std::string &filename)
 {
     FMOD_RESULT result;
-    FMOD::Sound* sound;
+    FMOD::Sound *sound;
     std::string key = FileUtils::getInstance()->fullPathForFilename(filename);
     if (!FileUtils::getInstance()->isFileExist(key))
     {
@@ -163,7 +158,7 @@ FMOD::Sound* FMODAudioEngine::load(const std::string& filename)
     return sound;
 }
 
-FMOD::Sound* FMODAudioEngine::getOrCreateIfNotExists(const std::string& filename)
+FMOD::Sound* FMODAudioEngine::getOrCreateIfNotExists(const std::string &filename)
 {
     std::string key = FileUtils::getInstance()->fullPathForFilename(filename);
     auto it = _sounds.find(key);
@@ -180,32 +175,32 @@ FMOD::Sound* FMODAudioEngine::getOrCreateIfNotExists(const std::string& filename
             _sounds.emplace(key, sound);
         }
     }
-
+    
     return sound;
 }
 
-void FMODAudioEngine::preload(const std::string& filename)
+void FMODAudioEngine::preload(const std::string &filename)
 {
     getOrCreateIfNotExists(filename);
 }
 
-int FMODAudioEngine::playSound(const std::string& filename, bool loop /*= false */)
+int FMODAudioEngine::playSound(const std::string &filename, bool loop /*= false */)
 {
     FMOD_RESULT result;
     int nSoundID = genSoundID();
-
+    
     FMOD::Sound* sound = getOrCreateIfNotExists(filename);
-
+    
     if (sound == nullptr)
     {
         return  -1;
     }
-
+    
     FMOD::Channel* channel = nullptr;
-
+    
     result = sound->setMode(loop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
     ERRCHECK(result);
-
+    
     if (loop)
     {
         result = sound->setLoopCount(-1);
@@ -216,10 +211,10 @@ int FMODAudioEngine::playSound(const std::string& filename, bool loop /*= false 
         result = sound->setLoopCount(0);
         ERRCHECK(result);
     }
-
+    
     result = _system->playSound(sound, _channelGroup, false, &channel);
     ERRCHECK(result);
-
+    
     _soundIDMap.emplace(nSoundID, channel);
     return nSoundID;
 }
@@ -300,7 +295,7 @@ void FMODAudioEngine::setPitch(float pitch)
         return;
     }
     _pitch = pitch;
-
+    
     FMOD_RESULT result;
     result = _channelGroup->setPitch(pitch);
     ERRCHECK(result);
@@ -315,7 +310,7 @@ int FMODAudioEngine::genSoundID()
         _availableIDs.erase(_availableIDs.begin());
         return nID;
     }
-
+    
     _index++;
     nID = _index;
     return nID;
@@ -334,36 +329,14 @@ void FMODAudioEngine::onEvent(FMODAudioEventType eventType, int soundID)
 {
     if (_eventListener != 0)
     {
-        //        LuaStack *luaStack = LuaEngine::getInstance()->getLuaStack();
-        //        lua_State *L = luaStack->getLuaState();
-        //        luaStack->pushInt(eventType);
-        //        luaStack->pushInt(soundID);
-        //        LuaEngine::getInstance()->getLuaStack()->executeFunctionByHandler(_eventListener, 2);
+//        LuaStack *luaStack = LuaEngine::getInstance()->getLuaStack();
+//        lua_State *L = luaStack->getLuaState();
+//        luaStack->pushInt(eventType);
+//        luaStack->pushInt(soundID);
+//        LuaEngine::getInstance()->getLuaStack()->executeFunctionByHandler(_eventListener, 2);
         CommonScriptData data(_eventListener, StringUtils::format("stop_%d", soundID).c_str());
         ScriptEvent event(kCommonEvent, (void*)&data);
         ScriptEngineProtocol* engine = ScriptEngineManager::getInstance()->getScriptEngine();
         engine->sendEvent(&event);
     }
-}
-
-void FMODAudioEngine::getSpectrum(float* spectrumArray, int numValues) {
-    if (_dsp) {
-        FMOD_RESULT result;
-        FMOD_DSP_PARAMETER_FFT* fft = nullptr;
-        result = _dsp->getParameterData(FMOD_DSP_FFT_SPECTRUMDATA, (void**)&fft, nullptr, nullptr, 0);
-        ERRCHECK(result);
-
-        if (fft && fft->numchannels > 0) {
-            int numBins = fft->length / 2; // Number of bins per channel
-            for (int i = 0; i < numValues && i < numBins; ++i) {
-                spectrumArray[i] = fft->spectrum[0][i]; // Use the first channel
-            }
-        }
-    }
-}
-
-std::vector<float> FMODAudioEngine::getFrequencyData() {
-    std::vector<float> frequencyData(512, 0.0f); // Adjust the size as needed
-    getSpectrum(frequencyData.data(), frequencyData.size());
-    return frequencyData;
 }
