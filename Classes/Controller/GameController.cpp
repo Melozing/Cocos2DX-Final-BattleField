@@ -1,7 +1,7 @@
 #include "Controller/GameController.h"
 #include "Controller/SceneController.h"
 #include "Panel/GameOverPanel.h"
-#include "utils/AudioUtils.h"
+#include "utils/Music/AudioUtils.h"
 #include "Panel/PausePanel.h"
 #include "Panel/VictoryPanel.h"
 #include "Constants/Constants.h"

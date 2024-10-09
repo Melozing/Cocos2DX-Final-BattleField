@@ -204,6 +204,9 @@
     <ClCompile Include="..\Classes\utils\Music\MusicEvent.cpp">
       <Filter>src\utils\Music</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Controller\PlayerMovement.cpp">
+      <Filter>src\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -343,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\utils\Music\MusicEvent.h">
       <Filter>src\utils\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\PlayerMovement.h">
+      <Filter>src\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

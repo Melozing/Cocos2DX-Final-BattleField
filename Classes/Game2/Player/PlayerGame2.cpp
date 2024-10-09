@@ -1,5 +1,4 @@
-﻿// PlayerGame2.cpp
-#include "PlayerGame2.h"
+﻿#include "PlayerGame2.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "cocos2d.h"
@@ -9,10 +8,8 @@ USING_NS_CC;
 
 PlayerGame2::PlayerGame2()
     : _mousePos(Vec2::ZERO),
-    _velocity(Vec2::ZERO),
-    _speed(Constants::PlayerSpeed),
-    _isMoving(false),
     _isMouseDown(false),
+    modelCharac(nullptr),
     bulletManager(nullptr)
 {
 }
@@ -25,7 +22,7 @@ PlayerGame2::~PlayerGame2()
 PlayerGame2* PlayerGame2::createPlayerGame2()
 {
     PlayerGame2* player = new (std::nothrow) PlayerGame2();
-    player->setName("PlayerGame2");
+    player->cocos2d::Sprite::setName("PlayerGame2");
     if (player && player->init())
     {
         player->autorelease();
@@ -37,41 +34,40 @@ PlayerGame2* PlayerGame2::createPlayerGame2()
 }
 
 bool PlayerGame2::init() {
-    if (!Sprite::init()) {
+    if (!cocos2d::Sprite::init()) {
         return false;
     }
 
-    this->setPosition(Vec2(Constants::InitialPosX, Constants::InitialPosY));
-    this->setScale(Constants::PlayerScale);
-    this->setAnchorPoint(Vec2(0.5, 0.5)); // Set anchor point at the head of the character
+    this->cocos2d::Sprite::setPosition(Vec2(Constants::InitialPosX, Constants::InitialPosY));
+    this->cocos2d::Sprite::setScale(Constants::PlayerScale);
+    this->cocos2d::Sprite::setAnchorPoint(Vec2(0.5, 0.5)); // Set anchor point at the head of the character
 
     auto physicsBody = PhysicsBody::createBox(this->getContentSize());
     physicsBody->setContactTestBitmask(true);
     physicsBody->setGravityEnable(false); // Disable gravity
-    this->setPhysicsBody(physicsBody);
+    this->cocos2d::Sprite::setPhysicsBody(physicsBody);
 
     // Add mouse event listener
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
     mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame2::onMouseDown, this);
-    mouseListener->onMouseUp = CC_CALLBACK_1(PlayerGame2::onMouseUp, this); // Thêm sự kiện onMouseUp
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+    mouseListener->onMouseUp = CC_CALLBACK_1(PlayerGame2::onMouseUp, this);
+    cocos2d::Sprite::_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     // Add keyboard event listener
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame2::onKeyPressed, this);
     keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerGame2::onKeyReleased, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+    cocos2d::Sprite::_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
     // Schedule update method
     this->scheduleUpdate();
 
-    // Khởi tạo BulletManager
+    // Initialize BulletManager
     bulletManager = new BulletManager(100, "assets_game/player/shot.png");
 
     return true;
 }
-
 
 void PlayerGame2::initAnimation()
 {
@@ -116,7 +112,7 @@ void PlayerGame2::onMouseDown(Event* event)
     EventMouse* e = (EventMouse*)event;
     if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
     {
-        _isMouseDown = true; // Đánh dấu rằng chuột đã được nhấn
+        _isMouseDown = true; // Mark that the mouse is down
     }
 }
 
@@ -125,106 +121,35 @@ void PlayerGame2::onMouseUp(Event* event)
     EventMouse* e = (EventMouse*)event;
     if ((e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) && _isMouseDown)
     {
-        // Chuyển đổi vị trí chuột sang tọa độ OpenGL
+        // Convert mouse position to OpenGL coordinates
         auto mousePos = Director::getInstance()->convertToGL(_mousePos);
         Vec2 pos = this->getPosition();
 
-        // Tính toán hướng bắn
+        // Calculate shooting direction
         Vec2 dirToShoot = mousePos - pos;
 
-        // Bắn viên đạn
+        // Shoot the bullet
         shootBullet(dirToShoot);
 
-        // Đặt lại trạng thái chuột
+        // Reset mouse state
         _isMouseDown = false;
     }
 }
 
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    switch (keyCode)
-    {
-    case EventKeyboard::KeyCode::KEY_W:
-        moveUp();
-        break;
-    case EventKeyboard::KeyCode::KEY_S:
-        moveDown();
-        break;
-    case EventKeyboard::KeyCode::KEY_A:
-        moveLeft();
-        break;
-    case EventKeyboard::KeyCode::KEY_D:
-        moveRight();
-        break;
-    default:
-        break;
-    }
+    PlayerMovement::onKeyPressed(keyCode, event);
 }
 
 void PlayerGame2::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    switch (keyCode)
-    {
-    case EventKeyboard::KeyCode::KEY_W:
-    case EventKeyboard::KeyCode::KEY_S:
-        stopVerticalMovement();
-        break;
-    case EventKeyboard::KeyCode::KEY_A:
-    case EventKeyboard::KeyCode::KEY_D:
-        stopHorizontalMovement();
-        break;
-    default:
-        break;
-    }
+    PlayerMovement::onKeyReleased(keyCode, event);
 }
 
-void PlayerGame2::moveUp()
-{
-    _velocity.y = 1;
-    _isMoving = true;
-}
-
-void PlayerGame2::moveDown()
-{
-    _velocity.y = -1;
-    _isMoving = true;
-}
-
-void PlayerGame2::moveLeft()
-{
-    _velocity.x = -1;
-    _isMoving = true;
-}
-
-void PlayerGame2::moveRight()
-{
-    _velocity.x = 1;
-    _isMoving = true;
-}
-
-void PlayerGame2::stopVerticalMovement()
-{
-    _velocity.y = 0;
-    if (_velocity.x == 0)
-    {
-        _isMoving = false;
-    }
-}
-
-void PlayerGame2::stopHorizontalMovement()
-{
-    _velocity.x = 0;
-    if (_velocity.y == 0)
-    {
-        _isMoving = false;
-    }
-}
 
 void PlayerGame2::update(float delta)
 {
-    Vec2 position = this->getPosition();
-    position += _velocity * _speed * delta;
-    this->setPosition(position);
+    PlayerMovement::update(delta);
     RotateToMouse();
     if (_isMoving)
     {
@@ -253,6 +178,7 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     Vec2 normalizedDirection = direction.getNormalized();
     bulletManager->SpawnBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed);
 }
+
 void PlayerGame2::die()
 {
     this->removeFromParent();
