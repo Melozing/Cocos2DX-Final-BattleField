@@ -1,10 +1,12 @@
 #include "Controller/GameController.h"
+#include "Controller/SoundController.h"
 #include "Controller/SceneController.h"
 #include "Panel/GameOverPanel.h"
-#include "utils/AudioUtils.h"
+#include "utils/Music/AudioUtils.h"
 #include "Panel/PausePanel.h"
 #include "Panel/VictoryPanel.h"
 #include "Constants/Constants.h"
+#include "utils/Music/MusicAnalyzer.h"
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
@@ -30,6 +32,7 @@ void GameController::GameOver(const std::function<void()>& exitAction, const std
 
     auto director = Director::getInstance();
     auto runningScene = director->getRunningScene();
+    MusicAnalyzer::getInstance()->stopMusic();
 
     if (runningScene) {
         auto retryAction = [this, director, createSceneFunc, soundtrackPath]() {
@@ -55,15 +58,15 @@ void GameController::GameOver(const std::function<void()>& exitAction, const std
 }
 
 // Handles victory event
-void GameController::Victory() {
+void GameController::Victory(const std::string& soundtrackPath) {
     if (gameOver) return;
 
     auto director = Director::getInstance();
     auto runningScene = director->getRunningScene();
 
     if (runningScene) {
-        auto victoryPanel = VictoryPanel::createPanel([this]() {
-            this->replayGame();
+        auto victoryPanel = VictoryPanel::createPanel([this, soundtrackPath]() {
+            this->replayGame(soundtrackPath);
             }, []() {
                 Director::getInstance()->end();
                 });
@@ -83,7 +86,7 @@ void GameController::Victory() {
 void GameController::UpdateGameStatus(float elapsedTime) {
     gameTime += elapsedTime;
     if (gameTime >= Constants::TIME_TO_WIN) {
-        Victory();
+        Victory(Constants::VICTORY_SOUNDTRACK_PATH); // Pass the soundtrack path
     }
 }
 
@@ -122,7 +125,6 @@ void GameController::pauseGame() {
         }
     }
 }
-
 
 // Add a method to resume the game
 void GameController::resumeGame() {
@@ -167,9 +169,11 @@ void GameController::replayGame(const std::string& soundtrackPath) {
         Director::getInstance()->replaceScene(newScene);
     }
 
-    // Restart the music using the utility function with the provided soundtrack path
-    AudioUtils::restartMusic(soundtrackPath);
+    // Restart the music analysis
+   // MusicAnalyzer::getInstance()->analyzeMusic(soundtrackPath);
 }
+
+
 // Add a method to reset the game state
 void GameController::resetGameState() {
     auto director = Director::getInstance();

@@ -39,6 +39,8 @@ public:
     static const float GroundY;
     static const float BackgroundSpeed ;
     static const float PlayerScale3;
+	//VictoryPanel
+	static const std::string VICTORY_SOUNDTRACK_PATH;
 };
 
 #endif // __CONSTANTS_H__

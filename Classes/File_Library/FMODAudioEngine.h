@@ -63,6 +63,7 @@ public:
     FMOD::ChannelGroup* getChannelGroup();
     void getSpectrum(float* spectrumArray, int numValues);
     std::vector<float> getFrequencyData();
+    float getSoundDuration(const std::string& filePath);
 
 private:
     int _index;

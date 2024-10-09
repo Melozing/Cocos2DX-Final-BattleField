@@ -387,3 +387,15 @@ std::vector<float> FMODAudioEngine::getFrequencyData() {
     return spectrum;
 }
 
+float FMODAudioEngine::getSoundDuration(const std::string& filePath) {
+    FMOD::Sound* sound;
+    FMOD::System* system; // Assume you have a valid FMOD system instance
+    system->createSound(filePath.c_str(), FMOD_DEFAULT, 0, &sound);
+
+    unsigned int length = 0;
+    sound->getLength(&length, FMOD_TIMEUNIT_MS);
+
+    sound->release();
+    return length / 1000.0f; // Convert milliseconds to seconds
+}
+
