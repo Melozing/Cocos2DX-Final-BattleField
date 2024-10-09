@@ -1,0 +1,12 @@
+Hướng dẫn cài đặt thư viện Fmod :
+Hiện tại trong project đã cấu hình xong linker, đường dẫn, chỉ cần copy và thay file là có thể hoạt động được :
+1. Trong folder Classes/File_Library của project có 2 file liên quan tới thư viện.
+
+2. Copy và replace file CCLuaStack.cpp vào thư mục thư viện của Cocos2dx.
+- Tìm kiếm trên máy tính thư mục "\cocos\scripting\lua-bindings"
+( Recommend tìm kiếm bằng phần mền "Find everything" )
+Đường dẫn ví dụ : C:\Users\DN_Hocvien\Downloads\cocos2d-x-4.0\cocos\scripting\lua-bindings
+
+3. Copy file fmodL.dll folder Classes/File_Library của project vào folder \proj.win32\Debug.win32 khi build
+
+4. build lại project trong visual studio
