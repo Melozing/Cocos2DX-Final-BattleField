@@ -13,9 +13,9 @@
 #include "Button/PauseButton.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
-#include "utils/MusicAnalyzer.h"
+#include "utils/Music/MusicAnalyzer.h"
 #include "Controller/SoundController.h"
-#include "utils/MusicEvent.h" 
+#include "utils/Music/MusicEvent.h" 
 
 class Game1Scene : public BaseScene {
 public:
