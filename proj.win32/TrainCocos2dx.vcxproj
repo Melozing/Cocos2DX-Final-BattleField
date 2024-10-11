@@ -157,6 +157,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Button\PauseButton.cpp" />
     <ClCompile Include="..\Classes\Constants\Constants.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
+    <ClCompile Include="..\Classes\Controller\PlayerMovement.cpp" />
     <ClCompile Include="..\Classes\Controller\SceneController.cpp" />
     <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
     <ClCompile Include="..\Classes\Controller\SpriteController.cpp" />
@@ -205,6 +206,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Button\PauseButton.h" />
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
+    <ClInclude Include="..\Classes\Controller\PlayerMovement.h" />
     <ClInclude Include="..\Classes\Controller\SceneController.h" />
     <ClInclude Include="..\Classes\Controller\SoundController.h" />
     <ClInclude Include="..\Classes\Controller\SpriteController.h" />

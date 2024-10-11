@@ -1,5 +1,5 @@
-#ifndef __SPLASH_SCENE_H__
-#define __SPLASH_SCENE_H__
+#ifndef __GAME2_SCENE_H__
+#define __GAME2_SCENE_H__
 
 #include "cocos2d.h"
 #include "Cursor/Cursor.h"
@@ -14,4 +14,4 @@ private:
     Cursor* _cursor;
 };
 
-#endif // __SPLASH_SCENE_H__
+#endif // __GAME2_SCENE_H__

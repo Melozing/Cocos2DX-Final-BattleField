@@ -1,4 +1,5 @@
-﻿#include "Game3/Game3Scene.h"
+﻿// Game3Scene.cpp
+#include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
 #include "Game3/enemy/EnemyPlan3.h"
 
@@ -7,8 +8,6 @@
 #include "Controller/GameController.h"
 #include "Background/Background3.h"
 #include "Game2/Cursor/Cursor.h"
-
-
 
 USING_NS_CC;
 
@@ -20,31 +19,59 @@ cocos2d::Scene* Game3Scene::createScene() {
     scene->addChild(layer);
 
     return scene;
-}//Create new Scene3
+}
 
 bool Game3Scene::init() {
     if (!BaseScene::init()) {
         return false;
     }
 
-    // add sprite background
-    auto background3 = Background3::createBackground("assets_game/gameplay/Game3.2.png");
+    // Add sprite background
+    background3 = Background3::createBackground("assets_game/gameplay/Game3.2.png");
     if (!background3) {
-        return false; 
+        return false;
     }
-
     this->addChild(background3);
 
-    //add sprite playergame3
-    auto player = PlayerGame3::createPlayerGame3();
-    if (!player)
-    {
+    // Add sprite playergame3
+    auto _player = PlayerGame3::createPlayerGame3();
+    if (!_player) {
         CCLOG("Failed to create PlayerGame3");
         return false;
     }
-    this->addChild(player);
-   
-    //add sprite enemy game 3
+    this->addChild(_player);
+
+
+
+    // Add keyboard event listener
+    auto eventListener = EventListenerKeyboard::create();
+
+    eventListener->onKeyPressed = [_player](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode)
+        {
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_D:
+            _player->onKeyPressed(keyCode, event);
+            break;
+        default:
+            break;
+        }
+        };
+
+    eventListener->onKeyReleased = [_player](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode)
+        {
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_D:
+            _player->onKeyReleased(keyCode, event);
+            break;
+        default:
+            break;
+        }
+        };
+    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
+
+    // Add sprite enemy game 3
     auto enemyPlane = EnemyPlan3::createEnemyPlan3();
     if (!enemyPlane) {
         CCLOG("Failed to create EnemyPlane3");
@@ -52,51 +79,10 @@ bool Game3Scene::init() {
     }
     this->addChild(enemyPlane);
 
-   /* auto eventListener = EventListenerKeyboard::create();
-
-    eventListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode)
-        {
-        case EventKeyboard::KeyCode::KEY_W:
-            player->moveUp();
-            break;
-        case EventKeyboard::KeyCode::KEY_S:
-            player->moveDown();
-            break;
-        case EventKeyboard::KeyCode::KEY_A:
-            player->moveLeft();
-            break;
-        case EventKeyboard::KeyCode::KEY_D:
-            player->moveRight();
-            break;
-        default:
-            break;
-        }
-        };
-
-    eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode)
-        {
-        case EventKeyboard::KeyCode::KEY_W:
-        case EventKeyboard::KeyCode::KEY_S:
-            player->stopVerticalMovement();
-            break;
-        case EventKeyboard::KeyCode::KEY_A:
-        case EventKeyboard::KeyCode::KEY_D:
-            player->stopHorizontalMovement();
-            break;
-        default:
-            break;
-        }
-        };
-
-    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
-
+    // Add cursor
     Director::getInstance()->getOpenGLView()->setCursorVisible(false);
-
     _cursor = Cursor::create("assets_game/player/tam.png");
-    if (!_cursor)
-    {
+    if (!_cursor) {
         CCLOG("Failed to create Cursor");
         return false;
     }
@@ -104,7 +90,8 @@ bool Game3Scene::init() {
     this->schedule([this](float delta) {
         _cursor->updateCursor(delta);
         }, "update_cursor_key");
-   
-    return true;*/
 
+    return true;
 }
+
+
