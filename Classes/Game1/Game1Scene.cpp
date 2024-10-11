@@ -35,7 +35,7 @@ bool Game1Scene::init() {
     srand(static_cast<unsigned int>(time(nullptr)));
 
     _isGameOver = false;
-	PlayerAttributes::getInstance().SetHealth(Constants::PLAYER_HEALTH); // Set player health (can be changed as needed
+    PlayerAttributes::getInstance().SetHealth(Constants::PLAYER_HEALTH); // Set player health (can be changed as needed
     _playerAttributes = &PlayerAttributes::getInstance(); // Use singleton instance
     _canTakeDamage = true;
 
@@ -67,10 +67,39 @@ bool Game1Scene::init() {
     _player->setPhysicsBody(playerBody);
     addChild(_player);
 
-    _movingUp = _movingDown = _movingLeft = _movingRight = false;
+    auto  eventListener = EventListenerKeyboard::create();
 
-    auto listener = EventListenerKeyboard::create();
-    setupMovementListener(listener);
+    eventListener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode)
+        {
+        case EventKeyboard::KeyCode::KEY_W:
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_S:
+        case EventKeyboard::KeyCode::KEY_D:
+            if (_player) {
+                _player->onKeyPressed(keyCode, event);
+            }
+            break;
+        default:
+            break;
+        }
+        };
+
+    eventListener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode)
+        {
+        case EventKeyboard::KeyCode::KEY_W:
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_S:
+        case EventKeyboard::KeyCode::KEY_D:
+            if (_player) {
+                _player->onKeyReleased(keyCode, event);
+            }
+            break;
+        default:
+            break;
+        }
+        };
 
     auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
     auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
@@ -111,14 +140,14 @@ bool Game1Scene::init() {
     this->schedule([this](float dt) {
         updateLoadingBar(dt);
         }, "loading_bar_update_key");
-    
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");
+   /* this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");*/
     this->scheduleUpdate();
     //this->scheduleEnemySpawning();
     this->scheduleCollectibleSpawning();
@@ -131,45 +160,6 @@ bool Game1Scene::init() {
     return true;
 }
 
-void Game1Scene::setupMovementListener(EventListenerKeyboard* listener) {
-    listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode) {
-        case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case EventKeyboard::KeyCode::KEY_W: _movingUp = true; break;
-        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        case EventKeyboard::KeyCode::KEY_S: _movingDown = true; break;
-        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_A: _movingLeft = true; break;
-        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        case EventKeyboard::KeyCode::KEY_D: _movingRight = true; break;
-        case EventKeyboard::KeyCode::KEY_ESCAPE:
-            if (_pauseButton && !_pauseButton->isPaused()) { // Check if _pauseButton is not nullptr
-                _pauseButton->pauseGame();
-            }
-            break;
-        case EventKeyboard::KeyCode::KEY_ENTER:
-            if (_pauseButton && _pauseButton->isPaused()) { // Check if _pauseButton is not nullptr
-                _pauseButton->continueGame();
-            }
-            break;
-        default: break;
-        }
-        };
-
-    listener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode) {
-        case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case EventKeyboard::KeyCode::KEY_W: _movingUp = false; break;
-        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        case EventKeyboard::KeyCode::KEY_S: _movingDown = false; break;
-        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_A: _movingLeft = false; break;
-        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        case EventKeyboard::KeyCode::KEY_D: _movingRight = false; break;
-        default: break;
-        }
-        };
-}
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
@@ -214,7 +204,6 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     return true;
 }
 
-
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
         GameController::getInstance()->GameOver(
@@ -229,7 +218,6 @@ void Game1Scene::checkGameOver() {
         _isGameOver = true;
     }
 }
-
 
 void Game1Scene::updateLoadingBar(float dt) {
     if (_isGameOver) return;
@@ -255,13 +243,13 @@ void Game1Scene::update(float delta) {
     }
 }
 
-void Game1Scene::handlePlayerMovement() {
-    if (_isGameOver) return;
-    if (_movingUp) _player->moveUp();
-    if (_movingDown) _player->moveDown();
-    if (_movingLeft) _player->moveLeft();
-    if (_movingRight) _player->moveRight();
-}
+//void Game1Scene::handlePlayerMovement() {
+//    if (_isGameOver) return;
+//    if (_movingUp) _player->moveUp();
+//    if (_movingDown) _player->moveDown();
+//    if (_movingLeft) _player->moveLeft();
+//    if (_movingRight) _player->moveRight();
+//}
 
 void Game1Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
     Enemy* enemy = EnemyPool::getInstance()->getEnemy();
@@ -319,75 +307,75 @@ void Game1Scene::spawnBasedOnMusicEvent(MusicEvent event) {
         lastSpawnTimeRockAndBoom = currentTime;
         SpawnFallingRockAndBomb(visibleSize);
         break;
-    //case MusicEventType::SNARE:
-    //    CCLOG("Spawning RandomBoom for SNARE event");
-    //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
-    //        return; // Skip spawning if cooldown has not passed
-    //    }
-    //    lastSpawnTimeRandomBoom = currentTime;
-    //    SpawnRandomBoom(visibleSize);
-    //    break;
+        //case MusicEventType::SNARE:
+        //    CCLOG("Spawning RandomBoom for SNARE event");
+        //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
+        //        return; // Skip spawning if cooldown has not passed
+        //    }
+        //    lastSpawnTimeRandomBoom = currentTime;
+        //    SpawnRandomBoom(visibleSize);
+        //    break;
     case MusicEventType::MELODY:
         CCLOG("Spawning RandomBoom for MELODY event");
-         CCLOG("Spawning RandomBoom for SNARE event");
+        CCLOG("Spawning RandomBoom for SNARE event");
         if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
             return; // Skip spawning if cooldown has not passed
         }
         lastSpawnTimeRandomBoom = currentTime;
         SpawnRandomBoom(visibleSize);
         break;
-    /*case MusicEventType::LOW:
-        CCLOG("Spawning FlyingBullet for LOW frequency event");
-        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        break;
-    case MusicEventType::MID:
-        CCLOG("Spawning FallingRock for MID frequency event");
-        SpawnFallingRockAndBomb(visibleSize);
-        break;
-    case MusicEventType::HIGH:
-        CCLOG("Spawning RandomBoom for HIGH frequency event");
-        SpawnRandomBoom(visibleSize);
-        break;
-    case MusicEventType::DROP:
-        CCLOG("Spawning FlyingBullet for DROP event");
-        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        break;
-    case MusicEventType::RISE:
-        CCLOG("Spawning FallingRock for RISE event");
-        SpawnFallingRockAndBomb(visibleSize);
-        break;
-    case MusicEventType::CLAP:
-        CCLOG("Spawning RandomBoom for CLAP event");
-        SpawnRandomBoom(visibleSize);
-        break;
-    case MusicEventType::HAT:
-        CCLOG("Spawning RandomBoom for HAT event");
-        SpawnRandomBoom(visibleSize);
-        break;
-    case MusicEventType::BASS:
-        CCLOG("Spawning FlyingBullet for BASS event");
-        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        break;
-    case MusicEventType::VOCAL:
-        CCLOG("Spawning RandomBoom for VOCAL event");
-        SpawnRandomBoom(visibleSize);
-        break;
-    case MusicEventType::SYNTH:
-        CCLOG("Spawning FlyingBullet for SYNTH event");
-        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        break;
-    case MusicEventType::PAD:
-        CCLOG("Spawning RandomBoom for PAD event");
-        SpawnRandomBoom(visibleSize);
-        break;
-    case MusicEventType::FX:
-        CCLOG("Spawning FlyingBullet for FX event");
-        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        break;
-    case MusicEventType::PERCUSSION:
-        CCLOG("Spawning RandomBoom for PERCUSSION event");
-        SpawnRandomBoom(visibleSize);
-        break;*/
+        /*case MusicEventType::LOW:
+            CCLOG("Spawning FlyingBullet for LOW frequency event");
+            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+            break;
+        case MusicEventType::MID:
+            CCLOG("Spawning FallingRock for MID frequency event");
+            SpawnFallingRockAndBomb(visibleSize);
+            break;
+        case MusicEventType::HIGH:
+            CCLOG("Spawning RandomBoom for HIGH frequency event");
+            SpawnRandomBoom(visibleSize);
+            break;
+        case MusicEventType::DROP:
+            CCLOG("Spawning FlyingBullet for DROP event");
+            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+            break;
+        case MusicEventType::RISE:
+            CCLOG("Spawning FallingRock for RISE event");
+            SpawnFallingRockAndBomb(visibleSize);
+            break;
+        case MusicEventType::CLAP:
+            CCLOG("Spawning RandomBoom for CLAP event");
+            SpawnRandomBoom(visibleSize);
+            break;
+        case MusicEventType::HAT:
+            CCLOG("Spawning RandomBoom for HAT event");
+            SpawnRandomBoom(visibleSize);
+            break;
+        case MusicEventType::BASS:
+            CCLOG("Spawning FlyingBullet for BASS event");
+            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+            break;
+        case MusicEventType::VOCAL:
+            CCLOG("Spawning RandomBoom for VOCAL event");
+            SpawnRandomBoom(visibleSize);
+            break;
+        case MusicEventType::SYNTH:
+            CCLOG("Spawning FlyingBullet for SYNTH event");
+            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+            break;
+        case MusicEventType::PAD:
+            CCLOG("Spawning RandomBoom for PAD event");
+            SpawnRandomBoom(visibleSize);
+            break;
+        case MusicEventType::FX:
+            CCLOG("Spawning FlyingBullet for FX event");
+            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
+            break;
+        case MusicEventType::PERCUSSION:
+            CCLOG("Spawning RandomBoom for PERCUSSION event");
+            SpawnRandomBoom(visibleSize);
+            break;*/
     default:
         CCLOG("Unknown music event type");
         break;
@@ -432,7 +420,6 @@ Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
     }
     return spawnPosition;
 }
-
 
 void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     Vec2 spawnPosition = getRandomSpawnPosition(size);

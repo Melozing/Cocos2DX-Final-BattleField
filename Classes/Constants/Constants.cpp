@@ -11,7 +11,7 @@ const float Constants::FALLINGROCK_PADDING = 0.006f;
 //PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
-const float Constants::PLAYER_MOVESPEED = 3.0f;
+const float Constants::PLAYER_MOVESPEED = 250.0f;
 const int Constants::PLAYER_HEALTH = 3;
 
 const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
@@ -41,6 +41,7 @@ const int Constants::InitialPosY = 100;
 const float Constants::GroundY = 70.0f;
 const float Constants::BackgroundSpeed = 50.0f;
 const float Constants::PlayerScale3 = 1.5f;
+const float Constants::PlayerSpeed3 = 250.0f;
 
 //VictoryPanel
 const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victory/victory.mp3";

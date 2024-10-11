@@ -33,6 +33,16 @@ bool PlayerGame1::init()
     minY = centerY - halfRestrictedHeight;
     maxY = centerY + halfRestrictedHeight;
 
+    
+
+    // Add keyboard event listener
+    auto keyboardListener = EventListenerKeyboard::create();
+    keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame1::onKeyPressed, this);
+    keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerGame1::onKeyReleased, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+    playerMovement = new PlayerMovement(this, Constants::PLAYER_MOVESPEED, minX, maxX, minY, maxY);
+
     return true;
 }
 
@@ -108,39 +118,18 @@ Size PlayerGame1::GetSize() {
     return GetContentSizeSprite(modelCharac);
 }
 
-
-void PlayerGame1::moveUp()
+void PlayerGame1::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    Vec2 position = this->getPosition();
-    if (position.y + Constants::PLAYER_MOVESPEED < maxY) {
-        position.y += Constants::PLAYER_MOVESPEED;
-        this->setPosition(position);
-    }
+    playerMovement->onKeyPressed(keyCode);
 }
 
-void PlayerGame1::moveDown()
+void PlayerGame1::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    Vec2 position = this->getPosition();
-    if (position.y - Constants::PLAYER_MOVESPEED > minY) {
-        position.y -= Constants::PLAYER_MOVESPEED * 1.5f;
-        this->setPosition(position);
-    }
+    playerMovement->onKeyReleased(keyCode);
 }
 
-void PlayerGame1::moveLeft()
+void PlayerGame1::update(float delta)
 {
-    Vec2 position = this->getPosition();
-    if (position.x - Constants::PLAYER_MOVESPEED > minX) {
-        position.x -= Constants::PLAYER_MOVESPEED;
-        this->setPosition(position);
-    }
+    playerMovement->update(delta);
 }
 
-void PlayerGame1::moveRight()
-{
-    Vec2 position = this->getPosition();
-    if (position.x + Constants::PLAYER_MOVESPEED < maxX) {
-        position.x += Constants::PLAYER_MOVESPEED;
-        this->setPosition(position);
-    }
-}

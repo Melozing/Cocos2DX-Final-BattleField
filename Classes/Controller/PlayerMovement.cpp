@@ -1,0 +1,67 @@
+// PlayerMovement.cpp
+#include "PlayerMovement.h"
+
+USING_NS_CC;
+
+PlayerMovement::PlayerMovement(Node* player, float speed, float minX, float maxX, float minY, float maxY)
+    : _player(player), _speed(speed), _direction(Vec2::ZERO), _minX(minX), _maxX(maxX), _minY(minY), _maxY(maxY)
+{
+}
+
+PlayerMovement::~PlayerMovement()
+{
+}
+
+void PlayerMovement::onKeyPressed(EventKeyboard::KeyCode keyCode)
+{
+    _keys[keyCode] = true;
+    updateDirection();
+}
+
+void PlayerMovement::onKeyReleased(EventKeyboard::KeyCode keyCode)
+{
+    _keys[keyCode] = false;
+    updateDirection();
+}
+
+void PlayerMovement::update(float delta)
+{
+    if (_direction != Vec2::ZERO)
+    {
+        Vec2 newPosition = _player->getPosition() + _direction * _speed * delta;
+
+        newPosition.x = std::max(_minX, std::min(newPosition.x, _maxX));
+        newPosition.y = std::max(_minY, std::min(newPosition.y, _maxY));
+
+        _player->setPosition(newPosition);
+    }
+}
+
+float PlayerMovement::getSpeed() const
+{
+    return _speed;
+}
+
+void PlayerMovement::updateDirection()
+{
+    _direction = Vec2::ZERO;
+
+    if (_keys[EventKeyboard::KeyCode::KEY_W])
+    {
+        _direction.y += 1;
+    }
+    if (_keys[EventKeyboard::KeyCode::KEY_S])
+    {
+        _direction.y -= 1;
+    }
+    if (_keys[EventKeyboard::KeyCode::KEY_A])
+    {
+        _direction.x -= 1;
+    }
+    if (_keys[EventKeyboard::KeyCode::KEY_D])
+    {
+        _direction.x += 1;
+    }
+
+    _direction.normalize();
+}

@@ -2,21 +2,21 @@
 #include "PlayerGame3.h"
 #include "Constants/Constants.h"
 #include "Bullet/Bullet.h"
+#include "Controller/PlayerMovement.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
 
 PlayerGame3::PlayerGame3()
-    : _velocity(Vec2::ZERO),
-    _speed(Constants::PlayerSpeed),
-    _isMoving(false),
-    bulletManager(nullptr)
+    :bulletManager(nullptr),
+    playerMovement(nullptr)
 {
 }
 
 PlayerGame3::~PlayerGame3()
 {
     delete bulletManager;
+    delete playerMovement;
 }
 
 PlayerGame3* PlayerGame3::createPlayerGame3()
@@ -54,6 +54,8 @@ bool PlayerGame3::init()
         CCLOG("Failed to load texture for Turret");
     }
 
+
+
     // Add keyboard event listener
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame3::onKeyPressed, this);
@@ -71,7 +73,7 @@ bool PlayerGame3::init()
 
     // Initialize BulletManager
     bulletManager = new BulletManager(100, "assets_game/player/1.png");
-
+    playerMovement = new PlayerMovement(this, Constants::PlayerSpeed3);
     return true;
 }
 
@@ -88,106 +90,21 @@ void PlayerGame3::initAnimation()
 
 void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    switch (keyCode)
+    if (keyCode == EventKeyboard::KeyCode::KEY_A || keyCode == EventKeyboard::KeyCode::KEY_D)
     {
-    case EventKeyboard::KeyCode::KEY_A:
-        moveLeft();
-        break;
-    case EventKeyboard::KeyCode::KEY_D:
-        moveRight();
-        break;
-    case EventKeyboard::KeyCode::KEY_SPACE:
+        playerMovement->onKeyPressed(keyCode);
+    }
+    else if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+    {
         shootBullet();
-        break;
-    default:
-        break;
     }
 }
 
 void PlayerGame3::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    switch (keyCode)
+    if (keyCode == EventKeyboard::KeyCode::KEY_A || keyCode == EventKeyboard::KeyCode::KEY_D)
     {
-    case EventKeyboard::KeyCode::KEY_A:
-    case EventKeyboard::KeyCode::KEY_D:
-        stopMovement();
-        break;
-    default:
-        break;
-    }
-}
-
-void PlayerGame3::moveLeft()
-{
-    _velocity.x = -2;
-    _isMoving = true;
-}
-
-void PlayerGame3::moveRight()
-{
-    _velocity.x = 2;
-    _isMoving = true;
-}
-
-void PlayerGame3::stopMovement()
-{
-    _velocity.x = 0;
-    _isMoving = false;
-}
-
-void PlayerGame3::movePlayer(const Vec2& direction) {
-    // Move player in the specified direction
-    this->setPosition(this->getPosition() + direction);
-
-    // Update turret position whenever the tank moves
-    this->updateTurret();
-}
-
-void PlayerGame3::updateTurret() {
-    // Ensure the turret moves with the tank
-    if (turretSprite) {
-        turretSprite->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height));
-    }
-    if (turretSprite) {
-        float offsetY = 60.0f; // Equivalent to 1 cm in pixels
-        turretSprite->setPosition(Vec2(this->getContentSize().width, this->getContentSize().height + offsetY));
-    }
-    // Update turret rotation based on mouse position or target position
-    Vec2 targetPosition = Vec2(/** get target or mouse position **/);
-    updateTurretRotation(targetPosition);
-
-    // Calculate angle from tank to mouse position
-    Vec2 direction = _mousePos - this->getPosition();
-    float angle = direction.getAngle(); // Get angle between movement direction and X-axis
-    angle = CC_RADIANS_TO_DEGREES(angle); // Convert from radians to degrees
-
-    // Rotate turret
-    setTurretRotation(angle);
-}
-
-void PlayerGame3::updateTurretRotation(const Vec2& targetPosition)
-{
-    if (turretSprite)
-    {
-        Vec2 direction = targetPosition - this->getPosition();
-        float angle = direction.getAngle();
-        angle = CC_RADIANS_TO_DEGREES(angle);
-
-        // Adjust the angle to be in the range [0, 180] degrees
-        if (angle < 0.0f) angle += 180.0f;
-        if (angle > 180.0f) angle = 180.0f;
-
-        // Rotate the turret
-        setTurretRotation(angle);
-    }
-}
-
-void PlayerGame3::setTurretRotation(float angle)
-{
-    if (turretSprite)
-    {
-        // Adjust the angle so that the top of the turret points towards the target
-        turretSprite->setRotation(-angle + 90);
+        playerMovement->onKeyReleased(keyCode);
     }
 }
 
@@ -234,9 +151,7 @@ void PlayerGame3::onMouseMove(Event* event)
 
 void PlayerGame3::update(float delta)
 {
-    Vec2 position = this->getPosition();
-    position += _velocity * _speed * delta;
-    this->setPosition(position);
+    playerMovement->update(delta);
 
     // Update BulletManager
     bulletManager->Update(delta);
@@ -245,4 +160,28 @@ void PlayerGame3::update(float delta)
     updateTurretRotation(_mousePos);
 }
 
+void PlayerGame3::updateTurretRotation(const Vec2& targetPosition)
+{
+    if (turretSprite)
+    {
+        Vec2 direction = targetPosition - this->getPosition();
+        float angle = direction.getAngle();
+        angle = CC_RADIANS_TO_DEGREES(angle);
 
+        // Adjust the angle to be in the range [0, 180] degrees
+        if (angle < 0.0f) angle += 180.0f;
+        if (angle > 180.0f) angle = 180.0f;
+
+        // Rotate the turret
+        setTurretRotation(angle);
+    }
+}
+
+void PlayerGame3::setTurretRotation(float angle)
+{
+    if (turretSprite)
+    {
+        // Adjust the angle so that the top of the turret points towards the target
+        turretSprite->setRotation(-angle + 90);
+    }
+}
