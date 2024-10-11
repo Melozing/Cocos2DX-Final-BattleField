@@ -91,6 +91,9 @@
     <Filter Include="src\Scene\Gameplay">
       <UniqueIdentifier>{607703e8-3e04-49c6-9d51-b8032ff9e9a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame3">
+      <UniqueIdentifier>{5165925f-38b7-43be-9077-c6b4dc99dd97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -164,9 +167,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
-      <Filter>src\Gameplay\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp">
       <Filter>src\Gameplay\Enemy</Filter>
@@ -252,6 +252,9 @@
     <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp">
       <Filter>src\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -325,9 +328,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
-      <Filter>src\Gameplay\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h">
       <Filter>src\Gameplay\Enemy</Filter>
@@ -412,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h">
       <Filter>src\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -34,6 +34,7 @@ private:
     cocos2d::Vec2 _mousePos;
     BulletManager* bulletManager;
     PlayerMovement* playerMovement;
+    bool isShooting;
 };
 
 #endif // __PLAYER_GAME3_H__
