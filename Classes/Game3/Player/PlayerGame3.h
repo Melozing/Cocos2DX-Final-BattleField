@@ -4,7 +4,7 @@
 
 #include "cocos2d.h"
 #include "Bullet/BulletManager.h"
-#include "Controller/PlayerMovement.h"
+#include "Manager/PlayerMovementManager.h"
 #include "Controller/SpriteController.h"
 
 class PlayerGame3 : public cocos2d::Sprite, public SpriteController

@@ -2,7 +2,7 @@
 #include "PlayerGame3.h"
 #include "Constants/Constants.h"
 #include "Bullet/Bullet.h"
-#include "Controller/PlayerMovement.h"
+#include "Manager/PlayerMovementManager.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
