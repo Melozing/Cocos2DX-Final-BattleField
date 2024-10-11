@@ -159,7 +159,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Button\ReplayButton.cpp" />
     <ClCompile Include="..\Classes\Constants\Constants.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
-    <ClCompile Include="..\Classes\Controller\PlayerMovement.cpp" />
     <ClCompile Include="..\Classes\Controller\SceneController.cpp" />
     <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
     <ClCompile Include="..\Classes\Controller\SpriteController.cpp" />
@@ -190,6 +189,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp" />
+    <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp" />
     <ClCompile Include="..\Classes\Manager\PositionManager.cpp" />
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp" />
     <ClCompile Include="..\Classes\Panel\PausePanel.cpp" />
@@ -214,7 +214,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Button\ReplayButton.h" />
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
-    <ClInclude Include="..\Classes\Controller\PlayerMovement.h" />
     <ClInclude Include="..\Classes\Controller\SceneController.h" />
     <ClInclude Include="..\Classes\Controller\SoundController.h" />
     <ClInclude Include="..\Classes\Controller\SpriteController.h" />
@@ -245,6 +244,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Manager\PhysicsManager.h" />
+    <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h" />
     <ClInclude Include="..\Classes\Manager\PositionManager.h" />
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h" />
     <ClInclude Include="..\Classes\Panel\PausePanel.h" />

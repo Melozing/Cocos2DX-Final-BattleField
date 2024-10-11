@@ -5,7 +5,7 @@
 #include "Controller/SpriteController.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/GameController.h"
-#include "Controller/PlayerMovement.h"
+#include "Manager/PlayerMovementManager.h"
 
 class PlayerGame1 : public cocos2d::Sprite, public SpriteController
 {

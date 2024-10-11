@@ -248,7 +248,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Button\ExitButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
-
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp">
+      <Filter>src\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Button\ExitButton.h">
       <Filter>src\UXUI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h">
+      <Filter>src\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
