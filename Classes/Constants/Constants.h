@@ -1,4 +1,4 @@
-#ifndef __CONSTANTS_H__
+﻿#ifndef __CONSTANTS_H__
 #define __CONSTANTS_H__
 #include "cocos2d.h"
 
@@ -38,6 +38,13 @@ public:
     static const float GroundY;
     static const float BackgroundSpeed ;
     static const float PlayerScale3;
+<<<<<<< Updated upstream
+=======
+    static const float PLAYER_SPEED_GAME3;
+	static const float BulletGame3Speed;
+	//VictoryPanel
+	static const std::string VICTORY_SOUNDTRACK_PATH;
+>>>>>>> Stashed changes
 };
 
 #endif // __CONSTANTS_H__

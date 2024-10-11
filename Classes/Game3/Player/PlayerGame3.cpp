@@ -7,10 +7,16 @@
 USING_NS_CC;
 
 PlayerGame3::PlayerGame3()
+<<<<<<< Updated upstream
     : _velocity(Vec2::ZERO),
     _speed(Constants::PlayerSpeed),
     _isMoving(false),
     bulletManager(nullptr)
+=======
+    :bulletManager(nullptr),
+    playerMovement(nullptr),
+    isShooting(false)
+>>>>>>> Stashed changes
 {
 }
 
@@ -71,7 +77,11 @@ bool PlayerGame3::init()
 
     // Initialize BulletManager
     bulletManager = new BulletManager(100, "assets_game/player/1.png");
+<<<<<<< Updated upstream
 
+=======
+    playerMovement = new PlayerMovement(this, Constants::PLAYER_SPEED_GAME3);
+>>>>>>> Stashed changes
     return true;
 }
 
@@ -205,20 +215,61 @@ void PlayerGame3::shootBullet()
 {
     CCLOG("shootBullet called");
 
-    // Calculate the direction from the turret to the mouse position
+    // Tính toán hướng từ tháp pháo đến vị trí chuột
     Vec2 direction = _mousePos - this->getPosition();
     direction.normalize();
 
-    // Calculate the position of the turret's tip
-    float turretAngle = CC_DEGREES_TO_RADIANS(turretSprite->getRotation() - 90); // Adjust for the sprite's rotation
+    // Tính toán vị trí đầu của tháp pháo
+    float turretAngle = CC_DEGREES_TO_RADIANS(turretSprite->getRotation() - 90); // Điều chỉnh cho góc quay của sprite
     Vec2 turretTip = turretSprite->getPosition() + Vec2(cos(turretAngle), sin(turretAngle)) * turretSprite->getContentSize().height;
 
-    // Convert turretTip to world coordinates
+    // Chuyển đổi turretTip sang tọa độ thế giới
     Vec2 worldTurretTip = turretSprite->convertToWorldSpace(Vec2(turretSprite->getContentSize().width / 2, turretSprite->getContentSize().height));
 
-    // Use BulletManager to spawn bullet
-    bulletManager->SpawnBullet(worldTurretTip, direction, 1600.0f);
+    // Tạo và khởi tạo viên đạn
+    Bullet* bullet = Bullet::createBullet("assets_game/player/1.png", direction, Constants::BulletGame3Speed);
+
+    // Kiểm tra nếu viên đạn được tạo thành công
+    if (bullet)
+    {
+        // Đặt vị trí ban đầu của viên đạn
+        bullet->setPosition(worldTurretTip);
+
+        // Thêm viên đạn vào cảnh
+        this->getParent()->addChild(bullet);
+
+        // Thiết lập chuyển động cho viên đạn
+        Vec2 velocity = direction * Constants::BulletGame3Speed;
+        bullet->getPhysicsBody()->setVelocity(velocity);
+
+        // Vô hiệu hóa vật lý cho viên đạn nếu nó có thân vật lý
+        if (bullet->getPhysicsBody())
+        {
+            bullet->getPhysicsBody()->setEnabled(true);
+        }
+
+        // Sử dụng schedule để kiểm tra vị trí của viên đạn
+        bullet->schedule([bullet](float delta) {
+            auto winSize = Director::getInstance()->getWinSize();
+            if (bullet->getPositionX() < 0 || bullet->getPositionX() > winSize.width ||
+                bullet->getPositionY() < 0 || bullet->getPositionY() > winSize.height)
+            {
+                bullet->removeFromParentAndCleanup(true);
+            }
+            }, "check_bullet_position");
+    }
+    else
+    {
+        CCLOG("Failed to create bullet");
+    }
 }
+
+
+
+
+
+
+
 
 void PlayerGame3::onMouseMove(Event* event)
 {

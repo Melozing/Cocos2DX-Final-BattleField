@@ -38,6 +38,11 @@ private:
     cocos2d::Sprite* turretSprite;
     cocos2d::Vec2 _mousePos;
     BulletManager* bulletManager;
+<<<<<<< Updated upstream
+=======
+    PlayerMovement* playerMovement;
+    bool isShooting;
+>>>>>>> Stashed changes
 };
 
 #endif // __PLAYER_GAME3_H__

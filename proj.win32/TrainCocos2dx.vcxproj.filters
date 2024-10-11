@@ -61,6 +61,9 @@
     <Filter Include="src\Player\PlayerGame2">
       <UniqueIdentifier>{7a0cbbf1-3080-47b3-8f8b-92badcc3ad05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame3">
+      <UniqueIdentifier>{4a536432-ae15-4e54-89c9-e8659ac34846}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,6 +129,81 @@
     <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp">
+      <Filter>src\Gameplay\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\Bullet.cpp">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\BulletPool.cpp">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SoundController.cpp">
+      <Filter>src\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
+      <Filter>src\Gameplay\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\Music\AudioUtils.cpp">
+      <Filter>src\Utils\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\Music\MusicAnalyzer.cpp">
+      <Filter>src\Utils\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\Music\MusicEvent.cpp">
+      <Filter>src\Utils\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Button\PauseButton.cpp">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp">
+      <Filter>src\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PositionManager.cpp">
+      <Filter>src\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FlyingBulletPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingRockPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\RandomBoomPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingRock.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+    </ClCompile>
+>>>>>>> Stashed changes
     <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp">
       <Filter>src\Items</Filter>
     </ClCompile>
@@ -188,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
       <Filter>src\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,8 +335,82 @@
     <ClInclude Include="..\Classes\Panel\VictoryPanel.h">
       <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h">
       <Filter>src\Items</Filter>
+=======
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h">
+      <Filter>src\Gameplay\Player\PlayerGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h">
+      <Filter>src\Gameplay\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\Bullet.h">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\BulletPool.h">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\BulletManager.h">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SoundController.h">
+      <Filter>src\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Background\Background3.h">
+      <Filter>src\Gameplay\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\Music\AudioUtils.h">
+      <Filter>src\Utils\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\Music\MusicAnalyzer.h">
+      <Filter>src\Utils\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\Music\MusicEvent.h">
+      <Filter>src\Utils\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Button\PauseButton.h">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PhysicsManager.h">
+      <Filter>src\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PositionManager.h">
+      <Filter>src\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FlyingBulletPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingRockPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\RandomBoomPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingRock.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
       <Filter>src\Items</Filter>
@@ -316,6 +471,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletManager.h">
       <Filter>src\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

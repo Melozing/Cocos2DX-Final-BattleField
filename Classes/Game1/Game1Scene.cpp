@@ -130,7 +130,7 @@ bool Game1Scene::init() {
         updateLoadingBar(dt);
         }, "loading_bar_update_key");
 
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+    //_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);

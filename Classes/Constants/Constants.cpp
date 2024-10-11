@@ -39,4 +39,13 @@ const int Constants::InitialPosY = 100;
 //game3
 const float Constants::GroundY = 70.0f;
 const float Constants::BackgroundSpeed = 50.0f;
+<<<<<<< Updated upstream
 const float Constants::PlayerScale3 = 1.5f;
+=======
+const float Constants::PlayerScale3 = 1.5f;
+const float Constants::PLAYER_SPEED_GAME3 = 500.0f;
+const float Constants::BulletGame3Speed = 1500.0f;
+
+//VictoryPanel
+const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victory/victory.mp3";
+>>>>>>> Stashed changes
