@@ -23,12 +23,21 @@ Scene* SceneController::getScene(const std::string& sceneName) {
 }
 
 Scene* SceneController::createScene(const std::string& sceneName) {
+
+    static std::unordered_map<std::string, Scene*> sceneCache;
+    if (sceneCache.find(sceneName) != sceneCache.end()) {
+        return sceneCache[sceneName];
+    }
+
     auto it = sceneMap.find(sceneName);
     if (it != sceneMap.end()) {
-        return it->second();
+        Scene* scene = it->second();
+        sceneCache[sceneName] = scene;
+        return scene;
     }
     return nullptr;
 }
+
 
 void SceneController::registerScene(const std::string& sceneName, std::function<Scene* ()> createFunc) {
     sceneMap[sceneName] = createFunc;

@@ -3,7 +3,7 @@
 using namespace cocos2d;
 
 bool FallingTree::init() {
-    if (!Enemy::init()) {
+    if (!Sprite::init()) {
         return false;
     }
     return true;

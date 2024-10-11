@@ -2,18 +2,21 @@
 #include "Game1/Enemy/FlyingBullet.h"
 #include "Game1/Enemy/FallingRock.h"
 #include "Game1/Enemy/RandomBoom.h"
+#include "Game1/Enemy/FlyingBulletPool.h"
+#include "Game1/Enemy/FallingRockPool.h"
+#include "Game1/Enemy/RandomBoomPool.h"
 
-Enemy* EnemyFactory::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
-    Enemy* enemy = nullptr;
+EnemyGame1* EnemyFactoryGame1::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
+    EnemyGame1* enemy = nullptr;
 
     if (enemyType == "FlyingBullet") {
-        enemy = FlyingBullet::create();
+        enemy = FlyingBulletPool::getInstance()->getEnemy();
     }
     else if (enemyType == "FallingRock") {
-        enemy = FallingRock::create();
+        enemy = FallingRockPool::getInstance()->getEnemy();
     }
     else if (enemyType == "RandomBoom") {
-        enemy = RandomBoom::create();
+        enemy = RandomBoomPool::getInstance()->getEnemy();
     }
 
     if (enemy) {
@@ -21,4 +24,16 @@ Enemy* EnemyFactory::spawnEnemy(const std::string& enemyType, const cocos2d::Vec
     }
 
     return enemy;
+}
+
+void EnemyFactoryGame1::returnEnemy(EnemyGame1* enemy) {
+    if (auto flyingBullet = dynamic_cast<FlyingBullet*>(enemy)) {
+        FlyingBulletPool::getInstance()->returnEnemy(flyingBullet);
+    }
+    else if (auto fallingRock = dynamic_cast<FallingRock*>(enemy)) {
+        FallingRockPool::getInstance()->returnEnemy(fallingRock);
+    }
+    else if (auto randomBoom = dynamic_cast<RandomBoom*>(enemy)) {
+        RandomBoomPool::getInstance()->returnEnemy(randomBoom);
+    }
 }

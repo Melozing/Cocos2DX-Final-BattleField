@@ -1,4 +1,5 @@
 #include "FallingRock.h"
+#include "FallingRockPool.h"
 
 USING_NS_CC;
 
@@ -13,10 +14,9 @@ FallingRock* FallingRock::create() {
 }
 
 bool FallingRock::init() {
-    if (!Enemy::init()) {
+    if (!Node::init()) { // Assuming Node is the superclass
         return false;
     }
-
     // Load sprite frames for both rock and landmine
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/falling_rock.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
@@ -33,11 +33,15 @@ bool FallingRock::init() {
 
     // Initialize the animation based on the chosen sprite type
     initAnimation();
-
     // Schedule update to run every frame
     this->scheduleUpdate();
 
     return true;
+}
+
+void FallingRock::reset() {
+    _spriteBatchNodeRock = SpriteBatchNode::create("assets_game/enemies/falling_rock.png");
+    _spriteBatchNodeLandmine = SpriteBatchNode::create("assets_game/enemies/landmine.png");
 }
 
 Size FallingRock::GetSize() {
@@ -100,21 +104,21 @@ void FallingRock::update(float delta) {
 
     this->setPosition(currentPosition + movement);
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    if (this->getPosition().y < -this->getContentSize().height) {
-        this->removeFromParentAndCleanup(true);
-    }
+	this->removeWhenOutOfScreen();
 }
 
 void FallingRock::removeWhenOutOfScreen() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     if (this->getPosition().y < -this->getContentSize().height - 50.0f) {
-        this->removeFromParentAndCleanup(true);
+        this->stopAllActions();
+        this->removeFromParentAndCleanup(false);
+        FallingRockPool::getInstance()->returnEnemy(this);
     }
 }
 
+
 FallingRock::~FallingRock() {
     // Remove sprite frames from cache when object is destroyed
-    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/falling_rock.plist");
-    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/landmine.plist");
+    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/falling_rock.plist");
+    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/landmine.plist");
 }

@@ -1,10 +1,11 @@
 #include "RandomBoom.h"
+#include "RandomBoomPool.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
 
 bool RandomBoom::init() {
-    if (!Enemy::init()) {
+    if (!Node::init()) {
         return false;
     }
 
@@ -27,8 +28,22 @@ bool RandomBoom::init() {
 }
 
 void RandomBoom::update(float delta) {
-
 }
+
+void RandomBoom::reset() {
+    if (_warningSprite) {
+        _warningSprite->setVisible(false);
+    }
+    if (_missileSprite) {
+        _missileSprite->setVisible(false);
+    }
+    if (explosionSprite) {
+        explosionSprite->setVisible(false);
+    }
+    this->unscheduleAllCallbacks(); // Unschedule all callbacks
+}
+
+
 
 void RandomBoom::spawn(const Vec2& startPosition) {
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -100,13 +115,11 @@ void RandomBoom::onMissileHitTarget() {
 
     // Cleanup missile and warning sprites
     if (_missileSprite) {
-        _missileSprite->removeFromParentAndCleanup(true);
-        _missileSprite = nullptr;
+        _missileSprite->setVisible(false);
     }
 
     if (_warningSprite) {
-        _warningSprite->removeFromParentAndCleanup(true);
-        _warningSprite = nullptr;
+        _warningSprite->setVisible(false);
     }
 
     if (!explosionSprite) {
@@ -130,18 +143,29 @@ void RandomBoom::onMissileHitTarget() {
     explosionSprite->runAction(Sequence::create(
         animate,
         CallFunc::create([this]() {
-            explosionSprite->removeFromParentAndCleanup(true);
+            explosionSprite->setVisible(false); // Hide instead of removing
+            if (explosionSprite->getPhysicsBody()) {
+                explosionSprite->removeComponent(explosionSprite->getPhysicsBody()); // Remove PhysicsBody
+            }
+            this->reset();
             }),
         CallFunc::create([this]() {
-            this->removeFromParentAndCleanup(true);
+            RandomBoomPool::getInstance()->returnEnemy(this);
             }),
         nullptr
     ));
 }
 
+
 RandomBoom::~RandomBoom() {
-    // Remove sprite frames from cache when object is destroyed
-    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/warning_rocket.plist");
-    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/rocket.plist");
-    //SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/fx/explosions.plist");
+    // Check if the sprite frames are still being used before removing them from cache
+    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/enemies/warning_rocket.plist")) {
+        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/warning_rocket.plist");
+    }
+    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/enemies/rocket.plist")) {
+        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/rocket.plist");
+    }
+    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/fx/explosions.plist")) {
+        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/fx/explosions.plist");
+    }
 }

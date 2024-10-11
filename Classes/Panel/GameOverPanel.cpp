@@ -1,4 +1,6 @@
 #include "Panel/GameOverPanel.h"
+#include "Button/ReplayButton.h"
+#include "Button/ExitButton.h"
 #include "ui/CocosGUI.h"
 #include "Controller/GameController.h"
 #include "Constants/Constants.h"
@@ -38,19 +40,13 @@ bool GameOverPanel::init(const std::function<void()>& retryAction, const std::fu
     this->addChild(background);
 
     // Create retry button
-    auto retryButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png");
+    auto retryButton = ReplayButton::create(retryAction);
     retryButton->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 50));
-    retryButton->addClickEventListener([retryAction](Ref* sender) {
-        retryAction();
-        });
     this->addChild(retryButton);
 
     // Create exit button
-    auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png");
+    auto exitButton = ExitButton::create(exitAction);
     exitButton->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 50));
-    exitButton->addClickEventListener([exitAction](Ref* sender) {
-        exitAction();
-        });
     this->addChild(exitButton);
 
     return true;

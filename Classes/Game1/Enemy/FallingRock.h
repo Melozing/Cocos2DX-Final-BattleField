@@ -2,10 +2,9 @@
 #define __FALLING_ROCK_H__
 
 #include "cocos2d.h"
-#include "Enemy.h"
 #include "Controller/SpriteController.h"
 
-class FallingRock : public Enemy, public SpriteController {
+class FallingRock : public cocos2d::Sprite, public SpriteController {
 public:
     enum class SpriteType {
         ROCK,
@@ -15,8 +14,9 @@ public:
     static FallingRock* create();
 
     virtual bool init() override;
-    virtual void spawn(const cocos2d::Vec2& startPosition) override;
+    void spawn(const cocos2d::Vec2& startPosition);
     virtual void update(float delta) override;
+    void reset();
 
     float getSpeed() const { return _speed; }
     void initAnimation();

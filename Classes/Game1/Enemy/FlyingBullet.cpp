@@ -13,8 +13,13 @@ FlyingBullet* FlyingBullet::create() {
     return nullptr;
 }
 
+void FlyingBullet::reset() {
+    spriteBatchNodeLeft = SpriteBatchNode::create("assets_game/enemies/flying_bullet_left.png");
+    spriteBatchNodeRight = SpriteBatchNode::create("assets_game/enemies/flying_bullet.png");
+}
+
 bool FlyingBullet::init() {
-    if (!Enemy::init()) {
+    if (!Sprite::init()) {
         return false;
     }
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet.plist");
@@ -22,6 +27,7 @@ bool FlyingBullet::init() {
 
     spriteBatchNodeLeft = SpriteBatchNode::create("assets_game/enemies/flying_bullet_left.png");
     spriteBatchNodeRight = SpriteBatchNode::create("assets_game/enemies/flying_bullet.png");
+    spriteBatchNode = SpriteBatchNode::create("assets_game/enemies/flying_bullet.png");
 
     this->scheduleUpdate();
     return true;
@@ -36,7 +42,7 @@ void FlyingBullet::initAnimation(bool fromLeft) {
     spriteBatchNode = fromLeft ? spriteBatchNodeRight : spriteBatchNodeLeft;
 
     if (spriteBatchNode->getParent() == nullptr) {
-        this->addChild(spriteBatchNode);
+       this->addChild(spriteBatchNode);
     }
 
     modelCharac = Sprite::createWithSpriteFrameName(spriteFrameName);

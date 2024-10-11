@@ -2,13 +2,12 @@
 #define __RANDOM_BOOM_H__
 
 #include "cocos2d.h"
-#include "Enemy.h"
 #include "Controller/SpriteController.h"
 
-class RandomBoom : public Enemy, public SpriteController {
+class RandomBoom : public cocos2d::Sprite, public SpriteController {
 public:
     virtual bool init() override;
-    virtual void spawn(const cocos2d::Vec2& startPosition) override;
+    void spawn(const cocos2d::Vec2& startPosition);
     virtual void update(float delta) override;
     void showWarning(const cocos2d::Vec2& position);
     void launchMissile(const cocos2d::Vec2& targetPosition);
@@ -16,6 +15,9 @@ public:
     Size GetSize();
     CREATE_FUNC(RandomBoom);
     virtual ~RandomBoom();
+
+    void reset();
+
 private:
     static cocos2d::Vector<RandomBoom*> _pool;
 
@@ -27,5 +29,6 @@ private:
     cocos2d::Sprite* _missileSprite;
     cocos2d::Sprite* explosionSprite;
 };
+
 
 #endif // __RANDOM_BOOM_H__
