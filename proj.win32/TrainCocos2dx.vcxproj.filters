@@ -248,6 +248,8 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Button\ExitButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
+    <ClCompile Include="..\Classes\Controller\PlayerMovement.cpp">
+      <Filter>src\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +408,8 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Button\ExitButton.h">
       <Filter>src\UXUI\Buttons</Filter>
+    <ClInclude Include="..\Classes\Controller\PlayerMovement.h">
+      <Filter>src\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
