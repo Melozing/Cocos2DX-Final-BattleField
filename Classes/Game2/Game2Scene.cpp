@@ -3,18 +3,14 @@
 #include "Game2/Player/PlayerGame2.h"
 #include "Game2/Cursor/Cursor.h"
 #include "Game2/Enemy/MeleeEnemyGame2.h"
-#include "Game2/Enemy/SniperEnemyGame2.h" // Include the sniper enemy header
+#include "Game2/Enemy/SniperEnemyGame2.h"
 
 USING_NS_CC;
 
 cocos2d::Scene* Game2Scene::createScene() {
-    // Create a scene with physics enabled
     auto scene = Scene::createWithPhysics();
-
-    // Optionally, you can set debug draw to see the physics shapes
     scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
-    // Create the layer and add it to the scene
     auto layer = Game2Scene::create();
     scene->addChild(layer);
 
@@ -32,7 +28,6 @@ bool Game2Scene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    // Create and position the player at the center of the screen
     auto player = PlayerGame2::createPlayerGame2();
     if (!player)
     {
@@ -40,42 +35,34 @@ bool Game2Scene::init()
         return false;
     }
     player->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
-    player->setName("PlayerGame2"); // Set the name for the player
+    player->setName("PlayerGame2");
     this->addChild(player);
     CCLOG("PlayerGame2 added to Game2Scene");
-
+    //di chuyen
     auto eventListener = EventListenerKeyboard::create();
 
-    eventListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
+    eventListener->onKeyPressed = [player](EventKeyboard::KeyCode keyCode, Event* event) {
         switch (keyCode)
         {
         case EventKeyboard::KeyCode::KEY_W:
-            player->moveUp();
-            break;
-        case EventKeyboard::KeyCode::KEY_S:
-            player->moveDown();
-            break;
         case EventKeyboard::KeyCode::KEY_A:
-            player->moveLeft();
-            break;
+        case EventKeyboard::KeyCode::KEY_S:
         case EventKeyboard::KeyCode::KEY_D:
-            player->moveRight();
+            player->onKeyPressed(keyCode, event);
             break;
         default:
             break;
         }
         };
 
-    eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
+    eventListener->onKeyReleased = [player](EventKeyboard::KeyCode keyCode, Event* event) {
         switch (keyCode)
         {
         case EventKeyboard::KeyCode::KEY_W:
-        case EventKeyboard::KeyCode::KEY_S:
-            player->stopVerticalMovement();
-            break;
         case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_S:
         case EventKeyboard::KeyCode::KEY_D:
-            player->stopHorizontalMovement();
+            player->onKeyReleased(keyCode, event);
             break;
         default:
             break;
@@ -97,11 +84,9 @@ bool Game2Scene::init()
         _cursor->updateCursor(delta);
         }, "update_cursor_key");
 
-    // Schedule enemy spawning every 3 seconds
     this->schedule([this](float delta) {
         auto enemy = SniperEnemyGame2::createSniperEnemyGame2();
         if (enemy) {
-            // Set the enemy position at a fixed location (e.g., top center of the screen)
             auto visibleSize = Director::getInstance()->getVisibleSize();
             Vec2 origin = Director::getInstance()->getVisibleOrigin();
             float x = origin.x + visibleSize.width / 2;

@@ -61,9 +61,7 @@ private:
     Sprite* border;
 
     // Player movement
-    bool _movingUp, _movingDown, _movingLeft, _movingRight;
-    void handlePlayerMovement();
-    void setupMovementListener(EventListenerKeyboard* listener);
+    //void setupMovementListener(EventListenerKeyboard* listener);
 
     // Enemy spawning
     void SpawnFallingRockAndBomb(cocos2d::Size size);
@@ -85,9 +83,9 @@ private:
     // Game over handling
     void checkGameOver();
 
-    // Input handling
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+    //// Input handling
+    //void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+    //void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
     // UI updates
     void updateLoadingBar(float dt);

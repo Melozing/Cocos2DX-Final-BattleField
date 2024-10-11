@@ -9,17 +9,16 @@ USING_NS_CC;
 
 PlayerGame2::PlayerGame2()
     : _mousePos(Vec2::ZERO),
-    _velocity(Vec2::ZERO),
-    _speed(Constants::PlayerSpeed),
-    _isMoving(false),
     _isMouseDown(false),
-    bulletManager(nullptr)
+    bulletManager(nullptr),
+    playerMovement(nullptr) // Initialize to nullptr
 {
 }
 
 PlayerGame2::~PlayerGame2()
 {
     delete bulletManager;
+    delete playerMovement;
 }
 
 PlayerGame2* PlayerGame2::createPlayerGame2()
@@ -43,35 +42,30 @@ bool PlayerGame2::init() {
 
     this->setPosition(Vec2(Constants::InitialPosX, Constants::InitialPosY));
     this->setScale(Constants::PlayerScale);
-    this->setAnchorPoint(Vec2(0.5, 0.5)); // Set anchor point at the head of the character
+    this->setAnchorPoint(Vec2(0.5, 0.5));
 
     auto physicsBody = PhysicsBody::createBox(this->getContentSize());
     physicsBody->setContactTestBitmask(true);
-    physicsBody->setGravityEnable(false); // Disable gravity
+    physicsBody->setGravityEnable(false);
     this->setPhysicsBody(physicsBody);
 
-    // Add mouse event listener
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
     mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame2::onMouseDown, this);
-    mouseListener->onMouseUp = CC_CALLBACK_1(PlayerGame2::onMouseUp, this); // Thêm sự kiện onMouseUp
+    mouseListener->onMouseUp = CC_CALLBACK_1(PlayerGame2::onMouseUp, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
-    // Add keyboard event listener
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame2::onKeyPressed, this);
     keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerGame2::onKeyReleased, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
-    // Schedule update method
     this->scheduleUpdate();
 
-    // Khởi tạo BulletManager
     bulletManager = new BulletManager(100, "assets_game/player/shot.png");
-
+    playerMovement = new PlayerMovement(this, Constants::PlayerSpeed); // Properly initialize PlayerMovement
     return true;
 }
-
 
 void PlayerGame2::initAnimation()
 {
@@ -106,7 +100,6 @@ void PlayerGame2::onMouseMove(Event* event)
     EventMouse* e = (EventMouse*)event;
     _mousePos = Vec2(e->getCursorX(), e->getCursorY());
 
-    // Invert the y-coordinate
     auto winSize = Director::getInstance()->getWinSize();
     _mousePos.y = winSize.height - _mousePos.y;
 }
@@ -116,7 +109,7 @@ void PlayerGame2::onMouseDown(Event* event)
     EventMouse* e = (EventMouse*)event;
     if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
     {
-        _isMouseDown = true; // Đánh dấu rằng chuột đã được nhấn
+        _isMouseDown = true;
     }
 }
 
@@ -125,108 +118,40 @@ void PlayerGame2::onMouseUp(Event* event)
     EventMouse* e = (EventMouse*)event;
     if ((e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) && _isMouseDown)
     {
-        // Chuyển đổi vị trí chuột sang tọa độ OpenGL
         auto mousePos = Director::getInstance()->convertToGL(_mousePos);
         Vec2 pos = this->getPosition();
 
-        // Tính toán hướng bắn
         Vec2 dirToShoot = mousePos - pos;
 
-        // Bắn viên đạn
         shootBullet(dirToShoot);
 
-        // Đặt lại trạng thái chuột
         _isMouseDown = false;
     }
 }
 
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    switch (keyCode)
+    if (keyCode == EventKeyboard::KeyCode::KEY_W || keyCode == EventKeyboard::KeyCode::KEY_A ||
+        keyCode == EventKeyboard::KeyCode::KEY_S || keyCode == EventKeyboard::KeyCode::KEY_D)
     {
-    case EventKeyboard::KeyCode::KEY_W:
-        moveUp();
-        break;
-    case EventKeyboard::KeyCode::KEY_S:
-        moveDown();
-        break;
-    case EventKeyboard::KeyCode::KEY_A:
-        moveLeft();
-        break;
-    case EventKeyboard::KeyCode::KEY_D:
-        moveRight();
-        break;
-    default:
-        break;
+        playerMovement->onKeyPressed(keyCode);
     }
 }
 
 void PlayerGame2::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    switch (keyCode)
+    if (keyCode == EventKeyboard::KeyCode::KEY_W || keyCode == EventKeyboard::KeyCode::KEY_A ||
+        keyCode == EventKeyboard::KeyCode::KEY_S || keyCode == EventKeyboard::KeyCode::KEY_D)
     {
-    case EventKeyboard::KeyCode::KEY_W:
-    case EventKeyboard::KeyCode::KEY_S:
-        stopVerticalMovement();
-        break;
-    case EventKeyboard::KeyCode::KEY_A:
-    case EventKeyboard::KeyCode::KEY_D:
-        stopHorizontalMovement();
-        break;
-    default:
-        break;
-    }
-}
-
-void PlayerGame2::moveUp()
-{
-    _velocity.y = 1;
-    _isMoving = true;
-}
-
-void PlayerGame2::moveDown()
-{
-    _velocity.y = -1;
-    _isMoving = true;
-}
-
-void PlayerGame2::moveLeft()
-{
-    _velocity.x = -1;
-    _isMoving = true;
-}
-
-void PlayerGame2::moveRight()
-{
-    _velocity.x = 1;
-    _isMoving = true;
-}
-
-void PlayerGame2::stopVerticalMovement()
-{
-    _velocity.y = 0;
-    if (_velocity.x == 0)
-    {
-        _isMoving = false;
-    }
-}
-
-void PlayerGame2::stopHorizontalMovement()
-{
-    _velocity.x = 0;
-    if (_velocity.y == 0)
-    {
-        _isMoving = false;
+        playerMovement->onKeyReleased(keyCode);
     }
 }
 
 void PlayerGame2::update(float delta)
 {
-    Vec2 position = this->getPosition();
-    position += _velocity * _speed * delta;
-    this->setPosition(position);
+    playerMovement->update(delta);
     RotateToMouse();
-    if (_isMoving)
+    if (playerMovement->getSpeed() > 0)
     {
         startMovementAnimation();
     }
@@ -253,8 +178,8 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     Vec2 normalizedDirection = direction.getNormalized();
     bulletManager->SpawnBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed);
 }
+
 void PlayerGame2::die()
 {
     this->removeFromParent();
-    // Add any additional logic for player death, such as game over screen
 }

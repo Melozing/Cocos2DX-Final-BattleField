@@ -67,10 +67,39 @@ bool Game1Scene::init() {
     _player->setPhysicsBody(playerBody);
     addChild(_player);
 
-    _movingUp = _movingDown = _movingLeft = _movingRight = false;
+    auto  eventListener = EventListenerKeyboard::create();
 
-    auto listener = EventListenerKeyboard::create();
-    setupMovementListener(listener);
+    eventListener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode)
+        {
+        case EventKeyboard::KeyCode::KEY_W:
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_S:
+        case EventKeyboard::KeyCode::KEY_D:
+            if (_player) {
+                _player->onKeyPressed(keyCode, event);
+            }
+            break;
+        default:
+            break;
+        }
+        };
+
+    eventListener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode)
+        {
+        case EventKeyboard::KeyCode::KEY_W:
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_S:
+        case EventKeyboard::KeyCode::KEY_D:
+            if (_player) {
+                _player->onKeyReleased(keyCode, event);
+            }
+            break;
+        default:
+            break;
+        }
+        };
 
     auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
     auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
@@ -125,7 +154,7 @@ bool Game1Scene::init() {
     contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");
+   /* this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");*/
     this->scheduleUpdate();
     //this->scheduleEnemySpawning();
     this->scheduleCollectibleSpawning();
@@ -147,45 +176,6 @@ bool Game1Scene::init() {
     return true;
 }
 
-void Game1Scene::setupMovementListener(EventListenerKeyboard* listener) {
-    listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode) {
-        case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case EventKeyboard::KeyCode::KEY_W: _movingUp = true; break;
-        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        case EventKeyboard::KeyCode::KEY_S: _movingDown = true; break;
-        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_A: _movingLeft = true; break;
-        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        case EventKeyboard::KeyCode::KEY_D: _movingRight = true; break;
-        case EventKeyboard::KeyCode::KEY_ESCAPE:
-            if (_pauseButton && !_pauseButton->isPaused()) { // Check if _pauseButton is not nullptr
-                _pauseButton->pauseGame();
-            }
-            break;
-        case EventKeyboard::KeyCode::KEY_ENTER:
-            if (_pauseButton && _pauseButton->isPaused()) { // Check if _pauseButton is not nullptr
-                _pauseButton->continueGame();
-            }
-            break;
-        default: break;
-        }
-        };
-
-    listener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode) {
-        case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case EventKeyboard::KeyCode::KEY_W: _movingUp = false; break;
-        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        case EventKeyboard::KeyCode::KEY_S: _movingDown = false; break;
-        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_A: _movingLeft = false; break;
-        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        case EventKeyboard::KeyCode::KEY_D: _movingRight = false; break;
-        default: break;
-        }
-        };
-}
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
@@ -230,7 +220,6 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     return true;
 }
 
-
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
         GameController::getInstance()->GameOver(
@@ -245,7 +234,6 @@ void Game1Scene::checkGameOver() {
         _isGameOver = true;
     }
 }
-
 
 void Game1Scene::updateLoadingBar(float dt) {
     if (_isGameOver) return;
@@ -278,13 +266,13 @@ void Game1Scene::update(float delta) {
     _musicAnalyzer->update(delta);
 }
 
-void Game1Scene::handlePlayerMovement() {
-    if (_isGameOver) return;
-    if (_movingUp) _player->moveUp();
-    if (_movingDown) _player->moveDown();
-    if (_movingLeft) _player->moveLeft();
-    if (_movingRight) _player->moveRight();
-}
+//void Game1Scene::handlePlayerMovement() {
+//    if (_isGameOver) return;
+//    if (_movingUp) _player->moveUp();
+//    if (_movingDown) _player->moveDown();
+//    if (_movingLeft) _player->moveLeft();
+//    if (_movingRight) _player->moveRight();
+//}
 
 void Game1Scene::handleMusicBasedSpawning(float dt) {
     auto events = _musicAnalyzer->getMusicEvents(dt);
@@ -323,6 +311,7 @@ void Game1Scene::spawnBasedOnMusicEvent(MusicEvent event) {
     //    lastSpawnTimeRockAndBoom = currentTime;
     //    SpawnFallingRockAndBomb(visibleSize);
     //    break;
+
         //case MusicEventType::SNARE:
         //    CCLOG("Spawning RandomBoom for SNARE event");
         //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
@@ -419,7 +408,6 @@ Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
     }
     return spawnPosition;
 }
-
 
 void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     Vec2 spawnPosition = getRandomSpawnPosition(size);
