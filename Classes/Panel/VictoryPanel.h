@@ -6,16 +6,10 @@
 
 class VictoryPanel : public cocos2d::Layer {
 public:
-    static VictoryPanel* createPanel(const std::function<void()>& replayAction, const std::function<void()>& exitAction);
-
-    virtual bool init(const std::function<void()>& replayAction, const std::function<void()>& exitAction);
-
-    // Implement the "static create()" method manually
-    static VictoryPanel* create(const std::function<void()>& replayAction, const std::function<void()>& exitAction);
-
-private:
-    std::function<void()> _replayAction;
-    std::function<void()> _exitAction;
+    static VictoryPanel* createPanel(const std::function<void()>& retryAction, const std::function<void()>& exitAction);
+    virtual bool init(const std::function<void()>& retryAction, const std::function<void()>& exitAction);
+    static VictoryPanel* create(const std::function<void()>& retryAction, const std::function<void()>& exitAction);
 };
 
 #endif // __VICTORY_PANEL_H__
+

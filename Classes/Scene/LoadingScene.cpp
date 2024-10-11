@@ -1,6 +1,4 @@
 #include "LoadingScene.h"
-#include "Game1/Game1Scene.h"
-#include "Game2/Game2Scene.h"
 #include "Controller/SceneController.h"
 #include "Controller/SpriteController.h"
 
@@ -45,14 +43,19 @@ bool LoadingScene::init() {
         startLoading();
         }, 0.5f, "start_loading_key"); // Delay before starting the loading
 
-    this->scheduleOnce([this](float) {
-        auto nextScene = SceneController::getInstance()->getScene(nextSceneName);
-        if (nextScene) {
-            Director::getInstance()->replaceScene(TransitionFade::create(0.5, nextScene));
-        }
-        }, 2.0f, "loading_key");
+    static bool transitionStarted = false;
+    if (!transitionStarted) {
+        transitionStarted = true;
+        this->scheduleOnce([this](float) {
+            auto nextScene = SceneController::getInstance()->getScene(nextSceneName);
+            if (nextScene) {
+                Director::getInstance()->replaceScene(TransitionFade::create(0.5, nextScene));
+            }
+            }, 2.0f, "loading_key");
+    }
     return true;
 }
+
 
 void LoadingScene::setNextSceneName(const std::string& sceneName) {
     nextSceneName = sceneName;

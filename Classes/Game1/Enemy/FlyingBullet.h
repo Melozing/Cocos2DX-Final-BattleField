@@ -2,20 +2,20 @@
 #define __FLYING_BULLET_H__
 
 #include "cocos2d.h"
-#include "Enemy.h"
 #include "Controller/SpriteController.h"
 
-class FlyingBullet : public Enemy, public SpriteController {
+class FlyingBullet : public cocos2d::Sprite, public SpriteController {
 public:
     static FlyingBullet* create();
 
     virtual bool init() override;
-    virtual void spawn(const cocos2d::Vec2& startPosition) override;
+    void spawn(const cocos2d::Vec2& startPosition);
     virtual void update(float delta) override;
 
     float getSpeed() const { return _speed; }
     void initAnimation(bool fromLeft);
     Size GetSize();
+    void reset();
 
     virtual ~FlyingBullet();
 

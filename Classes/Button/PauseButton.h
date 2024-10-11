@@ -1,4 +1,3 @@
-// PauseButton.h
 #ifndef __PAUSE_BUTTON_H__
 #define __PAUSE_BUTTON_H__
 

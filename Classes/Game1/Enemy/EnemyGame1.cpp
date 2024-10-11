@@ -1,13 +1,13 @@
-#include "Enemy.h"
+#include "EnemyGame1.h"
 
 USING_NS_CC;
 
-bool Enemy::init() {
+bool EnemyGame1::init() {
     if (!Sprite::init()) {
         return false;
     }
     return true;
 }
 
-void Enemy::update(float delta) {
+void EnemyGame1::update(float delta) {
 }

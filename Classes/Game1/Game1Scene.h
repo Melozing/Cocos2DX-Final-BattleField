@@ -7,8 +7,9 @@
 #include "Enemy/FlyingBullet.h"
 #include "Enemy/FallingRock.h"
 #include "Enemy/RandomBoom.h"
-#include "Enemy/EnemyFactory.h"
-#include "Enemy/EnemyPool.h"
+#include "Enemy/FlyingBulletPool.h"
+#include "Enemy/FallingRockPool.h"
+#include "Enemy/RandomBoomPool.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Button/PauseButton.h"
 #include "Scene/BaseScene.h"
@@ -16,6 +17,7 @@
 #include "utils/Music/MusicAnalyzer.h"
 #include "Controller/SoundController.h"
 #include "utils/Music/MusicEvent.h" 
+#include <functional>
 
 class Game1Scene : public BaseScene {
 public:
@@ -44,6 +46,7 @@ private:
     std::vector<FlyingBullet*> _flyingBullets;
     std::vector<FallingRock*> _fallingRocks;
     std::vector<RandomBoom*> _randomBooms;
+    std::vector<CollectibleItem*> _collectibleItems;
     std::vector<Vec2> usedPositions;
     std::vector<cocos2d::Node*> _enemyPool;
 
@@ -63,15 +66,11 @@ private:
     void setupMovementListener(EventListenerKeyboard* listener);
 
     // Enemy spawning
-    void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
-    void returnEnemyToPool(cocos2d::Node* enemy);
-    void onEnemyOutOfBounds(cocos2d::Node* enemy);
     void SpawnFallingRockAndBomb(cocos2d::Size size);
     void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
     void SpawnRandomBoom(cocos2d::Size size);
     bool isPositionOccupied(const Vec2& position);
     void trackUsedPosition(const Vec2& position);
-    void spawnNewEnemyType(const std::string& enemyType, const cocos2d::Vec2& position);
 
     // Collectible spawning
     void scheduleCollectibleSpawning();
@@ -96,6 +95,11 @@ private:
     // Music-based spawning
     void handleMusicBasedSpawning(float dt);
     void spawnBasedOnMusicEvent(MusicEvent event);
+
+    // New methods for exitAction and createSceneFunc
+    std::function<void()> exitAction;
+    std::function<cocos2d::Scene* ()> createSceneFunc;
+
 };
 
 #endif // __GAME1SCENE_SCENE_H__

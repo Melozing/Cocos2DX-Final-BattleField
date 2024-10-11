@@ -4,7 +4,10 @@
 // Initialize the scale values
 //SCREEN
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
-//ENEMY
+//ENEMY_GAME1
+const std::string Constants::ENEMY_FLYING_BULLET_NAME = "FlyingBullet";
+const std::string Constants::ENEMY_FALLING_ROCK_AND_BOOM_NAME = "FallingRock";
+const std::string Constants::ENEMY_RANDOM_BOOM_NAME = "RandomBoom";
 const float Constants::FLYING_BULLET_SPEED = 3.0f;
 const float Constants::FALLINGROCK_START_Y = 0.05f;
 const float Constants::FALLINGROCK_PADDING = 0.006f;

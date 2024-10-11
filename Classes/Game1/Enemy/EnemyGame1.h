@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-class Enemy : public cocos2d::Sprite {
+class EnemyGame1 : public cocos2d::Sprite {
 public:
     virtual bool init() override;
     virtual void update(float delta) = 0;

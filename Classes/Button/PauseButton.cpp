@@ -1,4 +1,3 @@
-// PauseButton.cpp
 #include "Button/PauseButton.h"
 #include "ui/CocosGUI.h"
 #include "Controller/GameController.h"

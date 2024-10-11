@@ -90,7 +90,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     GameController::getInstance();
-    SceneController::getInstance()->registerScenes();
+    GameController::getInstance()->init();
+
     // create a scene. it's an autorelease object
     auto scene = MainMenu::createScene();
 

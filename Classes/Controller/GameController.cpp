@@ -26,6 +26,15 @@ GameController* GameController::getInstance() {
     return instance;
 }
 
+void GameController::init() {
+    CCLOG("GameController initialized");
+
+    // Initialize game state
+    gameTime = 0.0f;
+    gameOver = false;
+    paused = false;
+}
+
 // Handles the game over event
 void GameController::GameOver(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc, const std::string& soundtrackPath) {
     auto& playerAttributes = PlayerAttributes::getInstance();
@@ -46,47 +55,47 @@ void GameController::GameOver(const std::function<void()>& exitAction, const std
             };
 
         auto panel = GameOverPanel::createPanel(retryAction, exitAction);
-        if (panel) {
-            runningScene->addChild(panel, 100);
-            panel->setOpacity(0);
-            panel->runAction(FadeIn::create(1.0f));
-        }
-
-        director->pause(); // Directly pause the game without showing the pause panel
-        gameOver = true;
+        showEndGamePanel(panel, retryAction, soundtrackPath);
     }
 }
 
+
 // Handles victory event
-void GameController::Victory(const std::string& soundtrackPath) {
+void GameController::Victory(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc, const std::string& soundtrackPath) {
     if (gameOver) return;
 
     auto director = Director::getInstance();
     auto runningScene = director->getRunningScene();
+    MusicAnalyzer::getInstance()->stopMusic();
 
     if (runningScene) {
-        auto victoryPanel = VictoryPanel::createPanel([this, soundtrackPath]() {
-            this->replayGame(soundtrackPath);
-            }, []() {
-                Director::getInstance()->end();
-                });
+        auto retryAction = [this, director, createSceneFunc, soundtrackPath]() {
+            this->resetGameState(); // Reset game state before replaying
+            Scene* newScene = createSceneFunc();
+            if (newScene) {
+                director->replaceScene(newScene);
+            }
+            // Restart the music using the utility function with the provided soundtrack path
+            AudioUtils::restartMusic(soundtrackPath);
+            };
 
-        if (victoryPanel) {
-            victoryPanel->setOpacity(0);
-            victoryPanel->runAction(FadeIn::create(1.5f));
-            runningScene->addChild(victoryPanel, 100);
-        }
-
-        director->pause();
-        gameOver = true;
+        auto victoryPanel = VictoryPanel::createPanel(retryAction, exitAction);
+        showEndGamePanel(victoryPanel, retryAction, soundtrackPath);
     }
 }
 
-// Updates game status based on elapsed time
-void GameController::UpdateGameStatus(float elapsedTime) {
-    gameTime += elapsedTime;
-    if (gameTime >= Constants::TIME_TO_WIN) {
-        Victory(Constants::VICTORY_SOUNDTRACK_PATH); // Pass the soundtrack path
+
+void GameController::showEndGamePanel(Layer* panel, const std::function<void()>& retryAction, const std::string& soundtrackPath) {
+    auto director = Director::getInstance();
+    auto runningScene = director->getRunningScene();
+
+    if (runningScene && panel) {
+        panel->setOpacity(0);
+        panel->runAction(FadeIn::create(1.0f));
+        runningScene->addChild(panel, 100);
+
+        director->pause();
+        gameOver = true;
     }
 }
 
@@ -149,17 +158,6 @@ bool GameController::isPaused() const {
     return paused;
 }
 
-// Add a method to replay the game
-void GameController::replayGame() {
-    this->resetGameState(); // Reset game state before replaying
-    std::string currentSceneName = Director::getInstance()->getRunningScene()->getName();
-
-    auto newScene = SceneController::getInstance()->createScene(currentSceneName);
-    if (newScene) {
-        Director::getInstance()->replaceScene(newScene);
-    }
-}
-
 void GameController::replayGame(const std::string& soundtrackPath) {
     this->resetGameState(); // Reset game state before replaying
     std::string currentSceneName = Director::getInstance()->getRunningScene()->getName();
@@ -168,9 +166,6 @@ void GameController::replayGame(const std::string& soundtrackPath) {
     if (newScene) {
         Director::getInstance()->replaceScene(newScene);
     }
-
-    // Restart the music analysis
-   // MusicAnalyzer::getInstance()->analyzeMusic(soundtrackPath);
 }
 
 

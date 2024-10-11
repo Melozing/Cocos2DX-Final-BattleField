@@ -52,11 +52,6 @@ FMODAudioEngine::~FMODAudioEngine()
     _system->release();
 }
 
-void FMODAudioEngine::init() {
-    FMOD::System_Create(&_system);
-    _system->init(512, FMOD_INIT_NORMAL, 0);
-}
-
 bool FMODAudioEngine::lazyInit()
 {
     FMOD_RESULT result;
@@ -394,24 +389,11 @@ std::vector<float> FMODAudioEngine::getFrequencyData() {
 
 float FMODAudioEngine::getSoundDuration(const std::string& filePath) {
     FMOD::Sound* sound;
-    FMOD_RESULT result;
-
-    // Ensure the system is initialized
-    if (!_system) {
-        init();
-    }
-
-    result = _system->createSound(filePath.c_str(), FMOD_DEFAULT, 0, &sound);
-    if (result != FMOD_OK) {
-        return 0.0f;
-    }
+    FMOD::System* system; // Assume you have a valid FMOD system instance
+    system->createSound(filePath.c_str(), FMOD_DEFAULT, 0, &sound);
 
     unsigned int length = 0;
-    result = sound->getLength(&length, FMOD_TIMEUNIT_MS);
-    if (result != FMOD_OK) {
-        sound->release();
-        return 0.0f;
-    }
+    sound->getLength(&length, FMOD_TIMEUNIT_MS);
 
     sound->release();
     return length / 1000.0f; // Convert milliseconds to seconds
