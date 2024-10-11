@@ -48,6 +48,10 @@ bool Game2Scene::init()
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_S:
         case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             player->onKeyPressed(keyCode, event);
             break;
         default:
@@ -62,6 +66,10 @@ bool Game2Scene::init()
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_S:
         case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             player->onKeyReleased(keyCode, event);
             break;
         default:

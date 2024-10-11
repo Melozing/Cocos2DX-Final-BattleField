@@ -76,6 +76,10 @@ bool Game1Scene::init() {
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_S:
         case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             if (_player) {
                 _player->onKeyPressed(keyCode, event);
             }
@@ -92,6 +96,10 @@ bool Game1Scene::init() {
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_S:
         case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             if (_player) {
                 _player->onKeyReleased(keyCode, event);
             }

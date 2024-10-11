@@ -51,6 +51,8 @@ bool Game3Scene::init() {
         {
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             _player->onKeyPressed(keyCode, event);
             break;
         default:
@@ -63,6 +65,8 @@ bool Game3Scene::init() {
         {
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             _player->onKeyReleased(keyCode, event);
             break;
         default:
