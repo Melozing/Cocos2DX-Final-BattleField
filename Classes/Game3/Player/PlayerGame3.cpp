@@ -110,12 +110,20 @@ void PlayerGame3::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 void PlayerGame3::onMouseDown(Event* event)
 {
+    static bool isMouseDown = false;
+
+    if (isMouseDown) return; // Prevent multiple calls
+    isMouseDown = true;
+
     EventMouse* e = (EventMouse*)event;
     if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
     {
         CCLOG("Mouse left button clicked");
         shootBullet();
     }
+
+    // Reset the flag after a short delay
+    this->scheduleOnce([&](float) { isMouseDown = false; }, 0.1f, "resetMouseDownFlag");
 }
 
 void PlayerGame3::shootBullet()
