@@ -94,6 +94,9 @@
     <Filter Include="src\Gameplay\Player\PlayerGame3">
       <UniqueIdentifier>{5165925f-38b7-43be-9077-c6b4dc99dd97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame3">
+      <UniqueIdentifier>{90a5611c-0c27-4f26-8fa6-01f493318a62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,9 +170,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlan3.cpp">
-      <Filter>src\Gameplay\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Bullet\Bullet.cpp">
       <Filter>src\Gameplay\Bullet</Filter>
@@ -255,6 +255,9 @@
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlane3.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -328,9 +331,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlan3.h">
-      <Filter>src\Gameplay\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\Bullet.h">
       <Filter>src\Gameplay\Bullet</Filter>
@@ -415,6 +415,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlane3.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
