@@ -41,11 +41,13 @@ bool GameOverPanel::init(const std::function<void()>& retryAction, const std::fu
 
     // Create retry button
     auto retryButton = ReplayButton::create(retryAction);
+	retryButton->updateScale(0.1f);
     retryButton->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 50));
     this->addChild(retryButton);
 
     // Create exit button
     auto exitButton = ExitButton::create(exitAction);
+    exitButton->updateScale(0.1f);
     exitButton->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 50));
     this->addChild(exitButton);
 

@@ -154,6 +154,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Bullet\Bullet.cpp" />
     <ClCompile Include="..\Classes\Bullet\BulletManager.cpp" />
     <ClCompile Include="..\Classes\Bullet\BulletPool.cpp" />
+    <ClCompile Include="..\Classes\Button\BaseButton.cpp" />
     <ClCompile Include="..\Classes\Button\ExitButton.cpp" />
     <ClCompile Include="..\Classes\Button\PauseButton.cpp" />
     <ClCompile Include="..\Classes\Button\ReplayButton.cpp" />
@@ -209,6 +210,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Bullet\Bullet.h" />
     <ClInclude Include="..\Classes\Bullet\BulletManager.h" />
     <ClInclude Include="..\Classes\Bullet\BulletPool.h" />
+    <ClInclude Include="..\Classes\Button\BaseButton.h" />
     <ClInclude Include="..\Classes\Button\ExitButton.h" />
     <ClInclude Include="..\Classes\Button\PauseButton.h" />
     <ClInclude Include="..\Classes\Button\ReplayButton.h" />

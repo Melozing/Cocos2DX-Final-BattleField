@@ -55,3 +55,22 @@ float SpriteController::calculateScreenRatio(float ratio) {
 
     return (visibleSize.width * ratio);
 }
+
+float SpriteController::updateSpriteScale(cocos2d::Node* node, float size) {
+    if (node) {
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        auto contentSize = node->getContentSize();
+
+        // Calculate the target size based on the percentage of the screen size
+        float targetWidth = visibleSize.width * size;
+        float targetHeight = visibleSize.height * size;
+
+        // Calculate the scale factors
+        float scaleX = targetWidth / contentSize.width;
+        float scaleY = targetHeight / contentSize.height;
+
+        // Return the minimum scale factor to maintain aspect ratio
+        return std::min(scaleX, scaleY);
+    }
+    return 1.0f;
+}

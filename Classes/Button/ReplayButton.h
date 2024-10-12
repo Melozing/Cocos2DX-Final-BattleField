@@ -1,14 +1,11 @@
 #ifndef __REPLAY_BUTTON_H__
 #define __REPLAY_BUTTON_H__
 
-#include "cocos2d.h"
-#include "ui/CocosGUI.h"
+#include "BaseButton.h"
 
-class ReplayButton : public cocos2d::ui::Button {
+class ReplayButton : public BaseButton {
 public:
     static ReplayButton* create(const std::function<void()>& callback);
-
-protected:
     bool init(const std::function<void()>& callback);
 };
 

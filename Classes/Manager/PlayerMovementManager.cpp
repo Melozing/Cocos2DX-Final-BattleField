@@ -46,19 +46,19 @@ void PlayerMovement::updateDirection()
 {
     _direction = Vec2::ZERO;
 
-    if (_keys[EventKeyboard::KeyCode::KEY_W])
+    if (_keys[EventKeyboard::KeyCode::KEY_W] || _keys[EventKeyboard::KeyCode::KEY_UP_ARROW])
     {
         _direction.y += 1;
     }
-    if (_keys[EventKeyboard::KeyCode::KEY_S])
+    if (_keys[EventKeyboard::KeyCode::KEY_S] || _keys[EventKeyboard::KeyCode::KEY_DOWN_ARROW])
     {
         _direction.y -= 1;
     }
-    if (_keys[EventKeyboard::KeyCode::KEY_A])
+    if (_keys[EventKeyboard::KeyCode::KEY_A] || _keys[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
     {
         _direction.x -= 1;
     }
-    if (_keys[EventKeyboard::KeyCode::KEY_D])
+    if (_keys[EventKeyboard::KeyCode::KEY_D] || _keys[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
     {
         _direction.x += 1;
     }
