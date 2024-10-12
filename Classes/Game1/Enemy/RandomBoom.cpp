@@ -125,8 +125,8 @@ void RandomBoom::onMissileHitTarget() {
     if (!explosionSprite) {
         explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
         explosionSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
-        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.13f));
-        Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width * 0.75, GetContentSizeSprite(explosionSprite).height * 0.70);
+        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.1f));
+        Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width * 0.83, GetContentSizeSprite(explosionSprite).height * 0.83);
         auto explosionBody = PhysicsBody::createBox(reducedSize);
         explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
         explosionBody->setContactTestBitmask(true);

@@ -31,7 +31,7 @@ bool PausePanel::init(const std::function<void()>& resumeCallback) {
     this->addChild(background);
 
     // Create resume button
-    auto resumeButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png");
+    auto resumeButton = ui::Button::create("assets_game/UXUI/Buttons/Pause_BTN.png", "assets_game/UXUI/Buttons/Pause_BTN_Active.png");
     resumeButton->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     resumeButton->addClickEventListener([resumeCallback](Ref* sender) {
         resumeCallback();

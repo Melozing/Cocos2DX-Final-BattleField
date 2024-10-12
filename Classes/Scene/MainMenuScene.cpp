@@ -1,6 +1,7 @@
 #include "Scene/MainMenuScene.h"
 #include "Controller/SceneController.h"
 #include "Scene/LoadingScene.h"
+#include "Controller/SpriteController.h"
 
 USING_NS_CC;
 
@@ -15,6 +16,8 @@ bool MainMenu::init() {
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto button = ui::Button::create("assets_game/UXUI/Main_Menu/Start_BTN.png");
+	auto sprite = Sprite::create("assets_game/UXUI/Main_Menu/Start_BTN.png");
+    button->setScale(SpriteController::updateSpriteScale(sprite, 0.08f));
     button->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     button->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
@@ -27,6 +30,6 @@ bool MainMenu::init() {
 }
 
 void MainMenu::startLoading() {
-    auto loadingScene = LoadingScene::createScene("Game3Scene");
+    auto loadingScene = LoadingScene::createScene("Game1Scene");
     Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene)); // Replace with LoadingScene
 }

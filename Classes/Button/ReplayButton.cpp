@@ -13,13 +13,5 @@ ReplayButton* ReplayButton::create(const std::function<void()>& callback) {
 }
 
 bool ReplayButton::init(const std::function<void()>& callback) {
-    if (!Button::init("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png")) {
-        return false;
-    }
-
-    this->addClickEventListener([callback](Ref* sender) {
-        callback();
-        });
-
-    return true;
+    return BaseButton::init("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png", callback);
 }

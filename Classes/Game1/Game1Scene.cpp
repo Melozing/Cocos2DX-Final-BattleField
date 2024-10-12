@@ -49,7 +49,7 @@ bool Game1Scene::init() {
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
 
-    background = Background::createBackground("assets_game/gameplay/background.png", 150.0f);
+    background = Background::createBackground("assets_game/gameplay/bg_new.jpg", 150.0f);
     this->addChild(background);
 
     FlyingBulletPool::getInstance()->initPool(10);
@@ -147,9 +147,8 @@ bool Game1Scene::init() {
 
     // Add a delay to ensure the music is fully loaded before querying its duration
     this->scheduleOnce([this](float) {
-        //musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
-        musicDuration = 5.0f;
-        }, 0.5f, "get_music_duration_key");
+        musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
+        }, 0.1f, "get_music_duration_key");
 
     // Schedule the update for the loading bar
     this->schedule([this](float dt) {

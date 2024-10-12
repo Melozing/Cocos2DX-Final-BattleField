@@ -258,6 +258,9 @@
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlane3.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Button\BaseButton.cpp">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -418,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlane3.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Button\BaseButton.h">
+      <Filter>src\UXUI\Buttons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

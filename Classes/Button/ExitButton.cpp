@@ -13,13 +13,5 @@ ExitButton* ExitButton::create(const std::function<void()>& callback) {
 }
 
 bool ExitButton::init(const std::function<void()>& callback) {
-    if (!Button::init("assets_game/UXUI/Panel/Exit_BTN.png", "assets_game/UXUI/Panel/Exit_BTN_Active.png")) {
-        return false;
-    }
-
-    this->addClickEventListener([callback](Ref* sender) {
-        callback();
-        });
-
-    return true;
+    return BaseButton::init("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png", callback);
 }

@@ -37,11 +37,13 @@ bool VictoryPanel::init(const std::function<void()>& retryAction, const std::fun
 
     // Create a replay button
     auto replayButton = ReplayButton::create(retryAction);
+    replayButton->updateScale(0.1f);
     replayButton->setPosition(Vec2(origin.x + visibleSize.width / 2 - 50, origin.y + visibleSize.height / 2 - 50));
     this->addChild(replayButton);
 
     // Create an exit button
     auto exitButton = ExitButton::create(exitAction);
+    exitButton->updateScale(0.1f);
     exitButton->setPosition(Vec2(origin.x + visibleSize.width / 2 + 50, origin.y + visibleSize.height / 2 - 50));
     this->addChild(exitButton);
 
