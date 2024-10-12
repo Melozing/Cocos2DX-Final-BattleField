@@ -1,7 +1,7 @@
 ﻿// Game3Scene.cpp
 #include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
-#include "Game3/enemy/EnemyPlan3.h"
+#include "Game3/enemy/EnemyPlane3.h"
 
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
@@ -41,8 +41,8 @@ bool Game3Scene::init() {
     }
     this->addChild(_player);
 
-
-
+	//Spawn enemy after delay
+    EnemyPlane3::spawnEnemyAfterDelay(3.0f, this);
     // Add keyboard event listener
     auto eventListener = EventListenerKeyboard::create();
 
@@ -76,7 +76,7 @@ bool Game3Scene::init() {
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 
     // Add sprite enemy game 3
-    auto enemyPlane = EnemyPlan3::createEnemyPlan3();
+    auto enemyPlane = EnemyPlane3::createEnemyPlan3();
     if (!enemyPlane) {
         CCLOG("Failed to create EnemyPlane3");
         return false;
