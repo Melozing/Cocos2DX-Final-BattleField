@@ -10,6 +10,8 @@ public:
 
     virtual bool init();
     void move(const cocos2d::Size& visibleSize);
+    void moveRightToLeft(const cocos2d::Size& visibleSize);
+    void moveAndReturn(const cocos2d::Size& visibleSize);
     static void spawnEnemyAfterDelay(float delay, cocos2d::Node* parent);
 
     CREATE_FUNC(EnemyPlane3);
