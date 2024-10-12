@@ -29,12 +29,53 @@ bool EnemyPlane3::init() {
 
     this->setScale(Constants::PlayerScale3);
     this->setAnchorPoint(Vec2(0.5, 0.5));
-    this->move(visibleSize);
+    this->moveAndReturn(visibleSize);
 
     return true;
 }
 
-// hàm di chuyển enemy
+
+// hàm di chuyển enemy từ trái sang phải và sau đó từ phải sang trái
+void EnemyPlane3::moveAndReturn(const Size& visibleSize) {
+    float startXLeft = -this->getContentSize().width / 2;  // Ngoài màn hình bên trái
+    float endXRight = visibleSize.width + this->getContentSize().width / 2;  // Ngoài màn hình bên phải
+
+    // Tính toán thời gian di chuyển dựa trên tốc độ từ Constants::EnemyGame3Speed_1
+    float distanceLeftToRight = endXRight - startXLeft;
+    float moveDurationLeftToRight = distanceLeftToRight / Constants::EnemyGame3Speed_1;
+
+    // Tạo hành động di chuyển từ trái sang phải
+    auto moveRight = MoveTo::create(moveDurationLeftToRight, Vec2(endXRight, this->getPositionY()));
+
+    // Tạo hành động lật ảnh theo trục X
+    auto flipRight = FlipX::create(true);
+
+    float startXRight = visibleSize.width + this->getContentSize().width / 2;  // Ngoài màn hình bên phải
+    float endXLeft = -this->getContentSize().width / 2;  // Ngoài màn hình bên trái
+
+    // Tính toán thời gian di chuyển dựa trên tốc độ từ Constants::EnemyGame3Speed_1
+    float distanceRightToLeft = startXRight - endXLeft;
+    float moveDurationRightToLeft = distanceRightToLeft / Constants::EnemyGame3Speed_1;
+
+    // Tạo hành động di chuyển từ phải sang trái
+    auto moveLeft = MoveTo::create(moveDurationRightToLeft, Vec2(endXLeft, this->getPositionY()));
+
+    // Tạo hành động lật ảnh theo trục X trở lại
+    auto flipLeft = FlipX::create(false);
+
+    // Tạo hành động xóa đối tượng
+    auto removeSelf = CallFunc::create([this]() {
+        this->removeFromParentAndCleanup(true);
+        });
+
+    // Tạo chuỗi hành động: di chuyển từ trái sang phải, lật ảnh, di chuyển từ phải sang trái, lật ảnh trở lại và cuối cùng xóa đối tượng
+    auto sequence = Sequence::create(moveRight, flipRight, moveLeft, flipLeft, removeSelf, nullptr);
+
+    // Thực thi chuỗi hành động
+    this->runAction(sequence);
+}
+
+// hàm di chuyển enemy từ trái sang phải
 void EnemyPlane3::move(const Size& visibleSize) {
     float startX = -this->getContentSize().width / 2;  // Ngoài màn hình bên trái
     float endX = visibleSize.width + this->getContentSize().width / 2;  // Ngoài màn hình bên phải
@@ -53,6 +94,30 @@ void EnemyPlane3::move(const Size& visibleSize) {
 
     // Tạo chuỗi hành động: di chuyển và sau đó xóa
     auto sequence = Sequence::create(moveRight, removeSelf, nullptr);
+
+    // Thực thi chuỗi hành động
+    this->runAction(sequence);
+}
+
+// hàm di chuyển enemy từ phải sang trái
+void EnemyPlane3::moveRightToLeft(const Size& visibleSize) {
+    float startX = visibleSize.width + this->getContentSize().width / 2;  // Ngoài màn hình bên phải
+    float endX = -this->getContentSize().width / 2;  // Ngoài màn hình bên trái
+
+    // Tính toán thời gian di chuyển dựa trên tốc độ từ Constants::EnemyGame3Speed_1
+    float distance = startX - endX;
+    float moveDuration = distance / Constants::EnemyGame3Speed_1;
+
+    // Tạo hành động di chuyển từ phải sang trái
+    auto moveLeft = MoveTo::create(moveDuration, Vec2(endX, this->getPositionY()));
+
+    // Tạo hành động xóa đối tượng
+    auto removeSelf = CallFunc::create([this]() {
+        this->removeFromParentAndCleanup(true);
+        });
+
+    // Tạo chuỗi hành động: di chuyển và sau đó xóa
+    auto sequence = Sequence::create(moveLeft, removeSelf, nullptr);
 
     // Thực thi chuỗi hành động
     this->runAction(sequence);
