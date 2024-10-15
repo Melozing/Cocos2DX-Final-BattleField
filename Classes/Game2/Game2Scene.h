@@ -10,6 +10,9 @@ public:
     static cocos2d::Scene* createScene();
     virtual bool init() override;
     CREATE_FUNC(Game2Scene);
+
+
+    void scaleTilemap(cocos2d::TMXTiledMap* tilemap);
 private:
     Cursor* _cursor;
 };
