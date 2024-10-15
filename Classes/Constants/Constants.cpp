@@ -37,7 +37,7 @@ const int Constants::BulletTag = 1;
 const int Constants::EnemyTag = 2;
 const int Constants::InitialPosX = 100;
 const int Constants::InitialPosY = 100;
-
+const float Constants::scaleFactor = 4.0f;
 
 //game3
 const float Constants::GroundY = 70.0f;

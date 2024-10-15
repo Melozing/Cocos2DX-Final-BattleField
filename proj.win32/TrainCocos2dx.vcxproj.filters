@@ -261,6 +261,12 @@
     <ClCompile Include="..\Classes\Button\BaseButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\utils\Pool.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\tilemap.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -424,6 +430,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Button\BaseButton.h">
       <Filter>src\UXUI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\Pool.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\tilemap.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

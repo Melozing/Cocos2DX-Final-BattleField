@@ -203,6 +203,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\utils\Music\AudioUtils.cpp" />
     <ClCompile Include="..\Classes\utils\Music\MusicAnalyzer.cpp" />
     <ClCompile Include="..\Classes\utils\Music\MusicEvent.cpp" />
+    <ClCompile Include="..\Classes\utils\Pool.cpp" />
+    <ClCompile Include="..\Classes\utils\tilemap.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +261,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\utils\Music\AudioUtils.h" />
     <ClInclude Include="..\Classes\utils\Music\MusicAnalyzer.h" />
     <ClInclude Include="..\Classes\utils\Music\MusicEvent.h" />
+    <ClInclude Include="..\Classes\utils\Pool.h" />
+    <ClInclude Include="..\Classes\utils\tilemap.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
