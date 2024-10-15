@@ -30,6 +30,6 @@ bool MainMenu::init() {
 }
 
 void MainMenu::startLoading() {
-    auto loadingScene = LoadingScene::createScene("Game1Scene");
+    auto loadingScene = LoadingScene::createScene("Game3Scene");
     Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene)); // Replace with LoadingScene
 }

@@ -97,6 +97,12 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame3">
       <UniqueIdentifier>{90a5611c-0c27-4f26-8fa6-01f493318a62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\Enemyh">
+      <UniqueIdentifier>{6f565c7e-243a-4576-ac25-38d12858d65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\EnemyCpp">
+      <UniqueIdentifier>{b86b6162-9293-482b-b168-ce6709301518}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -267,6 +273,24 @@
     <ClCompile Include="..\Classes\utils\tilemap.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\Game2Boss1.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\InvEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MelleEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SniperEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -436,6 +460,24 @@
     </ClInclude>
     <ClInclude Include="..\Classes\utils\tilemap.h">
       <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\Game2Boss1.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\InvEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MelleEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SniperEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
