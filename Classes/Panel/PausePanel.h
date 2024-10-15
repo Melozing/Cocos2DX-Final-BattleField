@@ -6,10 +6,8 @@
 
 class PausePanel : public cocos2d::ui::Layout {
 public:
-    static PausePanel* createPanel(const std::function<void()>& resumeCallback);
-
-private:
-    bool init(const std::function<void()>& resumeCallback);
+    static PausePanel* createPanel(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction);
+    virtual bool init(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction);
 };
 
 #endif // __PAUSE_PANEL_H__

@@ -1,8 +1,8 @@
-// BaseScene.cpp
 #include "BaseScene.h"
 #include "cocos2d.h"
 #include "Button/PauseButton.h"
-#include "Controller/GameController.h" // Ensure GameController is included
+#include "Controller/GameController.h" 
+#include "Controller/SceneController.h" 
 
 USING_NS_CC;
 
@@ -16,7 +16,14 @@ bool BaseScene::init() {
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
             if (!GameController::getInstance()->isGameOver()) {
-                GameController::getInstance()->pauseGame();
+                auto exitAction = []() {
+                    Director::getInstance()->end();
+                    };
+                auto createSceneFunc = []() -> Scene* {
+                    return SceneController::getInstance()->createScene("GameScene");
+                    };
+                std::string soundtrackPath = "path/to/soundtrack.mp3";
+                GameController::getInstance()->pauseGame(exitAction, createSceneFunc, soundtrackPath);
             }
         }
         else if (keyCode == EventKeyboard::KeyCode::KEY_ENTER) {

@@ -11,7 +11,7 @@ public:
     void GameOver(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
     void Victory(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
     bool isGameOver() const;
-    void pauseGame();
+    void pauseGame(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
     void resumeGame();
     bool isPaused() const;
     void replayGame(const std::string& soundtrackPath);

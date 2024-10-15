@@ -1,5 +1,4 @@
 #include "Game1/Game1Scene.h"
-#include "Button/PauseButton.h"
 #include "Enemy/FlyingBullet.h"
 #include "Enemy/FallingRock.h"
 #include "Enemy/RandomBoom.h"
@@ -50,7 +49,7 @@ bool Game1Scene::init() {
     addChild(edgeNode);
 
     background = Background::createBackground("assets_game/gameplay/bg_new.jpg", 150.0f);
-    this->addChild(background);
+    this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
 
     FlyingBulletPool::getInstance()->initPool(10);
     FallingRockPool::getInstance()->initPool(10);
@@ -60,12 +59,12 @@ bool Game1Scene::init() {
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _healthPlayerGame1 = HealthPlayerGame1::createHealth();
     _healthPlayerGame1->initHealthSprites(_playerAttributes->GetHealth());
-    this->addChild(_healthPlayerGame1);
+    this->addChild(_healthPlayerGame1, Constants::ORDER_LAYER_UI);
 
     auto playerBody = PhysicsBody::createBox(_player->GetSize());
     setPhysicsBodyChar(playerBody, 0x01);
     _player->setPhysicsBody(playerBody);
-    addChild(_player);
+    addChild(_player, Constants::ORDER_LAYER_CHARACTER);
 
     auto  eventListener = EventListenerKeyboard::create();
 
@@ -127,8 +126,8 @@ bool Game1Scene::init() {
     border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
     border->setRotation(-90);
     border->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the bottom center
-    this->addChild(border); // Place border behind the loading bar
-    this->addChild(_loadingBar);
+    this->addChild(border, Constants::ORDER_LAYER_UI); // Place border behind the loading bar
+    this->addChild(_loadingBar, Constants::ORDER_LAYER_UI);
 
     auto randomPosition = PositionManager::getInstance().getRandomSpawnPosition(visibleSize);
     while (PositionManager::getInstance().isPositionOccupied(randomPosition)) {
@@ -267,7 +266,6 @@ void Game1Scene::updateLoadingBar(float dt) {
     }
 }
 
-
 void Game1Scene::update(float delta) {
     background->update(delta);
     _musicAnalyzer->update(delta);
@@ -301,7 +299,7 @@ void Game1Scene::spawnBasedOnMusicEvent(MusicEvent event) {
 
     switch (event.getType()) {
     case MusicEventType::BEAT:
-        CCLOG("Spawning FlyingBullet for BEAT event");
+        //CCLOG("Spawning FlyingBullet for BEAT event");
         if (currentTime - lastSpawnTimeBullet < spawnCooldownBullet) {
             return; // Skip spawning if cooldown has not passed
         }
@@ -428,7 +426,7 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
             auto fallingRockBody = PhysicsBody::createCircle(size.width / 2);
             setPhysicsBodyChar(fallingRockBody, 0x02);
             fallingRock->setPhysicsBody(fallingRockBody);
-            this->addChild(fallingRock);
+            this->addChild(fallingRock, Constants::ORDER_LAYER_CHARACTER - 1);
         }
     }
 }
@@ -456,10 +454,9 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
         flyingBullet->setPhysicsBody(flyingBulletBody);
 
         flyingBullet->runAction(sequence);
-        this->addChild(flyingBullet);
+        this->addChild(flyingBullet, Constants::ORDER_LAYER_CHARACTER - 1);
     }
 }
-
 
 void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
     Vec2 spawnPosition = getRandomSpawnPosition(size);
@@ -468,7 +465,7 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
     if (randomBoom) {
         if (randomBoom->getParent() == nullptr) { // Ensure randomBoom is not already added to the scene
             randomBoom->spawn(spawnPosition);
-            this->addChild(randomBoom);
+            this->addChild(randomBoom, Constants::ORDER_LAYER_CHARACTER - 1);
         }
         else {
             CCLOG("Warning: randomBoom is already added to the scene");
@@ -487,17 +484,18 @@ void Game1Scene::SpawnCollectibleItem(const Size& size) {
         else {
             item = AmmoItemPool::getInstance()->getItem();
         }
-
         if (item) {
             item->spawn(spawnPosition);
 
-            // Create and set the physics body as a box with reduced size
-            Size reducedSize = Size(item->GetSize().width * 0.65, item->GetSize().height * 0.65); // Reduce size by 10%
-            auto itemBody = PhysicsBody::createBox(reducedSize);
+            // Retrieve the scaled size of the item
+            Size itemSize = item->getScaledSize();
+
+            // Create and set the physics body using the scaled size
+            auto itemBody = PhysicsBody::createBox(itemSize);
             setPhysicsBodyChar(itemBody, 0x03);
             item->setPhysicsBody(itemBody);
 
-            this->addChild(item);
+            this->addChild(item, Constants::ORDER_LAYER_CHARACTER - 1);
         }
         else {
             CCLOG("Failed to create CollectibleItem");

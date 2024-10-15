@@ -48,6 +48,10 @@ public:
     static const float EnemyGame3Speed_1; //Speed Enemy 1
 	//VictoryPanel
 	static const std::string VICTORY_SOUNDTRACK_PATH;
+    //UI
+    static const int ORDER_LAYER_UI;
+    static const int ORDER_LAYER_CHARACTER;
+    static const int ORDER_LAYER_BACKGROUND;
 };
 
 #endif // __CONSTANTS_H__

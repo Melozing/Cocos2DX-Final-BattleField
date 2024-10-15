@@ -57,8 +57,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     if (!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithFullScreen("Test123"); //Neu Muon FullScreen thi dung cai nay  
-        //glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, 1280, 720)); // Neu muon cua so game la 1280x720
+        //glview = GLViewImpl::createWithFullScreen("Test123"); //Neu Muon FullScreen thi dung cai nay  
+        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, 1280, 720)); // Neu muon cua so game la 1280x720
         cocos2d::Size screenSize;
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
         screenSize = cocos2d::Size(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));

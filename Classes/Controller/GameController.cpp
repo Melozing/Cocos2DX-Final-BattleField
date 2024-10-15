@@ -105,7 +105,7 @@ bool GameController::isGameOver() const {
 }
 
 // Add a method to pause the game
-void GameController::pauseGame() {
+void GameController::pauseGame(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc, const std::string& soundtrackPath) {
     if (!paused) {
         auto director = Director::getInstance();
         auto runningScene = director->getRunningScene();
@@ -114,10 +114,22 @@ void GameController::pauseGame() {
             // Check if the pause panel already exists
             auto pausePanel = runningScene->getChildByName("PausePanel");
             if (!pausePanel) {
+                // Define the retry action
+                auto retryAction = [this, director, createSceneFunc, soundtrackPath]() {
+                    this->resetGameState(); // Reset game state before replaying
+                    Scene* newScene = createSceneFunc();
+                    if (newScene) {
+                        director->replaceScene(newScene);
+                    }
+                    // Restart the music using the utility function with the provided soundtrack path
+                    AudioUtils::restartMusic(soundtrackPath);
+                    };
+
                 // Create and show the pause panel
                 pausePanel = PausePanel::createPanel([this]() {
                     this->resumeGame();
-                    });
+                    }, retryAction, exitAction);
+
                 if (pausePanel) {
                     runningScene->addChild(pausePanel, 100);
                     pausePanel->setOpacity(0);
@@ -134,6 +146,7 @@ void GameController::pauseGame() {
         }
     }
 }
+
 
 // Add a method to resume the game
 void GameController::resumeGame() {

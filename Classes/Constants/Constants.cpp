@@ -4,6 +4,10 @@
 // Initialize the scale values
 //SCREEN
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
+//UI
+const int Constants::ORDER_LAYER_UI = 99;
+const int Constants::ORDER_LAYER_CHARACTER = 1;
+const int Constants::ORDER_LAYER_BACKGROUND = -99;
 //ENEMY_GAME1
 const std::string Constants::ENEMY_FLYING_BULLET_NAME = "FlyingBullet";
 const std::string Constants::ENEMY_FALLING_ROCK_AND_BOOM_NAME = "FallingRock";
@@ -12,7 +16,7 @@ const float Constants::FLYING_BULLET_SPEED = 3.0f;
 const float Constants::FALLINGROCK_START_Y = 0.05f;
 const float Constants::FALLINGROCK_PADDING = 0.006f;
 //PlayerGame1
-const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
+const float Constants::PLAYER_RESTRICTEDWIDTH = 0.885f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
 const float Constants::PLAYER_MOVESPEED = 250.0f;
 const int Constants::PLAYER_HEALTH = 3;

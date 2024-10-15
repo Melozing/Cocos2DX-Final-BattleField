@@ -27,3 +27,8 @@ bool AmmoItem::init() {
 void AmmoItem::applyEffect() {
     PlayerAttributes::getInstance().SetAmmo(PlayerAttributes::getInstance().GetAmmo() + 1);
 }
+
+Size AmmoItem::getScaledSize() const {
+    Size originalSize = _currentSprite->getContentSize();
+    return Size(originalSize.width * _spriteScale, originalSize.height * _spriteScale);
+}
