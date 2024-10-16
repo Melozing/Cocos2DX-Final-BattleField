@@ -19,6 +19,7 @@ Bullet* Bullet::createBullet(const std::string& image, const Vec2& direction, fl
     CCLOG("createBullet called");
 
     Bullet* bullet = new (std::nothrow) Bullet();
+    bullet->setScale(Constants::BulletScale);
     if (bullet && bullet->initWithProperties(image, direction, speed))
     {
         bullet->autorelease();

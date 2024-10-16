@@ -40,6 +40,9 @@ public:
     static const int InitialPosX;
     static const int InitialPosY;
     static const float scaleFactor;
+    static const float BulletScale;
+    static const float GrenadeSpeed;
+    static const float GrenadeThrowDistance;
     //game3
     static const float GroundY;
     static const float BackgroundSpeed ;
