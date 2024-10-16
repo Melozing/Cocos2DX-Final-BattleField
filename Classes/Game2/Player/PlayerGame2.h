@@ -25,13 +25,15 @@ public:
     void update(float delta);
     void RotateToMouse();
     void shootBullet(const cocos2d::Vec2& direction);
+    void throwGrenade(const cocos2d::Vec2& direction, float duration);
     void die();
 
 private:
     cocos2d::Vec2 _mousePos;
     bool _isMouseDown;
+    float _mousePressDuration;
+    bool _isThrowingGrenade;
     cocos2d::Sprite* modelCharac;
     BulletManager* bulletManager;
     PlayerMovement* playerMovement;
 };
-

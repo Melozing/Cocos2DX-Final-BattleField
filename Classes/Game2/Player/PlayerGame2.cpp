@@ -4,12 +4,15 @@
 #include "utils/MathFunction.h"
 #include "cocos2d.h"
 #include "Bullet/Bullet.h"
+#include "Grenade/Grenade.h"
 
 USING_NS_CC;
 
 PlayerGame2::PlayerGame2()
     : _mousePos(Vec2::ZERO),
     _isMouseDown(false),
+    _mousePressDuration(0.0f),
+    _isThrowingGrenade(false),
     bulletManager(nullptr),
     playerMovement(nullptr) // Initialize to nullptr
 {
@@ -62,7 +65,7 @@ bool PlayerGame2::init() {
 
     this->scheduleUpdate();
 
-    bulletManager = new BulletManager(100, "assets_game/player/shot.png");
+    bulletManager = new BulletManager(100, "assets_game/player/ball.png");
     playerMovement = new PlayerMovement(this, Constants::PlayerSpeed); // Properly initialize PlayerMovement
     return true;
 }
@@ -107,23 +110,37 @@ void PlayerGame2::onMouseMove(Event* event)
 void PlayerGame2::onMouseDown(Event* event)
 {
     EventMouse* e = (EventMouse*)event;
-    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
+    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
     {
         _isMouseDown = true;
+        _mousePressDuration = 0.0f;
+        _isThrowingGrenade = false;
+    }
+    else if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
+    {
+        _isMouseDown = true;
+        _mousePressDuration = 0.0f;
+        _isThrowingGrenade = true;
     }
 }
 
 void PlayerGame2::onMouseUp(Event* event)
 {
     EventMouse* e = (EventMouse*)event;
-    if ((e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT || e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) && _isMouseDown)
+    if (_isMouseDown)
     {
         auto mousePos = Director::getInstance()->convertToGL(_mousePos);
         Vec2 pos = this->getPosition();
-
         Vec2 dirToShoot = mousePos - pos;
 
-        shootBullet(dirToShoot);
+        if (_isThrowingGrenade && e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
+        {
+            throwGrenade(dirToShoot, _mousePressDuration);
+        }
+        else if (!_isThrowingGrenade && e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
+        {
+            shootBullet(dirToShoot);
+        }
 
         _isMouseDown = false;
     }
@@ -159,6 +176,11 @@ void PlayerGame2::update(float delta)
     {
         modelCharac->stopActionByTag(1);
     }
+
+    if (_isMouseDown)
+    {
+        _mousePressDuration += delta;
+    }
 }
 
 void PlayerGame2::RotateToMouse()
@@ -177,6 +199,12 @@ void PlayerGame2::shootBullet(const Vec2& direction)
 
     Vec2 normalizedDirection = direction.getNormalized();
     bulletManager->SpawnBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed);
+}
+
+void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
+{
+    auto grenade = Grenade::createGrenade(this->getPosition(), direction, duration);
+    this->getParent()->addChild(grenade);
 }
 
 void PlayerGame2::die()
