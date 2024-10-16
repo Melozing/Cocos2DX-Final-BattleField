@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "PlayerAttributes/PlayerAttributes.h"
+#include "ui/CocosGUI.h" // Include this header for UI components
 
 class GameController {
 public:
@@ -16,12 +17,15 @@ public:
     bool isPaused() const;
     void replayGame(const std::string& soundtrackPath);
     void init();
-
+    bool musicStarted;
+    int audioID;
 private:
     GameController();
     static GameController* instance;
     void resetGameState();
     void showEndGamePanel(cocos2d::Layer* panel, const std::function<void()>& retryAction, const std::string& soundtrackPath);
+    void showPausePanel(cocos2d::ui::Layout* panel, const std::function<void()>& retryAction, const std::string& soundtrackPath);
+    std::function<void()> createRetryAction(const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
     float gameTime;
     bool gameOver;
     bool paused;

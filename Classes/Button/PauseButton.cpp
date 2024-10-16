@@ -2,6 +2,7 @@
 #include "ui/CocosGUI.h"
 #include "Controller/GameController.h"
 #include "Controller/SceneController.h"
+#include "Constants/Constants.h"
 
 USING_NS_CC;
 
@@ -25,7 +26,7 @@ bool PauseButton::init() {
                 auto createSceneFunc = []() -> Scene* {
                     return SceneController::getInstance()->createScene("GameScene");
                     };
-                std::string soundtrackPath = "path/to/soundtrack.mp3";
+                std::string soundtrackPath = Constants::pathSoundTrackGame1;
                 GameController::getInstance()->pauseGame(exitAction, createSceneFunc, soundtrackPath);
             }
         }
@@ -42,7 +43,7 @@ void PauseButton::pauseGame() {
     auto createSceneFunc = []() -> Scene* {
         return SceneController::getInstance()->createScene("GameScene");
         };
-    std::string soundtrackPath = "path/to/soundtrack.mp3";
+    std::string soundtrackPath = Constants::pathSoundTrackGame1;
     GameController::getInstance()->pauseGame(exitAction, createSceneFunc, soundtrackPath);
 }
 

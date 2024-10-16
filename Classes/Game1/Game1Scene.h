@@ -53,6 +53,7 @@ private:
     MusicAnalyzer* _musicAnalyzer;
     SoundController* _soundController;
     float musicDuration;
+    bool shouldPlayMusic;
 
     // UI elements
     cocos2d::ui::LoadingBar* _loadingBar;

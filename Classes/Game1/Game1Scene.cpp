@@ -4,6 +4,7 @@
 #include "Enemy/RandomBoom.h"
 #include "Enemy/EnemyFactory.h"
 #include "Game1/Items/AmmoItemPool.h"
+#include "utils/Music/AudioUtils.h"
 #include "Game1/Items/HealthItemPool.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Controller/SpriteController.h"
@@ -33,10 +34,17 @@ bool Game1Scene::init() {
 
     srand(static_cast<unsigned int>(time(nullptr)));
 
+    this->setSceneCreationFunc([]() -> cocos2d::Scene* {
+        return Game1Scene::createScene();
+        });
+
     _isGameOver = false;
-    PlayerAttributes::getInstance().SetHealth(Constants::PLAYER_HEALTH); // Set player health (can be changed as needed
-    _playerAttributes = &PlayerAttributes::getInstance(); // Use singleton instance
+    PlayerAttributes::getInstance().SetHealth(Constants::PLAYER_HEALTH);
+    _playerAttributes = &PlayerAttributes::getInstance();
     _canTakeDamage = true;
+
+    // Initialize shouldPlayMusic
+    shouldPlayMusic = true; // or some condition to determine if music should play
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
@@ -66,11 +74,9 @@ bool Game1Scene::init() {
     _player->setPhysicsBody(playerBody);
     addChild(_player, Constants::ORDER_LAYER_CHARACTER);
 
-    auto  eventListener = EventListenerKeyboard::create();
-
+    auto eventListener = EventListenerKeyboard::create();
     eventListener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode)
-        {
+        switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_W:
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_S:
@@ -89,8 +95,7 @@ bool Game1Scene::init() {
         };
 
     eventListener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode)
-        {
+        switch (keyCode) {
         case EventKeyboard::KeyCode::KEY_W:
         case EventKeyboard::KeyCode::KEY_A:
         case EventKeyboard::KeyCode::KEY_S:
@@ -112,21 +117,20 @@ bool Game1Scene::init() {
     auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
 
     _loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
-    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT); // Or RIGHT, depending on your needs
+    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT);
     _loadingBar->setRotation(-90);
     _loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
     _loadingBar->setPercent(0);
-    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the center
-    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2)); // Position at the center right of the screen
+    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5));
+    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2));
 
-    // Create and position the border
     border = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
     auto loadingPos = _loadingBar->getPosition();
     border->setPosition(loadingPos);
     border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
     border->setRotation(-90);
-    border->setAnchorPoint(Vec2(0.5, 0.5)); // Anchor at the bottom center
-    this->addChild(border, Constants::ORDER_LAYER_UI); // Place border behind the loading bar
+    border->setAnchorPoint(Vec2(0.5, 0.5));
+    this->addChild(border, Constants::ORDER_LAYER_UI);
     this->addChild(_loadingBar, Constants::ORDER_LAYER_UI);
 
     auto randomPosition = PositionManager::getInstance().getRandomSpawnPosition(visibleSize);
@@ -137,40 +141,42 @@ bool Game1Scene::init() {
 
     if (!FileUtils::getInstance()->isFileExist(Constants::pathSoundTrackGame1)) {
         CCLOG("Error: Music file does not exist!");
-        return false; // Stop initialization if the music file does not exist
+        return false;
     }
 
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
     SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
-    // Add a delay to ensure the music is fully loaded before querying its duration
+    _musicAnalyzer = MusicAnalyzer::getInstance();
+
+    if (MusicAnalyzer::getInstance()->isMusicPlaying) {
+        //_musicAnalyzer->replayMusic();
+        //GameController::getInstance()->audioID = AudioUtils::restartMusic(Constants::pathSoundTrackGame1);
+        //GameController::getInstance()->musicStarted = true;
+    }
+    else {
+        _musicAnalyzer->analyzeMusic(Constants::pathSoundTrackGame1);
+    }
+
+
     this->scheduleOnce([this](float) {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
         }, 0.1f, "get_music_duration_key");
 
-    // Schedule the update for the loading bar
     this->schedule([this](float dt) {
         updateLoadingBar(dt);
         }, "loading_bar_update_key");
-
-    //_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-   /* this->schedule([this](float dt) { handlePlayerMovement(); }, "update_key_schedule");*/
     this->scheduleUpdate();
-    //this->scheduleEnemySpawning();
     this->scheduleCollectibleSpawning();
-    // Schedule the music-based spawning
-    _musicAnalyzer = MusicAnalyzer::getInstance();
-    _musicAnalyzer->analyzeMusic(Constants::pathSoundTrackGame1);
 
     this->schedule([this](float dt) { handleMusicBasedSpawning(dt); }, "music_based_spawning_key");
 
-    // Set up exitAction and createSceneFunc
     exitAction = []() {
         Director::getInstance()->end();
         };

@@ -1,6 +1,7 @@
 #include "LoadingScene.h"
 #include "Controller/SceneController.h"
 #include "Controller/SpriteController.h"
+#include "Manager/BackgroundManager.h"
 
 Scene* LoadingScene::createScene(const std::string& nextSceneName) {
     auto scene = Scene::create();
@@ -15,6 +16,9 @@ bool LoadingScene::init() {
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
+
+    // Set background
+    BackgroundManager::getInstance()->setBackground(this, "assets_game/UXUI/Background/background_ui.jpg");
 
     // Create and position the loading bar
     auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_A.png");

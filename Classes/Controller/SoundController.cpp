@@ -24,10 +24,11 @@ void SoundController::preloadMusic(const std::string& filePath) {
     AudioEngine::preload(filePath);
 }
 
-void SoundController::playMusic(const std::string& filePath, bool loop) {
+int SoundController::playMusic(const std::string& filePath, bool loop) {
     stopMusic(filePath);
     int audioId = AudioEngine::play2d(filePath, loop);
     playingMusic[filePath] = audioId;
+    return audioId;
 }
 
 void SoundController::stopMusic() {

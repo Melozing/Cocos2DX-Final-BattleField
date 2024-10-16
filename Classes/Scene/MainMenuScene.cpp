@@ -2,6 +2,7 @@
 #include "Controller/SceneController.h"
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
+#include "Manager/BackgroundManager.h"
 
 USING_NS_CC;
 
@@ -13,6 +14,8 @@ bool MainMenu::init() {
     if (!Scene::init()) {
         return false; // Ensure initialization is successful
     }
+    // Set background
+    BackgroundManager::getInstance()->setBackgroundWithOverlay(this, "assets_game/UXUI/Background/DienBienPhuVictory.jpg");
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto button = ui::Button::create("assets_game/UXUI/Main_Menu/Start_BTN.png");
