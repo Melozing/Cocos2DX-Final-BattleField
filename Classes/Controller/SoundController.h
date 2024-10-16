@@ -11,7 +11,7 @@ public:
     static SoundController* getInstance();
 
     void preloadMusic(const std::string& filePath);
-    void playMusic(const std::string& filePath, bool loop = false);
+    int playMusic(const std::string& filePath, bool loop = false);
     void stopMusic();
     void stopMusic(const std::string& filePath);
     void setMusicVolume(const std::string& filePath, float volume);
@@ -19,13 +19,14 @@ public:
     bool isMusicPlaying(const std::string& filePath);
     float getMusicDuration(const std::string& filePath);
     std::vector<float> getFrequencyData();
+
 private:
-    SoundController();
+    SoundController(); // Declaration only
     static SoundController* instance;
     std::vector<std::pair<float, std::function<void()>>> spawnEvents;
     float elapsedTime;
     size_t currentEventIndex;
-    std::unordered_map<std::string, int> playingMusic; // Track playing music
+    std::unordered_map<std::string, int> playingMusic;
     void update(float dt);
 };
 

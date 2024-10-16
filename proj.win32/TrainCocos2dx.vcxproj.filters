@@ -28,9 +28,6 @@
     <Filter Include="src\UXUI\Buttons">
       <UniqueIdentifier>{5270998c-1bea-4c35-a657-351b144361f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Controller\Manager">
-      <UniqueIdentifier>{e6d1cbe5-b41f-4a5c-92d8-1880b4ca4cfb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Gameplay">
       <UniqueIdentifier>{1752828f-bc55-4fa2-a5b1-cdd416cbdb11}</UniqueIdentifier>
     </Filter>
@@ -123,9 +120,6 @@
     <ClCompile Include="..\Classes\Constants\Constants.cpp">
       <Filter>src\Constants</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Controller\SpriteController.cpp">
-      <Filter>src\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\PlayerAttributes\PlayerAttributes.cpp">
       <Filter>src\Gameplay\Player</Filter>
     </ClCompile>
@@ -185,9 +179,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
       <Filter>src\Gameplay\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Controller\SoundController.cpp">
-      <Filter>src\Controller</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
       <Filter>src\Gameplay\Background</Filter>
@@ -311,9 +302,6 @@
     <ClInclude Include="..\Classes\Constants\Constants.h">
       <Filter>src\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Controller\SpriteController.h">
-      <Filter>src\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\PlayerAttributes\PlayerAttributes.h">
       <Filter>src\Gameplay\Player</Filter>
     </ClInclude>
@@ -373,9 +361,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletManager.h">
       <Filter>src\Gameplay\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Controller\SoundController.h">
-      <Filter>src\Controller</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\Background\Background3.h">
       <Filter>src\Gameplay\Background</Filter>

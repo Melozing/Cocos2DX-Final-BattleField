@@ -1,8 +1,8 @@
-// BaseScene.cpp
 #include "BaseScene.h"
-#include "cocos2d.h"
 #include "Button/PauseButton.h"
-#include "Controller/GameController.h" // Ensure GameController is included
+#include "Controller/GameController.h"
+#include "Controller/SceneController.h"
+#include "Constants/Constants.h"
 
 USING_NS_CC;
 
@@ -16,7 +16,11 @@ bool BaseScene::init() {
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
             if (!GameController::getInstance()->isGameOver()) {
-                GameController::getInstance()->pauseGame();
+                auto exitAction = []() {
+                    Director::getInstance()->end();
+                    };
+                std::string soundtrackPath = Constants::pathSoundTrackGame1;
+                GameController::getInstance()->pauseGame(exitAction, _sceneCreationFunc, soundtrackPath);
             }
         }
         else if (keyCode == EventKeyboard::KeyCode::KEY_ENTER) {
@@ -28,4 +32,8 @@ bool BaseScene::init() {
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
+}
+
+void BaseScene::setSceneCreationFunc(const std::function<cocos2d::Scene* ()>& func) {
+    _sceneCreationFunc = func;
 }

@@ -9,14 +9,17 @@ class MusicAnalyzer {
 public:
     static MusicAnalyzer* getInstance();
     void analyzeMusic(const std::string& filePath);
-    void stopMusic(); // Add this line
+    void stopMusic(); 
     void update(float dt);
     std::vector<MusicEvent> getMusicEvents(float dt);
     float getCurrentFrequency() const;
     float getCurrentPitch() const;
     bool isBeatDetected() const;
     float getMusicDuration(const std::string& filePath);
-
+    void pauseMusic();
+    void resumeMusic();
+    void replayMusic();
+    bool isMusicPlaying;
 private:
     MusicAnalyzer();
     static MusicAnalyzer* instance;
@@ -24,7 +27,6 @@ private:
     std::string musicFilePath;
     float currentFrequency;
     float currentPitch;
-    bool isMusicPlaying;
     bool beatDetected;
     int soundID;
 };

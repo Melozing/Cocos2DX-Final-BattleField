@@ -23,7 +23,7 @@ void MusicAnalyzer::analyzeMusic(const std::string& filePath) {
     musicFilePath = filePath; // Store the file path
     FMODAudioEngine::getInstance()->load(filePath); // Load sound without playing
     soundID = FMODAudioEngine::getInstance()->playSound(filePath); // Play the sound and store soundID
-    isMusicPlaying = true; // Set flag to inWdicate music is playing
+    isMusicPlaying = true; // Set flag to indicate music is playing
 }
 
 void MusicAnalyzer::stopMusic() {
@@ -42,6 +42,25 @@ void MusicAnalyzer::update(float dt) {
 
     // Adjusted beat detection logic
     beatDetected = currentFrequency > 0.001f; // Adjust threshold as needed
+}
+
+void MusicAnalyzer::pauseMusic() {
+    if (isMusicPlaying) {
+        FMODAudioEngine::getInstance()->pauseSound(soundID);
+    }
+}
+
+void MusicAnalyzer::resumeMusic() {
+    if (isMusicPlaying) {
+        FMODAudioEngine::getInstance()->resumeSound(soundID);
+    }
+}
+
+void MusicAnalyzer::replayMusic() {
+    if (isMusicPlaying) {
+        stopMusic(); // Stop current music if any
+    }
+    analyzeMusic(musicFilePath); // Load and play the same sound again
 }
 
 std::vector<MusicEvent> MusicAnalyzer::getMusicEvents(float dt) {

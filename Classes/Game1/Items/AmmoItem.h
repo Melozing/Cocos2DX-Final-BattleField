@@ -9,6 +9,7 @@ public:
     virtual bool init() override;
     virtual void applyEffect() override;
     int getAmmoValue() const { return _ammoValue; }
+    virtual cocos2d::Size getScaledSize() const override;
 private:
     float _spriteScale; // Add this line
     int _ammoValue; // Ensure this member variable exists and is set appropriately

@@ -11,7 +11,6 @@
 #include "Enemy/FallingRockPool.h"
 #include "Enemy/RandomBoomPool.h"
 #include "Game1/Player/HealthPlayerGame1.h"
-#include "Button/PauseButton.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
 #include "utils/Music/MusicAnalyzer.h"
@@ -54,9 +53,9 @@ private:
     MusicAnalyzer* _musicAnalyzer;
     SoundController* _soundController;
     float musicDuration;
+    bool shouldPlayMusic;
 
     // UI elements
-    PauseButton* _pauseButton;
     cocos2d::ui::LoadingBar* _loadingBar;
     Sprite* border;
 

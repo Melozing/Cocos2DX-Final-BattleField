@@ -14,6 +14,7 @@ public:
     virtual int getHealthValue() const {
         return 0; // Default implementation, can be overridden by derived classes
     }
+    virtual cocos2d::Size getScaledSize() const = 0;
 protected:
     cocos2d::Sprite* _currentSprite;
     float _speed = 150.0f; // Example speed value

@@ -5,7 +5,7 @@
 
 class AudioUtils {
 public:
-    static void restartMusic(const std::string& filePath);
+    static int restartMusic(const std::string& filePath); // Change return type to int
 };
 
 #endif // AUDIO_UTILS_H
