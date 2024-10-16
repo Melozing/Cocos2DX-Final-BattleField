@@ -2,6 +2,7 @@
 #include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
 #include "Game3/enemy/EnemyPlane3.h"
+#include "Game3/enemy/EnemyPlane1.h" 
 
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
@@ -40,9 +41,7 @@ bool Game3Scene::init() {
         return false;
     }
     this->addChild(_player);
-
-	//Spawn enemy after delay
-    EnemyPlane3::spawnEnemyAfterDelay(3.0f, this);
+   
     // Add keyboard event listener
     auto eventListener = EventListenerKeyboard::create();
 
@@ -82,6 +81,17 @@ bool Game3Scene::init() {
         return false;
     }
     this->addChild(enemyPlane);
+
+    // Add sprite enemy plane 1
+    auto enemyPlane1 = EnemyPlane1::createEnemyPlane1();
+    if (!enemyPlane1) {
+        CCLOG("Failed to create EnemyPlane1");
+        return false;
+    }
+    this->addChild(enemyPlane1);
+
+    //Spawn enemy after delay
+    EnemyPlane3::spawnEnemyAfterDelay(3.0f, this);
 
     // Add cursor
     Director::getInstance()->getOpenGLView()->setCursorVisible(false);

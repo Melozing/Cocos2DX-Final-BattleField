@@ -291,6 +291,9 @@
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlane1.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -478,6 +481,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlane1.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
