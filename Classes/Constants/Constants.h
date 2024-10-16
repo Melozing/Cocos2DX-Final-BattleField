@@ -39,6 +39,7 @@ public:
     static const int EnemyTag;
     static const int InitialPosX;
     static const int InitialPosY;
+    static const float scaleFactor;
     //game3
     static const float GroundY;
     static const float BackgroundSpeed ;

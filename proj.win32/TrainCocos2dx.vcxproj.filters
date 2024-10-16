@@ -94,11 +94,11 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame3">
       <UniqueIdentifier>{90a5611c-0c27-4f26-8fa6-01f493318a62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Controller\MusicAndSound">
-      <UniqueIdentifier>{db224810-b798-4883-a449-3f1ab106d5e2}</UniqueIdentifier>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\Enemyh">
+      <UniqueIdentifier>{6f565c7e-243a-4576-ac25-38d12858d65a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Controller\Sprite">
-      <UniqueIdentifier>{9bc4a555-8e50-4307-9153-7d2cfb027e07}</UniqueIdentifier>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\EnemyCpp">
+      <UniqueIdentifier>{b86b6162-9293-482b-b168-ce6709301518}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -258,14 +258,29 @@
     <ClCompile Include="..\Classes\Button\BaseButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp">
-      <Filter>src\Manager</Filter>
+    <ClCompile Include="..\Classes\utils\Pool.cpp">
+      <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Controller\SoundController.cpp">
-      <Filter>src\Controller\MusicAndSound</Filter>
+    <ClCompile Include="..\Classes\utils\tilemap.cpp">
+      <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Controller\SpriteController.cpp">
-      <Filter>src\Controller\Sprite</Filter>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\Game2Boss1.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\InvEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MelleEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SniperEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -425,14 +440,29 @@
     <ClInclude Include="..\Classes\Button\BaseButton.h">
       <Filter>src\UXUI\Buttons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Manager\BackgroundManager.h">
-      <Filter>src\Manager</Filter>
+    <ClInclude Include="..\Classes\utils\Pool.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Controller\SoundController.h">
-      <Filter>src\Controller\MusicAndSound</Filter>
+    <ClInclude Include="..\Classes\utils\tilemap.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Controller\SpriteController.h">
-      <Filter>src\Controller\Sprite</Filter>
+    <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\Game2Boss1.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\InvEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MelleEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SniperEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="2">
+ <tileset firstgid="1" name="1" tilewidth="16" tileheight="16" tilecount="336" columns="21">
+  <image source="game2/ground_grasss.png" width="336" height="256"/>
+  <wangsets>
+   <wangset name="co" type="corner" tile="-1">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="105" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="106" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="107" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="108" wangid="0,1,0,0,0,1,0,1"/>
+    <wangtile tileid="109" wangid="0,1,0,1,0,0,0,1"/>
+    <wangtile tileid="126" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="127" wangid="0,1,0,1,0,1,0,1"/>
+    <wangtile tileid="128" wangid="0,0,0,0,0,1,0,1"/>
+    <wangtile tileid="129" wangid="0,0,0,1,0,1,0,1"/>
+    <wangtile tileid="130" wangid="0,1,0,1,0,1,0,0"/>
+    <wangtile tileid="147" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="148" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="149" wangid="0,0,0,0,0,0,0,1"/>
+    <wangtile tileid="332" wangid="0,0,0,0,0,0,0,1"/>
+   </wangset>
+  </wangsets>
+ </tileset>
+ <tileset firstgid="337" name="2" tilewidth="16" tileheight="16" tilecount="544" columns="16">
+  <image source="game2/Trees_rocks.png" width="256" height="544"/>
+ </tileset>
+ <layer id="1" name="ground" width="60" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztw0ENAAAMA6HTX9XTsD8krJqqqqqqqqqqqqrvB58/Dgw=
+  </data>
+ </layer>
+ <layer id="2" name="co" width="60" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzlWglywyAMpA/sR5K4X0jtfqHOexNNvc2OBiyMOXxoZqcXMVokVgL34py7vvDzwveE7oXPD+cu09+uNKZ3tunP1QJzGGbGCL8vz1j+vPWc0LxbxLADH3NAx/XIEK4Pd/y4IqbYh639KQ3eq90G/KkF5HNrP2pyFTuDXnHPcHS9EnDPcIb4CiSnR3eO+AqQ0639KAHUXMRUAL1q7VtOjqN79xahs40e29rvVK44z+H8g3j6+M6dh2r4unStOU/Hieudfi8/h6w2P42UtfadSeXzoZiyWetaI9d1vDTm5o6JKRvnge+5NXLdukPAnvT5GHPfwvbr/vIAe70UJwtWjLUe6ToTa9YdTK07gSX3RDFjfbhFcEItO8JdSE9f78bYLdxxWTlvQfaExcWnEzX7E55rqTb5zPKb9Rlzl9Y33js8v3x/S6f6b6hJVrxYJ7RO5oz3XL6tjbGs192YA9D8dC2Q2lY6x7HmqXGO0SoBenLLhHPuePuQyhu9Nj+L44hz5NK6LlYz3lxjLWO+zA2atEYnanCG33yvHuLPPZoeH/O+zVqH3Doe0tWQ/mi/oc0PF97Hc/U2pJd4J5q7Zq3pezr3ztc531Lej7buxXxcz/J+QQANih2/pnfdyjljWDg2x/8ZtMZW1r4UWM+hV619KgnW8z7xGXuFcN+DzuTEEzCeQc4=
+  </data>
+ </layer>
+ <layer id="3" name="caycoi" width="60" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztmbdOxEAQhvfuLQkvQHgBQjESQeKOjqBLFUlHaMhHaMh3QEPuSc/B19Fw9sr22lozn/RVntH43y1WqzVG+a9MFI2ZxCmcLmb9N+6ZI+M8LuBizvMukW8ZV3AV13Kcd5tsO7iLe7iPB3iY08xn5DrHC7zEK7zGmxTzlphVtpxHnVAvUWc9MOcRn/AZX/AV31LIW2FGFWtYx0bITL4LdUK90CeViLnfmfOBn/iF3wlk7SkY04t92F/4u6bJnHXcwE3cCpnLd6FOqBf6pBljn5NmgIyDOITDXfK2yHeEx3iCpyF5+S7UCfVCn7QSzGuzP0GM0DOKYzjepb9Nvg7e4h3eh+Tlu1An1At90k4wr83+BDFDTwnLOBuhP21s9ieIKj01rGPDg7y+7U9cfNsfRUmCuOeWb8Q9t3wj7rnlG3puKYqiKIqipI++Tf2St/tV2NtUFvcrV2ts8zaVxf3K1RrbvE1lcb9ytcY2b1NZ3K9crrGLt6m46B1W8ZEfWLKSbQ==
+  </data>
+ </layer>
+ <layer id="5" name="spam" width="60" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt17ENgDAMBEBn/0WACYAJIFPhGSgIiu+k7/3NS44AqGtpEWtma6Mv+caePY/MWaTvlT3vTC/SFwAAKvHPzc0/B+/YxrnZRgAA+K8Hr1ITnw==
+  </data>
+ </layer>
+ <objectgroup id="4" name="object">
+  <object id="1" x="482.667" y="366.667">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
