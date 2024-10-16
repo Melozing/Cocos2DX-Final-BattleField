@@ -27,6 +27,7 @@ PlayerGame3* PlayerGame3::createPlayerGame3()
         player->autorelease();
         player->initAnimation();
         return player;
+
     }
     CC_SAFE_DELETE(player);
     return nullptr;
