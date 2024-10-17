@@ -92,7 +92,8 @@ bool Game3Scene::init() {
 
     //Spawn enemy after delay
     EnemyPlane3::spawnEnemyAfterDelay(3.0f, this);
-
+    EnemyPlane1::spawnEnemyAfterDelay(6.0f, this);
+    
     // Add cursor
     Director::getInstance()->getOpenGLView()->setCursorVisible(false);
     _cursor = Cursor::create("assets_game/player/tam.png");
