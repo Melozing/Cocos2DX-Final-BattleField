@@ -1,4 +1,4 @@
-// EnemyPlane1.h
+﻿// EnemyPlane1.h
 #ifndef __ENEMY_PLANE_1_H__
 #define __ENEMY_PLANE_1_H__
 
@@ -13,6 +13,14 @@ public:
     static EnemyPlane1* createEnemyPlane1();
     virtual bool init() override;
     void initAnimation();
+
+    void startMoving(); // New method to start moving
+
+    // Thêm các hàm di chuyển
+    void move(const cocos2d::Size& visibleSize);
+    void moveRightToLeft(const cocos2d::Size& visibleSize);
+    void moveAndReturn(const cocos2d::Size& visibleSize);
+    static void spawnEnemyAfterDelay(float delay, cocos2d::Node* parent);
 
 private:
     cocos2d::Sprite* modelCharac;

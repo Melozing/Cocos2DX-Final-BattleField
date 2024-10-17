@@ -35,6 +35,7 @@ bool EnemyPlane3::init() {
 }
 
 
+
 // hàm di chuyển enemy từ trái sang phải và sau đó từ phải sang trái
 void EnemyPlane3::moveAndReturn(const Size& visibleSize) {
     float startXLeft = -this->getContentSize().width / 2;  // Ngoài màn hình bên trái

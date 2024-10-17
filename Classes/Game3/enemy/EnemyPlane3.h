@@ -9,6 +9,7 @@ public:
     static EnemyPlane3* createEnemyPlan3();
 
     virtual bool init();
+
     void move(const cocos2d::Size& visibleSize);
     void moveRightToLeft(const cocos2d::Size& visibleSize);
     void moveAndReturn(const cocos2d::Size& visibleSize);
