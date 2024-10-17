@@ -13,11 +13,11 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(Game2Scene);
-    
+
 private:
-    
+
     cocos2d::TMXTiledMap* _tileMap;
-	PlayerGame2* _player;
+    PlayerGame2* _player;
     Cursor* _cursor;
     void scaleTilemap(cocos2d::TMXTiledMap* tilemap);
     void update(float delta) override; // Thêm hàm update
