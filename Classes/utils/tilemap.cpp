@@ -1,42 +1,89 @@
-#include "tilemap.h"
+#include "utils/tilemap.h"
 
-namespace MyGameNamespace {
+USING_NS_CC;
 
-    Tilemap::Tilemap() {
-        // Constructor implementation
+Player* Player::createPlayer()
+{
+    Player* player = Player::create();
+    return player;
+}
+
+bool Player::init()
+{
+    if (!Sprite::init())
+    {
+        return false;
     }
 
-    Tilemap::~Tilemap() {
-        // Destructor implementation
-    }
+    // Set initial speed and direction
+    speed = 200.0f; // Adjust the speed as needed
+    direction = Vec2::ZERO;
 
-    void Tilemap::initTilemap(const cocos2d::Vec2& pos) {
-        // Method implementation
-    }
+    // Set the player sprite (replace "player.png" with your sprite file)
+    this->setTexture("player.png");
 
-    void Tilemap::update(float deltaTime) {
-        // Method implementation
-    }
+    // Schedule update function
+    this->scheduleUpdate();
 
-    void Tilemap::renderTilemap(cocos2d::DrawNode* drawNode) {
-        // Method implementation
-    }
+    // Set up keyboard event listeners
+    auto eventListener = EventListenerKeyboard::create();
+    eventListener->onKeyPressed = CC_CALLBACK_2(Player::onKeyPressed, this);
+    eventListener->onKeyReleased = CC_CALLBACK_2(Player::onKeyReleased, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 
-    bool Tilemap::isFreeTile(float x, float y) const {
-        // Method implementation
-        return true;
-    }
+    return true;
+}
 
-    bool Tilemap::isFreeTile(const cocos2d::Vec2& pos) const {
-        return isFreeTile(pos.x, pos.y);
-    }
+void Player::update(float delta)
+{
+    // Update player position based on direction and speed
+    this->setPosition(this->getPosition() + direction * speed * delta);
+}
 
-    void Tilemap::clearObstacles() {
-        // Method implementation
+void Player::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
+{
+    switch (keyCode)
+    {
+    case EventKeyboard::KeyCode::KEY_W:
+        direction.y = 1;
+        break;
+    case EventKeyboard::KeyCode::KEY_S:
+        direction.y = -1;
+        break;
+    case EventKeyboard::KeyCode::KEY_A:
+        direction.x = -1;
+        break;
+    case EventKeyboard::KeyCode::KEY_D:
+        direction.x = 1;
+        break;
+    default:
+        break;
     }
+}
 
-    void Tilemap::drawTile(cocos2d::DrawNode* drawNode, Tile& tile) {
-        // Method implementation
+void Player::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
+{
+    switch (keyCode)
+    {
+    case EventKeyboard::KeyCode::KEY_W:
+    case EventKeyboard::KeyCode::KEY_S:
+        direction.y = 0;
+        break;
+    case EventKeyboard::KeyCode::KEY_A:
+    case EventKeyboard::KeyCode::KEY_D:
+        direction.x = 0;
+        break;
+    default:
+        break;
     }
+}
 
-} // namespace MyGameNamespace
+Vec2 Player::getDirection() const
+{
+    return direction;
+}
+
+float Player::getSpeed() const
+{
+    return speed;
+}

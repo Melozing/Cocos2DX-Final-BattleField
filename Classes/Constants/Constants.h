@@ -44,6 +44,16 @@ public:
     static const float BulletScale;
     static const float GrenadeSpeed;
     static const float GrenadeThrowDistance;
+
+    //bossgame2
+	static const float BossScale;
+	static const float BossSpeed;
+	static const int BossTag;
+	static const int BossDamage;
+	static const int BossHealth;
+	static const float BossReloadTime;
+	static const int BossDamageIncrease;
+    
     //game3
     static const float GroundY;
     static const float BackgroundSpeed ;
