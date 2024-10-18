@@ -85,7 +85,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Set the design resolution size to match the screen size
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    glview->setDesignResolutionSize(screenWidth, screenHeight, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(screenWidth, screenHeight, ResolutionPolicy::SHOW_ALL);
 
     register_all_packages();
 
@@ -97,6 +97,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     return true;
 }
+
 
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
