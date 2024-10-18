@@ -159,9 +159,6 @@
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
@@ -270,13 +267,13 @@
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\Game2Boss1.cpp">
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\BossEnemy.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\InvEnemy.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MelleEnemy.cpp">
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MeleeEnemy.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SniperEnemy.cpp">
@@ -293,6 +290,12 @@
     <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp" />
     <ClCompile Include="..\Classes\Grenade\Grenade.cpp">
       <Filter>src\Grenade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game4\Game4Scene.cpp">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -351,9 +354,6 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h">
@@ -461,13 +461,13 @@
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\Game2Boss1.h">
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\BossEnemy.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\InvEnemy.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MelleEnemy.h">
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MeleeEnemy.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SniperEnemy.h">
@@ -484,6 +484,12 @@
     <ClInclude Include="..\Classes\Manager\BackgroundManager.h" />
     <ClInclude Include="..\Classes\Grenade\Grenade.h">
       <Filter>src\Grenade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game4\Game4Scene.h">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\EnemyUtils.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

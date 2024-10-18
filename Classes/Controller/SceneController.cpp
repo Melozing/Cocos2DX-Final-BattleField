@@ -2,6 +2,7 @@
 #include "Game1/Game1Scene.h"
 #include "Game2/Game2Scene.h"
 #include "Game3/Game3Scene.h"
+#include "Game4/Game4Scene.h"
 
 SceneController* SceneController::instance = nullptr;
 
@@ -19,8 +20,10 @@ bool SceneController::init() {
 }
 
 Scene* SceneController::getScene(const std::string& sceneName) {
+    CCLOG("Getting scene: %s", sceneName.c_str());
     return createScene(sceneName);
 }
+
 
 Scene* SceneController::createScene(const std::string& sceneName) {
 
@@ -47,11 +50,13 @@ void SceneController::registerScenes() {
     registerScene("Game1Scene", []() {
         return Game1Scene::createScene();
         });
-
     registerScene("Game2Scene", []() {
         return Game2Scene::createScene();
         });
     registerScene("Game3Scene", []() {
         return Game3Scene::createScene();
+        });
+    registerScene("Game4Scene", []() {
+        return Game4Scene::createScene();
         });
 }

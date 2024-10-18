@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="14">
+ <tileset firstgid="1" name="1" tilewidth="16" tileheight="16" tilecount="336" columns="21">
+  <image source="game2/ground_grasss.png" width="336" height="256"/>
+  <wangsets>
+   <wangset name="1" type="corner" tile="107">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="105" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="106" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="107" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="108" wangid="0,1,0,0,0,1,0,1"/>
+    <wangtile tileid="109" wangid="0,1,0,1,0,0,0,1"/>
+    <wangtile tileid="126" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="127" wangid="0,1,0,1,0,1,0,1"/>
+    <wangtile tileid="128" wangid="0,0,0,0,0,1,0,1"/>
+    <wangtile tileid="129" wangid="0,0,0,1,0,1,0,1"/>
+    <wangtile tileid="130" wangid="0,1,0,1,0,1,0,0"/>
+    <wangtile tileid="147" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="148" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="149" wangid="0,0,0,0,0,0,0,1"/>
+    <wangtile tileid="150" wangid="0,1,0,0,0,1,0,0"/>
+    <wangtile tileid="151" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="168" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="169" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="170" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="171" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="172" wangid="0,1,0,0,0,1,0,0"/>
+   </wangset>
+   <wangset name="2" type="corner" tile="112">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="110" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="111" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="112" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="113" wangid="0,1,0,0,0,1,0,1"/>
+    <wangtile tileid="114" wangid="0,1,0,1,0,0,0,1"/>
+    <wangtile tileid="131" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="132" wangid="0,1,0,1,0,1,0,1"/>
+    <wangtile tileid="133" wangid="0,0,0,0,0,1,0,1"/>
+    <wangtile tileid="134" wangid="0,0,0,1,0,1,0,1"/>
+    <wangtile tileid="135" wangid="0,1,0,1,0,1,0,0"/>
+    <wangtile tileid="152" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="153" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="154" wangid="0,0,0,0,0,0,0,1"/>
+    <wangtile tileid="155" wangid="0,1,0,0,0,1,0,0"/>
+    <wangtile tileid="156" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="173" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="174" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="175" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="176" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="177" wangid="0,1,0,0,0,1,0,0"/>
+   </wangset>
+   <wangset name="3" type="corner" tile="137">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="115" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="116" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="117" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="118" wangid="0,1,0,0,0,1,0,1"/>
+    <wangtile tileid="119" wangid="0,1,0,1,0,0,0,1"/>
+    <wangtile tileid="136" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="137" wangid="0,1,0,1,0,1,0,1"/>
+    <wangtile tileid="138" wangid="0,0,0,0,0,1,0,1"/>
+    <wangtile tileid="139" wangid="0,0,0,1,0,1,0,1"/>
+    <wangtile tileid="140" wangid="0,1,0,1,0,1,0,0"/>
+    <wangtile tileid="157" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="158" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="159" wangid="0,0,0,0,0,0,0,1"/>
+    <wangtile tileid="160" wangid="0,1,0,0,0,1,0,0"/>
+    <wangtile tileid="161" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="178" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="179" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="180" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="181" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="182" wangid="0,1,0,0,0,1,0,0"/>
+   </wangset>
+   <wangset name="4" type="corner" tile="282">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="260" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="261" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="262" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="266" wangid="0,1,0,0,0,1,0,1"/>
+    <wangtile tileid="267" wangid="0,1,0,1,0,0,0,1"/>
+    <wangtile tileid="270" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="271" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="272" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="281" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="282" wangid="0,1,0,1,0,1,0,1"/>
+    <wangtile tileid="283" wangid="0,0,0,0,0,1,0,1"/>
+    <wangtile tileid="287" wangid="0,0,0,1,0,1,0,1"/>
+    <wangtile tileid="288" wangid="0,1,0,1,0,1,0,0"/>
+    <wangtile tileid="291" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="292" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="302" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="303" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="304" wangid="0,0,0,0,0,0,0,1"/>
+    <wangtile tileid="308" wangid="0,1,0,0,0,1,0,0"/>
+    <wangtile tileid="309" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="329" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="330" wangid="0,1,0,0,0,1,0,0"/>
+   </wangset>
+   <wangset name="5" type="corner" tile="285">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="263" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="264" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="265" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="268" wangid="0,1,0,0,0,1,0,1"/>
+    <wangtile tileid="269" wangid="0,1,0,1,0,0,0,1"/>
+    <wangtile tileid="284" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="285" wangid="0,1,0,1,0,1,0,1"/>
+    <wangtile tileid="286" wangid="0,0,0,0,0,1,0,1"/>
+    <wangtile tileid="289" wangid="0,0,0,1,0,1,0,1"/>
+    <wangtile tileid="290" wangid="0,1,0,1,0,1,0,0"/>
+    <wangtile tileid="305" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="306" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="307" wangid="0,0,0,0,0,0,0,1"/>
+    <wangtile tileid="310" wangid="0,1,0,0,0,1,0,0"/>
+    <wangtile tileid="311" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="312" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="313" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="331" wangid="0,0,0,1,0,0,0,1"/>
+    <wangtile tileid="332" wangid="0,1,0,0,0,1,0,0"/>
+    <wangtile tileid="333" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="334" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="335" wangid="0,1,0,1,0,0,0,0"/>
+   </wangset>
+  </wangsets>
+ </tileset>
+ <tileset firstgid="337" name="2" tilewidth="16" tileheight="16" tilecount="544" columns="16">
+  <image source="game2/Trees_rocks.png" width="256" height="544"/>
+ </tileset>
+ <layer id="1" name="background" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJztw0ENAAAMA6EzX98TsS8krJqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq+nqlHDr0
+  </data>
+ </layer>
+ <layer id="7" name="bg1" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJztnQuO3CAQRH3j/K6QZHOFJHfYyREzKNtKx8IfoIBqUk9qzWi187GLaoOBnm0TPfn8jC8TQ/Tl+zN+ZOLTJn1XZpSvxRxG+VpwYbqjdBacJJ0RGgteEBoLblrztYhBrZdFHGo0FrEoHTeLWJR6WMSjRGMRk7sa9+bdMx7PeH2L92/hnz/cY4oPA77XCtzRuBdJ16TZt4vPz8XL9rdNSOtzfm1j9W3R9UhraXzMlYeRJG1Ruq6gsbX1R+YReTxnYyYUvbT1GkfJ19bnODsfdjymectxnXkYQW9tmb2cjt33HXO6ftyu53dftjadjzRuZaS2Fl8B3xvB1bGbrj/da3Lz+l6Xlvab62vVYu12tLZMHj7qu+Z0PWM/R1R7fLnrcA0zPJvTeOZY+egcJG3v6rrH59iaHJXL0aUwaMuQq713/fW1VlvDPIjycAkobdP5QK0vmpWrTd8Wv+ZAe7gE1JrOpAkyB4zW2LfzHvnDznPte/vcUvs6thiZp307R38uou3471fzuYwxQ190bk54D4307+x9NFcxMkfb+evxmYi2U+Nf5tw82sM987Od55b39X2s0s9ljlH6tvZxj0D220yv0v9njpHX4B45GpkXSvVlv/6O1rdHjkaOqeXfNnyORngYPaa29ncX1H6nVfRNoDT22qLGXDZnUfoaZo1n3Iv2ea1G4/19hdlzn6zX4R73Gu6wb/Ml60z22s46Bg/rdXhmu8/lNVuPkVuTkVuDyKBtQvrmOdvHaVrbOp7c+h0GbROM+Znp/OzX35z1V0rXeYyA0b+zvXvGUR0VNl0NNn2ZvLsCbPoyezciTNdfeRcPyz0OaduP2RpL2/6g66xJW05GeZlxrPi/UDKml2fjg8jdyD0Bog9n926uQpoKIYQQQgghhBBCCCGEEEKIiNheEx9Wh/7VPR7tVRGc1NYxt/1npv3Keu/rX9sencfu+WP7tza294X/nxHn6k5t51K9V/0tAvRa6l41kvxvhKiG+X2OanTWRI96NokZdd1m18ZFgajVtn+vXvWKZgRLnetakPq21uTMwbDXKrLG7P5l0DeyxsgaUmj/zs7N+4i4T7JHvTbEeWDTVvri/MuobVR9GftXLNfcFfRl8y+rd6UvRl+m2gQr6MuWn6UvllZ97TfU/DxOy3lgvfZG1df7xdd48/NFfj7Jz6Ue3etf0b9R9z/38MuK/o3o3UQPv6ymb1TvJlr2f/fYFz67LtBK3mVlVl2g1bzLDoOX5d2+zOxPs3j3an2o/1u0NYMz+1uzvVu7PpThu9/F9/9G1nCbXT+o9T58xHWCvftdTPkYNccSxccetKfZ6i4ir0lR1xUZNXUZ9+uAWXRN9JgfjejhI+7cr2HScw/b/USBBT1eYOlTiD+g9ZV3uUDes5N3OUF4WNry0jrOl7YxKB3ns43jxX2ij/uEEEIIIYQQQgghhBBCCCGEEEIIIYQQoobfujDRkQ==
+  </data>
+ </layer>
+ <layer id="8" name="bg2" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJztnVuO2zAMReO/pEC6g06BdAdJf+JFJNn/amqjEcChH6IdURKpewAiM5PWD12RkiVKPhwAAABocuwOh9NgP7rSVwI0eA26fg32uxF9x/p8H6x/1+v+bV7r93W4r+dgf53eH2XU9s+7PnO7ONa4FX4taPvVWAzzSohVt7c9yOejkRgGAAAAAAAAAAAAAAAAAAAAQG2EnKH72zDv7oe5HIsLyae5M+1Drg3qQL0ciX5L+TMxQ35NnazlREFj26TU1rLGIafT2nWvoaGt1Tw5jznKsVzGlnx4zPvzlN+n6btWNfaEpu9C4/KM8egnNHZJeNbVjs/QuAy5YjM3T33TmoG+vimh77nz8+xROy9o65qc+kLb/OR8NkKbW4ZcbTD0LUMOH0ZsLoumxtC2DrQ0RlyuhzA3lkLn0W9v8N0q+VRnxGQbhD1ungKtg796mhtvieDTwW7MoCkAAAAAAAAAgNKENbxhLWffTfdNP5G/073U+Xf8/3lcF3xk5XBnZcfLiZaJRnmcuqlO9Hpy5L9euuk6YF5PaDnlrg9Hdv4Tuz6qTYryCuXRd1N95sporTy0tdOsDz375OXO4witQyf2M61H3Ndy5njvLQ/ul6EsSl8bDObJxrmUXHlroy29w+BJjH9/I9/xf39jvz/YJ39vAv/+Ro6faj5ZWy96zfS+6L3RuZQr+/uee6Tnped/dt+vpXYk84x0fnGujszVW15nn4Lz8HOlmvu6Mn34dc/5g8c5t2s31S7lvYZ+8lJ/CrkHdomtVYe2dlnT9twhr8QqsTXM8Fm7IB77RbIvDHKv7SJZ+wh9bSLxXcRmm0j364r5Lp8DpOP6nuY6rSGJyxLfXTsO4rqMpfev9zt9JWVcXlr3jLguQxpHt+yHlbJPNXcsaCtny94eEk1S96noODjWTW0ntb6xfSTge3lJqS/GMupDuh9AzO/wrFsvYU3pWq5ITBfJ/j7wXbvE4jx81y4p212e448xqvKk7DPzY10+1DnMO/PcbNQbOTF9t7S7S3F+737jS9eGvoCctbZ3a7uberx56XjQV0as7d1ajmG8au6ZbY8mc89/6OvJ0BzPmNNl77Fe0HYX2s9EId/+072d6BoGaCsDY5G+QV6VbzBelR6aZ3Hvpmuoc+UkITbrIImJOd47htisg3SuVrNsU+VFgil0fe7SemXtdk8yD9hi23tUul++Tle7XDHP+x26bs46iM3f4eVhnVQ569YJc9S8rlsG+VX/WSsHy7Te7sb2C/Gur1ffXYrFnvRtdbxK2p+0rm9rsTm2V4g3fVuaS9jqsy3o68V3P9HWsr4p8yNr5VNtLevr2X+39I+hry1S+Kx3fa32rVJra1Xf1PnNpZGMQ7Wkr6fYrOGz0Lc8mj4Lfcui7bPW9bX87JtTW6v6WvTfvePHLeprzX9z+6x1fS35b0ltrepbs/+GscWw90Lpd9tZpFb/Le2r3M5G9a3VfyU5BzntAn2zXhfis4ya9KXrJ2uKzSE+/wNUdG5p
+  </data>
+ </layer>
+ <layer id="9" name="bg3" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJztnQ1y1DAMhXPoFrhCoVwBwhlK78d6pppRRWzLjn8k+30zHhaymzh+ebLjP44DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANiLp0d6fqS/H+n5I32ZmSlQTdCTdAx//nyk7xfp9YDG3gjaxvS8Sj/mZBNU8n7otYWH/VGqLzzsh9LYDA/74uUo1xYe9sMdfeFh+9TUvfCwH3490rejTtuvj3QOzzEopdbDiM8+uONhxGcf1GoMff1QqjHqX38EjX8feZ2hrW9I51g6p+UMAAAAAAAAAAAAAAAAAACtoXUmlN4+En2mdUTyWOy7/DeYq9EX0uX5+F8n0ijMZQ5jd6mxn5oUxgtfj8/Pgle9uQfo+eXPN/83KufUMfn72nLRanFWnj+FHC8kvaXPY+VW6n/SgMcP+Vn+ncctmRcem3p5QPoglYer/FoiNz4cu++r50CWRW8Neo5fl5YLT56pue9zRkYnwr0s6wLuhbfI92Lxk39P1jnyd1e+W7X9RWvcR91br1jVut5pURa8bPkzWFveT8fntsKVV+TzS3WEbFvyc2jyQvci/ce991Z4P6Ph8/Ku5r3z8pVtJFn/hs+p+pfX5bGypetJrWrqiFTdQnmRcY4/l9pre4Dm2NLzfqfNekauwddbXM2/pjWv8nqx891B267oce1ZxO75vHleemfi2slzcm3vXg+MQ3ryvDjOtZfHgV1ynsxpD2wT1qCnPPmeOQ7sQt5MrWN7yRwHNtG0lTT6A5to4m4udgObaHwJ7/qkJC7Du/7QxFza16mVd2N9xLy/cbXxkxnkYi7vx2ilr3YPv971gIc5MeSDmnxqYi7ve74bmymv2v0Ze+tLexK1GoPrAZV/TVnk4nLLfqrSfTdH1PMe9p6isYWz8HeauNwqJtfsqTqijb7y/mKaPshWPirdc3NUG33lPeRyfYx34j7HYlwmVt1jTNvH3OJeS7w7+t16VX1L2lWx75Rcy6K2RyIv3vUNsXdEuyqQ26Nv5hjybvpybVv6KTVnqtU1aojp67mNlap7KZbu0sc8+/2sNal6dcfxg9X0TY3vth4/8MBK+gZ//jny/Rne7usOq+ired/dcc7cKvpqxndT70yrsoK+2jk10NfnO5Im7u46ryrXp+ahPDS+3LHuDaygr2Yu+o6xOeBdX9S9abzrq2k371r3Bjzrq9Vt5/UIOX0tt6Hh3Tw5fS17ONeu2nE8QaLR16KHtfNvdtY2oNHXoofRH6nDs754J8qj1ddSjMY6Tz1afS1prOlr3LU/kgjPd9CqRF8rcVoTd3fdP4P22AuxK/ixVF8LHoa+19SsgbKocU7f3epeuX65RZqpsWZd0Q51b+laYy8aa/Rd3butYrHF9lZOv5X17e1Z6DuPUZ6dHaNT8XnFtlWP9pNlD6f8udKYwuhYbMXDOX1X8O6MWGzFwyl9V6h7rWlrSd/g39n9L7XwvsXZelrVl9bSe/OwRc/O0Fe7jsybvnwPPYtpVHlqxwa96GuljZxLuf8bqhWa9rGXNrT1mJzSudd+lqvo61HbK61b67zC2O9Ibf8BO3WKIw==
+  </data>
+ </layer>
+ <layer id="10" name="bg4" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJzt3WFS7CAQRlF2rI5bcNQtqHtQl+hQSg1SQAhDSHfnnqrU+/ky+WxICJCzc+4s9Dhdjg+Hte4ux/3l+HT7Z0i24327/TJ7bzzItt+sfNM8yWyOJzcnV8l5+j7qy/32UeFf32c97HlSg2xVvxpy9Xy2ry7/G553PK9RQv2e3DHvh2rtl4V8Q/2+uONl65XaL22/o2Rk/6vxmuTy1fg7St4ux6M7Zrae//3Wn8durWGt2R7FLffQZCtfb/2SrQ499Uu2eqypXy3jFrhqzZea1ak1XwvjOUfU2v+Sr061fOP3elu3zWGuQfwux8p7nD1JGWMv/Z35sXEy7lfKd/b9VK0dIeN+pes6u79dGgsn4z6S3qHE4/25rMl4vVz7LOFeuZS1hHPTJFe/0q5hnDVjLOuk9cs4lS1pvtJq14IwRzOsJQhHeNbf8p4ibZ/Jd7ylMcIt7xtD30a+v3UW6mrU9a7NwZ1ZV/S9//uqUTUlZXz/6LXrpWMsI67HUr6nv/+TfOcY/SzW0vf69pt8dWppn2f0i+S7jaVx9Vn3PEe/t9pSbh797PE4atc28rWNfG0jX9vI1zbytY18bePZFwAAAMAW4n2V0zWPI+duYb6W+XKso9GL/Q5sa8mXuRJ6tcyHJFu9Susa2TvKHtY1AgAAAAAAAACwTjxHJcxLYT9uO0rvuZmbYkPtPTdzU/STsq8/tlHbF4Z8bSjtC8NcBgCSxM+Da58P4m878QwpU/y8sOb+IrfegfsTeXrmSpbWspCvDZK+PYTx+HaJbenzI9kCAAAAAAAAAAAAAAAAAAAcg5/nH/Z5kLY+Jz63+JB0jpLl1nBI2OMh5Fr6Voo/x3jNWM+6M+tq35rZe41O63dS0szJ+UryHg89+Uo5dylKe7TsvU6n5RtW5LssVyN7Z+vdUrvke5Xu0SIhW498x5H4jZna3kC1g28g6RFq2GfWkrWUtgdtQrvy4cr7QLG2FwAAAAAAWX4A7406/A==
+  </data>
+ </layer>
+ <layer id="11" name="home" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJzt0zlPAmEUhtHJ/HMX6MWlZ9HejR4FehToBeV3+PZWTswwnzknebpb3OTmVhUAcCwndVWdprN0nnqpXx97K/7KRW45SJfpKl2nG/f9odQ/GGbHURqnSbpNdwXs3bZS/+A+Oz6kx/SUntO0gL3bVuofzLLjS3pN87RIywL2blupf7DKjm/pPa3TJm0L2Lttpf7BR3bcpX36TF/pUMDebfMH/5s/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+L2TuqpO01k6T73Ur4+9FX/lIrccpMt0la7Tjft2TtM/HGZmlMZpkm7Tnft2TtM/vM/MQ3pMT+k5Td23c5r+4SwzL+k1zdMiLd23c5r+4Sozb+k9rdMmbd23c5r+4UdmdmmfPtNXOrhv5/jD/80fApTvG99pdx0=
+  </data>
+ </layer>
+ <layer id="14" name="homespam" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20IX6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNcA4QAAAQ==
+  </data>
+ </layer>
+ <layer id="12" name="rock" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJzt2zdOREEQBNCvvRkmwSSYhIUEk2ASTII5PHUCArQLrdJ7UuWrrS+1RtOzLADAVDurZdlN9pL91X//GjbtJJ2eJmfJuX7rXKfTm+Q2udNvned0+pK8Jm/63YiD/I+HyVFy7D+tc5FO18llcqXfOvfp9CF5TJ70W+c9nX4kn8mXfgEAAAAAAAAAAAD4JW/lunkr181buW7eygEAAAAAAAAALeypdbOn1s2eWjd7agAwkzNUN2eobs5Q3Zyh2AZzv9uEue8b254Jc3/CN9Zqwtyf8I2xPRO+MQAAAACYzj1HN/cc3dxzdHPPAQAAAAAAAAA/s/vUze5TN7tP3abtPpkX3cyLbuZFt2nzAgAAAAAAgL/1DYuiOlE=
+  </data>
+ </layer>
+ <layer id="13" name="tree" width="120" height="120">
+  <data encoding="base64" compression="zlib">
+   eJzt3Llu1VAUBVDfTyTQQiDQMgRow9wyBNIm0DMkfSDQM34S+wMQQle2eT5eS9rFbSw/bVu+tvTOMADA5jjXhmErOZ9caP/7bBjblXS6k1xNrum3nN10eju5k9zVbzkP0+mj5HHyRL/l7KfTl8mr5EC/AAAAAAAAAAAAAAAAAAAAAADQ5UMbhuPkpPWt2Wxn6elz8qX1rRnPFLMrf+Q4P5NfrW/NeKaYXfk2x3mXvG996+rmnAc7xezK0xznY/Kp9a2rm3Me7BSzK7/mON+S761vXd2c82DNrpyfebC1uacAAAAAAAAAAAD+zv9uaqv+v5u1X79L+t9NT1fVr99Kerpa0vW7droCAAAAlmbt346r8+24Nt8jYR4Xc49dSraTy+63cq6n0xvJzeSWfsvZS6f3kvvJA/2W8zSdPkueJy/0+0+W9P53mHM8Sl4nbxZwvpvA+19t3v9gWmub+/0n+4V/+9rmfq/N2uZ+w9J4xtbmGVubZywAjM/+uDb749rsjwFgXPbGtdkb12ZvDAD1/QYOz5eD
+  </data>
+ </layer>
+ <group id="6" name="enemy">
+  <layer id="3" name="spam1" width="120" height="120">
+   <data encoding="base64" compression="zlib">
+   eJzt3ceNQkEURNEvUh8gAUwAuD12j19jA8DFMUUQaEbNOdLdd+kF0FUFAAAAAAAAAAAAAADf6adWVfXUSM3aX7/m875tbysb26mTuvYWpZd9/TRIwzSytxjjbJukaZqleVrYW4xltq3SOm3SNu3SvtDN37b3kF3HdErndEnXQre+fdvet1v23dMjPdPLXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgI/5qVVVPTVS0z/LxWnlpu3USV33LUov9+ynQRqmkfsWY5xbTtI0zdI8Ldy3GMvccpXWaZO2aZf2blyEQ+54TKd0Tpd0ddui3HLPe3qkZ3q5LwAAAAAAAADwT/wCbnFQlQ==
+  </data>
+  </layer>
+  <layer id="4" name="spam2" width="120" height="120">
+   <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20IX6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNcA4QAAAQ==
+  </data>
+  </layer>
+  <layer id="5" name="spam3" width="120" height="120">
+   <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20IX6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNcA4QAAAQ==
+  </data>
+  </layer>
+  <layer id="15" name="defend1" width="120" height="120" visible="0">
+   <data encoding="base64" compression="zlib">
+   eJzt0dEJg1AURMELgpoGjDagpoEY+2/MLUIIeZmB87+wVQAAAAAAAAAAAAAAAPA7+q5qSGN6dN9ew92mfPpMc1r825w1n25pTy//NuedT4/0Sad/AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4UxeOEQIp
+  </data>
+  </layer>
+  <layer id="16" name="defend2" width="120" height="120" visible="0">
+   <data encoding="base64" compression="zlib">
+   eJzt0ccJgFAARMEPgqEBQwOGBgz9N+YWISgyA+++sKUAAAAAAAAAAAAAAAAAX1ZXpTSpTV319hqe1ufTIY1p8u/vzPl0SWva/Ps7ez490pku/wIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEDd/0wIp
+  </data>
+  </layer>
+  <layer id="17" name="defend3" width="120" height="120" visible="0">
+   <data encoding="base64" compression="zlib">
+   eJzt0dEJg1AURMELgpoGjDagSQMx9t+Y24MhwmMGzv/CVgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABX9F3VkMb06O5ew69N+fSZ5rT4tzlrPt3SK73925xPPt3TNx3+BQAAAAAAAADgD05k0QIp
+  </data>
+  </layer>
+ </group>
+ <objectgroup id="2" name="character">
+  <object id="1" name="spawn" x="954.545" y="957.576">
+   <point/>
+  </object>
+  <object id="10" name="enemy1" x="433.333" y="421.212" width="103.03" height="96.9697">
+   <ellipse/>
+  </object>
+  <object id="11" name="enemy2" x="1421.21" y="421.212" width="75.7576" height="84.8485">
+   <ellipse/>
+  </object>
+  <object id="12" name="enemy3" x="942.424" y="1560.61" width="66.6667" height="69.697">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="18" name="bullet">
+  <object id="13" name="bulletspam" x="644" y="1194">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
