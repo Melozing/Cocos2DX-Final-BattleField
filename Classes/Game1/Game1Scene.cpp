@@ -57,6 +57,11 @@ bool Game1Scene::init() {
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
 
+    // Ensure origin is (0, 0)
+    if (origin != Vec2::ZERO) {
+        CCLOG("Warning: Visible origin is not (0, 0)");
+    }
+
     background = Background::createBackground("assets_game/gameplay/bg_new.jpg", 150.0f);
     this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
 
