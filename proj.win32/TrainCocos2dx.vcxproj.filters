@@ -112,6 +112,15 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame1\FanBullet">
       <UniqueIdentifier>{76c97b4b-cb51-4d60-94d6-c1c744d9e248}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingTree">
+      <UniqueIdentifier>{56802360-56d0-4086-ab31-24b1441dcaf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Manager\Game1">
+      <UniqueIdentifier>{cc74159c-527f-4ff2-a0dc-bb2b1fc78dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Manager\AllUse">
+      <UniqueIdentifier>{dab5cbc4-be88-453c-8403-a450f9be9fb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -165,9 +174,6 @@
     <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
@@ -206,12 +212,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Button\PauseButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp">
-      <Filter>src\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Manager\PositionManager.cpp">
-      <Filter>src\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
@@ -258,9 +258,6 @@
     <ClCompile Include="..\Classes\Button\ExitButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp">
-      <Filter>src\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClCompile>
@@ -300,9 +297,6 @@
     <ClCompile Include="..\Classes\Grenade\Grenade.cpp">
       <Filter>src\Grenade</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp">
-      <Filter>src\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Controller\SoundController.cpp">
       <Filter>src\Controller\SoundAndMusic</Filter>
     </ClCompile>
@@ -314,6 +308,21 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FanBulletPool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PositionManager.cpp">
+      <Filter>src\Manager\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,9 +377,6 @@
     <ClInclude Include="..\Classes\Panel\VictoryPanel.h">
       <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
@@ -409,12 +415,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Button\PauseButton.h">
       <Filter>src\UXUI\Buttons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Manager\PhysicsManager.h">
-      <Filter>src\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Manager\PositionManager.h">
-      <Filter>src\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
@@ -461,9 +461,6 @@
     <ClInclude Include="..\Classes\Button\ExitButton.h">
       <Filter>src\UXUI\Buttons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h">
-      <Filter>src\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClInclude>
@@ -503,9 +500,6 @@
     <ClInclude Include="..\Classes\Grenade\Grenade.h">
       <Filter>src\Grenade</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Manager\BackgroundManager.h">
-      <Filter>src\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Controller\SoundController.h">
       <Filter>src\Controller\SoundAndMusic</Filter>
     </ClInclude>
@@ -517,6 +511,24 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FanBulletPool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\SpawnEvent.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PositionManager.h">
+      <Filter>src\Manager\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\BackgroundManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PhysicsManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h">
+      <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

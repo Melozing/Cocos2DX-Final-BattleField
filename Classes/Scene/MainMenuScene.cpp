@@ -14,6 +14,7 @@ bool MainMenu::init() {
     if (!Scene::init()) {
         return false; // Ensure initialization is successful
     }
+
     // Set background
     BackgroundManager::getInstance()->setBackgroundWithOverlay(this, "assets_game/UXUI/Background/DienBienPhuVictory.jpg");
 
@@ -33,6 +34,6 @@ bool MainMenu::init() {
 }
 
 void MainMenu::startLoading() {
-    auto loadingScene = LoadingScene::createScene("Game2Scene");
+    auto loadingScene = LoadingScene::createScene("Game1Scene");
     Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene)); // Replace with LoadingScene
 }

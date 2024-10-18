@@ -12,6 +12,7 @@
 #include "Enemy/FallingRockPool.h"
 #include "Enemy/RandomBoomPool.h"
 #include "Enemy/FanBulletPool.h" 
+#include "Enemy/SpawnEvent.h" 
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
@@ -51,6 +52,7 @@ private:
     std::vector<Vec2> usedPositions;
     std::vector<cocos2d::Node*> _enemyPool;
     std::vector<FanBullet*> _fanBullets;
+    std::vector<int> previousSpawnEdges;
 
     // Music and sound
     MusicAnalyzer* _musicAnalyzer;
@@ -101,6 +103,12 @@ private:
     std::function<void()> exitAction;
     std::function<cocos2d::Scene* ()> createSceneFunc;
 
+    // JSON-based spawn schedule
+    std::vector<SpawnEvent> spawnSchedule; // Change from std::vector<std::pair<float, std::string>> to std::vector<SpawnEvent>
+    std::unordered_map<std::string, std::function<void(const cocos2d::Size&)>> enemySpawnMap;
+
+    // Method to initialize the spawn schedule from JSON
+    void initializeSpawnSchedule();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

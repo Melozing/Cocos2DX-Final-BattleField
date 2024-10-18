@@ -5,7 +5,6 @@
 
 USING_NS_CC;
 
-
 float SpriteController::updateSpriteScale(Sprite* sprite, float size)
 {
     float SPRITE_SCALE_RATIO = size;

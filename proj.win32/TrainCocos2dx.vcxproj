@@ -242,6 +242,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBulletPool.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\RandomBoomPool.h" />
+    <ClInclude Include="..\Classes\Game1\Enemy\SpawnEvent.h" />
     <ClInclude Include="..\Classes\Game1\Game1Scene.h" />
     <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h" />
     <ClInclude Include="..\Classes\Game1\Items\AmmoItemPool.h" />

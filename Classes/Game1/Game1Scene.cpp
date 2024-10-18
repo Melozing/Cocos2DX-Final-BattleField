@@ -17,6 +17,9 @@
 #include "utils/Music/AudioUtils.h"
 #include "audio/include/AudioEngine.h"
 #include <ctime> 
+#include "json/document.h"
+#include "json/filereadstream.h"
+#include <fstream>
 
 USING_NS_CC;
 using namespace cocos2d::experimental;
@@ -56,11 +59,6 @@ bool Game1Scene::init() {
     edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
-
-    // Ensure origin is (0, 0)
-    if (origin != Vec2::ZERO) {
-        CCLOG("Warning: Visible origin is not (0, 0)");
-    }
 
     background = Background::createBackground("assets_game/gameplay/bg_new.jpg", 150.0f);
     this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
@@ -182,7 +180,28 @@ bool Game1Scene::init() {
     this->scheduleUpdate();
     this->scheduleCollectibleSpawning();
 
-    this->schedule([this](float dt) { handleMusicBasedSpawning(dt); }, "music_based_spawning_key");
+    //this->schedule([this](float dt) { handleMusicBasedSpawning(dt); }, "music_based_spawning_key");
+     // Initialize the enemy spawn map
+    enemySpawnMap["FlyingBullet"] = [this](const cocos2d::Size& size) { SpawnFlyingBullet(size, (rand() % 2 == 0)); };
+    enemySpawnMap["FallingRock"] = [this](const cocos2d::Size& size) { SpawnFallingRockAndBomb(size); };
+    enemySpawnMap["RandomBoom"] = [this](const cocos2d::Size& size) { SpawnRandomBoom(size); };
+    enemySpawnMap["FanBullet"] = [this](const cocos2d::Size& size) { SpawnFanBullet(size); };
+
+    // Initialize the spawn schedule from JSON
+    initializeSpawnSchedule();
+
+    // Schedule the spawning based on the JSON file
+    this->schedule([this](float dt) {
+        static float elapsedTime = 0.0f;
+        elapsedTime += dt;
+
+        for (auto& event : spawnSchedule) {
+            if (!event.spawned && elapsedTime >= event.spawnTime) {
+                enemySpawnMap[event.enemyType](Director::getInstance()->getVisibleSize());
+                event.spawned = true; // Mark as spawned
+            }
+        }
+        }, "json_based_spawning_key");
 
     exitAction = []() {
         Director::getInstance()->end();
@@ -293,6 +312,47 @@ void Game1Scene::update(float delta) {
 //    if (_movingRight) _player->moveRight();
 //}
 
+// Function to initialize the spawn schedule from JSON
+void Game1Scene::initializeSpawnSchedule() {
+    // Open the JSON file
+    std::ifstream ifs("json/spawn_enemies_game1.json");
+    if (!ifs.is_open()) {
+        CCLOG("Error: Could not open JSON file!");
+        return;
+    }
+
+    // Read the file into a string
+    std::string jsonContent((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+    ifs.close();
+
+    // Parse the JSON content
+    rapidjson::Document document;
+    if (document.Parse(jsonContent.c_str()).HasParseError()) {
+        CCLOG("Error: JSON parse error!");
+        return;
+    }
+
+    // Check if the document is an array
+    if (!document.IsArray()) {
+        CCLOG("Invalid JSON format: Expected an array");
+        return;
+    }
+
+    // Iterate through the array and populate the spawn schedule
+    for (const auto& item : document.GetArray()) {
+        if (item.HasMember("spawnTime") && item.HasMember("enemyType") &&
+            item["spawnTime"].IsFloat() && item["enemyType"].IsString()) {
+            float spawnTime = item["spawnTime"].GetFloat();
+            std::string enemyType = item["enemyType"].GetString();
+            spawnSchedule.emplace_back(spawnTime, enemyType, false); // Add false to indicate not spawned yet
+        }
+        else {
+            CCLOG("Invalid JSON format: Missing required fields or incorrect types");
+        }
+    }
+}
+
+
 void Game1Scene::handleMusicBasedSpawning(float dt) {
     auto events = _musicAnalyzer->getMusicEvents(dt);
     for (const auto& event : events) {
@@ -376,7 +436,15 @@ void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
     float angleIncrement = angleSpread / (numBullets - 1);
 
     // Randomly choose an edge: 0 for top, 1 for left, 2 for right
-    int edge = rand() % 3;
+    int edge;
+    do {
+        edge = rand() % 3;
+    } while (std::find(previousSpawnEdges.begin(), previousSpawnEdges.end(), edge) != previousSpawnEdges.end());
+
+    previousSpawnEdges.push_back(edge);
+    if (previousSpawnEdges.size() > 2) {
+        previousSpawnEdges.erase(previousSpawnEdges.begin());
+    }
     Vec2 spawnPosition;
     float baseAngle;
     float offset = SpriteController::calculateScreenRatio(Constants::FANBULLET_OFFSET); // Adjust this value to move the spawn position outside the screen

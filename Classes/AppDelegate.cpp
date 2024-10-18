@@ -48,8 +48,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         int screenWidth = GetSystemMetrics(SM_CXSCREEN);
         int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-
-        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, screenWidth, screenHeight));
+        //glview = GLViewImpl::createWithFullScreen("Test123"); //Neu Muon FullScreen thi dung cai nay  
+        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, screenWidth, screenHeight)); // Che do khong vien
 
         // Windows specific code to make the window borderless
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
