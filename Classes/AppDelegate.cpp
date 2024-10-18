@@ -30,93 +30,75 @@ AppDelegate::~AppDelegate()
 #endif
 }
 
-// if you want a different context, modify the value of glContextAttrs
-// it will affect all platforms
 void AppDelegate::initGLContextAttrs()
 {
-    // set OpenGL context attributes: red,green,blue,alpha,depth,stencil,multisamplesCount
     GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8, 0 };
-
     GLView::setGLContextAttrs(glContextAttrs);
 }
 
-// if you want to use the package manager to install more packages,  
-// don't modify or remove this function
 static int register_all_packages()
 {
     return 0; //flag for packages manager
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
-    // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
-	auto visibleSize = Director::getInstance()->getWinSize();
-    CCLOG("Visible size: width = %f, height = %f", visibleSize.width, visibleSize.height); // Log visible size
-
-
     if (!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        //glview = GLViewImpl::createWithFullScreen("Test123"); //Neu Muon FullScreen thi dung cai nay  
-        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, 1280, 720)); // Neu muon cua so game la 1280x720
-        cocos2d::Size screenSize;
+        int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+        int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, screenWidth, screenHeight));
+
+        // Windows specific code to make the window borderless
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-        screenSize = cocos2d::Size(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
-        CCLOG("Screen size: width = %f, height = %f", screenSize.width, screenSize.height); // Lay thong tin kich thuoc man hinh 
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-        // Mac specific code to get screen size
-        screenSize = cocos2d::Size(1920, 1080); // Example values, replace with actual code
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        // Linux specific code to get screen size
-        screenSize = cocos2d::Size(1920, 1080); // Example values, replace with actual code
+        HWND hwnd = glview->getWin32Window();
+        LONG style = GetWindowLong(hwnd, GWL_STYLE);
+        style &= ~(WS_CAPTION | WS_THICKFRAME);
+        SetWindowLong(hwnd, GWL_STYLE, style);
+
+        LONG exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+        exStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
+        SetWindowLong(hwnd, GWL_EXSTYLE, exStyle);
+
+        // Adjust window size to match the screen size
+        SetWindowPos(hwnd, NULL, 0, 0, screenWidth, screenHeight, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOOWNERZORDER);
 #endif
-        //glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, screenSize.width, screenSize.height));
+
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+        // Mac specific code to make the window borderless
+        // Replace with actual code to make the window borderless on Mac
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+        // Linux specific code to make the window borderless
+        // Replace with actual code to make the window borderless on Linux
 #else
         glview = GLViewImpl::create("Test123");
 #endif
         director->setOpenGLView(glview);
     }
 
-    // Show the mouse cursor
     glview->setCursorVisible(true);
-
-    // turn on display FPS
     director->setDisplayStats(true);
-
-    // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 120);
 
-    // Set the design resolution with SHOW_ALL to maintain aspect ratio without leaving blank spaces
-    glview->setDesignResolutionSize(1920, 1080, ResolutionPolicy::SHOW_ALL);
-
-    auto frameSize = glview->getFrameSize();
-
-    // Apply content scale factor based on the device resolution
-    if (frameSize.height > mediumResolutionSize.height) {
-        director->setContentScaleFactor(MIN(largeResolutionSize.height / designResolutionSize.height, largeResolutionSize.width / designResolutionSize.width));
-    }
-    else if (frameSize.height > smallResolutionSize.height) {
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height / designResolutionSize.height, mediumResolutionSize.width / designResolutionSize.width));
-    }
-    else {
-        director->setContentScaleFactor(MIN(smallResolutionSize.height / designResolutionSize.height, smallResolutionSize.width / designResolutionSize.width));
-    }
+    // Set the design resolution size to match the screen size
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    glview->setDesignResolutionSize(screenWidth, screenHeight, ResolutionPolicy::SHOW_ALL);
 
     register_all_packages();
 
     GameController::getInstance();
     GameController::getInstance()->init();
 
-    // create a scene. it's an autorelease object
     auto scene = MainMenu::createScene();
-
-    // run
     director->runWithScene(scene);
 
     return true;
 }
 
-// This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
+
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
@@ -125,7 +107,6 @@ void AppDelegate::applicationDidEnterBackground() {
 #endif
 }
 
-// this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
 

@@ -7,9 +7,11 @@
 #include "Enemy/FlyingBullet.h"
 #include "Enemy/FallingRock.h"
 #include "Enemy/RandomBoom.h"
+#include "Enemy/FanBullet.h"
 #include "Enemy/FlyingBulletPool.h"
 #include "Enemy/FallingRockPool.h"
 #include "Enemy/RandomBoomPool.h"
+#include "Enemy/FanBulletPool.h" 
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
@@ -48,6 +50,7 @@ private:
     std::vector<CollectibleItem*> _collectibleItems;
     std::vector<Vec2> usedPositions;
     std::vector<cocos2d::Node*> _enemyPool;
+    std::vector<FanBullet*> _fanBullets;
 
     // Music and sound
     MusicAnalyzer* _musicAnalyzer;
@@ -66,6 +69,7 @@ private:
     void SpawnFallingRockAndBomb(cocos2d::Size size);
     void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
     void SpawnRandomBoom(cocos2d::Size size);
+    void SpawnFanBullet(cocos2d::Size size);
     bool isPositionOccupied(const Vec2& position);
     void trackUsedPosition(const Vec2& position);
 

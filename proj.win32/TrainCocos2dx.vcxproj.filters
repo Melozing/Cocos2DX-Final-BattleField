@@ -103,6 +103,15 @@
     <Filter Include="src\Grenade">
       <UniqueIdentifier>{7c98527b-5b19-44a1-a243-16e904393be1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Controller\SoundAndMusic">
+      <UniqueIdentifier>{18c232ed-47ac-44ab-a961-f0d8a229e5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Controller\Sprite">
+      <UniqueIdentifier>{a9076c34-8d39-457e-bd47-b59fd2b09be9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FanBullet">
+      <UniqueIdentifier>{76c97b4b-cb51-4d60-94d6-c1c744d9e248}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -285,9 +294,6 @@
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlane1.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
-    <ClCompile Include="..\Classes\Controller\SpriteController.cpp" />
-    <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp" />
     <ClCompile Include="..\Classes\Grenade\Grenade.cpp">
       <Filter>src\Grenade</Filter>
     </ClCompile>
@@ -296,6 +302,21 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+
+    <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp">
+      <Filter>src\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SoundController.cpp">
+      <Filter>src\Controller\SoundAndMusic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SpriteController.cpp">
+      <Filter>src\Controller\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FanBullet.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FanBulletPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -479,9 +500,6 @@
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlane1.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Controller\SoundController.h" />
-    <ClInclude Include="..\Classes\Controller\SpriteController.h" />
-    <ClInclude Include="..\Classes\Manager\BackgroundManager.h" />
     <ClInclude Include="..\Classes\Grenade\Grenade.h">
       <Filter>src\Grenade</Filter>
     </ClInclude>
@@ -490,6 +508,20 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyUtils.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    <ClInclude Include="..\Classes\Manager\BackgroundManager.h">
+      <Filter>src\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SoundController.h">
+      <Filter>src\Controller\SoundAndMusic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SpriteController.h">
+      <Filter>src\Controller\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FanBullet.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FanBulletPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
