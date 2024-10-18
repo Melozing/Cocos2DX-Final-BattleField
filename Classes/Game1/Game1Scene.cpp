@@ -1,19 +1,20 @@
 #include "Game1/Game1Scene.h"
-#include "Enemy/FlyingBullet.h"
-#include "Enemy/FallingRock.h"
-#include "Enemy/RandomBoom.h"
+#include "Enemy/FlyingBulletPool.h"
+#include "Enemy/FallingRockPool.h"
+#include "Enemy/RandomBoomPool.h"
+#include "Enemy/FanBulletPool.h"
 #include "Enemy/EnemyFactory.h"
 #include "Game1/Items/AmmoItemPool.h"
-#include "utils/Music/AudioUtils.h"
 #include "Game1/Items/HealthItemPool.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Controller/SpriteController.h"
 #include "Controller/SoundController.h"
+#include "Controller/GameController.h"
 #include "Manager/PositionManager.h"
 #include "Constants/Constants.h"
-#include "Controller/GameController.h"
 #include "ui/UILoadingBar.h"
 #include "utils/Music/MusicEvent.h"
+#include "utils/Music/AudioUtils.h"
 #include "audio/include/AudioEngine.h"
 #include <ctime> 
 
@@ -62,6 +63,7 @@ bool Game1Scene::init() {
     FlyingBulletPool::getInstance()->initPool(10);
     FallingRockPool::getInstance()->initPool(10);
     RandomBoomPool::getInstance()->initPool(10);
+    FanBulletPool::getInstance()->initPool(30);
 
     _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
@@ -196,6 +198,7 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
 }
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
+    return true;
     if (_playerAttributes->IsDead()) return true;
 
     auto bodyA = contact.getShapeA()->getBody();
@@ -311,87 +314,25 @@ void Game1Scene::spawnBasedOnMusicEvent(MusicEvent event) {
         }
         lastSpawnTimeBullet = currentTime;
         SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        SpawnFallingRockAndBomb(visibleSize);
-        SpawnRandomBoom(visibleSize);
+        SpawnFanBullet(visibleSize);
         break;
-    //case MusicEventType::KICK:
-    //    CCLOG("Spawning FallingRock for KICK event");
-    //    if (currentTime - lastSpawnTimeRockAndBoom < spawnCooldownRockAndBoom) {
-    //        return; // Skip spawning if cooldown has not passed
-    //    }
-    //    lastSpawnTimeRockAndBoom = currentTime;
-    //    SpawnFallingRockAndBomb(visibleSize);
-    //    break;
+    case MusicEventType::KICK:
+        //CCLOG("Spawning FallingRock for KICK event");
+        if (currentTime - lastSpawnTimeRockAndBoom < spawnCooldownRockAndBoom) {
+            return; // Skip spawning if cooldown has not passed
+        }
+        lastSpawnTimeRockAndBoom = currentTime;
+        SpawnFallingRockAndBomb(visibleSize);
+        break;
 
-        //case MusicEventType::SNARE:
-        //    CCLOG("Spawning RandomBoom for SNARE event");
-        //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
-        //        return; // Skip spawning if cooldown has not passed
-        //    }
-        //    lastSpawnTimeRandomBoom = currentTime;
-        //    SpawnRandomBoom(visibleSize);
-        //    break;
-    //case MusicEventType::MELODY:
-    //    CCLOG("Spawning RandomBoom for MELODY event");
-    //    CCLOG("Spawning RandomBoom for SNARE event");
-    //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
-    //        return; // Skip spawning if cooldown has not passed
-    //    }
-    //    lastSpawnTimeRandomBoom = currentTime;
-    //    SpawnRandomBoom(visibleSize);
-    //    break;
-        /*case MusicEventType::LOW:
-            CCLOG("Spawning FlyingBullet for LOW frequency event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::MID:
-            CCLOG("Spawning FallingRock for MID frequency event");
-            SpawnFallingRockAndBomb(visibleSize);
-            break;
-        case MusicEventType::HIGH:
-            CCLOG("Spawning RandomBoom for HIGH frequency event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::DROP:
-            CCLOG("Spawning FlyingBullet for DROP event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::RISE:
-            CCLOG("Spawning FallingRock for RISE event");
-            SpawnFallingRockAndBomb(visibleSize);
-            break;
-        case MusicEventType::CLAP:
-            CCLOG("Spawning RandomBoom for CLAP event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::HAT:
-            CCLOG("Spawning RandomBoom for HAT event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::BASS:
-            CCLOG("Spawning FlyingBullet for BASS event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::VOCAL:
-            CCLOG("Spawning RandomBoom for VOCAL event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::SYNTH:
-            CCLOG("Spawning FlyingBullet for SYNTH event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::PAD:
-            CCLOG("Spawning RandomBoom for PAD event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::FX:
-            CCLOG("Spawning FlyingBullet for FX event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::PERCUSSION:
-            CCLOG("Spawning RandomBoom for PERCUSSION event");
-            SpawnRandomBoom(visibleSize);
-            break;*/
+    case MusicEventType::SNARE:
+         //CCLOG("Spawning RandomBoom for SNARE event");
+         if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
+                return; // Skip spawning if cooldown has not passed
+         }
+         lastSpawnTimeRandomBoom = currentTime;
+         SpawnRandomBoom(visibleSize);
+         break;
     default:
         break;
     }
@@ -418,6 +359,47 @@ Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
         break;
     }
     return spawnPosition;
+}
+
+void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+
+    int numBullets = 5;
+    float angleSpread = 95.0f;
+    float startAngle = -angleSpread / 2;
+    float angleIncrement = angleSpread / (numBullets - 1);
+
+    // Randomly choose an edge: 0 for top, 1 for left, 2 for right
+    int edge = rand() % 3;
+    Vec2 spawnPosition;
+    float baseAngle;
+    float offset = SpriteController::calculateScreenRatio(Constants::FANBULLET_OFFSET); // Adjust this value to move the spawn position outside the screen
+    switch (edge) {
+    case 0: // Top edge
+        spawnPosition = Vec2(visibleSize.width / 2, visibleSize.height + offset);
+        baseAngle = -90.0f;
+        break;
+    case 1: // Left edge
+        spawnPosition = Vec2(-offset, visibleSize.height / 2);
+        baseAngle = 0.0f;
+        break;
+    case 2: // Right edge
+        spawnPosition = Vec2(visibleSize.width + offset, visibleSize.height / 2);
+        baseAngle = 180.0f;
+        break;
+    }
+
+    for (int i = 0; i < numBullets; ++i) {
+        float angle = baseAngle + startAngle + i * angleIncrement;
+        FanBullet* fanBullet = FanBulletPool::getInstance()->getEnemy();
+        if (fanBullet) {
+            // Spawn the FanBullet
+            fanBullet->spawn(spawnPosition, angle);
+            // Add the FanBullet to the scene
+            this->addChild(fanBullet, Constants::ORDER_LAYER_CHARACTER);
+        }
+    }
 }
 
 void Game1Scene::SpawnFallingRockAndBomb(Size size) {
@@ -469,13 +451,8 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
 
     auto randomBoom = RandomBoomPool::getInstance()->getEnemy();
     if (randomBoom) {
-        if (randomBoom->getParent() == nullptr) { // Ensure randomBoom is not already added to the scene
-            randomBoom->spawn(spawnPosition);
-            this->addChild(randomBoom, Constants::ORDER_LAYER_CHARACTER - 1);
-        }
-        else {
-            CCLOG("Warning: randomBoom is already added to the scene");
-        }
+        randomBoom->spawn(spawnPosition);
+        this->addChild(randomBoom, Constants::ORDER_LAYER_CHARACTER - 1);
     }
 }
 
@@ -538,4 +515,3 @@ bool Game1Scene::isPositionOccupied(const Vec2& position) {
     }
     return false; // Position is free
 }
-

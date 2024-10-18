@@ -15,15 +15,17 @@ const std::string Constants::ENEMY_RANDOM_BOOM_NAME = "RandomBoom";
 const float Constants::FLYING_BULLET_SPEED = 3.0f;
 const float Constants::FALLINGROCK_START_Y = 0.05f;
 const float Constants::FALLINGROCK_PADDING = 0.006f;
+const float Constants::FANBULLET_OFFSET = 0.04f;
 //PlayerGame1
-const float Constants::PLAYER_RESTRICTEDWIDTH = 0.885f;
+const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
-const float Constants::PLAYER_MOVESPEED = 250.0f;
+const float Constants::PLAYER_MOVESPEED = 450.0f;
 const int Constants::PLAYER_HEALTH = 3;
 
 const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
 const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
+
 //game1
 const std::string Constants::pathSoundTrackGame1 = "assets_game/sounds/Game1/bg_music_game1.mp3";
 

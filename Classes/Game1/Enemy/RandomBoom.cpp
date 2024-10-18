@@ -27,25 +27,24 @@ bool RandomBoom::init() {
     return true;
 }
 
-void RandomBoom::update(float delta) {
-}
-
 void RandomBoom::reset() {
     if (_warningSprite) {
         _warningSprite->setVisible(false);
+        _warningSprite->stopAllActions();
     }
     if (_missileSprite) {
         _missileSprite->setVisible(false);
+        _missileSprite->stopAllActions();
     }
     if (explosionSprite) {
         explosionSprite->setVisible(false);
+        explosionSprite->stopAllActions();
     }
     this->unscheduleAllCallbacks(); // Unschedule all callbacks
 }
 
-
-
 void RandomBoom::spawn(const Vec2& startPosition) {
+    reset();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     float restrictedWidth = 100.0f;
     float restrictedHeight = visibleSize.height - 100.0f;
@@ -59,7 +58,7 @@ void RandomBoom::spawn(const Vec2& startPosition) {
 
     this->scheduleOnce([this, warningPosition](float) {
         launchMissile(warningPosition);
-        }, 2.0f, "missile_launch_key");
+        }, 0.2f, "missile_launch_key");
 }
 
 void RandomBoom::showWarning(const Vec2& position) {
@@ -69,6 +68,7 @@ void RandomBoom::showWarning(const Vec2& position) {
         _spriteBatchNodeWarning->addChild(_warningSprite);
     }
     _warningSprite->setPosition(position);
+    _warningSprite->setVisible(true);
 
     auto warningAnimation = createAnimation("warning_rocket", 4, 0.15f);
     if (warningAnimation) {
@@ -87,12 +87,13 @@ void RandomBoom::launchMissile(const Vec2& targetPosition) {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 startPosition = (rand() % 2 == 0) ? Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.9f) : Vec2(visibleSize.width * 0.9f, visibleSize.height * 0.9f);
     _missileSprite->setPosition(startPosition);
+    _missileSprite->setVisible(true);
 
     Vec2 direction = targetPosition - startPosition;
     float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
     _missileSprite->setRotation(-angle - 90);
 
-    float missileSpeed = 1.0f;
+    float missileSpeed = 0.4f;
     auto moveToTarget = MoveTo::create(missileSpeed, targetPosition);
     auto hitTargetCallback = CallFunc::create([this]() {
         this->onMissileHitTarget();
@@ -126,19 +127,24 @@ void RandomBoom::onMissileHitTarget() {
         explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
         explosionSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
         explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.1f));
-        Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width * 0.83, GetContentSizeSprite(explosionSprite).height * 0.83);
-        auto explosionBody = PhysicsBody::createBox(reducedSize);
-        explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
-        explosionBody->setContactTestBitmask(true);
-        explosionBody->setGravityEnable(false);
-        explosionBody->setDynamic(false);
-        explosionSprite->setPhysicsBody(explosionBody);
         explosionSprite->setPosition(position);
         _spriteBatchNodeExplosion->addChild(explosionSprite);
+    }
+    else {
+        explosionSprite->setPosition(position);
+        explosionSprite->setVisible(true);
     }
 
     auto explosionAnimation = createAnimation("explosions", 10, 0.07f);
     auto animate = Animate::create(explosionAnimation);
+
+    Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width * 0.85, GetContentSizeSprite(explosionSprite).height * 0.85);
+    auto explosionBody = PhysicsBody::createBox(reducedSize);
+    explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
+    explosionBody->setContactTestBitmask(true);
+    explosionBody->setGravityEnable(false);
+    explosionBody->setDynamic(false);
+    explosionSprite->setPhysicsBody(explosionBody);
 
     explosionSprite->runAction(Sequence::create(
         animate,
@@ -150,12 +156,13 @@ void RandomBoom::onMissileHitTarget() {
             this->reset();
             }),
         CallFunc::create([this]() {
+            this->stopAllActions();
+            this->removeFromParentAndCleanup(false);
             RandomBoomPool::getInstance()->returnEnemy(this);
             }),
         nullptr
     ));
 }
-
 
 RandomBoom::~RandomBoom() {
     // Check if the sprite frames are still being used before removing them from cache

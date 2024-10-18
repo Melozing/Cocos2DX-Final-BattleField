@@ -20,6 +20,7 @@ public:
     static const std::string ENEMY_FLYING_BULLET_NAME;
     static const std::string ENEMY_FALLING_ROCK_AND_BOOM_NAME;
     static const std::string ENEMY_RANDOM_BOOM_NAME;
+    static const float FANBULLET_OFFSET;
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
     //Game1
