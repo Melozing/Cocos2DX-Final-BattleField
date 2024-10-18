@@ -81,56 +81,6 @@ std::vector<MusicEvent> MusicAnalyzer::getMusicEvents(float dt) {
     if (currentPitch > 0.01f) {
         events.emplace_back(MusicEventType::SNARE, dt);
     }
-    if (currentFrequency > 0.002f && currentPitch > 0.005f) {
-        events.emplace_back(MusicEventType::MELODY, dt);
-    }
-
-    // Frequency bands
-    float lowFrequency = std::accumulate(spectrum.begin(), spectrum.begin() + spectrum.size() / 3, 0.0f) / (spectrum.size() / 3);
-    float midFrequency = std::accumulate(spectrum.begin() + spectrum.size() / 3, spectrum.begin() + 2 * spectrum.size() / 3, 0.0f) / (spectrum.size() / 3);
-    float highFrequency = std::accumulate(spectrum.begin() + 2 * spectrum.size() / 3, spectrum.end(), 0.0f) / (spectrum.size() / 3);
-
-    if (lowFrequency > 0.003f) {
-        events.emplace_back(MusicEventType::LOW, dt);
-    }
-    if (midFrequency > 0.003f) {
-        events.emplace_back(MusicEventType::MID, dt);
-    }
-    if (highFrequency > 0.003f) {
-        events.emplace_back(MusicEventType::HIGH, dt);
-    }
-
-    if (currentFrequency > 0.007f && currentPitch < 0.005f) {
-        events.emplace_back(MusicEventType::DROP, dt);
-    }
-    if (currentFrequency < 0.002f && currentPitch > 0.01f) {
-        events.emplace_back(MusicEventType::RISE, dt);
-    }
-    if (currentFrequency > 0.004f && currentPitch > 0.008f) {
-        events.emplace_back(MusicEventType::CLAP, dt);
-    }
-    if (currentFrequency > 0.006f && currentPitch > 0.009f) {
-        events.emplace_back(MusicEventType::HAT, dt);
-    }
-    if (currentFrequency > 0.008f && currentPitch > 0.01f) {
-        events.emplace_back(MusicEventType::BASS, dt);
-    }
-    if (currentFrequency > 0.009f && currentPitch > 0.011f) {
-        events.emplace_back(MusicEventType::VOCAL, dt);
-    }
-    if (currentFrequency > 0.01f && currentPitch > 0.012f) {
-        events.emplace_back(MusicEventType::SYNTH, dt);
-    }
-    if (currentFrequency > 0.011f && currentPitch > 0.013f) {
-        events.emplace_back(MusicEventType::PAD, dt);
-    }
-    if (currentFrequency > 0.012f && currentPitch > 0.014f) {
-        events.emplace_back(MusicEventType::FX, dt);
-    }
-    if (currentFrequency > 0.013f && currentPitch > 0.015f) {
-        events.emplace_back(MusicEventType::PERCUSSION, dt);
-    }
-
     return events;
 }
 

@@ -1,17 +1,17 @@
-// FlyingBulletPool.cpp
-#include "FlyingBulletPool.h"
+#include "FanBulletPool.h"
+#include "FanBullet.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
 
-FlyingBulletPool* FlyingBulletPool::getInstance() {
-    static FlyingBulletPool instance;
+FanBulletPool* FanBulletPool::getInstance() {
+    static FanBulletPool instance;
     return &instance;
 }
 
-void FlyingBulletPool::initPool(int poolSize) {
+void FanBulletPool::initPool(int poolSize) {
     for (int i = 0; i < poolSize; ++i) {
-        FlyingBullet* enemy = FlyingBullet::create();
+        FanBullet* enemy = FanBullet::create();
         if (enemy) {
             enemy->retain();
             enemy->reset();
@@ -20,16 +20,16 @@ void FlyingBulletPool::initPool(int poolSize) {
     }
 }
 
-FlyingBullet* FlyingBulletPool::getEnemy() {
+FanBullet* FanBulletPool::getEnemy() {
     if (_availableEnemies.empty()) {
         return nullptr;
     }
-    FlyingBullet* enemy = _availableEnemies.front();
+    FanBullet* enemy = _availableEnemies.front();
     _availableEnemies.pop();
     return enemy;
 }
 
-void FlyingBulletPool::returnEnemy(FlyingBullet* enemy) {
+void FanBulletPool::returnEnemy(FanBullet* enemy) {
     if (enemy) {
         enemy->reset();
         _availableEnemies.push(enemy);

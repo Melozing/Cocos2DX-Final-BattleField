@@ -167,6 +167,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Enemy\FallingRock.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FallingRockPool.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp" />
+    <ClCompile Include="..\Classes\Game1\Enemy\FanBullet.cpp" />
+    <ClCompile Include="..\Classes\Game1\Enemy\FanBulletPool.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBulletPool.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp" />
@@ -234,6 +236,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Enemy\FallingRock.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FallingRockPool.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h" />
+    <ClInclude Include="..\Classes\Game1\Enemy\FanBullet.h" />
+    <ClInclude Include="..\Classes\Game1\Enemy\FanBulletPool.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBulletPool.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h" />
