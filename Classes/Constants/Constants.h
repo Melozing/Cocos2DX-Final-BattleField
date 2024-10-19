@@ -53,6 +53,9 @@ public:
 	static const int BossHealth;
 	static const float BossReloadTime;
 	static const int BossDamageIncrease;
+	//bitmask game2
+	static const uint32_t player2_bitmask;
+	static const uint32_t enemy2_bitmask;
     
     //game3
     static const float GroundY;

@@ -1,4 +1,5 @@
-﻿#include "Game2/Enemy/Enemyh/SniperEnemy.h"
+﻿// SniperEnemy.cpp
+#include "Game2/Enemy/Enemyh/SniperEnemy.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "Game2/Player/PlayerGame2.h"
@@ -9,11 +10,12 @@ USING_NS_CC;
 
 SniperEnemy::SniperEnemy()
     : _velocity(Vec2::ZERO),
-    _speed(Constants::EnemySpeed),
     _isShooting(false),
-    _isDead(false),
-    _shootCooldown(5.0f), // 5 seconds cooldown
-    _shootRange(500.0f) // Giới hạn tầm bắn
+    _isReloading(false),
+    _ammoCount(24),
+    _shootCooldown(5.0f),
+    _shootRange(500.0f),
+    _isMoving(false)
 {
 }
 
@@ -126,8 +128,7 @@ void SniperEnemy::createDeathAnimation()
 
 void SniperEnemy::update(float delta)
 {
-    CCLOG("SniperEnemy update called");
-    if (_isDead)
+    if (_isDead || _isReloading)
     {
         return;
     }
@@ -135,27 +136,29 @@ void SniperEnemy::update(float delta)
     _shootCooldown -= delta;
     if (_shootCooldown <= 0)
     {
-        shootBullet();
+        attack();
         _shootCooldown = 5.0f; // Reset cooldown
     }
 
     updateRotationToPlayer();
+    moveToPlayer();
 }
 
-void SniperEnemy::updateRotationToPlayer()
+void SniperEnemy::moveToPlayer()
 {
-    auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
-    if (player)
+    EnemyUtils::moveToPlayer(this, _speed, _isMoving, _idleAnimation);
+}
+
+void SniperEnemy::attack()
+{
+    if (_ammoCount > 0)
     {
-        Vec2 playerPos = player->getPosition();
-        Vec2 pos = this->getPosition();
-        Vec2 dirToPlayer = playerPos - pos;
-        float angle = CC_RADIANS_TO_DEGREES(-dirToPlayer.getAngle());
-        this->setRotation(angle + 90);
+        shootBullet();
+        _ammoCount--;
     }
     else
     {
-        CCLOG("Player not found");
+        reload();
     }
 }
 
@@ -165,27 +168,23 @@ void SniperEnemy::shootBullet()
     if (player && EnemyUtils::isWithinRange(this, player, _shootRange))
     {
         _isShooting = true;
-        this->runAction(Sequence::create(_shootAnimation, CallFunc::create([this, player]() {
-            Vec2 playerPos = player->getPosition();
-            Vec2 pos = this->getPosition();
-            Vec2 dirToPlayer = playerPos - pos;
-            dirToPlayer.normalize();
-
-            auto bullet = Sprite::create("assets_game/player/shot.png");
-            bullet->setPosition(pos);
-            bullet->setRotation(this->getRotation()); // Set bullet rotation to match enemy's rotation
-            this->getParent()->addChild(bullet);
-
-            auto bulletBody = PhysicsBody::createBox(bullet->getContentSize());
-            bulletBody->setContactTestBitmask(true);
-            bulletBody->setGravityEnable(false);
-            bulletBody->setDynamic(true);
-            bullet->setPhysicsBody(bulletBody);
-
-            bullet->runAction(Sequence::create(MoveBy::create(2.0f, dirToPlayer * 1000), RemoveSelf::create(), nullptr));
+        this->runAction(Sequence::create(_shootAnimation, CallFunc::create([this]() {
             _isShooting = false;
             }), nullptr));
     }
+}
+
+void SniperEnemy::reload()
+{
+    _isReloading = true;
+    auto reloadSpriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("reload.png");
+    this->setSpriteFrame(reloadSpriteFrame);
+
+    this->runAction(Sequence::create(DelayTime::create(1.5f), CallFunc::create([this]() {
+        _ammoCount = 24;
+        _isReloading = false;
+        this->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("idlegun0.png"));
+        }), nullptr));
 }
 
 void SniperEnemy::die()
