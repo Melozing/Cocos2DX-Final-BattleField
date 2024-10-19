@@ -16,7 +16,6 @@
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
-#include "utils/Music/MusicAnalyzer.h"
 #include "Controller/SoundController.h"
 #include "utils/Music/MusicEvent.h" 
 #include <functional>
@@ -54,7 +53,6 @@ private:
     std::vector<int> previousSpawnEdges;
 
     // Music and sound
-    MusicAnalyzer* _musicAnalyzer;
     SoundController* _soundController;
     float musicDuration;
     bool shouldPlayMusic;

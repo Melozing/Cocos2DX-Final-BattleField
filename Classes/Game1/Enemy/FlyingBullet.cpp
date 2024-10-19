@@ -62,10 +62,10 @@ void FlyingBullet::spawn(const cocos2d::Vec2& startPosition) {
 }
 
 void FlyingBullet::update(float delta) {
-    Vec2 currentPosition = this->getPosition();
-    Vec2 movement = _direction * _speed * delta;
+    //Vec2 currentPosition = this->getPosition();
+    //Vec2 movement = _direction * _speed * delta;
 
-    this->setPosition(currentPosition + movement);
+    //this->setPosition(currentPosition + movement);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     if (this->getPosition().x < -this->getContentSize().width - 50.0f || this->getPosition().x > visibleSize.width + this->getContentSize().width + 50.0f) {

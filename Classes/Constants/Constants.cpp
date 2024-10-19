@@ -16,8 +16,10 @@ const float Constants::FLYING_BULLET_SPEED = 3.0f;
 const float Constants::FALLINGROCK_START_Y = 0.05f;
 const float Constants::FALLINGROCK_PADDING = 0.006f;
 const float Constants::FANBULLET_OFFSET = 0.04f;
+const float Constants::FALLINGROCK_ITEMS_OFFSET = 0.05f;
+const float Constants::FALLINGROCK_ITEMS_SPEED = 255.0f;
 //PlayerGame1
-const float Constants::PLAYER_RESTRICTEDWIDTH = 0.885f;
+const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
 const float Constants::PLAYER_MOVESPEED = 250.0f;
 const int Constants::PLAYER_HEALTH = 3;

@@ -9,9 +9,6 @@ public:
     static HealthItem* create();
     virtual bool init() override;
     virtual void applyEffect() override;
-    int getHealthValue() const override {
-        return Constants::PLAYER_HEALTH; // Example health value
-    }
     virtual cocos2d::Size getScaledSize() const override; // Ensure this line is present
 private:
     float _spriteScale; // Add this line
