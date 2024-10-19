@@ -47,6 +47,22 @@ const float Constants::scaleFactor = 2.0f;
 const float Constants::BulletScale = 0.3f;
 const float Constants::GrenadeSpeed = 300.0f;
 const float Constants::GrenadeThrowDistance = 500.0f;
+<<<<<<< HEAD
+//boss game2
+const float Constants::BossScale = 2.3f;
+const float Constants::BossSpeed = 50.0f;
+const int Constants::BossTag = 3;
+const int Constants::BossDamage = 10;
+const int Constants::BossHealth = 200;
+const float Constants::BossReloadTime = 1.5f;
+const int Constants::BossDamageIncrease = 5;
+//bitmask game2
+const uint32_t Constants::player2_bitmask = 0x0001;
+const uint32_t Constants::enemy2_bitmask = 0x0002;
+
+
+=======
+>>>>>>> parent of 84e12b3 (up game2)
 //game3
 const float Constants::GroundY = 70.0f;
 const float Constants::BackgroundSpeed = 50.0f;
