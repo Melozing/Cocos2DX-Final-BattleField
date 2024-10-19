@@ -16,7 +16,13 @@ const uint32_t PLAYER_BITMASK = 0x0001;
 const uint32_t TILE_BITMASK = 0x0002;
 
 cocos2d::Scene* Game2Scene::createScene() {
-    return Game2Scene::create();
+    auto scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+
+    auto layer = Game2Scene::create();
+    scene->addChild(layer);
+
+    return scene;
 }
 
 bool Game2Scene::init() {
@@ -44,13 +50,8 @@ bool Game2Scene::init() {
     _player->setName("PlayerGame2");
     this->addChild(_player);
 
-    // Setup keyboard event listeners
     setupKeyboardEventListeners();
-
-    // Setup cursor
     setupCursor();
-
-    // Spawn enemies at specific points
     this->schedule([this](float delta) {
         spawnEnemies();
         }, 5.0f, "spawn_enemy_key");
@@ -115,19 +116,17 @@ void Game2Scene::spawnEnemies() {
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    // Define spawn points in the original resolution (1920x1080)
     Vec2 spawnPoints[] = {
         Vec2(585, 330),
         Vec2(1520, 460),
         Vec2(1020, 900)
     };
 
-    // Adjust spawn points based on the current screen size
     for (const auto& point : spawnPoints) {
         float x = point.x * (visibleSize.width / 1920.0f);
         float y = point.y * (visibleSize.height / 1080.0f);
 
-        auto enemy = BossEnemy::create();
+        auto enemy = MeleeEnemy::create();
         if (enemy) {
             enemy->setPosition(Vec2(x + origin.x, y + origin.y));
             this->addChild(enemy);

@@ -55,6 +55,9 @@ const int Constants::BossDamage = 10;
 const int Constants::BossHealth = 200;
 const float Constants::BossReloadTime = 1.5f;
 const int Constants::BossDamageIncrease = 5;
+//bitmask game2
+const uint32_t Constants::player2_bitmask = 0x0001;
+const uint32_t Constants::enemy2_bitmask = 0x0002;
 
 
 //game3

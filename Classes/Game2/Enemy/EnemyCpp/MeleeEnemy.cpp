@@ -1,10 +1,11 @@
-// MeleeEnemy.cpp
+﻿// MeleeEnemy.cpp
 #include "Game2/Enemy/Enemyh/MeleeEnemy.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "Game2/Player/PlayerGame2.h"
 #include "Game2/Enemy/EnemyUtils.h"
 
+#include "Manager/PhysicsManager.h"
 USING_NS_CC;
 
 MeleeEnemy::MeleeEnemy()
@@ -15,6 +16,8 @@ MeleeEnemy::MeleeEnemy()
 MeleeEnemy::~MeleeEnemy()
 {
 }
+
+
 
 bool MeleeEnemy::init()
 {
@@ -43,17 +46,18 @@ bool MeleeEnemy::init()
     this->setScale(Constants::EnemyScale);
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
-    this->setTag(Constants::EnemyTag); // Set the tag for the enemy
+    this->setTag(Constants::EnemyTag); 
 
-    // Create animations
+    auto newSize = SpriteController::GetContentSizeSprite(this);
+    this->setContentSize(newSize);
+
+    PhysicsManager::getInstance()->setPhysicsBody(this, Constants::enemy2_bitmask, true);
     createIdleAnimation();
     createAttackAnimation();
     createDeathAnimation();
 
-    // Schedule update method
     this->scheduleUpdate();
 
-    // Set up collision detection
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(MeleeEnemy::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -61,6 +65,7 @@ bool MeleeEnemy::init()
     CCLOG("MeleeEnemy initialized successfully");
     return true;
 }
+
 
 void MeleeEnemy::createIdleAnimation()
 {
