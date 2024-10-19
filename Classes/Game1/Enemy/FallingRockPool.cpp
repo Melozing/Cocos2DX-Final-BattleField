@@ -1,4 +1,5 @@
 #include "FallingRockPool.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 
@@ -31,5 +32,13 @@ void FallingRockPool::returnEnemy(FallingRock* enemy) {
     if (enemy) {
         enemy->reset();
         _availableEnemies.push(enemy);
+    }
+}
+
+void FallingRockPool::resetPool() {
+    while (!_availableEnemies.empty()) {
+        FallingRock* enemy = _availableEnemies.front();
+        _availableEnemies.pop();
+        enemy->release();
     }
 }

@@ -3,8 +3,9 @@
 
 #include "cocos2d.h"
 #include "Constants/Constants.h"
+#include "Controller/SpriteController.h"
 
-class EnemyBase : public cocos2d::Sprite
+class EnemyBase : public cocos2d::Sprite, public SpriteController
 {
 public:
     EnemyBase();

@@ -1,28 +1,32 @@
 #include "Game1/Game1Scene.h"
-#include "Enemy/FlyingBullet.h"
-#include "Enemy/FallingRock.h"
-#include "Enemy/RandomBoom.h"
+#include "Enemy/FlyingBulletPool.h"
+#include "Enemy/FallingRockPool.h"
+#include "Enemy/RandomBoomPool.h"
+#include "Enemy/FanBulletPool.h"
 #include "Enemy/EnemyFactory.h"
 #include "Game1/Items/AmmoItemPool.h"
-#include "utils/Music/AudioUtils.h"
 #include "Game1/Items/HealthItemPool.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Controller/SpriteController.h"
 #include "Controller/SoundController.h"
+#include "Controller/GameController.h"
 #include "Manager/PositionManager.h"
 #include "Constants/Constants.h"
-#include "Controller/GameController.h"
 #include "ui/UILoadingBar.h"
 #include "utils/Music/MusicEvent.h"
+#include "utils/Music/AudioUtils.h"
 #include "audio/include/AudioEngine.h"
 #include <ctime> 
+#include "json/document.h"
+#include "json/filereadstream.h"
+#include <fstream>
 
 USING_NS_CC;
 using namespace cocos2d::experimental;
 
 cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
     layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
@@ -59,9 +63,15 @@ bool Game1Scene::init() {
     background = Background::createBackground("assets_game/gameplay/bg_new.jpg", 150.0f);
     this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
 
+    FlyingBulletPool::getInstance()->resetPool();
+    FallingRockPool::getInstance()->resetPool();
+    RandomBoomPool::getInstance()->resetPool();
+    FanBulletPool::getInstance()->resetPool();
+
     FlyingBulletPool::getInstance()->initPool(10);
     FallingRockPool::getInstance()->initPool(10);
     RandomBoomPool::getInstance()->initPool(10);
+    FanBulletPool::getInstance()->initPool(30);
 
     _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
@@ -175,7 +185,28 @@ bool Game1Scene::init() {
     this->scheduleUpdate();
     this->scheduleCollectibleSpawning();
 
-    this->schedule([this](float dt) { handleMusicBasedSpawning(dt); }, "music_based_spawning_key");
+    //this->schedule([this](float dt) { handleMusicBasedSpawning(dt); }, "music_based_spawning_key");
+     // Initialize the enemy spawn map
+    enemySpawnMap["FlyingBullet"] = [this](const cocos2d::Size& size) { SpawnFlyingBullet(size, (rand() % 2 == 0)); };
+    enemySpawnMap["FallingRock"] = [this](const cocos2d::Size& size) { SpawnFallingRockAndBomb(size); };
+    enemySpawnMap["RandomBoom"] = [this](const cocos2d::Size& size) { SpawnRandomBoom(size); };
+    enemySpawnMap["FanBullet"] = [this](const cocos2d::Size& size) { SpawnFanBullet(size); };
+
+    // Initialize the spawn schedule from JSON
+    initializeSpawnSchedule();
+
+    // Schedule the spawning based on the JSON file
+    this->schedule([this](float dt) {
+        static float elapsedTime = 0.0f;
+        elapsedTime += dt;
+
+        for (auto& event : spawnSchedule) {
+            if (!event.spawned && elapsedTime >= event.spawnTime) {
+                enemySpawnMap[event.enemyType](Director::getInstance()->getVisibleSize());
+                event.spawned = true; // Mark as spawned
+            }
+        }
+        }, "json_based_spawning_key");
 
     exitAction = []() {
         Director::getInstance()->end();
@@ -277,123 +308,46 @@ void Game1Scene::update(float delta) {
     _musicAnalyzer->update(delta);
 }
 
-//void Game1Scene::handlePlayerMovement() {
-//    if (_isGameOver) return;
-//    if (_movingUp) _player->moveUp();
-//    if (_movingDown) _player->moveDown();
-//    if (_movingLeft) _player->moveLeft();
-//    if (_movingRight) _player->moveRight();
-//}
+// Function to initialize the spawn schedule from JSON
+void Game1Scene::initializeSpawnSchedule() {
+    // Get the full path to the JSON file in the Resources folder
+    std::string jsonFilePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game1.json");
 
-void Game1Scene::handleMusicBasedSpawning(float dt) {
-    auto events = _musicAnalyzer->getMusicEvents(dt);
-    for (const auto& event : events) {
-        spawnBasedOnMusicEvent(event);
+    // Open the JSON file
+    std::ifstream ifs(jsonFilePath);
+    if (!ifs.is_open()) {
+        CCLOG("Error: Could not open JSON file at %s", jsonFilePath.c_str());
+        return;
     }
-}
 
-void Game1Scene::spawnBasedOnMusicEvent(MusicEvent event) {
-    static float lastSpawnTimeBullet = 0.0f; // Make lastSpawnTimeBullet static to retain its value between calls
-    static float lastSpawnTimeRandomBoom = 0.0f; // Make lastSpawnTimeRandomBoom static to retain its value between calls
-    static float lastSpawnTimeRockAndBoom = 0.0f; // Make lastSpawnTime static to retain its value between calls
-    float spawnCooldownBullet = 2.0f; // Cooldown time in seconds for bullets
-    float spawnCooldownRandomBoom = 2.0f; // Cooldown time in seconds for random booms
-    float spawnCooldownRockAndBoom = 1.9f; // General cooldown time in seconds
-    auto currentTime = Director::getInstance()->getTotalFrames() / 60.0f; // Assuming 60 FPS
+    // Read the file into a string
+    std::string jsonContent((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+    ifs.close();
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+    // Parse the JSON content
+    rapidjson::Document document;
+    if (document.Parse(jsonContent.c_str()).HasParseError()) {
+        CCLOG("Error: JSON parse error in file %s", jsonFilePath.c_str());
+        return;
+    }
 
-    switch (event.getType()) {
-    case MusicEventType::BEAT:
-        //CCLOG("Spawning FlyingBullet for BEAT event");
-        if (currentTime - lastSpawnTimeBullet < spawnCooldownBullet) {
-            return; // Skip spawning if cooldown has not passed
+    // Check if the document is an array
+    if (!document.IsArray()) {
+        CCLOG("Invalid JSON format in file %s: Expected an array", jsonFilePath.c_str());
+        return;
+    }
+
+    // Iterate through the array and populate the spawn schedule
+    for (const auto& item : document.GetArray()) {
+        if (item.HasMember("spawnTime") && item.HasMember("enemyType") &&
+            item["spawnTime"].IsFloat() && item["enemyType"].IsString()) {
+            float spawnTime = item["spawnTime"].GetFloat();
+            std::string enemyType = item["enemyType"].GetString();
+            spawnSchedule.emplace_back(spawnTime, enemyType, false); // Add false to indicate not spawned yet
         }
-        lastSpawnTimeBullet = currentTime;
-        SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-        SpawnFallingRockAndBomb(visibleSize);
-        SpawnRandomBoom(visibleSize);
-        break;
-    //case MusicEventType::KICK:
-    //    CCLOG("Spawning FallingRock for KICK event");
-    //    if (currentTime - lastSpawnTimeRockAndBoom < spawnCooldownRockAndBoom) {
-    //        return; // Skip spawning if cooldown has not passed
-    //    }
-    //    lastSpawnTimeRockAndBoom = currentTime;
-    //    SpawnFallingRockAndBomb(visibleSize);
-    //    break;
-
-        //case MusicEventType::SNARE:
-        //    CCLOG("Spawning RandomBoom for SNARE event");
-        //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
-        //        return; // Skip spawning if cooldown has not passed
-        //    }
-        //    lastSpawnTimeRandomBoom = currentTime;
-        //    SpawnRandomBoom(visibleSize);
-        //    break;
-    //case MusicEventType::MELODY:
-    //    CCLOG("Spawning RandomBoom for MELODY event");
-    //    CCLOG("Spawning RandomBoom for SNARE event");
-    //    if (currentTime - lastSpawnTimeRandomBoom < spawnCooldownRandomBoom) {
-    //        return; // Skip spawning if cooldown has not passed
-    //    }
-    //    lastSpawnTimeRandomBoom = currentTime;
-    //    SpawnRandomBoom(visibleSize);
-    //    break;
-        /*case MusicEventType::LOW:
-            CCLOG("Spawning FlyingBullet for LOW frequency event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::MID:
-            CCLOG("Spawning FallingRock for MID frequency event");
-            SpawnFallingRockAndBomb(visibleSize);
-            break;
-        case MusicEventType::HIGH:
-            CCLOG("Spawning RandomBoom for HIGH frequency event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::DROP:
-            CCLOG("Spawning FlyingBullet for DROP event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::RISE:
-            CCLOG("Spawning FallingRock for RISE event");
-            SpawnFallingRockAndBomb(visibleSize);
-            break;
-        case MusicEventType::CLAP:
-            CCLOG("Spawning RandomBoom for CLAP event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::HAT:
-            CCLOG("Spawning RandomBoom for HAT event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::BASS:
-            CCLOG("Spawning FlyingBullet for BASS event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::VOCAL:
-            CCLOG("Spawning RandomBoom for VOCAL event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::SYNTH:
-            CCLOG("Spawning FlyingBullet for SYNTH event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::PAD:
-            CCLOG("Spawning RandomBoom for PAD event");
-            SpawnRandomBoom(visibleSize);
-            break;
-        case MusicEventType::FX:
-            CCLOG("Spawning FlyingBullet for FX event");
-            SpawnFlyingBullet(visibleSize, (rand() % 2 == 0));
-            break;
-        case MusicEventType::PERCUSSION:
-            CCLOG("Spawning RandomBoom for PERCUSSION event");
-            SpawnRandomBoom(visibleSize);
-            break;*/
-    default:
-        break;
+        else {
+            CCLOG("Invalid JSON format in file %s: Missing required fields or incorrect types", jsonFilePath.c_str());
+        }
     }
 }
 
@@ -418,6 +372,62 @@ Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
         break;
     }
     return spawnPosition;
+}
+
+void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+
+    int numBullets = 5;
+    float angleSpread = 95.0f;
+    float startAngle = -angleSpread / 2;
+    float angleIncrement = angleSpread / (numBullets - 1);
+
+    // Randomly choose an edge: 0 for top, 1 for left, 2 for right
+    int edge;
+    do {
+        edge = rand() % 3;
+    } while (std::find(previousSpawnEdges.begin(), previousSpawnEdges.end(), edge) != previousSpawnEdges.end());
+
+    previousSpawnEdges.push_back(edge);
+    if (previousSpawnEdges.size() > 2) {
+        previousSpawnEdges.erase(previousSpawnEdges.begin());
+    }
+    Vec2 spawnPosition;
+    float baseAngle;
+    float offset = SpriteController::calculateScreenRatio(Constants::FANBULLET_OFFSET); // Adjust this value to move the spawn position outside the screen
+    switch (edge) {
+    case 0: // Top edge
+        spawnPosition = Vec2(visibleSize.width / 2, visibleSize.height + offset);
+        baseAngle = -90.0f;
+        break;
+    case 1: // Left edge
+        spawnPosition = Vec2(-offset, visibleSize.height / 2);
+        baseAngle = 0.0f;
+        break;
+    case 2: // Right edge
+        spawnPosition = Vec2(visibleSize.width + offset, visibleSize.height / 2);
+        baseAngle = 180.0f;
+        break;
+    }
+
+    for (int i = 0; i < numBullets; ++i) {
+        float angle = baseAngle + startAngle + i * angleIncrement;
+        FanBullet* fanBullet = FanBulletPool::getInstance()->getEnemy();
+        if (fanBullet) {
+            // Spawn the FanBullet
+            fanBullet->spawn(spawnPosition, angle);
+
+            // Create a PhysicsBody for the FanBullet
+            Size reducedSize = Size(fanBullet->GetSize().width * 0.65, fanBullet->GetSize().height * 0.65); // Reduce size by 10%
+            auto fanBulletBody = PhysicsBody::createBox(reducedSize);
+            setPhysicsBodyChar(fanBulletBody, 0x02);
+            // Attach the PhysicsBody to the FanBullet
+            fanBullet->setPhysicsBody(fanBulletBody);
+            // Add the FanBullet to the scene
+            this->addChild(fanBullet, Constants::ORDER_LAYER_CHARACTER);
+        }
+    }
 }
 
 void Game1Scene::SpawnFallingRockAndBomb(Size size) {
@@ -469,13 +479,8 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
 
     auto randomBoom = RandomBoomPool::getInstance()->getEnemy();
     if (randomBoom) {
-        if (randomBoom->getParent() == nullptr) { // Ensure randomBoom is not already added to the scene
-            randomBoom->spawn(spawnPosition);
-            this->addChild(randomBoom, Constants::ORDER_LAYER_CHARACTER - 1);
-        }
-        else {
-            CCLOG("Warning: randomBoom is already added to the scene");
-        }
+        randomBoom->spawn(spawnPosition);
+        this->addChild(randomBoom, Constants::ORDER_LAYER_CHARACTER - 1);
     }
 }
 
@@ -538,4 +543,3 @@ bool Game1Scene::isPositionOccupied(const Vec2& position) {
     }
     return false; // Position is free
 }
-

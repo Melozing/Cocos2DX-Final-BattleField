@@ -8,14 +8,12 @@ class RandomBoom : public cocos2d::Sprite, public SpriteController {
 public:
     virtual bool init() override;
     void spawn(const cocos2d::Vec2& startPosition);
-    virtual void update(float delta) override;
     void showWarning(const cocos2d::Vec2& position);
     void launchMissile(const cocos2d::Vec2& targetPosition);
     void onMissileHitTarget();
     Size GetSize();
     CREATE_FUNC(RandomBoom);
     virtual ~RandomBoom();
-
     void reset();
 
 private:

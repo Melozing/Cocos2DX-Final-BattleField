@@ -12,7 +12,7 @@ public:
     void initPool(int poolSize);
     FallingRock* getEnemy();
     void returnEnemy(FallingRock* enemy);
-
+    void resetPool();
 private:
     std::queue<FallingRock*> _availableEnemies;
 };

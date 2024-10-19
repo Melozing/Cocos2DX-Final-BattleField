@@ -1,4 +1,5 @@
 #include "RandomBoomPool.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 
@@ -34,11 +35,18 @@ RandomBoom* RandomBoomPool::getEnemy() {
     return enemy;
 }
 
-
 void RandomBoomPool::returnEnemy(RandomBoom* enemy) {
     if (enemy) {
         enemy->setVisible(false);
         enemy->setPosition(Vec2(-100, -100));
         _availableEnemies.push(enemy);
+    }
+}
+
+void RandomBoomPool::resetPool() {
+    while (!_availableEnemies.empty()) {
+        RandomBoom* enemy = _availableEnemies.front();
+        _availableEnemies.pop();
+        enemy->release();
     }
 }
