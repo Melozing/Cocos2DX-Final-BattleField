@@ -10,7 +10,7 @@ public:
     void initPool(int poolSize);
     FlyingBullet* getEnemy();
     void returnEnemy(FlyingBullet* enemy);
-
+    void resetPool();
 private:
     std::queue<FlyingBullet*> _availableEnemies;
 };

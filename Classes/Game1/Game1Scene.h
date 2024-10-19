@@ -28,7 +28,6 @@ public:
     virtual bool init() override;
     CREATE_FUNC(Game1Scene);
     virtual void update(float delta);
-
 private:
     // Physics world
     cocos2d::PhysicsWorld* world;
@@ -81,7 +80,6 @@ private:
     Vec2 getRandomSpawnPosition(const Size& size);
 
     // Collision handling
-    void checkCollisions();
     void setPhysicsBodyChar(cocos2d::PhysicsBody* physicBody, int num);
     bool onContactBegin(cocos2d::PhysicsContact& contact);
 
@@ -94,10 +92,6 @@ private:
 
     // UI updates
     void updateLoadingBar(float dt);
-
-    // Music-based spawning
-    void handleMusicBasedSpawning(float dt);
-    void spawnBasedOnMusicEvent(MusicEvent event);
 
     // New methods for exitAction and createSceneFunc
     std::function<void()> exitAction;

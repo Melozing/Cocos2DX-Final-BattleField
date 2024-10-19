@@ -14,7 +14,6 @@ public:
     Size GetSize();
     CREATE_FUNC(RandomBoom);
     virtual ~RandomBoom();
-
     void reset();
 
 private:

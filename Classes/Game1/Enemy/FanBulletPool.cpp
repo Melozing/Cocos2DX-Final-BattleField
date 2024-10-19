@@ -35,3 +35,11 @@ void FanBulletPool::returnEnemy(FanBullet* enemy) {
         _availableEnemies.push(enemy);
     }
 }
+
+void FanBulletPool::resetPool() {
+    while (!_availableEnemies.empty()) {
+        FanBullet* enemy = _availableEnemies.front();
+        _availableEnemies.pop();
+        enemy->release();
+    }
+}

@@ -34,3 +34,11 @@ void FallingRockPool::returnEnemy(FallingRock* enemy) {
         _availableEnemies.push(enemy);
     }
 }
+
+void FallingRockPool::resetPool() {
+    while (!_availableEnemies.empty()) {
+        FallingRock* enemy = _availableEnemies.front();
+        _availableEnemies.pop();
+        enemy->release();
+    }
+}

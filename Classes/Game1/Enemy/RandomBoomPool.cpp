@@ -42,3 +42,11 @@ void RandomBoomPool::returnEnemy(RandomBoom* enemy) {
         _availableEnemies.push(enemy);
     }
 }
+
+void RandomBoomPool::resetPool() {
+    while (!_availableEnemies.empty()) {
+        RandomBoom* enemy = _availableEnemies.front();
+        _availableEnemies.pop();
+        enemy->release();
+    }
+}

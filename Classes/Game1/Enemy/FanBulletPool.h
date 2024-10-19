@@ -12,6 +12,7 @@ public:
     void initPool(int poolSize);
     FanBullet* getEnemy();
     void returnEnemy(FanBullet* enemy);
+    void resetPool();
 private:
     std::queue<FanBullet*> _availableEnemies;
 };

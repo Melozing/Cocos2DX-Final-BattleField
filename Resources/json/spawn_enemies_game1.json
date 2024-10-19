@@ -7,10 +7,14 @@
   { "spawnTime": 12.70002, "enemyType": "FanBullet" },
   { "spawnTime": 12.70003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 15.6, "enemyType": "FallingRock" },
+
   { "spawnTime": 15.6, "enemyType": "RandomBoom" },
   { "spawnTime": 15.8, "enemyType": "RandomBoom" },
   { "spawnTime": 16.0, "enemyType": "RandomBoom" },
   { "spawnTime": 16.2, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 18.8, "enemyType": "FallingRock" },
 
   { "spawnTime": 18.8, "enemyType": "RandomBoom" },
   { "spawnTime": 18.9, "enemyType": "RandomBoom" },
@@ -18,38 +22,56 @@
   { "spawnTime": 19.2, "enemyType": "RandomBoom" },
   { "spawnTime": 19.4, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 21.45, "enemyType": "FallingRock" },
+
   { "spawnTime": 21.45, "enemyType": "RandomBoom" },
   { "spawnTime": 21.75, "enemyType": "RandomBoom" },
   { "spawnTime": 22.05, "enemyType": "RandomBoom" },
   { "spawnTime": 22.15, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 23.81, "enemyType": "FallingRock" },
 
   { "spawnTime": 23.81, "enemyType": "RandomBoom" },
   { "spawnTime": 23.91, "enemyType": "RandomBoom" },
   { "spawnTime": 24.03, "enemyType": "RandomBoom" },
   { "spawnTime": 24.12, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 24.69, "enemyType": "FallingRock" },
+
   { "spawnTime": 24.69, "enemyType": "RandomBoom" },
   { "spawnTime": 25.12, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 25.27, "enemyType": "FallingRock" },
 
   { "spawnTime": 25.27, "enemyType": "RandomBoom" },
   { "spawnTime": 25.43, "enemyType": "RandomBoom" },
   { "spawnTime": 25.56, "enemyType": "RandomBoom" },
   { "spawnTime": 25.75, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 28.95001, "enemyType": "FallingRock" },
+
   { "spawnTime": 28.95001, "enemyType": "FanBullet" },
   { "spawnTime": 28.95002, "enemyType": "FanBullet" },
   { "spawnTime": 28.95003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 29.85, "enemyType": "FallingRock" },
+
   { "spawnTime": 29.85, "enemyType": "RandomBoom" },
   { "spawnTime": 30.73, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 31.33, "enemyType": "FallingRock" },
 
   { "spawnTime": 31.33, "enemyType": "RandomBoom" },
   { "spawnTime": 31.75, "enemyType": "RandomBoom" },
   { "spawnTime": 31.95, "enemyType": "RandomBoom" },
   { "spawnTime": 32.35, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 33.15, "enemyType": "FallingRock" },
+
   { "spawnTime": 33.15, "enemyType": "RandomBoom" },
   { "spawnTime": 34.01, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 34.81, "enemyType": "FallingRock" },
 
   { "spawnTime": 34.81, "enemyType": "RandomBoom" },
   { "spawnTime": 35.05, "enemyType": "RandomBoom" },
@@ -58,16 +80,26 @@
   { "spawnTime": 35.30002, "enemyType": "FanBullet" },
   { "spawnTime": 35.30003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 36.27, "enemyType": "FallingRock" },
+
   { "spawnTime": 36.27, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 37.21, "enemyType": "FallingRock" },
 
   { "spawnTime": 37.21, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 37.81, "enemyType": "FallingRock" },
+
   { "spawnTime": 37.81, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 37.95, "enemyType": "FallingRock" },
 
   { "spawnTime": 37.95, "enemyType": "RandomBoom" },
   { "spawnTime": 38.11, "enemyType": "RandomBoom" },
   { "spawnTime": 38.31, "enemyType": "RandomBoom" },
   { "spawnTime": 38.61, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 39.51, "enemyType": "FallingRock" },
 
   { "spawnTime": 39.51, "enemyType": "RandomBoom" },
   { "spawnTime": 40.01, "enemyType": "RandomBoom" },
@@ -81,9 +113,13 @@
   { "spawnTime": 41.63, "enemyType": "RandomBoom" },
   { "spawnTime": 41.73, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 41.50001, "enemyType": "FallingRock" },
+
   { "spawnTime": 41.50001, "enemyType": "FanBullet" },
   { "spawnTime": 41.50002, "enemyType": "FanBullet" },
   { "spawnTime": 41.50003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 42.75, "enemyType": "FallingRock" },
 
   { "spawnTime": 42.75, "enemyType": "RandomBoom" },
   { "spawnTime": 43.51, "enemyType": "RandomBoom" },
@@ -93,6 +129,8 @@
   { "spawnTime": 44.73, "enemyType": "RandomBoom" },
   { "spawnTime": 44.93, "enemyType": "RandomBoom" },
   { "spawnTime": 45.23, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 45.93, "enemyType": "FallingRock" },
 
   { "spawnTime": 45.93, "enemyType": "RandomBoom" },
   { "spawnTime": 46.33, "enemyType": "RandomBoom" },
@@ -105,6 +143,8 @@
   { "spawnTime": 48.00002, "enemyType": "FanBullet" },
   { "spawnTime": 48.00003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 49.23, "enemyType": "FallingRock" },
+
   { "spawnTime": 49.23, "enemyType": "RandomBoom" },
   { "spawnTime": 49.93, "enemyType": "RandomBoom" },
   { "spawnTime": 50.73, "enemyType": "RandomBoom" },
@@ -113,6 +153,8 @@
   { "spawnTime": 51.43, "enemyType": "RandomBoom" },
   { "spawnTime": 51.55, "enemyType": "RandomBoom" },
   { "spawnTime": 51.68, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 52.35, "enemyType": "FallingRock" },
 
   { "spawnTime": 52.35, "enemyType": "RandomBoom" },
   { "spawnTime": 53.13, "enemyType": "RandomBoom" },
@@ -127,6 +169,8 @@
   { "spawnTime": 54.54002, "enemyType": "FanBullet" },
   { "spawnTime": 54.54003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 55.73, "enemyType": "FallingRock" },
+
   { "spawnTime": 55.73, "enemyType": "RandomBoom" },
   { "spawnTime": 56.33, "enemyType": "RandomBoom" },
   { "spawnTime": 57.15, "enemyType": "RandomBoom" },
@@ -138,6 +182,8 @@
   { "spawnTime": 57.93001, "enemyType": "FanBullet" },
   { "spawnTime": 57.93002, "enemyType": "FanBullet" },
   { "spawnTime": 57.93003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 58.83, "enemyType": "FallingRock" },
 
   { "spawnTime": 58.83, "enemyType": "RandomBoom" },
   { "spawnTime": 59.53, "enemyType": "RandomBoom" },
@@ -151,6 +197,8 @@
   { "spawnTime": 60.95002, "enemyType": "FanBullet" },
   { "spawnTime": 60.95003, "enemyType": "FanBullet" },
   
+  { "spawnTime": 61.85, "enemyType": "FallingRock" },
+
   { "spawnTime": 61.85, "enemyType": "RandomBoom" },
   { "spawnTime": 61.97, "enemyType": "RandomBoom" },
   { "spawnTime": 62.05, "enemyType": "RandomBoom" },
@@ -201,6 +249,8 @@
   { "spawnTime": 70.35002, "enemyType": "FanBullet" },
   { "spawnTime": 70.35003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 71.65, "enemyType": "FallingRock" },
+
   { "spawnTime": 71.65, "enemyType": "RandomBoom" },
   { "spawnTime": 72.35, "enemyType": "RandomBoom" },
   { "spawnTime": 72.58, "enemyType": "RandomBoom" },
@@ -214,6 +264,8 @@
   { "spawnTime": 73.68002, "enemyType": "FanBullet" },
   { "spawnTime": 73.68003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 74.86, "enemyType": "FallingRock" },
+
   { "spawnTime": 74.86, "enemyType": "RandomBoom" },
   { "spawnTime": 75.55, "enemyType": "RandomBoom" },
   { "spawnTime": 76.45, "enemyType": "RandomBoom" },
@@ -223,6 +275,8 @@
   { "spawnTime": 76.66001, "enemyType": "FanBullet" },
   { "spawnTime": 76.66002, "enemyType": "FanBullet" },
   { "spawnTime": 76.66003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 77.96, "enemyType": "FallingRock" },
 
   { "spawnTime": 77.96, "enemyType": "RandomBoom" },
   { "spawnTime": 78.65, "enemyType": "RandomBoom" },
@@ -234,6 +288,8 @@
   { "spawnTime": 80.03001, "enemyType": "FanBullet" },
   { "spawnTime": 80.03002, "enemyType": "FanBullet" },
   { "spawnTime": 80.03003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 81.23, "enemyType": "FallingRock" },
 
   { "spawnTime": 81.23, "enemyType": "RandomBoom" },
   { "spawnTime": 81.33, "enemyType": "RandomBoom" },
@@ -265,15 +321,21 @@
   { "spawnTime": 83.35002, "enemyType": "FanBullet" },
   { "spawnTime": 83.35003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 84.55, "enemyType": "FallingRock" },
+
   { "spawnTime": 84.55, "enemyType": "RandomBoom" },
   { "spawnTime": 84.65, "enemyType": "RandomBoom" },
   { "spawnTime": 84.75, "enemyType": "RandomBoom" },
   { "spawnTime": 84.85, "enemyType": "RandomBoom" },
   { "spawnTime": 84.95, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 85.73, "enemyType": "FallingRock" },
+
   { "spawnTime": 85.73, "enemyType": "RandomBoom" },
   { "spawnTime": 85.83, "enemyType": "RandomBoom" },
   { "spawnTime": 85.95, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 86.13, "enemyType": "FallingRock" },
 
   { "spawnTime": 86.13, "enemyType": "RandomBoom" },
   { "spawnTime": 86.23, "enemyType": "RandomBoom" },
@@ -284,6 +346,8 @@
   { "spawnTime": 86.63002, "enemyType": "FanBullet" },
   { "spawnTime": 86.63003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 87.03, "enemyType": "FallingRock" },
+
   { "spawnTime": 87.03, "enemyType": "RandomBoom" },
   { "spawnTime": 87.13, "enemyType": "RandomBoom" },
   { "spawnTime": 87.23, "enemyType": "RandomBoom" },
@@ -292,6 +356,8 @@
   { "spawnTime": 87.73, "enemyType": "RandomBoom" },
   { "spawnTime": 87.83, "enemyType": "RandomBoom" },
   { "spawnTime": 87.93, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 88.28, "enemyType": "FallingRock" },
 
   { "spawnTime": 88.28, "enemyType": "RandomBoom" },
   { "spawnTime": 88.68, "enemyType": "RandomBoom" },
@@ -310,12 +376,16 @@
   { "spawnTime": 89.93002, "enemyType": "FanBullet" },
   { "spawnTime": 89.93003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 90.85, "enemyType": "FallingRock" },
+
   { "spawnTime": 90.85, "enemyType": "RandomBoom" },
   { "spawnTime": 91.11, "enemyType": "RandomBoom" },
   { "spawnTime": 91.23, "enemyType": "RandomBoom" },
   { "spawnTime": 91.33, "enemyType": "RandomBoom" },
   { "spawnTime": 91.43, "enemyType": "RandomBoom" },
   { "spawnTime": 91.53, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 92.36, "enemyType": "FallingRock" },
 
   { "spawnTime": 92.36, "enemyType": "RandomBoom" },
   { "spawnTime": 92.55, "enemyType": "RandomBoom" },
@@ -327,6 +397,8 @@
   { "spawnTime": 93.08001, "enemyType": "FanBullet" },
   { "spawnTime": 93.08002, "enemyType": "FanBullet" },
   { "spawnTime": 93.08003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 93.23, "enemyType": "FallingRock" },
 
   { "spawnTime": 93.23, "enemyType": "RandomBoom" },
   { "spawnTime": 93.53, "enemyType": "RandomBoom" },
@@ -356,6 +428,8 @@
   { "spawnTime": 96.11002, "enemyType": "FanBullet" },
   { "spawnTime": 96.11003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 97.13, "enemyType": "FallingRock" },
+
   { "spawnTime": 97.13, "enemyType": "RandomBoom" },
   { "spawnTime": 97.23, "enemyType": "RandomBoom" },
   { "spawnTime": 97.33, "enemyType": "RandomBoom" },
@@ -367,6 +441,8 @@
   { "spawnTime": 97.91, "enemyType": "RandomBoom" },
   { "spawnTime": 98.01, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 98.65, "enemyType": "FallingRock" },
+
   { "spawnTime": 98.65, "enemyType": "RandomBoom" },
   { "spawnTime": 98.95, "enemyType": "RandomBoom" },
   { "spawnTime": 99.15, "enemyType": "RandomBoom" },
@@ -375,6 +451,8 @@
   { "spawnTime": 99.53001, "enemyType": "FanBullet" },
   { "spawnTime": 99.53002, "enemyType": "FanBullet" },
   { "spawnTime": 99.53003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 100.03, "enemyType": "FallingRock" },
 
   { "spawnTime": 100.03, "enemyType": "RandomBoom" },
   { "spawnTime": 100.10, "enemyType": "RandomBoom" },
@@ -408,6 +486,8 @@
   { "spawnTime": 102.74002, "enemyType": "FanBullet" },
   { "spawnTime": 102.74003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 103.65, "enemyType": "FallingRock" },
+
   { "spawnTime": 103.65, "enemyType": "RandomBoom" },
   { "spawnTime": 104.35, "enemyType": "RandomBoom" },
   { "spawnTime": 104.65, "enemyType": "RandomBoom" },
@@ -432,6 +512,8 @@
   { "spawnTime": 106.75, "enemyType": "RandomBoom" },
   { "spawnTime": 106.85, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 107.55, "enemyType": "FallingRock" },
+
   { "spawnTime": 107.55, "enemyType": "RandomBoom" },
   { "spawnTime": 107.75, "enemyType": "RandomBoom" },
   { "spawnTime": 107.85, "enemyType": "RandomBoom" },
@@ -448,6 +530,8 @@
   { "spawnTime": 108.95001, "enemyType": "FanBullet" },
   { "spawnTime": 108.95002, "enemyType": "FanBullet" },
   { "spawnTime": 108.95003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 109.05, "enemyType": "FallingRock" },
 
   { "spawnTime": 109.05, "enemyType": "RandomBoom" },
   { "spawnTime": 109.95, "enemyType": "RandomBoom" },
@@ -482,6 +566,8 @@
   { "spawnTime": 115.45002, "enemyType": "FanBullet" },
   { "spawnTime": 115.45003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 115.65, "enemyType": "FallingRock" },
+
   { "spawnTime": 115.65, "enemyType": "RandomBoom" },
   { "spawnTime": 115.85, "enemyType": "RandomBoom" },
   { "spawnTime": 117.15, "enemyType": "RandomBoom" },
@@ -493,6 +579,8 @@
   { "spawnTime": 118.64001, "enemyType": "FanBullet" },
   { "spawnTime": 118.64002, "enemyType": "FanBullet" },
   { "spawnTime": 118.64003, "enemyType": "FanBullet" },
+
+  { "spawnTime": 118.73, "enemyType": "FallingRock" },
 
   { "spawnTime": 118.73, "enemyType": "RandomBoom" },
   { "spawnTime": 118.83, "enemyType": "RandomBoom" },
@@ -537,6 +625,8 @@
   { "spawnTime": 121.75002, "enemyType": "FanBullet" },
   { "spawnTime": 121.75003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 122.05, "enemyType": "FallingRock" },
+
   { "spawnTime": 122.05, "enemyType": "RandomBoom" },
   { "spawnTime": 122.25, "enemyType": "RandomBoom" },
   { "spawnTime": 122.33, "enemyType": "RandomBoom" },
@@ -572,6 +662,8 @@
   { "spawnTime": 128.45002, "enemyType": "FanBullet" },
   { "spawnTime": 128.45003, "enemyType": "FanBullet" },
 
+  { "spawnTime": 128.88, "enemyType": "FallingRock" },
+
   { "spawnTime": 128.88, "enemyType": "RandomBoom" },
   { "spawnTime": 129.33, "enemyType": "RandomBoom" },
   { "spawnTime": 129.45, "enemyType": "RandomBoom" },
@@ -582,6 +674,8 @@
   { "spawnTime": 129.95, "enemyType": "RandomBoom" },
   { "spawnTime": 130.05, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 130.65, "enemyType": "FallingRock" },
+
   { "spawnTime": 130.65, "enemyType": "RandomBoom" },
   { "spawnTime": 130.75, "enemyType": "RandomBoom" },
   { "spawnTime": 130.85, "enemyType": "RandomBoom" },
@@ -589,6 +683,8 @@
   { "spawnTime": 131.05, "enemyType": "RandomBoom" },
   { "spawnTime": 131.45, "enemyType": "RandomBoom" },
   { "spawnTime": 131.55, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 132.23, "enemyType": "FallingRock" },
 
   { "spawnTime": 132.23, "enemyType": "RandomBoom" },
   { "spawnTime": 132.55, "enemyType": "RandomBoom" },
@@ -598,10 +694,14 @@
   { "spawnTime": 132.95, "enemyType": "RandomBoom" },
   { "spawnTime": 133.05, "enemyType": "RandomBoom" },
 
+  { "spawnTime": 133.35, "enemyType": "FallingRock" },
+
   { "spawnTime": 133.35, "enemyType": "RandomBoom" },
   { "spawnTime": 133.85, "enemyType": "RandomBoom" },
   { "spawnTime": 133.95, "enemyType": "RandomBoom" },
   { "spawnTime": 134.05, "enemyType": "RandomBoom" },
+
+  { "spawnTime": 134.25, "enemyType": "FallingRock" },
 
   { "spawnTime": 134.25, "enemyType": "RandomBoom" },
   { "spawnTime": 134.35, "enemyType": "RandomBoom" },
