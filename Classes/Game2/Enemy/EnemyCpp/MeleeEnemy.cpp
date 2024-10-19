@@ -1,30 +1,25 @@
-<<<<<<< HEAD
-﻿// SniperEnemy.cpp
-#include "Game2/Enemy/Enemyh/SniperEnemy.h"
+﻿// MeleeEnemy.cpp
+#include "Game2/Enemy/Enemyh/MeleeEnemy.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "Game2/Player/PlayerGame2.h"
-#include "Bullet/Bullet.h"
 #include "Game2/Enemy/EnemyUtils.h"
 
+#include "Manager/PhysicsManager.h"
 USING_NS_CC;
 
-SniperEnemy::SniperEnemy()
-    : _velocity(Vec2::ZERO),
-    _isShooting(false),
-    _isReloading(false),
-    _ammoCount(24),
-    _shootCooldown(5.0f),
-    _shootRange(500.0f),
-    _isMoving(false)
+MeleeEnemy::MeleeEnemy()
+    : _velocity(Vec2::ZERO), _isMoving(false)
 {
 }
 
-SniperEnemy::~SniperEnemy()
+MeleeEnemy::~MeleeEnemy()
 {
 }
 
-bool SniperEnemy::init()
+
+
+bool MeleeEnemy::init()
 {
     if (!EnemyBase::init())
     {
@@ -32,13 +27,13 @@ bool SniperEnemy::init()
     }
 
     // Load the sprite frames
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/sniper-enemy.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
 
     // Initialize the sprite with the idle frame
-    auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("idlegun0.png");
+    auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("IdleKnife0.png");
     if (!spriteFrame)
     {
-        CCLOG("Sprite frame 'IdleSniper0.png' not found in the cache");
+        CCLOG("Sprite frame 'IdleKnife0.png' not found in the cache");
         return false;
     }
 
@@ -51,32 +46,34 @@ bool SniperEnemy::init()
     this->setScale(Constants::EnemyScale);
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
-    this->setTag(Constants::EnemyTag);
+    this->setTag(Constants::EnemyTag); 
 
-    // Create animations
+    auto newSize = SpriteController::GetContentSizeSprite(this);
+    this->setContentSize(newSize);
+
+    PhysicsManager::getInstance()->setPhysicsBody(this, Constants::enemy2_bitmask, true);
     createIdleAnimation();
     createAttackAnimation();
     createDeathAnimation();
 
-    // Schedule update method
     this->scheduleUpdate();
 
-    // Set up collision detection
     auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(SniperEnemy::onContactBegin, this);
+    contactListener->onContactBegin = CC_CALLBACK_1(MeleeEnemy::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    CCLOG("SniperEnemy initialized successfully");
+    CCLOG("MeleeEnemy initialized successfully");
     return true;
 }
 
-void SniperEnemy::createIdleAnimation()
+
+void MeleeEnemy::createIdleAnimation()
 {
     Vector<SpriteFrame*> animFrames;
     char str[100] = { 0 };
     for (int i = 0; i < 8; i++)
     {
-        sprintf(str, "idlegun%d.png", i);
+        sprintf(str, "IdleKnife%d.png", i);
         auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
         if (frame)
         {
@@ -89,13 +86,13 @@ void SniperEnemy::createIdleAnimation()
     _idleAnimation->retain();
 }
 
-void SniperEnemy::createAttackAnimation()
+void MeleeEnemy::createAttackAnimation()
 {
     Vector<SpriteFrame*> animFrames;
     char str[100] = { 0 };
     for (int i = 0; i < 8; i++)
     {
-        sprintf(str, "Gunshot%d.png", i);
+        sprintf(str, "Knife_%03d.png", i);
         auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
         if (frame)
         {
@@ -104,11 +101,11 @@ void SniperEnemy::createAttackAnimation()
     }
 
     auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _shootAnimation = Animate::create(animation);
-    _shootAnimation->retain();
+    _attackAnimation = Animate::create(animation);
+    _attackAnimation->retain();
 }
 
-void SniperEnemy::createDeathAnimation()
+void MeleeEnemy::createDeathAnimation()
 {
     Vector<SpriteFrame*> animFrames;
     char str[100] = { 0 };
@@ -127,68 +124,41 @@ void SniperEnemy::createDeathAnimation()
     _deathAnimation->retain();
 }
 
-void SniperEnemy::update(float delta)
+void MeleeEnemy::update(float delta)
 {
-    if (_isDead || _isReloading)
+    CCLOG("MeleeEnemy update called");
+    if (_isDead)
     {
         return;
     }
 
-    _shootCooldown -= delta;
-    if (_shootCooldown <= 0)
+    if (_isAttacking)
     {
-        attack();
-        _shootCooldown = 5.0f; // Reset cooldown
+        return;
     }
 
-    updateRotationToPlayer();
     moveToPlayer();
 }
 
-void SniperEnemy::moveToPlayer()
+void MeleeEnemy::moveToPlayer()
 {
     EnemyUtils::moveToPlayer(this, _speed, _isMoving, _idleAnimation);
 }
 
-void SniperEnemy::attack()
+void MeleeEnemy::attackPlayer()
 {
-    if (_ammoCount > 0)
-    {
-        shootBullet();
-        _ammoCount--;
-    }
-    else
-    {
-        reload();
-    }
-}
-
-void SniperEnemy::shootBullet()
-{
-    auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
-    if (player && EnemyUtils::isWithinRange(this, player, _shootRange))
-    {
-        _isShooting = true;
-        this->runAction(Sequence::create(_shootAnimation, CallFunc::create([this]() {
-            _isShooting = false;
-            }), nullptr));
-    }
-}
-
-void SniperEnemy::reload()
-{
-    _isReloading = true;
-    auto reloadSpriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("reload.png");
-    this->setSpriteFrame(reloadSpriteFrame);
-
-    this->runAction(Sequence::create(DelayTime::create(1.5f), CallFunc::create([this]() {
-        _ammoCount = 24;
-        _isReloading = false;
-        this->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("idlegun0.png"));
+    _isAttacking = true;
+    this->runAction(Sequence::create(_attackAnimation, CallFunc::create([this]() {
+        auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
+        if (player)
+        {
+            player->die();
+        }
+        _isAttacking = false;
         }), nullptr));
 }
 
-void SniperEnemy::die()
+void MeleeEnemy::die()
 {
     _isDead = true;
     this->runAction(Sequence::create(_deathAnimation, CallFunc::create([this]() {
@@ -196,7 +166,7 @@ void SniperEnemy::die()
         }), nullptr));
 }
 
-bool SniperEnemy::onContactBegin(PhysicsContact& contact)
+bool MeleeEnemy::onContactBegin(PhysicsContact& contact)
 {
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
@@ -209,5 +179,3 @@ bool SniperEnemy::onContactBegin(PhysicsContact& contact)
 
     return false;
 }
-=======
->>>>>>> parent of 84e12b3 (up game2)

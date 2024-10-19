@@ -12,11 +12,18 @@ USING_NS_CC;
 // Tạo scene với physics
 cocos2d::Scene* Game2Scene::createScene() {
     auto scene = Scene::createWithPhysics();
+<<<<<<< HEAD
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+
+    auto layer = Game2Scene::create();
+    scene->addChild(layer);
+=======
     CCASSERT(scene != nullptr, "Failed to create Scene with Physics");
     scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game2Scene::create();
     scene->addChild(layer); // Thêm layer vào scene
+>>>>>>> parent of 84e12b3 (up game2)
 
     return scene;
 }
@@ -52,6 +59,10 @@ bool Game2Scene::init() {
     _player->setName("PlayerGame2");
     this->addChild(_player); // Thêm nhân vật vào scene
 
+<<<<<<< HEAD
+    setupKeyboardEventListeners();
+    setupCursor();
+=======
     // Thiết lập sự kiện bàn phím để di chuyển nhân vật
     auto eventListener = EventListenerKeyboard::create();
     eventListener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
@@ -76,6 +87,7 @@ bool Game2Scene::init() {
     this->addChild(_cursor); // Thêm con trỏ vào scene
 
     // Cập nhật con trỏ
+>>>>>>> parent of 84e12b3 (up game2)
     this->schedule([this](float delta) {
         _cursor->updateCursor(delta);
         }, "update_cursor_key");
@@ -130,6 +142,26 @@ void Game2Scene::scaleTilemap(cocos2d::TMXTiledMap* tilemap) {
     auto mapSize = tilemap->getMapSize();
     auto tileSize = tilemap->getTileSize();
 
+<<<<<<< HEAD
+    Vec2 spawnPoints[] = {
+        Vec2(585, 330),
+        Vec2(1520, 460),
+        Vec2(1020, 900)
+    };
+
+    for (const auto& point : spawnPoints) {
+        float x = point.x * (visibleSize.width / 1920.0f);
+        float y = point.y * (visibleSize.height / 1080.0f);
+
+        auto enemy = MeleeEnemy::create();
+        if (enemy) {
+            enemy->setPosition(Vec2(x + origin.x, y + origin.y));
+            this->addChild(enemy);
+            enemy->scheduleUpdate();
+        }
+    }
+}
+=======
     float scaleX = visibleSize.width / (mapSize.width * tileSize.width); // Tính tỉ lệ theo chiều rộng
     float scaleY = visibleSize.height / (mapSize.height * tileSize.height); // Tính tỉ lệ theo chiều cao
 
@@ -137,3 +169,4 @@ void Game2Scene::scaleTilemap(cocos2d::TMXTiledMap* tilemap) {
 
     tilemap->setScale(scale * Constants::scaleFactor); // Áp dụng tỉ lệ cho tilemap
 }
+>>>>>>> parent of 84e12b3 (up game2)
