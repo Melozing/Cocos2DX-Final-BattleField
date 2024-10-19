@@ -85,7 +85,7 @@ void PlayerGame3::initAnimation()
     modelCharac = Sprite::createWithSpriteFrameName("tank_1.png");
     this->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(createAnimation("tank_", 30, 0.07f));
+    auto animateCharac = Animate::create(createAnimation("tank_", 8, 0.07f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
@@ -143,8 +143,9 @@ void PlayerGame3::shootBullet()
     Vec2 worldTurretTip = turretSprite->convertToWorldSpace(Vec2(turretSprite->getContentSize().width / 2, turretSprite->getContentSize().height));
 
     // Tạo và khởi tạo viên đạn
+    Sprite* bulletSprite = Sprite::create("assets_game/player/1.png");
     Bullet* bullet = Bullet::createBullet("assets_game/player/1.png", direction, Constants::BulletGame3Speed);
-
+    bullet->setScale(SpriteController::updateSpriteScale(bulletSprite, 0.10f));
     // Kiểm tra nếu viên đạn được tạo thành công
     if (bullet)
     {

@@ -4,21 +4,7 @@
 enum class MusicEventType {
     BEAT,
     KICK,
-    SNARE,
-    MELODY,
-    LOW,
-    MID,
-    HIGH,
-    DROP,
-    RISE,
-    CLAP,
-    HAT,
-    BASS,
-    VOCAL,
-    SYNTH,
-    PAD,
-    FX,
-    PERCUSSION
+    SNARE
 };
 
 
