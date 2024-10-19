@@ -61,7 +61,7 @@ void EnemyPlane1::initAnimation()
         this->addChild(modelCharac);
 
         // Create animation using inherited method from SpriteController
-        auto animateCharac = Animate::create(createAnimation("Plane_enemy_bom", 30, 0.07f));
+        auto animateCharac = Animate::create(createAnimation("Plane_enemy_bom", 8, 0.07f));
 
         // Create a repeat action to loop the animation indefinitely
         auto repeatAction = RepeatForever::create(animateCharac);
@@ -69,19 +69,20 @@ void EnemyPlane1::initAnimation()
         // Run the repeat action
         modelCharac->runAction(repeatAction);
 
-        // Schedule a function to check the direction and flip the sprite if necessary
-        this->schedule([this](float) {
-            if (this->getPositionX() < Director::getInstance()->getVisibleSize().width / 2)
-            {
-                // Moving from right to left, flip the sprite
-                modelCharac->setFlippedX(true);
-            }
-            else
-            {
-                // Moving from left to right, reset the flip
-                modelCharac->setFlippedX(false);
-            }
-            }, "check_direction_key");
+        if (this->getPositionX() < Director::getInstance()->getVisibleSize().width / 2)
+        {
+            // Moving from right to left, flip the sprite
+            modelCharac->setFlippedX(true);
+        }
+        else
+        {
+            // Moving from left to right, reset the flip
+            modelCharac->setFlippedX(false);
+        }
+        //// Schedule a function to check the direction and flip the sprite if necessary
+        //this->schedule([this](float) {
+        //    
+        //    }, "check_direction_key");
     }
     else
     {

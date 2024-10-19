@@ -15,6 +15,7 @@ const std::string Constants::ENEMY_RANDOM_BOOM_NAME = "RandomBoom";
 const float Constants::FLYING_BULLET_SPEED = 3.0f;
 const float Constants::FALLINGROCK_START_Y = 0.05f;
 const float Constants::FALLINGROCK_PADDING = 0.006f;
+const float Constants::FANBULLET_OFFSET = 0.04f;
 //PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.885f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;

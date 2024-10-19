@@ -12,6 +12,7 @@ public:
     void initPool(int poolSize);
     RandomBoom* getEnemy();
     void returnEnemy(RandomBoom* enemy);
+    void resetPool();
 
 private:
     std::queue<RandomBoom*> _availableEnemies;
