@@ -1,6 +1,5 @@
 #include "SoundController.h"
 #include "audio/include/AudioEngine.h"
-#include "fmod/FMODAudioEngine.h"
 
 USING_NS_CC;
 using namespace cocos2d::experimental;
@@ -69,15 +68,30 @@ void SoundController::scheduleSpawnEvents(const std::vector<float>& timestamps, 
     elapsedTime = 0.0f;
 }
 
-std::vector<float> SoundController::getFrequencyData() {
-    return FMODAudioEngine::getInstance()->getFrequencyData();
-}
-
 void SoundController::setMusicVolume(const std::string& filePath, float volume) {
     auto it = playingMusic.find(filePath);
     if (it != playingMusic.end()) {
         AudioEngine::setVolume(it->second, volume);
     }
+}
+
+void SoundController::pauseMusic(const std::string& filePath) {
+    auto it = playingMusic.find(filePath);
+    if (it != playingMusic.end()) {
+        AudioEngine::pause(it->second);
+    }
+}
+
+void SoundController::resumeMusic(const std::string& filePath) {
+    auto it = playingMusic.find(filePath);
+    if (it != playingMusic.end()) {
+        AudioEngine::resume(it->second);
+    }
+}
+
+void SoundController::replayMusic(const std::string& filePath) {
+    stopMusic(filePath);
+    playMusic(filePath);
 }
 
 void SoundController::update(float dt) {

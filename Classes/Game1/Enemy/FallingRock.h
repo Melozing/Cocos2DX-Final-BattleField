@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
+#include "Constants/Constants.h"
 
 class FallingRock : public cocos2d::Sprite, public SpriteController {
 public:
@@ -18,7 +19,6 @@ public:
     virtual void update(float delta) override;
     void reset();
 
-    float getSpeed() const { return _speed; }
     void initAnimation();
     void removeWhenOutOfScreen();
     Size GetSize();
@@ -30,7 +30,7 @@ private:
     cocos2d::Sprite* _currentSprite;
 
     SpriteType _spriteType; // Enum to hold the type of sprite (ROCK or LANDMINE)
-    float _speed = 255.0f;
+    float _speed = Constants::FALLINGROCK_ITEMS_SPEED;
     float _spriteScale;
     float _animationDelay = 0.1f;
     bool _hasLandedOnMine = false;  // Flag for landing on mine

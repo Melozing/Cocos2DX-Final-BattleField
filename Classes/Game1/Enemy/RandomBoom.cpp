@@ -1,5 +1,6 @@
 #include "RandomBoom.h"
 #include "RandomBoomPool.h"
+#include "Constants/Constants.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -46,13 +47,13 @@ void RandomBoom::reset() {
 void RandomBoom::spawn(const Vec2& startPosition) {
     reset();
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    float restrictedWidth = 100.0f;
-    float restrictedHeight = visibleSize.height - 100.0f;
+    float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
+    float restrictedHeight = visibleSize.height - SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDHEIGHT);
     float centerX = visibleSize.width / 2;
     float halfRestrictedWidth = restrictedWidth / 2;
     float minX = centerX - halfRestrictedWidth;
     float maxX = centerX + halfRestrictedWidth;
-    Vec2 warningPosition = Vec2(rand() % int(maxX - minX) + minX, rand() % int(restrictedHeight) + 50);
+    Vec2 warningPosition = Vec2(rand() % int(maxX - minX) + minX, rand() % int(restrictedHeight) + SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDHEIGHT));
 
     showWarning(warningPosition);
 
@@ -64,7 +65,7 @@ void RandomBoom::spawn(const Vec2& startPosition) {
 void RandomBoom::showWarning(const Vec2& position) {
     if (!_warningSprite) {
         _warningSprite = Sprite::createWithSpriteFrameName("warning_rocket1.png");
-        _warningSprite->setScale(SpriteController::updateSpriteScale(_warningSprite, 0.14f));
+        _warningSprite->setScale(SpriteController::updateSpriteScale(_warningSprite, 0.1f));
         _spriteBatchNodeWarning->addChild(_warningSprite);
     }
     _warningSprite->setPosition(position);
@@ -93,7 +94,7 @@ void RandomBoom::launchMissile(const Vec2& targetPosition) {
     float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
     _missileSprite->setRotation(-angle - 90);
 
-    float missileSpeed = 0.4f;
+    float missileSpeed = 0.6f;
     auto moveToTarget = MoveTo::create(missileSpeed, targetPosition);
     auto hitTargetCallback = CallFunc::create([this]() {
         this->onMissileHitTarget();
@@ -135,7 +136,7 @@ void RandomBoom::onMissileHitTarget() {
         explosionSprite->setVisible(true);
     }
 
-    auto explosionAnimation = createAnimation("explosions", 10, 0.07f);
+    auto explosionAnimation = createAnimation("explosions", 10, 0.041f);
     auto animate = Animate::create(explosionAnimation);
 
     Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width * 0.85, GetContentSizeSprite(explosionSprite).height * 0.85);

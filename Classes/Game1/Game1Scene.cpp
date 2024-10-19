@@ -13,8 +13,6 @@
 #include "Manager/PositionManager.h"
 #include "Constants/Constants.h"
 #include "ui/UILoadingBar.h"
-#include "utils/Music/MusicEvent.h"
-#include "utils/Music/AudioUtils.h"
 #include "audio/include/AudioEngine.h"
 #include <ctime> 
 #include "json/document.h"
@@ -156,19 +154,7 @@ bool Game1Scene::init() {
 
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
-    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
-
-    _musicAnalyzer = MusicAnalyzer::getInstance();
-
-    if (MusicAnalyzer::getInstance()->isMusicPlaying) {
-        //_musicAnalyzer->replayMusic();
-        //GameController::getInstance()->audioID = AudioUtils::restartMusic(Constants::pathSoundTrackGame1);
-        //GameController::getInstance()->musicStarted = true;
-    }
-    else {
-        _musicAnalyzer->analyzeMusic(Constants::pathSoundTrackGame1);
-    }
-
+    //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->scheduleOnce([this](float) {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
@@ -305,7 +291,6 @@ void Game1Scene::updateLoadingBar(float dt) {
 
 void Game1Scene::update(float delta) {
     background->update(delta);
-    _musicAnalyzer->update(delta);
 }
 
 // Function to initialize the spawn schedule from JSON

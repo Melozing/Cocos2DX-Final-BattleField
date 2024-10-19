@@ -18,7 +18,9 @@ public:
     void scheduleSpawnEvents(const std::vector<float>& timestamps, const std::vector<std::function<void()>>& spawnFunctions);
     bool isMusicPlaying(const std::string& filePath);
     float getMusicDuration(const std::string& filePath);
-    std::vector<float> getFrequencyData();
+    void pauseMusic(const std::string& filePath);
+    void resumeMusic(const std::string& filePath);
+    void replayMusic(const std::string& filePath);
 
 private:
     SoundController(); // Declaration only

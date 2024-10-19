@@ -80,7 +80,7 @@ void FallingRock::spawn(const Vec2& startPosition) {
     this->setPosition(startPosition);
 
     // Define target position off-screen at the bottom
-    Vec2 endPosition = Vec2(startPosition.x, -50);
+    Vec2 endPosition = Vec2(startPosition.x, -SpriteController::calculateScreenRatio(Constants::FALLINGROCK_ITEMS_OFFSET));
 
     // Calculate distance and duration based on speed
     float distance = startPosition.distance(endPosition);
@@ -99,11 +99,6 @@ void FallingRock::spawn(const Vec2& startPosition) {
 }
 
 void FallingRock::update(float delta) {
-    Vec2 currentPosition = this->getPosition();
-    Vec2 movement = Vec2(0, -_speed * delta); // Moving downwards
-
-    this->setPosition(currentPosition + movement);
-
 	this->removeWhenOutOfScreen();
 }
 

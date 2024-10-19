@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "PlayerAttributes/PlayerAttributes.h"
-#include "ui/CocosGUI.h" // Include this header for UI components
+#include "ui/CocosGUI.h" 
 
 class GameController {
 public:
@@ -29,6 +29,8 @@ private:
     float gameTime;
     bool gameOver;
     bool paused;
+    std::string currentSoundtrackPath; 
+
 };
 
 #endif // __GAME_CONTROLLER_H__
