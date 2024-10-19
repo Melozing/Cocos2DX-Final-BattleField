@@ -44,6 +44,7 @@ public:
     static const float BulletScale;
     static const float GrenadeSpeed;
     static const float GrenadeThrowDistance;
+<<<<<<< HEAD
 
     //bossgame2
 	static const float BossScale;
@@ -57,6 +58,8 @@ public:
 	static const uint32_t player2_bitmask;
 	static const uint32_t enemy2_bitmask;
     
+=======
+>>>>>>> parent of 84e12b3 (up game2)
     //game3
     static const float GroundY;
     static const float BackgroundSpeed ;

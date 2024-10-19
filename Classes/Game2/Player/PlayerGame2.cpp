@@ -47,10 +47,10 @@ bool PlayerGame2::init() {
     this->setScale(Constants::PlayerScale);
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
-    /*auto physicsBody = PhysicsBody::createBox(this->getContentSize());
+    auto physicsBody = PhysicsBody::createBox(this->getContentSize());
     physicsBody->setContactTestBitmask(true);
     physicsBody->setGravityEnable(false);
-    this->setPhysicsBody(physicsBody);*/
+    this->setPhysicsBody(physicsBody);
 
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
@@ -149,9 +149,7 @@ void PlayerGame2::onMouseUp(Event* event)
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_W || keyCode == EventKeyboard::KeyCode::KEY_A ||
-        keyCode == EventKeyboard::KeyCode::KEY_S || keyCode == EventKeyboard::KeyCode::KEY_D ||
-        keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW ||
-        keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW || keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
+        keyCode == EventKeyboard::KeyCode::KEY_S || keyCode == EventKeyboard::KeyCode::KEY_D)
     {
         playerMovement->onKeyPressed(keyCode);
     }
@@ -160,9 +158,7 @@ void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 void PlayerGame2::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_W || keyCode == EventKeyboard::KeyCode::KEY_A ||
-        keyCode == EventKeyboard::KeyCode::KEY_S || keyCode == EventKeyboard::KeyCode::KEY_D ||
-        keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW ||
-        keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW || keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
+        keyCode == EventKeyboard::KeyCode::KEY_S || keyCode == EventKeyboard::KeyCode::KEY_D)
     {
         playerMovement->onKeyReleased(keyCode);
     }

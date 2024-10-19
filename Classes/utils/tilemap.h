@@ -1,37 +1,31 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
-
+#pragma once
 #include "cocos2d.h"
 
-class Player : public cocos2d::Sprite
-{
-public:
-    // Create a player instance
-    static Player* createPlayer();
+namespace MyGameNamespace {
 
-    // Initialize the player
-    virtual bool init();
+    struct Tile {
+        bool is_blocking;
+        cocos2d::Vec2 position;
+        cocos2d::Size size;
+        cocos2d::Sprite* sprite;
+    };
 
-    // Update the player position
-    void update(float delta);
+    class Tilemap : public cocos2d::Node {
+    public:
+        Tilemap();
+        ~Tilemap();
+        void initTilemap(const cocos2d::Vec2& pos);
+        void update(float deltaTime);
+        void renderTilemap(cocos2d::DrawNode* drawNode);
+        bool isFreeTile(float x, float y) const;
+        bool isFreeTile(const cocos2d::Vec2& pos) const;
 
-    // Handle keyboard input
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+    private:
+        void clearObstacles();
+        void drawTile(cocos2d::DrawNode* drawNode, Tile& tile);
 
-    // Getters for direction and speed
-    cocos2d::Vec2 getDirection() const;
-    float getSpeed() const;
+        cocos2d::Vec2 pos;
+        std::vector<Tile> tiles;
+    };
 
-    // Implement the "static create()" method manually
-    CREATE_FUNC(Player);
-
-private:
-    // Movement speed
-    float speed;
-
-    // Movement direction
-    cocos2d::Vec2 direction;
-};
-
-#endif // __PLAYER_H__
+} // namespace MyGameNamespace

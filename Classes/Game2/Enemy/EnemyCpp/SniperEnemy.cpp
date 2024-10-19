@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿// SniperEnemy.cpp
 #include "Game2/Enemy/Enemyh/SniperEnemy.h"
 #include "Constants/Constants.h"
@@ -208,3 +209,5 @@ bool SniperEnemy::onContactBegin(PhysicsContact& contact)
 
     return false;
 }
+=======
+>>>>>>> parent of 84e12b3 (up game2)

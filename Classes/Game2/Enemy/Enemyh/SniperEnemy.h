@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿// SniperEnemy.h
 #pragma once
 
@@ -41,3 +42,5 @@ private:
     float _shootCooldown;
     float _shootRange;
 };
+=======
+>>>>>>> parent of 84e12b3 (up game2)
