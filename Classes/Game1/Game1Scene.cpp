@@ -84,11 +84,17 @@ void Game1Scene::initPools() {
     FallingRockPool::getInstance()->resetPool();
     RandomBoomPool::getInstance()->resetPool();
     FanBulletPool::getInstance()->resetPool();
+    FallingTreePool::getInstance()->resetPool();
+    HealthItemPool::getInstance()->resetPool();
+    AmmoItemPool::getInstance()->resetPool();
 
     FlyingBulletPool::getInstance()->initPool(10);
     FallingRockPool::getInstance()->initPool(10);
     RandomBoomPool::getInstance()->initPool(10);
     FanBulletPool::getInstance()->initPool(30);
+    FallingTreePool::getInstance()->initPool(10);
+    HealthItemPool::getInstance()->initPool(10);
+    AmmoItemPool::getInstance()->initPool(10);
     EffectObjectPool::getInstance()->initPool(20, "assets_game/fx/explosions_effect.png", "assets_game/fx/explosions_effect.plist");
 }
 
@@ -97,7 +103,7 @@ void Game1Scene::initPlayer(const Size& visibleSize) {
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _healthPlayerGame1 = HealthPlayerGame1::createHealth();
     _healthPlayerGame1->initHealthSprites(_playerAttributes->GetHealth());
-    this->addChild(_healthPlayerGame1, Constants::ORDER_LAYER_UI);
+    this->addChild(_healthPlayerGame1, Constants::ORDER_LAYER_PLAYER);
 
     auto playerBody = PhysicsBody::createBox(_player->GetSize());
     setPhysicsBodyChar(playerBody, 0x01);
@@ -180,6 +186,7 @@ void Game1Scene::initSound() {
 
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
+    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->scheduleOnce([this](float) {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
@@ -211,6 +218,7 @@ void Game1Scene::initSpawning() {
         }, "json_based_spawning_key");
 }
 
+
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
     physicBody->setContactTestBitmask(true);
@@ -226,13 +234,13 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
         (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
         if (_canTakeDamage) {
-            CCLOG("Collision detected with enemy!");
             _playerAttributes->TakeDamage(1);
-            _canTakeDamage = false;
+            _player->playDamageEffect();
             _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
             this->scheduleOnce([this](float) { _canTakeDamage = true; }, 1.0f, "damage_delay_key");
 
             this->checkGameOver();
+            _canTakeDamage = false;
         }
     }
 
@@ -240,17 +248,17 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
         (bodyA->getCollisionBitmask() == 0x03 && bodyB->getCollisionBitmask() == 0x01)) {
         auto collectible = static_cast<CollectibleItem*>(bodyA->getNode() == _player ? bodyB->getNode() : bodyA->getNode());
         if (collectible) {
-            collectible->applyEffect(); // Apply the effect of the collectible item
-
             // Check the type of collectible item and apply the corresponding effect
             if (auto healthItem = dynamic_cast<HealthItem*>(collectible)) {
+                healthItem->applyEffect(); // Apply the effect of the collectible item
+                _player->playHealthIncreaseEffect();
                 _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
             }
-
-            collectible->removeFromParentAndCleanup(true);
+            else {
+                collectible->applyEffect(); // Apply the effect of the collectible item
+            }
         }
     }
-
     return true;
 }
 
@@ -258,7 +266,7 @@ void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
         GameController::getInstance()->GameOver(
             [this]() {
-                this->resetGameState(); // Reset game state
+                Director::getInstance()->end();
             },
             []() -> Scene* {
                 return Game1Scene::createScene();
@@ -452,15 +460,28 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     Vec2 spawnPosition = getRandomSpawnPosition(size);
 
     if (!isPositionOccupied(spawnPosition)) {
-        auto fallingRock = FallingRockPool::getInstance()->getEnemy();
-        if (fallingRock) {
-            fallingRock->reset();
-            fallingRock->spawn(spawnPosition);
-            auto size = fallingRock->GetSize();
-            auto fallingRockBody = PhysicsBody::createCircle(size.width / 2);
-            setPhysicsBodyChar(fallingRockBody, 0x02);
-            fallingRock->setPhysicsBody(fallingRockBody);
-            this->addChild(fallingRock, Constants::ORDER_LAYER_CHARACTER - 1);
+        if (rand() % 2 == 0) {
+            auto rock = FallingRockPool::getInstance()->getEnemy();
+            if (rock) {
+                rock->reset();
+                rock->spawn(spawnPosition);
+                auto size = rock->GetSize();
+                auto rockBody = PhysicsBody::createCircle(size.width / 2);
+                setPhysicsBodyChar(rockBody, 0x02);
+                rock->setPhysicsBody(rockBody);
+                this->addChild(rock, Constants::ORDER_LAYER_CHARACTER - 1);
+            }
+        } else {
+            auto tree = FallingTreePool::getInstance()->getEnemy();
+            if (tree) {
+                tree->reset();
+                tree->spawn(spawnPosition);
+                auto size = tree->GetSize();
+                auto treeBody = PhysicsBody::createCircle(size.width / 2);
+                setPhysicsBodyChar(treeBody, 0x02);
+                tree->setPhysicsBody(treeBody);
+                this->addChild(tree, Constants::ORDER_LAYER_CHARACTER - 1);
+            }
         }
     }
 }
@@ -493,7 +514,8 @@ void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
 }
 
 void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
-    Vec2 spawnPosition = getRandomSpawnPosition(size);
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 spawnPosition = Vec2(visibleSize.width / 2, visibleSize.height / 2);
 
     auto randomBoom = RandomBoomPool::getInstance()->getEnemy();
     if (randomBoom) {
@@ -524,7 +546,7 @@ void Game1Scene::SpawnCollectibleItem(const Size& size) {
             setPhysicsBodyChar(itemBody, 0x03);
             item->setPhysicsBody(itemBody);
 
-            this->addChild(item, Constants::ORDER_LAYER_CHARACTER - 1);
+            this->addChild(item, Constants::ORDER_LAYER_ITEM);
         }
         else {
             CCLOG("Failed to create CollectibleItem");
@@ -541,7 +563,7 @@ void Game1Scene::scheduleCollectibleSpawning() {
     this->schedule([this](float dt) {
         Size visibleSize = Director::getInstance()->getVisibleSize();
         this->SpawnCollectibleItem(visibleSize); // Call the function to spawn items
-        }, 5.0f, "collectible_item_spawn_key"); // Adjust the interval as needed
+        }, 7.0f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 
 bool Game1Scene::isPositionOccupied(const Vec2& position) {
@@ -605,8 +627,3 @@ void Game1Scene::spawnEffect(const cocos2d::Size& size) {
     effectRight1->playAnimation(Constants::EFFECT_EXPLOSION_NAME, 9, 0.07f);
     this->addChild(effectRight1, Constants::ORDER_LAYER_CHARACTER);
 }
-
-
-
-
-

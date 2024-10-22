@@ -7,6 +7,8 @@ const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
 //UI
 const int Constants::ORDER_LAYER_UI = 99;
 const int Constants::ORDER_LAYER_CHARACTER = 1;
+const int Constants::ORDER_LAYER_PLAYER = 1;
+const int Constants::ORDER_LAYER_ITEM = 3;
 const int Constants::ORDER_LAYER_BACKGROUND = -99;
 //EFFECT_GAME1
 const std::string Constants::EFFECT_EXPLOSION_NAME = "explosions_effect";
@@ -24,10 +26,12 @@ const float Constants::FALLINGROCK_PADDING = 0.006f;
 const float Constants::FANBULLET_OFFSET = 0.04f;
 const float Constants::FALLINGROCK_ITEMS_OFFSET = 0.05f;
 const float Constants::FALLINGROCK_ITEMS_SPEED = 255.0f;
+const float Constants::RANDOMBOOM_RESTRICTEDHEIGHT = 0.12f;
+const float Constants::RANDOMBOOM_RESTRICTEDWIDTH = 0.31f;
 //PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
-const float Constants::PLAYER_MOVESPEED = 250.0f;
+const float Constants::PLAYER_MOVESPEED = 270.0f;
 const int Constants::PLAYER_HEALTH = 3;
 
 const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;

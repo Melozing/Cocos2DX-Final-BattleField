@@ -3,6 +3,7 @@
 
 #include "HealthItem.h"
 #include "cocos2d.h"
+#include <queue>
 
 class HealthItemPool {
 public:
@@ -10,10 +11,10 @@ public:
     void initPool(int size);
     HealthItem* getItem();
     void returnItem(HealthItem* item);
-
+    void resetPool();
 private:
     HealthItemPool() = default;
-    cocos2d::Vector<HealthItem*> _pool;
+    std::queue<HealthItem*> _availableItems;
 };
 
 #endif // __HEALTH_ITEM_POOL_H__

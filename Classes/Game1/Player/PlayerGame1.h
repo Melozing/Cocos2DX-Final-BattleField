@@ -20,12 +20,17 @@ public:
     Size GetSize();
 
     float boundaryPadding;
-    void OnCollisionWithEnemy(int enemyDamage);            // Handles collision with enemy
+    void playDamageEffect();
+    void playHealthIncreaseEffect();
 
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void update(float delta);
 
+    float getMinX() const { return minX; }
+    float getMaxX() const { return maxX; }
+    float getMinY() const { return minY; }
+    float getMaxY() const { return maxY; }
 private:
     int _health = 3;
     float minX, maxX, minY, maxY;

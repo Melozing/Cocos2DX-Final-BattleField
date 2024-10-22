@@ -321,6 +321,9 @@
     <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp">
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingTreePool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -520,6 +523,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\SpriteBatchNodeManager.h">
       <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingTreePool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
