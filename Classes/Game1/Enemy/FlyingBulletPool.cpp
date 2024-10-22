@@ -1,4 +1,3 @@
-// FlyingBulletPool.cpp
 #include "FlyingBulletPool.h"
 #include "cocos2d.h"
 
@@ -22,6 +21,12 @@ void FlyingBulletPool::initPool(int poolSize) {
 
 FlyingBullet* FlyingBulletPool::getEnemy() {
     if (_availableEnemies.empty()) {
+        FlyingBullet* enemy = FlyingBullet::create();
+        if (enemy) {
+            enemy->retain();
+            enemy->reset();
+            return enemy;
+        }
         return nullptr;
     }
     FlyingBullet* enemy = _availableEnemies.front();

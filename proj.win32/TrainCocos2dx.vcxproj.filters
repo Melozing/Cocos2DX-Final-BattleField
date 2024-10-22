@@ -64,9 +64,6 @@
     <Filter Include="src\Utils">
       <UniqueIdentifier>{f6bc2651-ea34-4798-bfb7-b8ab73290b5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Utils\Music">
-      <UniqueIdentifier>{c946621e-369e-407b-8ca8-8f9b8387e750}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Manager">
       <UniqueIdentifier>{c5bfda46-f738-45fb-881a-28f22f850d96}</UniqueIdentifier>
     </Filter>
@@ -120,6 +117,12 @@
     </Filter>
     <Filter Include="src\Manager\AllUse">
       <UniqueIdentifier>{dab5cbc4-be88-453c-8403-a450f9be9fb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Effect">
+      <UniqueIdentifier>{cbab5db8-0d71-4727-871d-630aa5e3ed2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Effect\Game1">
+      <UniqueIdentifier>{c1fa6e31-7e42-44e2-a8e9-0326c41a4ecc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -197,15 +200,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
       <Filter>src\Gameplay\Background</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\utils\Music\AudioUtils.cpp">
-      <Filter>src\Utils\Music</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\utils\Music\MusicAnalyzer.cpp">
-      <Filter>src\Utils\Music</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\utils\Music\MusicEvent.cpp">
-      <Filter>src\Utils\Music</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Button\PauseButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
@@ -315,6 +309,18 @@
     <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp">
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Effect\EffectObject.cpp">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\SpriteFrameCacheManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -391,15 +397,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\Background\Background3.h">
       <Filter>src\Gameplay\Background</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\utils\Music\AudioUtils.h">
-      <Filter>src\Utils\Music</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\utils\Music\MusicAnalyzer.h">
-      <Filter>src\Utils\Music</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\utils\Music\MusicEvent.h">
-      <Filter>src\Utils\Music</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Button\PauseButton.h">
       <Filter>src\UXUI\Buttons</Filter>
@@ -510,6 +507,18 @@
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Effect\EffectObject.h">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\SpriteFrameCacheManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\SpriteBatchNodeManager.h">
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
   </ItemGroup>

@@ -164,6 +164,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
     <ClCompile Include="..\Classes\Controller\SpriteController.cpp" />
     <ClCompile Include="..\Classes\Game1\Background\Background.cpp" />
+    <ClCompile Include="..\Classes\Game1\Effect\EffectObject.cpp" />
+    <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FallingRock.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FallingRockPool.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp" />
@@ -200,6 +202,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp" />
     <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp" />
     <ClCompile Include="..\Classes\Manager\PositionManager.cpp" />
+    <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp" />
+    <ClCompile Include="..\Classes\Manager\SpriteFrameCacheManager.cpp" />
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp" />
     <ClCompile Include="..\Classes\Panel\PausePanel.cpp" />
     <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp" />
@@ -208,9 +212,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\utils\MathFunction.cpp" />
-    <ClCompile Include="..\Classes\utils\Music\AudioUtils.cpp" />
-    <ClCompile Include="..\Classes\utils\Music\MusicAnalyzer.cpp" />
-    <ClCompile Include="..\Classes\utils\Music\MusicEvent.cpp" />
     <ClCompile Include="..\Classes\utils\Pool.cpp" />
     <ClCompile Include="..\Classes\utils\tilemap.cpp" />
     <ClCompile Include="main.cpp" />
@@ -230,6 +231,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Controller\SoundController.h" />
     <ClInclude Include="..\Classes\Controller\SpriteController.h" />
     <ClInclude Include="..\Classes\Game1\Background\Background.h" />
+    <ClInclude Include="..\Classes\Game1\Effect\EffectObject.h" />
+    <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FallingRock.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FallingRockPool.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h" />
@@ -267,6 +270,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Manager\PhysicsManager.h" />
     <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h" />
     <ClInclude Include="..\Classes\Manager\PositionManager.h" />
+    <ClInclude Include="..\Classes\Manager\SpriteBatchNodeManager.h" />
+    <ClInclude Include="..\Classes\Manager\SpriteFrameCacheManager.h" />
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h" />
     <ClInclude Include="..\Classes\Panel\PausePanel.h" />
     <ClInclude Include="..\Classes\Panel\VictoryPanel.h" />
@@ -275,9 +280,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Scene\LoadingScene.h" />
     <ClInclude Include="..\Classes\Scene\MainMenuScene.h" />
     <ClInclude Include="..\Classes\utils\MathFunction.h" />
-    <ClInclude Include="..\Classes\utils\Music\AudioUtils.h" />
-    <ClInclude Include="..\Classes\utils\Music\MusicAnalyzer.h" />
-    <ClInclude Include="..\Classes\utils\Music\MusicEvent.h" />
     <ClInclude Include="..\Classes\utils\Pool.h" />
     <ClInclude Include="..\Classes\utils\tilemap.h" />
     <ClInclude Include="main.h" />

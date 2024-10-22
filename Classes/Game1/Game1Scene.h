@@ -13,11 +13,12 @@
 #include "Enemy/RandomBoomPool.h"
 #include "Enemy/FanBulletPool.h" 
 #include "Enemy/SpawnEvent.h" 
+#include "Game1/Effect/EffectObjectPool.h"
+#include "Game1/Effect/EffectObject.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
 #include "Controller/SoundController.h"
-#include "utils/Music/MusicEvent.h" 
 #include <functional>
 
 class Game1Scene : public BaseScene {
@@ -27,6 +28,10 @@ public:
     virtual bool init() override;
     CREATE_FUNC(Game1Scene);
     virtual void update(float delta);
+
+    // New method to reset game state
+    void resetGameState();
+
 private:
     // Physics world
     cocos2d::PhysicsWorld* world;
@@ -55,14 +60,10 @@ private:
     // Music and sound
     SoundController* _soundController;
     float musicDuration;
-    bool shouldPlayMusic;
 
     // UI elements
     cocos2d::ui::LoadingBar* _loadingBar;
     Sprite* border;
-
-    // Player movement
-    //void setupMovementListener(EventListenerKeyboard* listener);
 
     // Enemy spawning
     void SpawnFallingRockAndBomb(cocos2d::Size size);
@@ -71,6 +72,7 @@ private:
     void SpawnFanBullet(cocos2d::Size size);
     bool isPositionOccupied(const Vec2& position);
     void trackUsedPosition(const Vec2& position);
+    void resetSchedules();
 
     // Collectible spawning
     void scheduleCollectibleSpawning();
@@ -84,10 +86,6 @@ private:
     // Game over handling
     void checkGameOver();
 
-    //// Input handling
-    //void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-    //void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-
     // UI updates
     void updateLoadingBar(float dt);
 
@@ -96,11 +94,26 @@ private:
     std::function<cocos2d::Scene* ()> createSceneFunc;
 
     // JSON-based spawn schedule
-    std::vector<SpawnEvent> spawnSchedule; // Change from std::vector<std::pair<float, std::string>> to std::vector<SpawnEvent>
+    std::vector<SpawnEvent> spawnSchedule;
     std::unordered_map<std::string, std::function<void(const cocos2d::Size&)>> enemySpawnMap;
 
     // Method to initialize the spawn schedule from JSON
     void initializeSpawnSchedule();
+
+    // Effect spawning
+    void spawnEffect(const cocos2d::Size& size);
+    float _lastEffectYPosition = -1.0f;
+    float elapsedTime;
+
+	//init functions
+    void initPhysics(const Size& visibleSize);
+    void initBackground();
+    void initPools();
+    void initPlayer(const Size& visibleSize);
+    void initUI(const Size& visibleSize);
+    void initEvents();
+    void initSound();
+    void initSpawning();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

@@ -8,6 +8,10 @@ struct SpawnEvent {
     std::string enemyType;
     bool spawned;
 
+    // Default constructor
+    SpawnEvent() : spawnTime(0.0f), enemyType(""), spawned(false) {}
+
+    // Parameterized constructor
     SpawnEvent(float time, const std::string& type, bool spawned = false)
         : spawnTime(time), enemyType(type), spawned(spawned) {}
 };
