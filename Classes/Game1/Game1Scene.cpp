@@ -31,6 +31,7 @@ cocos2d::Scene* Game1Scene::createScene() {
     return scene;
 }
 
+
 bool Game1Scene::init() {
     if (!BaseScene::init()) return false;
 
@@ -45,11 +46,25 @@ bool Game1Scene::init() {
     _playerAttributes = &PlayerAttributes::getInstance();
     _canTakeDamage = true;
 
-    // Initialize shouldPlayMusic
-    shouldPlayMusic = true; // or some condition to determine if music should play
-
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
+
+    initPhysics(visibleSize);
+    initBackground();
+    initPools();
+    initPlayer(visibleSize);
+    initUI(visibleSize);
+    initEvents();
+    initSound();
+    initSpawning();
+
+    this->scheduleUpdate();
+    this->scheduleCollectibleSpawning();
+
+    return true;
+}
+
+void Game1Scene::initPhysics(const Size& visibleSize) {
     auto edgeBody = cocos2d::PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 0);
     edgeBody->setCollisionBitmask(0x03);
     edgeBody->setContactTestBitmask(true);
@@ -57,10 +72,14 @@ bool Game1Scene::init() {
     edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
+}
 
+void Game1Scene::initBackground() {
     background = Background::createBackground("assets_game/gameplay/bg_new.jpg", 150.0f);
     this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
+}
 
+void Game1Scene::initPools() {
     FlyingBulletPool::getInstance()->resetPool();
     FallingRockPool::getInstance()->resetPool();
     RandomBoomPool::getInstance()->resetPool();
@@ -70,7 +89,10 @@ bool Game1Scene::init() {
     FallingRockPool::getInstance()->initPool(10);
     RandomBoomPool::getInstance()->initPool(10);
     FanBulletPool::getInstance()->initPool(30);
+    EffectObjectPool::getInstance()->initPool(20, "assets_game/fx/explosions_effect.png", "assets_game/fx/explosions_effect.plist");
+}
 
+void Game1Scene::initPlayer(const Size& visibleSize) {
     _player = PlayerGame1::createPlayer();
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _healthPlayerGame1 = HealthPlayerGame1::createHealth();
@@ -81,7 +103,31 @@ bool Game1Scene::init() {
     setPhysicsBodyChar(playerBody, 0x01);
     _player->setPhysicsBody(playerBody);
     addChild(_player, Constants::ORDER_LAYER_CHARACTER);
+}
 
+void Game1Scene::initUI(const Size& visibleSize) {
+    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
+    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
+
+    _loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
+    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT);
+    _loadingBar->setRotation(-90);
+    _loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
+    _loadingBar->setPercent(0);
+    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5));
+    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2));
+
+    border = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
+    auto loadingPos = _loadingBar->getPosition();
+    border->setPosition(loadingPos);
+    border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
+    border->setRotation(-90);
+    border->setAnchorPoint(Vec2(0.5, 0.5));
+    this->addChild(border, Constants::ORDER_LAYER_UI);
+    this->addChild(_loadingBar, Constants::ORDER_LAYER_UI);
+}
+
+void Game1Scene::initEvents() {
     auto eventListener = EventListenerKeyboard::create();
     eventListener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         switch (keyCode) {
@@ -121,40 +167,19 @@ bool Game1Scene::init() {
         }
         };
 
-    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
-    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+}
 
-    _loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
-    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT);
-    _loadingBar->setRotation(-90);
-    _loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
-    _loadingBar->setPercent(0);
-    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5));
-    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2));
-
-    border = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
-    auto loadingPos = _loadingBar->getPosition();
-    border->setPosition(loadingPos);
-    border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
-    border->setRotation(-90);
-    border->setAnchorPoint(Vec2(0.5, 0.5));
-    this->addChild(border, Constants::ORDER_LAYER_UI);
-    this->addChild(_loadingBar, Constants::ORDER_LAYER_UI);
-
-    auto randomPosition = PositionManager::getInstance().getRandomSpawnPosition(visibleSize);
-    while (PositionManager::getInstance().isPositionOccupied(randomPosition)) {
-        randomPosition = PositionManager::getInstance().getRandomSpawnPosition(visibleSize);
-    }
-    PositionManager::getInstance().addOccupiedPosition(randomPosition);
-
+void Game1Scene::initSound() {
     if (!FileUtils::getInstance()->isFileExist(Constants::pathSoundTrackGame1)) {
         CCLOG("Error: Music file does not exist!");
-        return false;
+        return;
     }
 
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
-    //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->scheduleOnce([this](float) {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
@@ -163,48 +188,28 @@ bool Game1Scene::init() {
     this->schedule([this](float dt) {
         updateLoadingBar(dt);
         }, "loading_bar_update_key");
+}
 
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
-
-    this->scheduleUpdate();
-    this->scheduleCollectibleSpawning();
-
-    //this->schedule([this](float dt) { handleMusicBasedSpawning(dt); }, "music_based_spawning_key");
-     // Initialize the enemy spawn map
+void Game1Scene::initSpawning() {
     enemySpawnMap["FlyingBullet"] = [this](const cocos2d::Size& size) { SpawnFlyingBullet(size, (rand() % 2 == 0)); };
     enemySpawnMap["FallingRock"] = [this](const cocos2d::Size& size) { SpawnFallingRockAndBomb(size); };
     enemySpawnMap["RandomBoom"] = [this](const cocos2d::Size& size) { SpawnRandomBoom(size); };
     enemySpawnMap["FanBullet"] = [this](const cocos2d::Size& size) { SpawnFanBullet(size); };
+    enemySpawnMap["Effect"] = [this](const cocos2d::Size& size) { spawnEffect(size); };
 
-    // Initialize the spawn schedule from JSON
     initializeSpawnSchedule();
 
-    // Schedule the spawning based on the JSON file
     this->schedule([this](float dt) {
-        static float elapsedTime = 0.0f;
         elapsedTime += dt;
 
         for (auto& event : spawnSchedule) {
             if (!event.spawned && elapsedTime >= event.spawnTime) {
                 enemySpawnMap[event.enemyType](Director::getInstance()->getVisibleSize());
-                event.spawned = true; // Mark as spawned
+                event.spawned = true;
             }
         }
         }, "json_based_spawning_key");
-
-    exitAction = []() {
-        Director::getInstance()->end();
-        };
-
-    createSceneFunc = []() -> cocos2d::Scene* {
-        return Game1Scene::createScene();
-        };
-
-    return true;
 }
-
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
@@ -252,8 +257,8 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
         GameController::getInstance()->GameOver(
-            []() {
-                Director::getInstance()->end();
+            [this]() {
+                this->resetGameState(); // Reset game state
             },
             []() -> Scene* {
                 return Game1Scene::createScene();
@@ -293,45 +298,73 @@ void Game1Scene::update(float delta) {
     background->update(delta);
 }
 
+void Game1Scene::resetSchedules() {
+    this->unschedule("json_based_spawning_key");
+    this->unschedule("loading_bar_update_key");
+    this->unschedule("damage_delay_key");
+    // Add any other schedules you need to reset
+}
+
+void Game1Scene::resetGameState() {
+    // Unschedule existing tasks
+    resetSchedules();
+
+    // Reset game state
+    _isGameOver = false;
+    PlayerAttributes::getInstance().SetHealth(Constants::PLAYER_HEALTH);
+    _playerAttributes = &PlayerAttributes::getInstance();
+    _canTakeDamage = true;
+
+    // Reset elapsed time
+    elapsedTime = 0.0f;
+
+    // Reinitialize game elements
+    initPools();
+    initPlayer(Director::getInstance()->getVisibleSize());
+    initUI(Director::getInstance()->getVisibleSize());
+    initEvents();
+    initSound();
+    initSpawning();
+
+    // Reschedule tasks
+    this->scheduleUpdate();
+    this->scheduleCollectibleSpawning();
+}
+
 // Function to initialize the spawn schedule from JSON
 void Game1Scene::initializeSpawnSchedule() {
-    // Get the full path to the JSON file in the Resources folder
-    std::string jsonFilePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game1.json");
+    // Log the start of the initialization
 
-    // Open the JSON file
-    std::ifstream ifs(jsonFilePath);
-    if (!ifs.is_open()) {
-        CCLOG("Error: Could not open JSON file at %s", jsonFilePath.c_str());
+    // Example of reading a JSON file and initializing the spawn schedule
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game1.json");
+
+    FILE* fp = fopen(filePath.c_str(), "rb");
+    if (!fp) {
+        CCLOG("Failed to open spawn schedule file.");
         return;
     }
 
-    // Read the file into a string
-    std::string jsonContent((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-    ifs.close();
-
-    // Parse the JSON content
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
     rapidjson::Document document;
-    if (document.Parse(jsonContent.c_str()).HasParseError()) {
-        CCLOG("Error: JSON parse error in file %s", jsonFilePath.c_str());
+    document.ParseStream(is);
+    fclose(fp);
+
+    if (document.HasParseError()) {
+        CCLOG("Error parsing spawn schedule JSON.");
         return;
     }
 
-    // Check if the document is an array
     if (!document.IsArray()) {
-        CCLOG("Invalid JSON format in file %s: Expected an array", jsonFilePath.c_str());
+        CCLOG("Spawn schedule JSON is not an array.");
         return;
     }
 
-    // Iterate through the array and populate the spawn schedule
     for (const auto& item : document.GetArray()) {
-        if (item.HasMember("spawnTime") && item.HasMember("enemyType") &&
-            item["spawnTime"].IsFloat() && item["enemyType"].IsString()) {
-            float spawnTime = item["spawnTime"].GetFloat();
+        if (item.IsObject()) {
             std::string enemyType = item["enemyType"].GetString();
-            spawnSchedule.emplace_back(spawnTime, enemyType, false); // Add false to indicate not spawned yet
-        }
-        else {
-            CCLOG("Invalid JSON format in file %s: Missing required fields or incorrect types", jsonFilePath.c_str());
+            float spawnTime = item["spawnTime"].GetFloat();
+            spawnSchedule.push_back(SpawnEvent{ spawnTime, enemyType, false });
         }
     }
 }
@@ -528,3 +561,52 @@ bool Game1Scene::isPositionOccupied(const Vec2& position) {
     }
     return false; // Position is free
 }
+
+void Game1Scene::spawnEffect(const cocos2d::Size& size) {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    float padding = SpriteController::calculateScreenRatio(Constants::EFFECT_EXPLOSION_PADDING_SCREEN); // Padding from the edges
+    float playerPadding = SpriteController::calculateScreenRatio(Constants::EFFECT_EXPLOSION_PADDING_PLAYER_AREA); // Padding from the player's movement area
+    float minYDistance = SpriteController::calculateScreenRatio(Constants::EFFECT_MIN_Y_DISTANCE); // Minimum y-distance between effect pairs
+    float minYDistanceBetweenCalls = SpriteController::calculateScreenRatio(Constants::EFFECT_MIN_Y_DISTANCE_BETWEEN_CALLS); // Minimum y-distance between consecutive calls
+
+    float minX = visibleSize.width / 2 - SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH) / 2 - playerPadding;
+    float maxX = visibleSize.width / 2 + SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH) / 2 + playerPadding;
+    float minY = visibleSize.height / 2 - SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDHEIGHT) / 2 - playerPadding;
+    float maxY = visibleSize.height / 2 + SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDHEIGHT) / 2 + playerPadding;
+
+    cocos2d::Vec2 spawnPositionLeft1, spawnPositionRight1, spawnPositionLeft2, spawnPositionRight2;
+    float yPosition1, yPosition2;
+    do {
+        yPosition1 = cocos2d::RandomHelper::random_real(padding, visibleSize.height - padding);
+        yPosition2 = cocos2d::RandomHelper::random_real(padding, visibleSize.height - padding);
+        spawnPositionLeft1 = cocos2d::Vec2(padding, yPosition1);
+        spawnPositionRight1 = cocos2d::Vec2(visibleSize.width - padding, yPosition1);
+        spawnPositionLeft2 = cocos2d::Vec2(padding, yPosition2);
+        spawnPositionRight2 = cocos2d::Vec2(visibleSize.width - padding, yPosition2);
+    } while (!PositionManager::getInstance().isOutsidePlayerMovementArea(spawnPositionLeft1, visibleSize, minX, maxX, minY, maxY) ||
+        !PositionManager::getInstance().isOutsidePlayerMovementArea(spawnPositionRight1, visibleSize, minX, maxX, minY, maxY) ||
+        !PositionManager::getInstance().isOutsidePlayerMovementArea(spawnPositionLeft2, visibleSize, minX, maxX, minY, maxY) ||
+        !PositionManager::getInstance().isOutsidePlayerMovementArea(spawnPositionRight2, visibleSize, minX, maxX, minY, maxY) ||
+        std::abs(yPosition1 - yPosition2) < minYDistance ||
+        (_lastEffectYPosition != -1.0f && std::abs(yPosition1 - _lastEffectYPosition) < minYDistanceBetweenCalls));
+
+    // Update the last Y position
+    _lastEffectYPosition = yPosition1;
+
+    // spawnPositionLeft1
+    auto effectLeft1 = EffectObjectPool::getInstance()->getEffectObject();
+    effectLeft1->setPosition(spawnPositionLeft1);
+    effectLeft1->playAnimation(Constants::EFFECT_EXPLOSION_NAME, 9, 0.07f);
+    this->addChild(effectLeft1, Constants::ORDER_LAYER_CHARACTER);
+
+    // spawnPositionRight1
+    auto effectRight1 = EffectObjectPool::getInstance()->getEffectObject();
+    effectRight1->setPosition(spawnPositionRight1);
+    effectRight1->playAnimation(Constants::EFFECT_EXPLOSION_NAME, 9, 0.07f);
+    this->addChild(effectRight1, Constants::ORDER_LAYER_CHARACTER);
+}
+
+
+
+
+

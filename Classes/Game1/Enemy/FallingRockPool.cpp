@@ -21,6 +21,12 @@ void FallingRockPool::initPool(int poolSize) {
 
 FallingRock* FallingRockPool::getEnemy() {
     if (_availableEnemies.empty()) {
+        FallingRock* enemy = FallingRock::create();
+        if (enemy) {
+            enemy->retain();
+            enemy->reset();
+            return enemy;
+        }
         return nullptr;
     }
     FallingRock* enemy = _availableEnemies.front();

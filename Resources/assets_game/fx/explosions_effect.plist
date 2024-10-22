@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>explosions_effect1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{76,947},{41,49}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{41,49}}</string>
+				<key>sourceSize</key>
+				<string>{41,49}</string>
+			</dict>
+
+			<key>explosions_effect2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,943},{75,77}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{75,77}}</string>
+				<key>sourceSize</key>
+				<string>{75,77}</string>
+			</dict>
+
+			<key>explosions_effect3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{224,596},{127,127}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{127,127}}</string>
+				<key>sourceSize</key>
+				<string>{127,127}</string>
+			</dict>
+
+			<key>explosions_effect4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{216,791},{214,155}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{214,155}}</string>
+				<key>sourceSize</key>
+				<string>{214,155}</string>
+			</dict>
+
+			<key>explosions_effect5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,596},{223,194}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{223,194}}</string>
+				<key>sourceSize</key>
+				<string>{223,194}</string>
+			</dict>
+
+			<key>explosions_effect6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,791},{215,151}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{215,151}}</string>
+				<key>sourceSize</key>
+				<string>{215,151}</string>
+			</dict>
+
+			<key>explosions_effect7.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{285,214}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{285,214}}</string>
+				<key>sourceSize</key>
+				<string>{285,214}</string>
+			</dict>
+
+			<key>explosions_effect8.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,215},{284,210}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{284,210}}</string>
+				<key>sourceSize</key>
+				<string>{284,210}</string>
+			</dict>
+
+			<key>explosions_effect9.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,426},{246,169}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{246,169}}</string>
+				<key>sourceSize</key>
+				<string>{246,169}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{512,1024}</string>
+			<key>textureFileName</key>
+			<string>explosions_effect.png</string>
+			</dict>
+		</dict>
+</plist>

@@ -8,6 +8,12 @@ const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
 const int Constants::ORDER_LAYER_UI = 99;
 const int Constants::ORDER_LAYER_CHARACTER = 1;
 const int Constants::ORDER_LAYER_BACKGROUND = -99;
+//EFFECT_GAME1
+const std::string Constants::EFFECT_EXPLOSION_NAME = "explosions_effect";
+const float Constants::EFFECT_EXPLOSION_PADDING_SCREEN = 0.15f;
+const float Constants::EFFECT_EXPLOSION_PADDING_PLAYER_AREA = 0.008f;
+const float Constants::EFFECT_MIN_Y_DISTANCE = 0.1f;
+const float Constants::EFFECT_MIN_Y_DISTANCE_BETWEEN_CALLS = 0.1f;
 //ENEMY_GAME1
 const std::string Constants::ENEMY_FLYING_BULLET_NAME = "FlyingBullet";
 const std::string Constants::ENEMY_FALLING_ROCK_AND_BOOM_NAME = "FallingRock";

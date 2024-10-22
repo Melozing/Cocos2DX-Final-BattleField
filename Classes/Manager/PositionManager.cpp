@@ -27,3 +27,7 @@ void PositionManager::addOccupiedPosition(const cocos2d::Vec2& position) {
 void PositionManager::clearOccupiedPositions() {
     occupiedPositions.clear();
 }
+
+bool PositionManager::isOutsidePlayerMovementArea(const cocos2d::Vec2& position, const cocos2d::Size& visibleSize, float minX, float maxX, float minY, float maxY) {
+    return position.x < minX || position.x > maxX || position.y < minY || position.y > maxY;
+}

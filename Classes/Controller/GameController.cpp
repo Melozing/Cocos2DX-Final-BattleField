@@ -182,3 +182,4 @@ void GameController::resetGameState() {
     audioID = AudioEngine::INVALID_AUDIO_ID;
     currentSoundtrackPath = "";
 }
+

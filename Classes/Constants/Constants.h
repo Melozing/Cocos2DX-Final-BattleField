@@ -16,6 +16,12 @@ public:
     static const float PLAYER_HEALTH_PADDING_X;
     static const float PLAYER_HEALTH_PADDING_X_START;
     static const float PLAYER_HEALTH_PADDING_Y;
+	//EFFECT_GAME1
+    static const std::string EFFECT_EXPLOSION_NAME;
+    static const float EFFECT_EXPLOSION_PADDING_SCREEN;
+    static const float EFFECT_EXPLOSION_PADDING_PLAYER_AREA;
+    static const float EFFECT_MIN_Y_DISTANCE;
+    static const float EFFECT_MIN_Y_DISTANCE_BETWEEN_CALLS;
 	// EnemyGame1
     static const std::string ENEMY_FLYING_BULLET_NAME;
     static const std::string ENEMY_FALLING_ROCK_AND_BOOM_NAME;
