@@ -33,8 +33,6 @@ bool PlayerGame1::init()
     minY = centerY - halfRestrictedHeight;
     maxY = centerY + halfRestrictedHeight;
 
-    
-
     // Add keyboard event listener
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame1::onKeyPressed, this);
@@ -52,27 +50,15 @@ void PlayerGame1::takeDamage()
         _health -= 1; 
         _lastDamageTime = Director::getInstance()->getTotalFrames(); 
 
+        // Play damage effect
+        playDamageEffect();
+
         if (_health <= 0) {
             CCLOG("Game Over");
         }
         else {
             CCLOG("Player health: %d", _health);
         }
-    }
-}
-
-// Add a new method to handle collision with enemies
-void PlayerGame1::OnCollisionWithEnemy(int enemyDamage)
-{
-    // Check if player can take damage
-    if (canTakeDamage() && !attributes->IsDead())
-    {
-        // Reduce health based on the enemy's damage
-        attributes->TakeDamage(enemyDamage);
-        _lastDamageTime = Director::getInstance()->getTotalFrames(); // Update the last damage time
-
-        // Log the player's current health
-        CCLOG("Player health: %d", attributes->GetHealth());
     }
 }
 
@@ -133,3 +119,33 @@ void PlayerGame1::update(float delta)
     playerMovement->update(delta);
 }
 
+void PlayerGame1::playDamageEffect() {
+    // Create a blink action
+    auto blinkAction = Blink::create(1.0f, 3); // Blink for 1 second, 3 times
+
+    // Create a color change action to red
+    auto tintToRed = TintTo::create(0.1f, 255, 0, 0); // Change to red over 0.1 seconds
+
+    // Create a color change action back to the original color
+    auto tintToNormal = TintTo::create(0.1f, 255, 255, 255); // Change back to normal over 0.1 seconds
+
+    // Create a sequence of actions: tint to red, blink, tint back to normal
+    auto damageEffect = Sequence::create(tintToRed, blinkAction, tintToNormal, nullptr);
+
+    // Run the sequence on the player sprite
+    modelCharac->runAction(damageEffect);
+}
+
+void PlayerGame1::playHealthIncreaseEffect() {
+    // Create a color change action to green
+    auto tintToGreen = TintTo::create(0.1f, 0, 255, 0); // Change to green over 0.1 seconds
+
+    // Create a color change action back to the original color
+    auto tintToNormal = TintTo::create(0.1f, 255, 255, 255); // Change back to normal over 0.1 seconds
+
+    // Create a sequence of actions: tint to green, tint back to normal
+    auto healthEffect = Sequence::create(tintToGreen, tintToNormal, nullptr);
+
+    // Run the sequence on the player sprite
+    modelCharac->runAction(healthEffect);
+}

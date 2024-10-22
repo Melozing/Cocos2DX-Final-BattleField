@@ -51,13 +51,18 @@ void RandomBoom::reset() {
 void RandomBoom::spawn(const Vec2& startPosition) {
     reset();
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
-    float restrictedHeight = visibleSize.height - SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDHEIGHT);
+    float restrictedWidth = SpriteController::calculateScreenRatio(Constants::RANDOMBOOM_RESTRICTEDWIDTH);
+    float restrictedHeight = visibleSize.height - SpriteController::calculateScreenRatio(Constants::RANDOMBOOM_RESTRICTEDHEIGHT);
     float centerX = visibleSize.width / 2;
     float halfRestrictedWidth = restrictedWidth / 2;
-    float minX = centerX - halfRestrictedWidth;
+
+    float minX = centerX - halfRestrictedWidth / 2;
     float maxX = centerX + halfRestrictedWidth;
-    Vec2 warningPosition = Vec2(rand() % int(maxX - minX) + minX, rand() % int(restrictedHeight) + SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDHEIGHT));
+
+    float spawnX = minX + (rand() % int(maxX - minX));
+    float spawnY = SpriteController::calculateScreenRatio(Constants::RANDOMBOOM_RESTRICTEDHEIGHT) + (rand() % int(restrictedHeight));
+
+    Vec2 warningPosition = Vec2(spawnX, spawnY);
 
     showWarning(warningPosition);
 

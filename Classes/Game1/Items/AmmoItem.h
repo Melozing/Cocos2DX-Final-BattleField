@@ -2,17 +2,16 @@
 #define __AMMO_ITEM_H__
 
 #include "CollectibleItem.h"
+#include "Constants/Constants.h"
 
 class AmmoItem : public CollectibleItem {
 public:
     static AmmoItem* create();
     virtual bool init() override;
     virtual void applyEffect() override;
-    int getAmmoValue() const { return _ammoValue; }
     virtual cocos2d::Size getScaledSize() const override;
-private:
-    float _spriteScale; // Add this line
-    int _ammoValue; // Ensure this member variable exists and is set appropriately
+    virtual void returnToPool() override;
+    void reset();
 };
 
 #endif // __AMMO_ITEM_H__

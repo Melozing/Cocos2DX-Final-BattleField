@@ -11,8 +11,6 @@ bool CollectibleItem::init() {
 }
 
 void CollectibleItem::spawn(const Vec2& startPosition) {
-    this->setPosition(startPosition);
-
     // Define target position off-screen at the bottom
     Vec2 endPosition = Vec2(startPosition.x, -SpriteController::calculateScreenRatio(Constants::FALLINGROCK_ITEMS_OFFSET));
 
@@ -28,7 +26,8 @@ void CollectibleItem::spawn(const Vec2& startPosition) {
         this->removeWhenOutOfScreen();
         });
 
-    // Run move action and remove when done
+    // Set initial position and run move action and remove when done
+    this->setPosition(startPosition);
     this->runAction(Sequence::create(moveDown, removeItem, nullptr));
 }
 
@@ -36,14 +35,41 @@ Size CollectibleItem::GetSize() const {
     return _currentSprite->getContentSize();
 }
 
-// Remove the update method
- void CollectibleItem::update(float delta) {
-     removeWhenOutOfScreen();
- }
+void CollectibleItem::update(float delta) {
+    removeWhenOutOfScreen();
+}
 
 void CollectibleItem::removeWhenOutOfScreen() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     if (this->getPosition().y < -this->getContentSize().height - 50.0f) {
-        this->removeFromParentAndCleanup(true);
+        this->returnToPool(); // Return to pool instead of removing
     }
+}
+
+void CollectibleItem::playEffectAndRemove() {
+    this->setVisible(true);
+    this->setOpacity(255);
+
+    // Scale up to _scaleFactor times over 0.5 seconds
+    auto scaleUp = ScaleTo::create(0.5f, _scaleFactor);
+
+    // Fade out over 0.5 seconds
+    auto fadeOut = FadeOut::create(0.5f);
+
+    // Callback to return the item to the pool
+    auto removeItem = CallFunc::create([this]() {
+        this->returnToPool(); // Return to pool instead of removing
+        });
+
+    // Run the scale and fade actions simultaneously, then return to pool
+    _currentSprite->runAction(Sequence::create(Spawn::create(scaleUp, fadeOut, nullptr), removeItem, nullptr));
+}
+
+void CollectibleItem::returnToPool() {
+    // Override this function in derived classes
+}
+
+Size CollectibleItem::getScaledSize() const {
+    Size originalSize = _currentSprite->getContentSize();
+    return Size(originalSize.width * _spriteScale, originalSize.height * _spriteScale);
 }

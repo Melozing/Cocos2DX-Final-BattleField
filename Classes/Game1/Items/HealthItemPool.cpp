@@ -1,4 +1,6 @@
 #include "HealthItemPool.h"
+#include "HealthItem.h"
+#include <queue>
 
 HealthItemPool* HealthItemPool::getInstance() {
     static HealthItemPool instance;
@@ -8,23 +10,42 @@ HealthItemPool* HealthItemPool::getInstance() {
 void HealthItemPool::initPool(int size) {
     for (int i = 0; i < size; ++i) {
         auto item = HealthItem::create();
-        item->retain();
-        _pool.pushBack(item);
+        if (item) {
+            item->retain();
+            item->reset();
+            _availableItems.push(item);
+        }
     }
 }
 
 HealthItem* HealthItemPool::getItem() {
-    if (_pool.empty()) {
-        return HealthItem::create();
+    if (_availableItems.empty()) {
+        auto item = HealthItem::create();
+        if (item) {
+            item->retain();
+            item->reset();
+            return item;
+        }
+        return nullptr;
     }
     else {
-        auto item = _pool.back();
-        _pool.popBack();
+        auto item = _availableItems.front();
+        _availableItems.pop();
         return item;
     }
 }
 
 void HealthItemPool::returnItem(HealthItem* item) {
-    item->removeFromParent();
-    _pool.pushBack(item);
+    if (item) {
+        item->reset();
+        _availableItems.push(item);
+    }
+}
+
+void HealthItemPool::resetPool() {
+    while (!_availableItems.empty()) {
+        auto item = _availableItems.front();
+        _availableItems.pop();
+        item->release();
+    }
 }

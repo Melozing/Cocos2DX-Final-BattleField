@@ -3,6 +3,7 @@
 
 #include "AmmoItem.h"
 #include "cocos2d.h"
+#include <queue>
 
 class AmmoItemPool {
 public:
@@ -10,10 +11,10 @@ public:
     void initPool(int size);
     AmmoItem* getItem();
     void returnItem(AmmoItem* item);
-
+    void resetPool();
 private:
     AmmoItemPool() = default;
-    cocos2d::Vector<AmmoItem*> _pool;
+    std::queue<AmmoItem*> _availableItems;
 };
 
 #endif // __AMMO_ITEM_POOL_H__

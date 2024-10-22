@@ -29,6 +29,8 @@ public:
     static const float FANBULLET_OFFSET;
     static const float FALLINGROCK_ITEMS_OFFSET;
     static const float FALLINGROCK_ITEMS_SPEED;
+    static const float RANDOMBOOM_RESTRICTEDHEIGHT;
+    static const float RANDOMBOOM_RESTRICTEDWIDTH;
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
     //Game1
@@ -65,6 +67,8 @@ public:
     //UI
     static const int ORDER_LAYER_UI;
     static const int ORDER_LAYER_CHARACTER;
+    static const int ORDER_LAYER_PLAYER;
+    static const int ORDER_LAYER_ITEM;
     static const int ORDER_LAYER_BACKGROUND;
 };
 

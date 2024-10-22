@@ -46,7 +46,6 @@ void GameController::GameOver(const std::function<void()>& exitAction, const std
             if (newScene) {
                 director->replaceScene(newScene);
             }
-            SoundController::getInstance()->replayMusic(soundtrackPath);
             };
 
         auto panel = GameOverPanel::createPanel(retryAction, exitAction);
@@ -68,7 +67,6 @@ void GameController::Victory(const std::function<void()>& exitAction, const std:
             if (newScene) {
                 director->replaceScene(newScene);
             }
-            SoundController::getInstance()->replayMusic(soundtrackPath);
             };
 
         auto victoryPanel = VictoryPanel::createPanel(retryAction, exitAction);
@@ -90,7 +88,6 @@ void GameController::pauseGame(const std::function<void()>& exitAction, const st
                 if (newScene) {
                     director->replaceScene(newScene);
                 }
-                SoundController::getInstance()->replayMusic(soundtrackPath);
                 };
 
             auto pausePanel = PausePanel::createPanel([this]() {
@@ -170,7 +167,6 @@ void GameController::replayGame(const std::string& soundtrackPath) {
     if (newScene) {
         Director::getInstance()->replaceScene(newScene);
     }
-    SoundController::getInstance()->replayMusic(soundtrackPath);
 }
 
 void GameController::resetGameState() {
