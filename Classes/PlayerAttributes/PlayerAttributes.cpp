@@ -49,7 +49,6 @@ void PlayerAttributes::IncreaseHealth(int amount)
 void PlayerAttributes::SetAmmo(int newAmmo)
 {
     ammo = newAmmo;
-    CCLOG("Player's ammo set. Current ammo: %d", ammo);
 }
 
 int PlayerAttributes::GetAmmo() const

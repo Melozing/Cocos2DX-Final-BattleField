@@ -1,3 +1,4 @@
+// HealthItem.cpp
 #include "HealthItem.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/SpriteController.h"
@@ -20,10 +21,22 @@ bool HealthItem::init() {
     _currentSprite = Sprite::create("assets_game/items/items_health.png");
     _currentSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
     _spriteScale = SpriteController::updateSpriteScale(_currentSprite, 0.08f);
-    _currentSprite->setScale(_spriteScale);
+    //_currentSprite->setScale(_spriteScale);
     this->addChild(_currentSprite);
+    this->setScale(_spriteScale); 
     this->scheduleUpdate();
+    this->initPhysicsBody();
     return true;
+}
+
+
+void HealthItem::initPhysicsBody() {
+    // Create and attach a physics body
+    auto physicsBody = PhysicsBody::createBox(_currentSprite->getContentSize());
+    physicsBody->setCollisionBitmask(0x03);
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
+    this->setPhysicsBody(physicsBody);
 }
 
 void HealthItem::applyEffect() {
@@ -32,17 +45,25 @@ void HealthItem::applyEffect() {
 }
 
 Size HealthItem::getScaledSize() const {
-    Size originalSize = _currentSprite->getContentSize();
-    return Size(originalSize.width * _spriteScale, originalSize.height * _spriteScale);
+    return SpriteController::GetContentSizeSprite(_currentSprite);;
+}
+
+void HealthItem::playEffectAndRemove() {
+    if (this->getPhysicsBody()) {
+        this->removeComponent(this->getPhysicsBody()); // Remove PhysicsBody
+    }
+    this->returnToPool();
 }
 
 void HealthItem::returnToPool() {
+    this->stopAllActions();
     this->removeFromParentAndCleanup(false);
     HealthItemPool::getInstance()->returnItem(this);
 }
 
 void HealthItem::reset() {
     // Reset the state of the HealthItem
+    this->setOpacity(255);
     this->setVisible(true);
-    this->setPosition(Vec2::ZERO);
+    this->initPhysicsBody();
 }

@@ -1,4 +1,3 @@
-// ShieldSkillItemPool.cpp
 #include "ShieldSkillItemPool.h"
 
 ShieldSkillItemPool* ShieldSkillItemPool::getInstance() {
@@ -6,8 +5,8 @@ ShieldSkillItemPool* ShieldSkillItemPool::getInstance() {
     return &instance;
 }
 
-void ShieldSkillItemPool::initPool(int size) {
-    for (int i = 0; i < size; ++i) {
+void ShieldSkillItemPool::initPool(int poolSize) {
+    for (int i = 0; i < poolSize; ++i) {
         auto item = ShieldSkillItem::create();
         if (item) {
             item->retain();
@@ -27,11 +26,9 @@ ShieldSkillItem* ShieldSkillItemPool::getItem() {
         }
         return nullptr;
     }
-    else {
-        auto item = _availableItems.front();
-        _availableItems.pop();
-        return item;
-    }
+    ShieldSkillItem* item = _availableItems.front();
+    _availableItems.pop();
+    return item;
 }
 
 void ShieldSkillItemPool::returnItem(ShieldSkillItem* item) {

@@ -1,3 +1,4 @@
+// AmmoItem.cpp
 #include "AmmoItem.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/SpriteController.h"
@@ -20,10 +21,22 @@ bool AmmoItem::init() {
     _currentSprite = Sprite::create("assets_game/items/items_superpower.png");
     _currentSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
     _spriteScale = SpriteController::updateSpriteScale(_currentSprite, 0.08f);
-    _currentSprite->setScale(_spriteScale);
+    //_currentSprite->setScale(_spriteScale);
     this->addChild(_currentSprite);
+    this->setScale(_spriteScale);
     this->scheduleUpdate();
+    this->initPhysicsBody();
     return true;
+}
+
+void AmmoItem::initPhysicsBody() {
+    // Create and attach a physics body
+    auto physicsBody = PhysicsBody::createBox(_currentSprite->getContentSize());
+    physicsBody->setCollisionBitmask(0x03);
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
+    this->setPhysicsBody(physicsBody);
+
 }
 
 void AmmoItem::applyEffect() {
@@ -31,18 +44,26 @@ void AmmoItem::applyEffect() {
     this->playEffectAndRemove();
 }
 
+void AmmoItem::playEffectAndRemove() {
+    if (this->getPhysicsBody()) {
+        this->removeComponent(this->getPhysicsBody()); // Remove PhysicsBody
+    }
+	this->returnToPool();
+}
+
 Size AmmoItem::getScaledSize() const {
-    Size originalSize = _currentSprite->getContentSize();
-    return Size(originalSize.width * _spriteScale, originalSize.height * _spriteScale);
+    return SpriteController::GetContentSizeSprite(_currentSprite);;
 }
 
 void AmmoItem::returnToPool() {
+    this->stopAllActions();
     this->removeFromParentAndCleanup(false);
     AmmoItemPool::getInstance()->returnItem(this);
 }
 
 void AmmoItem::reset() {
     // Reset the state of the AmmoItem
+    this->setOpacity(255);
     this->setVisible(true);
-    this->setPosition(Vec2::ZERO);
+    this->initPhysicsBody();
 }

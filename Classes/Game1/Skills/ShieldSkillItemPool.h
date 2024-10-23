@@ -7,7 +7,7 @@
 class ShieldSkillItemPool {
 public:
     static ShieldSkillItemPool* getInstance();
-    void initPool(int size);
+    void initPool(int poolSize);
     ShieldSkillItem* getItem();
     void returnItem(ShieldSkillItem* item);
     void resetPool();

@@ -1,7 +1,5 @@
-// ShieldSkillItem.cpp
 #include "ShieldSkillItem.h"
-#include "Game1/Skills/ShieldSkillItemPool.h"
-#include "Game1/Player/PlayerGame1.h"
+#include "ShieldSkillItemPool.h"
 
 USING_NS_CC;
 
@@ -50,6 +48,7 @@ void ShieldSkillItem::reset() {
 }
 
 void ShieldSkillItem::playAnimation() {
+    this->setVisible(true);
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/shield.plist");
     auto animation = createAnimation("shield", 15, 0.07f);
     auto animate = Animate::create(animation);
@@ -74,12 +73,9 @@ void ShieldSkillItem::deactivate() {
         fadeOut,
         CallFunc::create([this]() {
             this->setVisible(false);
+            this->removeFromParentAndCleanup(false);
             ShieldSkillItemPool::getInstance()->returnItem(this);
-            if (auto player = dynamic_cast<PlayerGame1*>(this->getParent())) {
-                player->_hasShield = false; // Reset the player's shield status
-            }
             }),
         nullptr
     ));
 }
-

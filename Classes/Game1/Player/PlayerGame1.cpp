@@ -107,15 +107,27 @@ void PlayerGame1::activateShield(float duration) {
     }
 }
 
-
 void PlayerGame1::deactivateShield() {
     if (_shieldItem && _hasShield) {
         _hasShield = false;
-        _shieldItem->deactivate(); 
+        _shieldItem->deactivate();
+
+        // Log the deactivation
+        CCLOG("Deactivating shield item");
+
+        // Remove the shield item from its parent node
+        if (_shieldItem->getParent()) {
+            _shieldItem->removeFromParentAndCleanup(true);
+            CCLOG("Shield item removed from parent and cleaned up");
+        }
+
+        // Delete the shield item to free memory
+        delete _shieldItem;
         _shieldItem = nullptr; // Reset the shield item reference
+
+        CCLOG("Shield item memory deallocated and reference reset");
     }
 }
-
 
 bool PlayerGame1::hasShield() const
 {

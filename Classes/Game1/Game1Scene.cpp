@@ -25,7 +25,7 @@ using namespace cocos2d::experimental;
 
 cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
     layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
@@ -548,15 +548,6 @@ void Game1Scene::SpawnCollectibleItem(const Size& size) {
         }
         if (item) {
             item->spawn(spawnPosition);
-
-            // Retrieve the scaled size of the item
-            Size itemSize = item->getScaledSize();
-
-            // Create and set the physics body using the scaled size
-            auto itemBody = PhysicsBody::createBox(itemSize);
-            setPhysicsBodyChar(itemBody, 0x03);
-            item->setPhysicsBody(itemBody);
-
             this->addChild(item, Constants::ORDER_LAYER_ITEM);
         }
         else {
@@ -574,7 +565,7 @@ void Game1Scene::scheduleCollectibleSpawning() {
     this->schedule([this](float dt) {
         Size visibleSize = Director::getInstance()->getVisibleSize();
         this->SpawnCollectibleItem(visibleSize); // Call the function to spawn items
-        }, 6.5f, "collectible_item_spawn_key"); // Adjust the interval as needed
+        }, 0.5f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 
 bool Game1Scene::isPositionOccupied(const Vec2& position) {
