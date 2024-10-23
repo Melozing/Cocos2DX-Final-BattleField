@@ -9,10 +9,11 @@ class ShieldSkillItem : public cocos2d::Sprite, public SpriteController {
 public:
     static ShieldSkillItem* create();
     virtual bool init() override;
+    virtual void onExit() override; 
     void reset();
     void playAnimation();
     void initAnimation();
-    void activate(float duration); 
+    void activate(float duration);
     void deactivate();
 private:
     Sprite* _shieldSprite;

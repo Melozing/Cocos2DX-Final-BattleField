@@ -263,6 +263,7 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
                 _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
             }
             else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
+                _player->initShield();
                 _player->activateShield(5.0f);
                 ammoItem->applyEffect(); // Apply the effect of the collectible item
             }
@@ -573,7 +574,7 @@ void Game1Scene::scheduleCollectibleSpawning() {
     this->schedule([this](float dt) {
         Size visibleSize = Director::getInstance()->getVisibleSize();
         this->SpawnCollectibleItem(visibleSize); // Call the function to spawn items
-        }, 7.0f, "collectible_item_spawn_key"); // Adjust the interval as needed
+        }, 6.5f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 
 bool Game1Scene::isPositionOccupied(const Vec2& position) {

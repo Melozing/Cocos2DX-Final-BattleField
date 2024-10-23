@@ -38,7 +38,10 @@ public:
     void activateShield(float duration);
     void deactivateShield();
     bool hasShield() const;
-
+    // Shield
+    bool _hasShield = false;
+    ShieldSkillItem* _shieldItem = nullptr;
+    void initShield();
 private:
     int _health = 3;
     float minX, maxX, minY, maxY;
@@ -49,10 +52,7 @@ private:
     Sprite* modelCharac;
     PlayerMovement* playerMovement;
 
-    // Shield
-    bool _hasShield = false;
-    ShieldSkillItem* _shieldItem = nullptr;
-    void initShield();
+
 };
 
 #endif // __PLAYERGAME1_H__

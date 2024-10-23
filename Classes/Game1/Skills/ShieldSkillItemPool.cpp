@@ -1,3 +1,4 @@
+// ShieldSkillItemPool.cpp
 #include "ShieldSkillItemPool.h"
 
 ShieldSkillItemPool* ShieldSkillItemPool::getInstance() {
@@ -35,6 +36,7 @@ ShieldSkillItem* ShieldSkillItemPool::getItem() {
 
 void ShieldSkillItemPool::returnItem(ShieldSkillItem* item) {
     if (item) {
+        item->reset();
         _availableItems.push(item);
     }
 }
