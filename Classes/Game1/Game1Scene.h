@@ -22,6 +22,8 @@
 #include "Items/HealthItem.h"
 #include "Items/AmmoItemPool.h"
 #include "Items/HealthItemPool.h"
+#include "Skills/ShieldSkillItem.h"
+#include "Skills/ShieldSkillItemPool.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
 #include "Controller/SoundController.h"
