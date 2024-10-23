@@ -1,4 +1,5 @@
 #include "PositionManager.h"
+#include "Constants/Constants.h"
 
 PositionManager& PositionManager::getInstance() {
     static PositionManager instance;
@@ -12,8 +13,9 @@ cocos2d::Vec2 PositionManager::getRandomSpawnPosition(const cocos2d::Size& visib
 }
 
 bool PositionManager::isPositionOccupied(const cocos2d::Vec2& position) {
+    const float MIN_DISTANCE = Constants::DISTANCE_ENEMY_FALLING; // Adjust the distance threshold as needed
     for (const auto& occupiedPosition : occupiedPositions) {
-        if (position.distance(occupiedPosition) < 50.0f) { // Adjust the distance threshold as needed
+        if (position.distance(occupiedPosition) < MIN_DISTANCE) {
             return true;
         }
     }

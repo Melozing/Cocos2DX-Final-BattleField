@@ -28,6 +28,7 @@ const float Constants::FALLINGROCK_ITEMS_OFFSET = 0.05f;
 const float Constants::FALLINGROCK_ITEMS_SPEED = 255.0f;
 const float Constants::RANDOMBOOM_RESTRICTEDHEIGHT = 0.12f;
 const float Constants::RANDOMBOOM_RESTRICTEDWIDTH = 0.31f;
+const float Constants::DISTANCE_ENEMY_FALLING = 0.05f;
 //PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;

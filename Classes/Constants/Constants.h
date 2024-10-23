@@ -31,6 +31,7 @@ public:
     static const float FALLINGROCK_ITEMS_SPEED;
     static const float RANDOMBOOM_RESTRICTEDHEIGHT;
     static const float RANDOMBOOM_RESTRICTEDWIDTH;
+    static const float DISTANCE_ENEMY_FALLING;
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
     //Game1

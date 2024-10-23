@@ -184,6 +184,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Items\HealthItemPool.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\HealthPlayerGame1.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp" />
+    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillItem.cpp" />
+    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillItemPool.cpp" />
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\InvEnemy.cpp" />
@@ -253,6 +255,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Items\HealthItemPool.h" />
     <ClInclude Include="..\Classes\Game1\Player\HealthPlayerGame1.h" />
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h" />
+    <ClInclude Include="..\Classes\Game1\Skills\ShieldSkillItem.h" />
+    <ClInclude Include="..\Classes\Game1\Skills\ShieldSkillItemPool.h" />
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\InvEnemy.h" />

@@ -18,6 +18,7 @@
 #include "json/document.h"
 #include "json/filereadstream.h"
 #include <fstream>
+#include <cmath> 
 
 USING_NS_CC;
 using namespace cocos2d::experimental;
@@ -87,6 +88,7 @@ void Game1Scene::initPools() {
     FallingTreePool::getInstance()->resetPool();
     HealthItemPool::getInstance()->resetPool();
     AmmoItemPool::getInstance()->resetPool();
+    ShieldSkillItemPool::getInstance()->resetPool();
 
     FlyingBulletPool::getInstance()->initPool(10);
     FallingRockPool::getInstance()->initPool(10);
@@ -95,6 +97,7 @@ void Game1Scene::initPools() {
     FallingTreePool::getInstance()->initPool(10);
     HealthItemPool::getInstance()->initPool(10);
     AmmoItemPool::getInstance()->initPool(10);
+    ShieldSkillItemPool::getInstance()->initPool(10);
     EffectObjectPool::getInstance()->initPool(20, "assets_game/fx/explosions_effect.png", "assets_game/fx/explosions_effect.plist");
 }
 
@@ -233,7 +236,12 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 
     if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
         (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
-        if (_canTakeDamage) {
+        if (_player->hasShield()) {
+            _player->deactivateShield(); // Ensure shield is deactivated
+            _canTakeDamage = false;
+            this->scheduleOnce([this](float) { _canTakeDamage = true; }, 0.5f, "damage_delay_key");
+        }
+        else if (_canTakeDamage) {
             _playerAttributes->TakeDamage(1);
             _player->playDamageEffect();
             _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
@@ -254,13 +262,15 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
                 _player->playHealthIncreaseEffect();
                 _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
             }
-            else {
-                collectible->applyEffect(); // Apply the effect of the collectible item
+            else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
+                _player->activateShield(5.0f);
+                ammoItem->applyEffect(); // Apply the effect of the collectible item
             }
         }
     }
     return true;
 }
+
 
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
