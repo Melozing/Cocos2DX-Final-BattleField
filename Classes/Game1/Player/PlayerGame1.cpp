@@ -35,7 +35,6 @@ bool PlayerGame1::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
     playerMovement = new PlayerMovement(this, Constants::PLAYER_MOVESPEED, minX, maxX, minY, maxY);
-
     return true;
 }
 
