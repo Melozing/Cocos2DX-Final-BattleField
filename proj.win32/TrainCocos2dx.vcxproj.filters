@@ -330,7 +330,7 @@
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTreePool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillItem.cpp">
+    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillI.cpp">
       <Filter>src\Gameplay\Skill\Game1</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillItemPool.cpp">
@@ -539,7 +539,7 @@
     <ClInclude Include="..\Classes\Game1\Enemy\FallingTreePool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Skills\ShieldSkillItem.h">
+    <ClInclude Include="..\Classes\Game1\Skills\ShieldSkill.h">
       <Filter>src\Gameplay\Skill\Game1</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Skills\ShieldSkillItemPool.h">

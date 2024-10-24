@@ -16,6 +16,8 @@ public:
     static const float PLAYER_HEALTH_PADDING_X;
     static const float PLAYER_HEALTH_PADDING_X_START;
     static const float PLAYER_HEALTH_PADDING_Y;
+    // SHIELD GAME 1
+	static const float SHIELD_DURATION;
 	//EFFECT_GAME1
     static const std::string EFFECT_EXPLOSION_NAME;
     static const float EFFECT_EXPLOSION_PADDING_SCREEN;

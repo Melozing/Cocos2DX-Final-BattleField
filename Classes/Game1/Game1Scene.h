@@ -22,7 +22,7 @@
 #include "Items/HealthItem.h"
 #include "Items/AmmoItemPool.h"
 #include "Items/HealthItemPool.h"
-#include "Skills/ShieldSkillItem.h"
+#include "Skills/ShieldSkill.h"
 #include "Skills/ShieldSkillItemPool.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
@@ -122,6 +122,11 @@ private:
     void initEvents();
     void initSound();
     void initSpawning();
+
+    //Shield 
+    ShieldSkill* _shield; 
+    void activateShield(); 
+    void deactivateShield();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

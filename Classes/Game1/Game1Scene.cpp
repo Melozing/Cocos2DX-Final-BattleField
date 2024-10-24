@@ -189,11 +189,11 @@ void Game1Scene::initSound() {
 
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
-    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->scheduleOnce([this](float) {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
         }, 0.1f, "get_music_duration_key");
+    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->schedule([this](float dt) {
         updateLoadingBar(dt);
@@ -234,22 +234,23 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
 
-    if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
-        (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
-        if (_player->hasShield()) {
-            _player->deactivateShield(); // Ensure shield is deactivated
-            _canTakeDamage = false;
-            this->scheduleOnce([this](float) { _canTakeDamage = true; }, 0.5f, "damage_delay_key");
+    auto handlePlayerDamage = [this]() {
+        if (_shield) {
+            deactivateShield();
         }
         else if (_canTakeDamage) {
             _playerAttributes->TakeDamage(1);
             _player->playDamageEffect();
             _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
-            this->scheduleOnce([this](float) { _canTakeDamage = true; }, 1.0f, "damage_delay_key");
-
             this->checkGameOver();
-            _canTakeDamage = false;
         }
+        _canTakeDamage = false;
+        this->scheduleOnce([this](float) { _canTakeDamage = true; }, 1.0f, "damage_delay_key");
+        };
+
+    if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
+        (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
+        handlePlayerDamage();
     }
 
     if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x03) ||
@@ -263,8 +264,7 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
                 _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
             }
             else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
-                _player->initShield();
-                _player->activateShield(5.0f);
+                activateShield();
                 ammoItem->applyEffect(); // Apply the effect of the collectible item
             }
         }
@@ -272,6 +272,26 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     return true;
 }
 
+
+void Game1Scene::activateShield() {
+    if (!_shield) {
+        _shield = ShieldSkillItemPool::getInstance()->getItem();
+        if (_shield) {
+            _shield->setPosition(_player->getPosition());
+            _shield->activate(5.0f);
+            _player->_shield = _shield;
+            this->addChild(_shield, Constants::ORDER_LAYER_PLAYER);
+        }
+    }
+}
+
+void Game1Scene::deactivateShield() {
+    if (_shield) {
+        ShieldSkillItemPool::getInstance()->returnItem(_shield);
+        _shield->removeFromParent();
+        _shield = nullptr;
+    }
+}
 
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {

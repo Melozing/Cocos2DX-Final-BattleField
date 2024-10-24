@@ -55,6 +55,15 @@ void PlayerGame1::takeDamage()
     }
 }
 
+void PlayerGame1::setShield(ShieldSkill* shield) {
+    _shield = shield;
+    if (_shield) {
+        _shield->setPosition(this->getPosition());
+        _shield->activate(Constants::SHIELD_DURATION);
+        this->addChild(_shield);
+    }
+}
+
 bool PlayerGame1::canTakeDamage()
 {
     float currentTime = Director::getInstance()->getTotalFrames();
@@ -68,7 +77,6 @@ PlayerGame1* PlayerGame1::createPlayer()
     {
         player->autorelease();
         player->initAnimation();
-        player->initShield();
         return player;
     }
     CC_SAFE_DELETE(player);
@@ -91,49 +99,6 @@ void PlayerGame1::initAnimation()
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void PlayerGame1::initShield()
-{
-    _shieldItem = ShieldSkillItemPool::getInstance()->getItem();
-    if (_shieldItem) {
-        _shieldItem->setVisible(false);
-        this->addChild(_shieldItem);
-    }
-}
-
-void PlayerGame1::activateShield(float duration) {
-    if (_shieldItem && !_hasShield) {
-        _hasShield = true;
-        _shieldItem->activate(duration);
-    }
-}
-
-void PlayerGame1::deactivateShield() {
-    if (_shieldItem && _hasShield) {
-        _hasShield = false;
-        _shieldItem->deactivate();
-
-        // Log the deactivation
-        CCLOG("Deactivating shield item");
-
-        // Remove the shield item from its parent node
-        if (_shieldItem->getParent()) {
-            _shieldItem->removeFromParentAndCleanup(true);
-            CCLOG("Shield item removed from parent and cleaned up");
-        }
-
-        // Delete the shield item to free memory
-        delete _shieldItem;
-        _shieldItem = nullptr; // Reset the shield item reference
-
-        CCLOG("Shield item memory deallocated and reference reset");
-    }
-}
-
-bool PlayerGame1::hasShield() const
-{
-    return _hasShield;
-}
-
 Size PlayerGame1::GetSize() {
     return GetContentSizeSprite(modelCharac);
 }
@@ -151,19 +116,39 @@ void PlayerGame1::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 void PlayerGame1::update(float delta)
 {
     playerMovement->update(delta);
+
+    if (_shield && _shield->isActive()) {
+        _shield->setPosition(this->getPosition());
+    }
 }
 
 void PlayerGame1::playDamageEffect() {
     auto blinkAction = Blink::create(1.0f, 3);
     auto tintToRed = TintTo::create(0.1f, 255, 0, 0);
     auto tintToNormal = TintTo::create(0.1f, 255, 255, 255);
-    auto sequence = Sequence::create(tintToRed, blinkAction, tintToNormal, nullptr);
+    auto sequence = Sequence::create(
+        tintToRed, 
+        blinkAction, 
+        tintToNormal, 
+        CallFunc::create([this]() {
+            this->modelCharac->setVisible(true); // Ensure the sprite is visible
+            }), 
+        nullptr);
     modelCharac->runAction(sequence);
 }
 
 void PlayerGame1::playHealthIncreaseEffect() {
+    auto blinkAction = Blink::create(0.3f, 3);
     auto tintToGreen = TintTo::create(0.1f, 0, 255, 0);
     auto tintToNormal = TintTo::create(0.1f, 255, 255, 255);
-    auto sequence = Sequence::create(tintToGreen, tintToNormal, nullptr);
+    auto sequence = Sequence::create(
+        tintToGreen,
+        blinkAction,
+        tintToNormal,
+        CallFunc::create([this]() {
+            this->modelCharac->setVisible(true); // Ensure the sprite is visible
+            }),
+        nullptr
+    );
     modelCharac->runAction(sequence);
 }

@@ -37,6 +37,8 @@ const int Constants::PLAYER_HEALTH = 3;
 
 const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
 const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
+const float Constants::SHIELD_DURATION = 0.3f;
+// SHIELD GAME 1
 const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
 //game1
 const std::string Constants::pathSoundTrackGame1 = "assets_game/sounds/Game1/bg_music_game1.mp3";

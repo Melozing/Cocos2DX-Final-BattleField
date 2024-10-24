@@ -1,0 +1,69 @@
+#include "Game1/Skills/ShieldSkill.h"
+#include "ShieldSkillItemPool.h"
+
+USING_NS_CC;
+
+ShieldSkill* ShieldSkill::create() {
+    ShieldSkill* shield = new (std::nothrow) ShieldSkill();
+    if (shield && shield->init()) {
+        shield->autorelease();
+        return shield;
+    }
+    CC_SAFE_DELETE(shield);
+    return nullptr;
+}
+
+bool ShieldSkill::init() {
+    if (!Sprite::init()) {
+        return false;
+    }
+    this->initAnimation();
+    return true;
+}
+
+void ShieldSkill::reset() {
+    this->setVisible(false);
+    this->setOpacity(255);
+    this->stopAllActions();
+}
+
+void ShieldSkill::initAnimation() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/shield.plist");
+    auto spriteBatchNode = SpriteBatchNode::create("assets_game/player/shield.png");
+    this->addChild(spriteBatchNode);
+
+    _shieldSprite = Sprite::createWithSpriteFrameName("shield1.png");
+    _shieldSprite->setScale(SpriteController::updateSpriteScale(_shieldSprite, 0.13f));
+    this->addChild(_shieldSprite);
+
+    auto animateShield = Animate::create(createAnimation("shield", 15, 0.07f));
+    _shieldSprite->runAction(RepeatForever::create(animateShield));
+}
+
+void ShieldSkill::activate(float duration) {
+    if (!_isActive) {
+        _isActive = true;
+        this->setVisible(true);
+        this->setOpacity(0);
+        auto fadeIn = FadeIn::create(0.3f);
+        this->runAction(fadeIn);
+        this->runAction(Sequence::create(
+            DelayTime::create(duration),
+            CallFunc::create([this]() { this->deactivate(); }),
+            nullptr
+        ));
+    }
+}
+
+void ShieldSkill::deactivate() {
+    if (_isActive) {
+        _isActive = false;
+        this->setVisible(false);
+        this->removeFromParentAndCleanup(false);
+        ShieldSkillItemPool::getInstance()->returnItem(this);
+    }
+}
+
+bool ShieldSkill::isActive() const {
+    return _isActive;
+}
