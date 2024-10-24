@@ -11,7 +11,10 @@ public:
     virtual void applyEffect() override;
     virtual cocos2d::Size getScaledSize() const override;
     virtual void returnToPool() override;
+    virtual void playEffectAndRemove() override;
     void reset();
+private:
+	void initPhysicsBody(); 
 };
 
 #endif // __AMMO_ITEM_H__

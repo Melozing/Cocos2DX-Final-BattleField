@@ -1,14 +1,16 @@
+// HealthItemPool.cpp
 #include "HealthItemPool.h"
-#include "HealthItem.h"
-#include <queue>
+#include "cocos2d.h"
+
+USING_NS_CC;
 
 HealthItemPool* HealthItemPool::getInstance() {
     static HealthItemPool instance;
     return &instance;
 }
 
-void HealthItemPool::initPool(int size) {
-    for (int i = 0; i < size; ++i) {
+void HealthItemPool::initPool(int poolSize) {
+    for (int i = 0; i < poolSize; ++i) {
         auto item = HealthItem::create();
         if (item) {
             item->retain();
@@ -28,11 +30,9 @@ HealthItem* HealthItemPool::getItem() {
         }
         return nullptr;
     }
-    else {
-        auto item = _availableItems.front();
-        _availableItems.pop();
-        return item;
-    }
+    HealthItem* item = _availableItems.front();
+    _availableItems.pop();
+    return item;
 }
 
 void HealthItemPool::returnItem(HealthItem* item) {

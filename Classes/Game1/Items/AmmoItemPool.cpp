@@ -1,14 +1,16 @@
+// AmmoItemPool.cpp
 #include "AmmoItemPool.h"
-#include "AmmoItem.h"
-#include <queue>
+#include "cocos2d.h"
+
+USING_NS_CC;
 
 AmmoItemPool* AmmoItemPool::getInstance() {
     static AmmoItemPool instance;
     return &instance;
 }
 
-void AmmoItemPool::initPool(int size) {
-    for (int i = 0; i < size; ++i) {
+void AmmoItemPool::initPool(int poolSize) {
+    for (int i = 0; i < poolSize; ++i) {
         auto item = AmmoItem::create();
         if (item) {
             item->retain();
@@ -28,11 +30,9 @@ AmmoItem* AmmoItemPool::getItem() {
         }
         return nullptr;
     }
-    else {
-        auto item = _availableItems.front();
-        _availableItems.pop();
-        return item;
-    }
+    AmmoItem* item = _availableItems.front();
+    _availableItems.pop();
+    return item;
 }
 
 void AmmoItemPool::returnItem(AmmoItem* item) {

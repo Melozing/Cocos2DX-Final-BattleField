@@ -1,4 +1,3 @@
-// ShieldSkillItemPool.cpp
 #include "ShieldSkillItemPool.h"
 
 ShieldSkillItemPool* ShieldSkillItemPool::getInstance() {
@@ -6,9 +5,9 @@ ShieldSkillItemPool* ShieldSkillItemPool::getInstance() {
     return &instance;
 }
 
-void ShieldSkillItemPool::initPool(int size) {
-    for (int i = 0; i < size; ++i) {
-        auto item = ShieldSkillItem::create();
+void ShieldSkillItemPool::initPool(int poolSize) {
+    for (int i = 0; i < poolSize; ++i) {
+        auto item = ShieldSkill::create();
         if (item) {
             item->retain();
             item->reset();
@@ -17,9 +16,9 @@ void ShieldSkillItemPool::initPool(int size) {
     }
 }
 
-ShieldSkillItem* ShieldSkillItemPool::getItem() {
+ShieldSkill* ShieldSkillItemPool::getItem() {
     if (_availableItems.empty()) {
-        auto item = ShieldSkillItem::create();
+        auto item = ShieldSkill::create();
         if (item) {
             item->retain();
             item->reset();
@@ -27,14 +26,12 @@ ShieldSkillItem* ShieldSkillItemPool::getItem() {
         }
         return nullptr;
     }
-    else {
-        auto item = _availableItems.front();
-        _availableItems.pop();
-        return item;
-    }
+    ShieldSkill* item = _availableItems.front();
+    _availableItems.pop();
+    return item;
 }
 
-void ShieldSkillItemPool::returnItem(ShieldSkillItem* item) {
+void ShieldSkillItemPool::returnItem(ShieldSkill* item) {
     if (item) {
         item->reset();
         _availableItems.push(item);

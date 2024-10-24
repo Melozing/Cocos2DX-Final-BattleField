@@ -1,3 +1,4 @@
+// CollectibleItem.cpp
 #include "Game1/Items/CollectibleItem.h"
 #include "Controller/SpriteController.h"
 #include "cocos2d.h"
@@ -56,13 +57,8 @@ void CollectibleItem::playEffectAndRemove() {
     // Fade out over 0.5 seconds
     auto fadeOut = FadeOut::create(0.5f);
 
-    // Callback to return the item to the pool
-    auto removeItem = CallFunc::create([this]() {
-        this->returnToPool(); // Return to pool instead of removing
-        });
-
     // Run the scale and fade actions simultaneously, then return to pool
-    _currentSprite->runAction(Sequence::create(Spawn::create(scaleUp, fadeOut, nullptr), removeItem, nullptr));
+    _currentSprite->runAction(Sequence::create(Spawn::create(scaleUp, fadeOut, nullptr), nullptr));
 }
 
 void CollectibleItem::returnToPool() {
