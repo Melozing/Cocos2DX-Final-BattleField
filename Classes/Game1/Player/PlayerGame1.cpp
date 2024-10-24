@@ -35,6 +35,7 @@ bool PlayerGame1::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
     playerMovement = new PlayerMovement(this, Constants::PLAYER_MOVESPEED, minX, maxX, minY, maxY);
+    this->schedule(CC_SCHEDULE_SELECTOR(PlayerGame1::updateShieldPosition), 0.0001f);
     return true;
 }
 
@@ -60,7 +61,6 @@ void PlayerGame1::setShield(ShieldSkill* shield) {
     if (_shield) {
         _shield->setPosition(this->getPosition());
         _shield->activate(Constants::SHIELD_DURATION);
-        this->addChild(_shield);
     }
 }
 
@@ -116,7 +116,9 @@ void PlayerGame1::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 void PlayerGame1::update(float delta)
 {
     playerMovement->update(delta);
+}
 
+void PlayerGame1::updateShieldPosition(float dt) {
     if (_shield && _shield->isActive()) {
         _shield->setPosition(this->getPosition());
     }
