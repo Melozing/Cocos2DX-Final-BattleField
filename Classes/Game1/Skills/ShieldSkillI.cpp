@@ -17,24 +17,26 @@ bool ShieldSkill::init() {
     if (!Sprite::init()) {
         return false;
     }
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/shield.plist");
+    _spriteBatchNode = SpriteBatchNode::create("assets_game/player/shield.png");
+
     this->initAnimation();
     return true;
 }
 
 void ShieldSkill::reset() {
-    this->setVisible(false);
+    this->setVisible(true);
     this->setOpacity(255);
-    this->stopAllActions();
 }
 
-void ShieldSkill::initAnimation() {
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/shield.plist");
-    auto spriteBatchNode = SpriteBatchNode::create("assets_game/player/shield.png");
-    this->addChild(spriteBatchNode);
 
+void ShieldSkill::initAnimation() {
+    if (_spriteBatchNode->getParent() == nullptr) {
+        this->addChild(_spriteBatchNode);
+    }
     _shieldSprite = Sprite::createWithSpriteFrameName("shield1.png");
     _shieldSprite->setScale(SpriteController::updateSpriteScale(_shieldSprite, 0.13f));
-    this->addChild(_shieldSprite);
+    _spriteBatchNode->addChild(_shieldSprite);
 
     auto animateShield = Animate::create(createAnimation("shield", 15, 0.07f));
     _shieldSprite->runAction(RepeatForever::create(animateShield));
@@ -46,8 +48,8 @@ void ShieldSkill::activate(float duration) {
         this->setVisible(true);
         this->setOpacity(0);
         auto fadeIn = FadeIn::create(0.3f);
-        this->runAction(fadeIn);
         this->runAction(Sequence::create(
+            fadeIn,
             DelayTime::create(duration),
             CallFunc::create([this]() { this->deactivate(); }),
             nullptr
@@ -58,7 +60,6 @@ void ShieldSkill::activate(float duration) {
 void ShieldSkill::deactivate() {
     if (_isActive) {
         _isActive = false;
-        this->setVisible(false);
         this->removeFromParentAndCleanup(false);
         ShieldSkillItemPool::getInstance()->returnItem(this);
     }

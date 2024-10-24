@@ -34,6 +34,7 @@ public:
     float getMaxY() const { return maxY; }
     void setShield(ShieldSkill* shield);
     ShieldSkill* _shield;
+    void cleanupShield();
 private:
     int _health = 3;
     float minX, maxX, minY, maxY;
@@ -43,6 +44,7 @@ private:
     GameController* gameController;
     Sprite* modelCharac;
     PlayerMovement* playerMovement;
+    void updateShieldPosition(float dt);
 };
 
 #endif // __PLAYERGAME1_H__

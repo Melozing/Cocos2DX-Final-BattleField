@@ -12,10 +12,11 @@ public:
     void deactivate();
     bool isActive() const;
     void reset();
+    bool _isActive = false;
 private:
     void initAnimation();
-    bool _isActive = false;
     cocos2d::Sprite* _shieldSprite;
+    SpriteBatchNode* _spriteBatchNode;
 };
 
 #endif // __SHIELD_H__
