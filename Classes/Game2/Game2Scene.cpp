@@ -91,12 +91,6 @@ void Game2Scene::setupCursor() {
         return;
     }
     this->addChild(_cursor);
-
-    this->schedule([this](float delta) {
-        if (_cursor) {
-            _cursor->updateCursor(delta);
-        }
-        }, "update_cursor_key");
 }
 
 void Game2Scene::update(float delta) {
