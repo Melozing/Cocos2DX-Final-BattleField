@@ -26,6 +26,8 @@ private:
     cocos2d::Sprite* _warningSprite;
     cocos2d::Sprite* _missileSprite;
     cocos2d::Sprite* explosionSprite;
+    cocos2d::Sprite* explosionSpriteDump;
+    PhysicsBody* explosionBody;
 };
 
 

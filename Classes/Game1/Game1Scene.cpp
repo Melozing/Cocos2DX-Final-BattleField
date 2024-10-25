@@ -67,7 +67,7 @@ bool Game1Scene::init() {
 
 void Game1Scene::initPhysics(const Size& visibleSize) {
     auto edgeBody = cocos2d::PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 0);
-    edgeBody->setCollisionBitmask(0x03);
+    edgeBody->setCollisionBitmask(0x04);
     edgeBody->setContactTestBitmask(true);
     auto edgeNode = Node::create();
     edgeNode->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
@@ -193,7 +193,7 @@ void Game1Scene::initSound() {
 
     this->scheduleOnce([this](float) {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
-        this->scheduleOnce([this](float) { this->unschedule("collectible_item_spawn_key"); }, musicDuration - 8.5f, "stop_collectible_spawning_key");
+        this->scheduleOnce([this](float) { this->unschedule("collectible_item_spawn_key"); }, musicDuration - 9.5f, "stop_collectible_spawning_key");
         }, 0.1f, "get_music_duration_key");
     //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
@@ -228,6 +228,7 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);
     physicBody->setContactTestBitmask(true);
     physicBody->setDynamic(false);
+    physicBody->setGravityEnable(false);
 }
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
@@ -247,7 +248,7 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
             this->checkGameOver();
         }
         _canTakeDamage = false;
-        this->scheduleOnce([this](float) { _canTakeDamage = true; }, 0.5f, "damage_delay_key");
+        this->scheduleOnce([this](float) { _canTakeDamage = true; }, 1.0f, "damage_delay_key");
         };
 
     if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
@@ -276,18 +277,22 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 
 
 void Game1Scene::activateShield() {
-    if (!_shield) {
-        _shield = ShieldSkillItemPool::getInstance()->getItem();
-        if (_shield) {
-            if (_shield->getParent() == nullptr) {
-                this->addChild(_shield, Constants::ORDER_LAYER_PLAYER);
-            }
-            _shield->reset();
-            _shield->setPosition(_player->getPosition());
-            _shield->activate(5.0f);
-            _player->_shield = _shield;
-            _player->setShield(_shield);
+    if (_shield) {
+        _shield->removeFromParentAndCleanup(true);
+    }
+    _shield = ShieldSkillItemPool::getInstance()->getItem();
+    if (_shield) {
+        if (_shield->getParent() == nullptr) {
+            this->addChild(_shield, Constants::ORDER_LAYER_PLAYER);
         }
+        _shield->reset();
+        _shield->setPosition(_player->getPosition());
+        _shield->activate(Constants::SHIELD_TIME_OF_EXISTENCE);
+        _player->_shield = _shield;
+        _player->setShield(_shield);
+        this->scheduleOnce([this](float) {
+            _shield = nullptr;
+            }, Constants::SHIELD_TIME_OF_EXISTENCE, "deactivate_shield_key");
     }
 }
 
@@ -296,6 +301,7 @@ void Game1Scene::deactivateShield() {
         _shield->deactivate();
         _shield->removeFromParent();
         _shield = nullptr;
+        this->unschedule("deactivate_shield_key");
     }
 }
 
@@ -592,7 +598,7 @@ void Game1Scene::scheduleCollectibleSpawning() {
     this->schedule([this](float dt) {
         Size visibleSize = Director::getInstance()->getVisibleSize();
         this->SpawnCollectibleItem(visibleSize); // Call the function to spawn items
-        }, 8.5f, "collectible_item_spawn_key"); // Adjust the interval as needed
+        }, 5.3f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 
 bool Game1Scene::isPositionOccupied(const Vec2& position) {
