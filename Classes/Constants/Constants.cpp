@@ -4,12 +4,24 @@
 // Initialize the scale values
 //SCREEN
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
+const std::string Constants::GAME1_SCENE_NAME = "Game1Scene";
+const std::string Constants::GAME2_SCENE_NAME = "Game2Scene";
+const std::string Constants::GAME3_SCENE_NAME = "Game3Scene";
+const std::string Constants::MAINMENU_SCENE_NAME = "MainMenu";
 //UI
+const int Constants::ORDER_LAYER_CURSOR = 9999;
 const int Constants::ORDER_LAYER_UI = 99;
+const int Constants::ORDER_LAYER_LAYOUT_UI = 98;
 const int Constants::ORDER_LAYER_CHARACTER = 1;
 const int Constants::ORDER_LAYER_PLAYER = 1;
 const int Constants::ORDER_LAYER_ITEM = 3;
 const int Constants::ORDER_LAYER_BACKGROUND = -99;
+
+const float Constants::PADDING_VERTICAL_UI_PANEL = 0.06f;
+const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.05f;
+const float Constants::PADDING_VERTICAL_UI_EXITBUTTON = 0.02f;
+const float Constants::PADDING_HORIZONTAL_UI_PANEL = 0.04f;
+const float Constants::PADDING_HORIZONTAL_UI_EXITBUTTON = 0.02f;
 //EFFECT_GAME1
 const std::string Constants::EFFECT_EXPLOSION_NAME = "explosions_effect";
 const float Constants::EFFECT_EXPLOSION_PADDING_SCREEN = 0.15f;

@@ -2,6 +2,7 @@
 #include "Controller/SceneController.h"
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
+#include "Controller/GameController.h"
 #include "Manager/BackgroundManager.h"
 
 USING_NS_CC;
@@ -19,21 +20,61 @@ bool MainMenu::init() {
     BackgroundManager::getInstance()->setBackgroundWithOverlay(this, "assets_game/UXUI/Background/DienBienPhuVictory.jpg");
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    auto button = ui::Button::create("assets_game/UXUI/Main_Menu/Start_BTN.png");
-	auto sprite = Sprite::create("assets_game/UXUI/Main_Menu/Start_BTN.png");
+    auto sprite = Sprite::create("assets_game/UXUI/Buttons/Game_1.png");
+
+    // Calculate positions
+    float buttonSpacing = SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_BUTTONS_MAINMENU); // Adjust this value to set the spacing between buttons
+    float buttonY = visibleSize.height / 2;
+    float buttonG2Y = buttonY - buttonSpacing;
+    float buttonG3Y = buttonG2Y - buttonSpacing;
+
+    // Create and position button
+    auto button = ui::Button::create("assets_game/UXUI/Buttons/Game_1.png");
     button->setScale(SpriteController::updateSpriteScale(sprite, 0.08f));
-    button->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    button->setPosition(Vec2(visibleSize.width / 2, buttonY));
     button->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            startLoading(); // Start loading when button is pressed
+            startLoading(Constants::GAME1_SCENE_NAME); // Start loading when button is pressed
         }
         });
-    this->addChild(button); // Add button to the scene
+    this->addChild(button);
+
+    // Create and position buttonG2
+    auto buttonG2 = ui::Button::create("assets_game/UXUI/Buttons/Game_2.png");
+    buttonG2->setScale(SpriteController::updateSpriteScale(sprite, 0.08f));
+    buttonG2->setPosition(Vec2(visibleSize.width / 2, buttonG2Y));
+    buttonG2->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            startLoading(Constants::GAME2_SCENE_NAME); // Start loading when button is pressed
+        }
+        });
+    this->addChild(buttonG2);
+
+    // Create and position buttonG3
+    auto buttonG3 = ui::Button::create("assets_game/UXUI/Buttons/Game_3.png");
+    buttonG3->setScale(SpriteController::updateSpriteScale(sprite, 0.08f));
+    buttonG3->setPosition(Vec2(visibleSize.width / 2, buttonG3Y));
+    buttonG3->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            startLoading(Constants::GAME3_SCENE_NAME); // Start loading when button is pressed
+        }
+        });
+    this->addChild(buttonG3);
+
+    // Create and add the custom cursor
+    Director::getInstance()->getOpenGLView()->setCursorVisible(false);
+    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
+    _cursor->setAnchorPoint(Vec2(0.5, 0.5));
+    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
+    if (_cursor) {
+        _cursor->setPosition(visibleSize / 2); // Set initial position
+        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order 1
+    }
 
     return true; // Initialization succeeded
 }
 
-void MainMenu::startLoading() {
-    auto loadingScene = LoadingScene::createScene("Game3Scene");
-    Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene)); // Replace with LoadingScene
+void MainMenu::startLoading(std::string nameScene) {
+    auto loadingScene = LoadingScene::createScene(nameScene);
+    Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene));
 }

@@ -156,7 +156,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Bullet\BulletPool.cpp" />
     <ClCompile Include="..\Classes\Button\BaseButton.cpp" />
     <ClCompile Include="..\Classes\Button\ExitButton.cpp" />
-    <ClCompile Include="..\Classes\Button\PauseButton.cpp" />
     <ClCompile Include="..\Classes\Button\ReplayButton.cpp" />
     <ClCompile Include="..\Classes\Constants\Constants.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
@@ -210,6 +209,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Manager\PositionManager.cpp" />
     <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp" />
     <ClCompile Include="..\Classes\Manager\SpriteFrameCacheManager.cpp" />
+    <ClCompile Include="..\Classes\Panel\BasePanel.cpp" />
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp" />
     <ClCompile Include="..\Classes\Panel\PausePanel.cpp" />
     <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp" />
@@ -229,7 +229,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Bullet\BulletPool.h" />
     <ClInclude Include="..\Classes\Button\BaseButton.h" />
     <ClInclude Include="..\Classes\Button\ExitButton.h" />
-    <ClInclude Include="..\Classes\Button\PauseButton.h" />
     <ClInclude Include="..\Classes\Button\ReplayButton.h" />
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
@@ -284,6 +283,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Manager\PositionManager.h" />
     <ClInclude Include="..\Classes\Manager\SpriteBatchNodeManager.h" />
     <ClInclude Include="..\Classes\Manager\SpriteFrameCacheManager.h" />
+    <ClInclude Include="..\Classes\Panel\BasePanel.h" />
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h" />
     <ClInclude Include="..\Classes\Panel\PausePanel.h" />
     <ClInclude Include="..\Classes\Panel\VictoryPanel.h" />

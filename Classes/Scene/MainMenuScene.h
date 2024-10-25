@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include "Game2/Cursor/Cursor.h"
 
 USING_NS_CC;
 
@@ -15,7 +16,8 @@ public:
     CREATE_FUNC(MainMenu);
 
 private:
-    void startLoading(); // Method to start loading the next scene
+    void startLoading(std::string nameScene); // Method to start loading the next scene
+    Cursor* _cursor;
 };
 
 #endif // __MAIN_MENU_SCENE_H__

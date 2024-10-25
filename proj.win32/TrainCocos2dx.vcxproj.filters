@@ -204,9 +204,6 @@
     <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
       <Filter>src\Gameplay\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Button\PauseButton.cpp">
-      <Filter>src\UXUI\Buttons</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClCompile>
@@ -418,9 +415,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletManager.h">
       <Filter>src\Gameplay\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Button\PauseButton.h">
-      <Filter>src\UXUI\Buttons</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>

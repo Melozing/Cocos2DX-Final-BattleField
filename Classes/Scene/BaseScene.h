@@ -2,17 +2,15 @@
 #define BASE_SCENE_H
 
 #include "cocos2d.h"
-#include "Button/PauseButton.h"
+#include "Game2/Cursor/Cursor.h"
+#include "Controller/SpriteController.h"
 
 class BaseScene : public cocos2d::Scene {
 public:
     virtual bool init() override;
     void setSceneCreationFunc(const std::function<cocos2d::Scene* ()>& func);
-
     CREATE_FUNC(BaseScene);
-
-protected:
-    PauseButton* _pauseButton;
+    Cursor* _cursor;
 private:
     std::function<cocos2d::Scene* ()> _sceneCreationFunc;
 };

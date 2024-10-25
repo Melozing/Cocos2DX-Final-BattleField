@@ -1,9 +1,8 @@
-// Cursor.cpp
 #include "Game2/Cursor/Cursor.h"
 
 USING_NS_CC;
 
-Cursor::Cursor() : _mousePos(Vec2::ZERO) {}
+Cursor::Cursor() : _mousePos(Vec2::ZERO), _isUpdating(false) {}
 
 Cursor* Cursor::create(const std::string& filename) {
     Cursor* pRet = new(std::nothrow) Cursor();
@@ -24,23 +23,17 @@ void Cursor::initMouseListener() {
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
-void Cursor::onMouseMove(Event* event) {
-    EventMouse* e = (EventMouse*)event;
+void Cursor::onMouseMove(cocos2d::Event* event) {
+    auto e = static_cast<EventMouse*>(event);
     _mousePos = Vec2(e->getCursorX(), e->getCursorY());
+    updateCursorPosition();
 }
 
-void Cursor::updateCursor(float delta) {
+void Cursor::updateCursorPosition() {
     auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-
-    // Get the window size
     auto winSize = Director::getInstance()->getWinSize();
-
-    // Invert the y-coordinate
     mousePos.y = winSize.height - mousePos.y;
-
-    // Clamp the mouse position within the window boundaries
     mousePos.x = std::max(0.0f, std::min(mousePos.x, winSize.width));
     mousePos.y = std::max(0.0f, std::min(mousePos.y, winSize.height));
-
     this->setPosition(mousePos);
 }

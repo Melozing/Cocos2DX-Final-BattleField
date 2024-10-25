@@ -25,6 +25,10 @@ bool Game2Scene::init() {
         return false;
     }
 
+    this->setSceneCreationFunc([]() -> cocos2d::Scene* {
+        return Game2Scene::createScene();
+        });
+
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -88,7 +92,6 @@ void Game2Scene::setupCursor() {
     }
     this->addChild(_cursor);
 
-    // Update the cursor
     this->schedule([this](float delta) {
         if (_cursor) {
             _cursor->updateCursor(delta);
