@@ -19,7 +19,9 @@ bool ShieldSkill::init() {
     }
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/shield.plist");
     _spriteBatchNode = SpriteBatchNode::create("assets_game/player/shield.png");
-
+    _isActive = false;
+    this->setVisible(true);
+    this->setOpacity(255);
     this->initAnimation();
     return true;
 }
