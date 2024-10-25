@@ -204,9 +204,6 @@
     <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
       <Filter>src\Gameplay\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Button\PauseButton.cpp">
-      <Filter>src\UXUI\Buttons</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClCompile>
@@ -333,6 +330,9 @@
     <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillItemPool.cpp">
       <Filter>src\Gameplay\Skill\Game1</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Panel\BasePanel.cpp">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -406,9 +406,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletManager.h">
       <Filter>src\Gameplay\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Button\PauseButton.h">
-      <Filter>src\UXUI\Buttons</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
@@ -538,6 +535,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Skills\ShieldSkillItemPool.h">
       <Filter>src\Gameplay\Skill\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\BasePanel.h">
+      <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

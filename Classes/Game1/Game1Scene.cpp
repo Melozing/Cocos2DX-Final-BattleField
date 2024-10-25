@@ -307,6 +307,7 @@ void Game1Scene::deactivateShield() {
 
 void Game1Scene::checkGameOver() {
     if (_playerAttributes->IsDead()) {
+        _cursor->setVisible(false); 
         GameController::getInstance()->GameOver(
             [this]() {
                 Director::getInstance()->end();
@@ -339,6 +340,7 @@ void Game1Scene::updateLoadingBar(float dt) {
                 },
                 Constants::pathSoundTrackGame1
             );
+            _cursor->setVisible(false);
             _isGameOver = true;
         }
         _loadingBar->setPercent(currentPercent);

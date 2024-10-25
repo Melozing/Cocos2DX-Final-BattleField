@@ -1,9 +1,8 @@
-﻿// Game3Scene.cpp
-#include "Game3/Game3Scene.h"
+﻿#include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
 #include "Game3/enemy/EnemyPlane3.h"
 #include "Game3/enemy/EnemyPlane1.h" 
-
+#include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
@@ -26,6 +25,10 @@ bool Game3Scene::init() {
     if (!BaseScene::init()) {
         return false;
     }
+
+    this->setSceneCreationFunc([]() -> cocos2d::Scene* {
+        return Game3Scene::createScene();
+        });
 
     // Set the background using BackgroundManager
     BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/Game3Background.png", Constants::ORDER_LAYER_BACKGROUND);
@@ -97,12 +100,7 @@ bool Game3Scene::init() {
         CCLOG("Failed to create Cursor");
         return false;
     }
-    this->addChild(_cursor);
-    this->schedule([this](float delta) {
-        _cursor->updateCursor(delta);
-        }, "update_cursor_key");
+    this->addChild(_cursor, Constants::ORDER_LAYER_UI + 99);
 
     return true;
 }
-
-

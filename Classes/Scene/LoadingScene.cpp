@@ -66,18 +66,29 @@ void LoadingScene::setNextSceneName(const std::string& sceneName) {
 }
 
 void LoadingScene::startLoading() {
+    auto currentScene = Director::getInstance()->getRunningScene();
+    if (currentScene) {
+        CCLOG("Current Scene: %s", typeid(*currentScene).name());
+    }
+    else {
+        CCLOG("No current scene running.");
+    }
+
+    CCLOG("Next Scene Name: %s", nextSceneName.c_str());
+
     this->schedule([this](float dt) {
         float percent = loadingBar->getPercent();
         percent += 0.5f; // Increase loading percentage
         loadingBar->setPercent(percent);
 
+
         if (percent >= 100) {
             loadingBar->setPercent(100);
             this->unschedule("loading_bar_update_key");
 
-            // Use SceneController to get the scene
             auto nextScene = SceneController::getInstance()->getScene(nextSceneName);
             if (nextScene) {
+                CCLOG("Next Scene: %s", typeid(*nextScene).name());
                 Director::getInstance()->replaceScene(TransitionFade::create(0.5, nextScene));
             }
             else {
@@ -86,3 +97,4 @@ void LoadingScene::startLoading() {
         }
         }, 0.5f / 60.0f, "loading_bar_update_key");
 }
+

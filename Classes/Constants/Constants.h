@@ -37,6 +37,10 @@ public:
     static const float DISTANCE_ENEMY_FALLING;
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
+    static const std::string GAME1_SCENE_NAME;
+    static const std::string GAME2_SCENE_NAME;
+    static const std::string GAME3_SCENE_NAME;
+    static const std::string MAINMENU_SCENE_NAME;
     //Game1
     static const float TIME_TO_WIN;
     static const std::string pathSoundTrackGame1;
@@ -69,11 +73,18 @@ public:
 	//VictoryPanel
 	static const std::string VICTORY_SOUNDTRACK_PATH;
     //UI
+    static const int ORDER_LAYER_CURSOR;
     static const int ORDER_LAYER_UI;
+    static const int ORDER_LAYER_LAYOUT_UI;
     static const int ORDER_LAYER_CHARACTER;
     static const int ORDER_LAYER_PLAYER;
     static const int ORDER_LAYER_ITEM;
     static const int ORDER_LAYER_BACKGROUND;
+    static const float PADDING_VERTICAL_BUTTONS_MAINMENU;
+    static const float PADDING_VERTICAL_UI_PANEL;
+    static const float PADDING_VERTICAL_UI_EXITBUTTON;
+    static const float PADDING_HORIZONTAL_UI_PANEL;
+    static const float PADDING_HORIZONTAL_UI_EXITBUTTON;
 };
 
 #endif // __CONSTANTS_H__

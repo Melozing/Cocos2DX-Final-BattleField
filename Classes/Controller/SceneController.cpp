@@ -1,4 +1,6 @@
 #include "SceneController.h"
+#include "Constants/Constants.h"
+#include "Scene/MainMenuScene.h"
 #include "Game1/Game1Scene.h"
 #include "Game2/Game2Scene.h"
 #include "Game3/Game3Scene.h"
@@ -25,14 +27,17 @@ Scene* SceneController::getScene(const std::string& sceneName) {
 Scene* SceneController::createScene(const std::string& sceneName) {
 
     static std::unordered_map<std::string, Scene*> sceneCache;
+
     if (sceneCache.find(sceneName) != sceneCache.end()) {
-        return sceneCache[sceneName];
+        sceneCache[sceneName]->release();
+        sceneCache.erase(sceneName);
     }
 
     auto it = sceneMap.find(sceneName);
     if (it != sceneMap.end()) {
         Scene* scene = it->second();
         sceneCache[sceneName] = scene;
+        scene->retain();
         return scene;
     }
     return nullptr;
@@ -44,14 +49,18 @@ void SceneController::registerScene(const std::string& sceneName, std::function<
 }
 
 void SceneController::registerScenes() {
-    registerScene("Game1Scene", []() {
+    registerScene(Constants::MAINMENU_SCENE_NAME, []() {
+        return MainMenu::createScene();
+        });
+
+    registerScene(Constants::GAME1_SCENE_NAME, []() {
         return Game1Scene::createScene();
         });
 
-    registerScene("Game2Scene", []() {
+    registerScene(Constants::GAME2_SCENE_NAME, []() {
         return Game2Scene::createScene();
         });
-    registerScene("Game3Scene", []() {
+    registerScene(Constants::GAME3_SCENE_NAME, []() {
         return Game3Scene::createScene();
         });
 }

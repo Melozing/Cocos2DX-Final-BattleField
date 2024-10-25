@@ -1,13 +1,15 @@
 #include "PausePanel.h"
 #include "Button/ReplayButton.h"
 #include "Button/ExitButton.h"
+#include "Scene/LoadingScene.h"
+#include "Constants/Constants.h"
 #include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
-PausePanel* PausePanel::createPanel(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
+PausePanel* PausePanel::createPanel(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction) {
     PausePanel* panel = new (std::nothrow) PausePanel();
-    if (panel && panel->init(resumeCallback, retryAction, exitAction)) {
+    if (panel && panel->init(resumeCallback, retryAction, exitAction, backAction)) {
         panel->autorelease();
         return panel;
     }
@@ -15,48 +17,70 @@ PausePanel* PausePanel::createPanel(const std::function<void()>& resumeCallback,
     return nullptr;
 }
 
-bool PausePanel::init(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction) {
-    if (!Layout::init()) {
+bool PausePanel::init() {
+    if (!BasePanel::init()) {
+        return false;
+    }
+    return true;
+}
+
+bool PausePanel::init(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction) {
+    if (!BasePanel::init()) {
         return false;
     }
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
-    // Create background
-    auto background = ui::Layout::create();
-    background->setContentSize(visibleSize);
-    background->setBackGroundColorType(ui::Layout::BackGroundColorType::SOLID);
-    background->setBackGroundColor(Color3B(0, 0, 0));
-    background->setBackGroundColorOpacity(150);
-    background->setName("PauseBackground"); // Set name for the background
-    this->addChild(background);
+    // Create exit button
+    auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png");
+    exitButton->setAnchorPoint(Vec2(0.5f, 0.5f));
+    exitButton->setPosition(Vec2(boardSprite->getContentSize().width - exitButton->getContentSize().width / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON),
+        boardSprite->getContentSize().height - exitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
+    exitButton->addClickEventListener([resumeCallback](Ref* sender) {
+        resumeCallback();
+        });
+    boardSprite->addChild(exitButton);
 
     // Create resume button
     auto resumeButton = ui::Button::create("assets_game/UXUI/Buttons/Pause_BTN.png", "assets_game/UXUI/Buttons/Pause_BTN_Active.png");
-    resumeButton->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + 100));
+    resumeButton->setAnchorPoint(Vec2(0.5f, 0.5f));
+    resumeButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 - resumeButton->getContentSize().width - SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL) / 2,
+        resumeButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
     resumeButton->addClickEventListener([resumeCallback](Ref* sender) {
         resumeCallback();
         });
-    this->addChild(resumeButton);
+    boardSprite->addChild(resumeButton);
 
     // Create retry button
     auto retryButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png");
-    retryButton->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    retryButton->setAnchorPoint(Vec2(0.5f, 0.5f));
+    retryButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 + retryButton->getContentSize().width + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL) / 2,
+        retryButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
     retryButton->addClickEventListener([retryAction](Ref* sender) {
         retryAction();
         });
-    this->addChild(retryButton);
+    boardSprite->addChild(retryButton);
+
+    // Create back button
+    auto backButton = ui::Button::create("assets_game/UXUI/Panel/Back_BTN.png", "assets_game/UXUI/Panel/Back_BTN_Active.png");
+    backButton->setAnchorPoint(Vec2(0.5f, 0.5f));
+    backButton->setPosition(Vec2(boardSprite->getContentSize().width / 2,
+        backButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
+    backButton->addClickEventListener([backAction](Ref* sender) {
+        backAction();
+        });
+    boardSprite->addChild(backButton);
 
     // Create exit button
-    auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png");
-    exitButton->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - 100));
-    exitButton->addClickEventListener([exitAction](Ref* sender) {
+    cocos2d::ui::Button* exitButton2 = ui::Button::create("assets_game/UXUI/Panel/Exit_BTN.png", "assets_game/UXUI/Panel/Exit_BTN.png");
+    exitButton2->setAnchorPoint(Vec2(0.5f, 0.5f));
+    exitButton2->setPosition(Vec2(boardSprite->getContentSize().width / 2,
+        boardSprite->getContentSize().height - exitButton2->getContentSize().height / 2 - SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
+    exitButton2->addClickEventListener([exitAction](Ref* sender) {
         exitAction();
         });
-    this->addChild(exitButton);
-
-    this->setName("PausePanel"); // Set name for the panel
+    boardSprite->addChild(exitButton2);
 
     return true;
 }

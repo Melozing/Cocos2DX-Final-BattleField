@@ -28,6 +28,10 @@ bool Game2Scene::init() {
         return false; // Kiểm tra khởi tạo thành công
     }
 
+    this->setSceneCreationFunc([]() -> cocos2d::Scene* {
+        return Game2Scene::createScene();
+        });
+
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -73,14 +77,8 @@ bool Game2Scene::init() {
         CCLOG("Failed to create Cursor");
         return false;
     }
-    this->addChild(_cursor); // Thêm con trỏ vào scene
+    this->addChild(_cursor);
 
-    // Cập nhật con trỏ
-    this->schedule([this](float delta) {
-        _cursor->updateCursor(delta);
-        }, "update_cursor_key");
-
-    // Khởi tạo xuất hiện kẻ địch
     this->schedule([this](float delta) {
         auto enemy = SniperEnemyGame2::createSniperEnemyGame2();
         if (enemy) {
