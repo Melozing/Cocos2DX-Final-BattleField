@@ -4,7 +4,6 @@
 
 #include "cocos2d.h"
 #include "Game3/Player/PlayerGame3.h"
-#include "Background/Background3.h"
 #include "Scene/BaseScene.h"
 #include <Game2/Cursor/Cursor.h>
 
@@ -18,7 +17,6 @@ private:
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
 
-    Background3* background3;
     Cursor* _cursor;
 
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);

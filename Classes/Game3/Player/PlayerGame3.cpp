@@ -1,15 +1,16 @@
-﻿// PlayerGame3.cpp
-#include "PlayerGame3.h"
+﻿#include "PlayerGame3.h"
 #include "Constants/Constants.h"
 #include "Bullet/Bullet.h"
+#include "Bullet/BulletPool.h"
 #include "utils/MathFunction.h"
 #include "Manager/PlayerMovementManager.h"
+#include "Controller/GameController.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
 
 PlayerGame3::PlayerGame3()
-    :bulletManager(nullptr),
+    : bulletManager(nullptr),
     playerMovement(nullptr)
 {
 }
@@ -28,7 +29,6 @@ PlayerGame3* PlayerGame3::createPlayerGame3()
         player->autorelease();
         player->initAnimation();
         return player;
-
     }
     CC_SAFE_DELETE(player);
     return nullptr;
@@ -48,15 +48,13 @@ bool PlayerGame3::init()
     // Create turret sprite and add to tank
     turretSprite = Sprite::create("assets_game/player/tank_barrel_2.png");
     if (turretSprite) {
-        turretSprite->setAnchorPoint(Vec2(0.5, 0.13)); // Center-bottom
+        turretSprite->setAnchorPoint(Vec2(0.5, 0.0f)); // Center-bottom
         turretSprite->setPosition(Vec2((this->getContentSize().width / 2) + 10, this->getContentSize().height + 50.0f));
-        this->addChild(turretSprite);
+        this->addChild(turretSprite, Constants::ORDER_LAYER_PLAYER);
     }
     else {
         CCLOG("Failed to load texture for Turret");
     }
-
-
 
     // Add keyboard event listener
     auto keyboardListener = EventListenerKeyboard::create();
@@ -84,7 +82,7 @@ void PlayerGame3::initAnimation()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
 
     modelCharac = Sprite::createWithSpriteFrameName("tank_1.png");
-    this->addChild(modelCharac);
+    this->addChild(modelCharac, Constants::ORDER_LAYER_PLAYER);
 
     auto animateCharac = Animate::create(createAnimation("tank_", 8, 0.07f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
@@ -112,6 +110,10 @@ void PlayerGame3::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 void PlayerGame3::onMouseDown(Event* event)
 {
+    if (GameController::getInstance()->isPaused())
+    {
+        return;
+    }
     static bool isMouseDown = false;
 
     if (isMouseDown) return; // Prevent multiple calls
@@ -120,62 +122,39 @@ void PlayerGame3::onMouseDown(Event* event)
     EventMouse* e = (EventMouse*)event;
     if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
     {
-        CCLOG("Mouse left button clicked");
         shootBullet();
     }
 
-    // Reset the flag after a short delay
     this->scheduleOnce([&](float) { isMouseDown = false; }, 0.1f, "resetMouseDownFlag");
 }
 
 void PlayerGame3::shootBullet()
 {
-    CCLOG("shootBullet called");
+    // Calculate the local position of the anchor point (0.5f, 1.0f) in the turret's coordinate system
+    Vec2 localAnchorPoint = Vec2(turretSprite->getContentSize().width * 0.5f, turretSprite->getContentSize().height * 1.0f);
 
-	// Tính toán hướng từ tháp pháo đến vị trí chuột?
-    Vec2 direction = _mousePos - this->convertToWorldSpace(turretSprite->getPosition());
+    // Convert the local anchor point to world position
+    Vec2 turretWorldPos = turretSprite->convertToWorldSpace(localAnchorPoint);
+
+    // Calculate direction from turret to mouse position
+    Vec2 direction = _mousePos - turretWorldPos;
     direction.normalize();
 
-    // Tính toán vị trí đầu của tháp pháo
-    float turretAngle = CC_DEGREES_TO_RADIANS(turretSprite->getRotation() - 90); // Điều chỉnh cho góc quay của sprite
-    Vec2 turretTip = turretSprite->getPosition() + Vec2(cos(turretAngle), sin(turretAngle)) * turretSprite->getContentSize().height;
-
-    // Chuyển đổi turretTip sang tọa độ thế giới
-    Vec2 worldTurretTip = this->convertToWorldSpace(turretTip);
-
-    // Tạo và khởi tạo viên đạn
-    Sprite* bulletSprite = Sprite::create("assets_game/player/1.png");
+    // Create bullet sprite and set its properties
     Bullet* bullet = Bullet::createBullet("assets_game/player/1.png", direction, Constants::BulletGame3Speed);
-    bullet->setScale(SpriteController::updateSpriteScale(bulletSprite, 0.10f));
+    bullet->setScale(SpriteController::updateSpriteScale(bullet, 0.07f));
 
-    // Kiểm tra nếu viên đạn được tạo thành công
     if (bullet)
     {
-        // Đặt vị trí ban đầu của viên đạn
-        bullet->setPosition(worldTurretTip);
+        bullet->setPosition(turretWorldPos);
+        bullet->setDirection(direction);
+        bullet->setSpeed(Constants::BulletGame3Speed);
+        bullet->activate();
 
-        // Thêm viên đạn vào cảnh
-        this->getParent()->addChild(bullet);
+        this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER - 5);
 
-        // Thiết lập chuyển động cho viên đạn
-        Vec2 velocity = direction * Constants::BulletGame3Speed;
-        bullet->getPhysicsBody()->setVelocity(velocity);
-
-        // Vô hiệu hóa vật lý cho viên đạn nếu nó có thân vật lý
-        if (bullet->getPhysicsBody())
-        {
-            bullet->getPhysicsBody()->setEnabled(true);
-        }
-
-        // Sử dụng schedule để kiểm tra vị trí của viên đạn
-        bullet->schedule([bullet](float delta) {
-            auto winSize = Director::getInstance()->getWinSize();
-            if (bullet->getPositionX() < 0 || bullet->getPositionX() > winSize.width ||
-                bullet->getPositionY() < 0 || bullet->getPositionY() > winSize.height)
-            {
-                bullet->removeFromParentAndCleanup(true);
-            }
-        }, "check_bullet_position");
+        // Move bullet indefinitely
+        bullet->moveIndefinitely();
     }
     else
     {
@@ -183,33 +162,25 @@ void PlayerGame3::shootBullet()
     }
 }
 
-
-
 void PlayerGame3::onMouseMove(Event* event)
 {
+    if (GameController::getInstance()->isPaused())
+    {
+        return;
+    }
+
     EventMouse* e = (EventMouse*)event;
     _mousePos = Vec2(e->getCursorX(), e->getCursorY());
 
-    // Invert the y-coordinate
-    auto winSize = Director::getInstance()->getWinSize();
-    _mousePos.y = winSize.height - _mousePos.y;
-
-    CCLOG("Mouse moved to position: (%f, %f)", _mousePos.x, _mousePos.y);
-
-    // Cập nhật góc quay của tháp pháo dựa trên vị trí chuột
     updateTurretRotation();
 }
-
-
 
 void PlayerGame3::update(float delta)
 {
     playerMovement->update(delta);
 
-    // Update BulletManager
     bulletManager->Update(delta);
 
-    // Update turret rotation
     updateTurretRotation();
 }
 
@@ -217,22 +188,22 @@ void PlayerGame3::updateTurretRotation()
 {
     if (turretSprite)
     {
-        auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-        // Lấy vị trí hiện tại của tháp pháo
+        // Get the turret's world position
         Vec2 turretPosition = this->convertToWorldSpace(turretSprite->getPosition());
-        // Tính toán hướng từ tháp pháo đến vị trí chuột
-        Vec2 direction =  mousePos- turretPosition;
 
-        // Tính toán góc quay
+        // Calculate the direction vector from the turret to the mouse position
+        Vec2 direction = _mousePos - turretPosition;
+
+        // Normalize the direction vector
         direction.normalize();
-        float angle = MathFunction::GetDirInDegreesPositive(direction);
 
-        // Điều chỉnh góc quay để tháp pháo hướng về phía chuột
+        // Calculate the angle in degrees
+        float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
+
+        // Set the turret's rotation (adjusting for the initial orientation)
         turretSprite->setRotation(-angle + 90);
     }
 }
-
-
 
 
 void PlayerGame3::setTurretRotation(float angle)
