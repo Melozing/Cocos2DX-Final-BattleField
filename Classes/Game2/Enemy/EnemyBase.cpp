@@ -36,18 +36,18 @@ void EnemyBase::update(float delta)
 
 void EnemyBase::die()
 {
-   /* _isDead = true;
-    this->runAction(Sequence::create(createDeathAnimation(), CallFunc::create([this]() {
-        this->removeFromParent();
-        }), nullptr));*/
+    /* _isDead = true;
+     this->runAction(Sequence::create(createDeathAnimation(), CallFunc::create([this]() {
+         this->removeFromParent();
+         }), nullptr));*/
 }
 
 void EnemyBase::attack()
 {
-   /* _isAttacking = true;
-    this->runAction(Sequence::create(createAttackAnimation(), CallFunc::create([this]() {
-        _isAttacking = false;
-        }), nullptr));*/
+    /* _isAttacking = true;
+     this->runAction(Sequence::create(createAttackAnimation(), CallFunc::create([this]() {
+         _isAttacking = false;
+         }), nullptr));*/
 }
 
 void EnemyBase::setHealth(int health)
