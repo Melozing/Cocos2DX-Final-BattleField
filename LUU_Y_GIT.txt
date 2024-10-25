@@ -1,0 +1,32 @@
+
+
+
+
+
+
+(1 số liên quan đến git để lưu nhớ )
+
+
+
+
+
+
+pull code main khi lỗi có lỗi push code main dù ta  chỉ muốn lấy code chính từ main
+
+
+máy lỗi dù main nhưng vẫn có dòng push code về dù đã fetch origin rồi
+trong github desktop xóa các nhánh, và discard toàn bộ
+chuột phải vào thư mục folder chứa source code game
+chọn "Open git bash here"
+gõ "
+	git fetch origin
+
+	git reset --hard origin/main
+
+	git checkout -b ten-nhanh-moi
+"
+enter 
+gõ "git status" kiểm tra có đúng lần commit gần trên web github có phải cái này không ,à không cần cũng dc á
+
+
+git stash :tạo save .. ( update sau)
