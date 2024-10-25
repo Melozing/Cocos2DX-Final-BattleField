@@ -21,18 +21,19 @@ public:
     void onMouseMove(cocos2d::Event* event);
     void onMouseDown(cocos2d::Event* event);
     void update(float delta) override;
+    BulletManager* bulletManager;
 
 private:
     void initAnimation();
     void shootBullet();
-    void updateTurretRotation(const cocos2d::Vec2& targetPosition);
+    void updateTurretRotation();
     void setTurretRotation(float angle);
 
-
+ 
     cocos2d::Sprite* turretSprite;
     cocos2d::Sprite* modelCharac;
     cocos2d::Vec2 _mousePos;
-    BulletManager* bulletManager;
+    BulletPool* bulletPool;
     PlayerMovement* playerMovement;
     bool isShooting;
 };
