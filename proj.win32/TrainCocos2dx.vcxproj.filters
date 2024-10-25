@@ -342,6 +342,9 @@
     <ClCompile Include="..\Classes\Game4\Game4Scene.cpp">
       <Filter>src\Scene\Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Panel\BasePanel.cpp">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -556,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game4\Game4Scene.h">
       <Filter>src\Scene\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\BasePanel.h">
+      <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
