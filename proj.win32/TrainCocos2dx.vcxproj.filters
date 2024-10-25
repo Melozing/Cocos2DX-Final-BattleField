@@ -204,9 +204,6 @@
     <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
       <Filter>src\Gameplay\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\Background\Background3.cpp">
-      <Filter>src\Gameplay\Background</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Button\PauseButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
     </ClCompile>
@@ -421,9 +418,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletManager.h">
       <Filter>src\Gameplay\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game3\Background\Background3.h">
-      <Filter>src\Gameplay\Background</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Button\PauseButton.h">
       <Filter>src\UXUI\Buttons</Filter>

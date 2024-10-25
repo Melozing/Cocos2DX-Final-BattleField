@@ -61,6 +61,9 @@ void PlayerGame1::setShield(ShieldSkill* shield) {
     if (_shield) {
         _shield->setPosition(this->getPosition());
         _shield->activate(Constants::SHIELD_DURATION);
+        this->scheduleOnce([this](float) {
+            _shield = nullptr;
+            }, Constants::SHIELD_TIME_OF_EXISTENCE, "deactivate_shield_key");
     }
 }
 

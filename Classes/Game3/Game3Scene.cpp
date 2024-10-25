@@ -7,7 +7,7 @@
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
-#include "Background/Background3.h"
+#include "Manager/BackgroundManager.h"
 #include "Game2/Cursor/Cursor.h"
 
 USING_NS_CC;
@@ -27,12 +27,8 @@ bool Game3Scene::init() {
         return false;
     }
 
-    // Add sprite background
-    background3 = Background3::createBackground("assets_game/gameplay/Game3.2.png");
-    if (!background3) {
-        return false;
-    }
-    this->addChild(background3);
+    // Set the background using BackgroundManager
+    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/Game3Background.png", Constants::ORDER_LAYER_BACKGROUND);
 
     // Add sprite playergame3
     auto _player = PlayerGame3::createPlayerGame3();

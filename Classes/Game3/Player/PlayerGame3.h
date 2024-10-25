@@ -1,4 +1,3 @@
-// PlayerGame3.h
 #ifndef __PLAYER_GAME3_H__
 #define __PLAYER_GAME3_H__
 
@@ -25,9 +24,8 @@ public:
 private:
     void initAnimation();
     void shootBullet();
-    void updateTurretRotation(const cocos2d::Vec2& targetPosition);
+    void updateTurretRotation();
     void setTurretRotation(float angle);
-
 
     cocos2d::Sprite* turretSprite;
     cocos2d::Sprite* modelCharac;

@@ -40,8 +40,8 @@ void HealthItem::initPhysicsBody() {
 }
 
 void HealthItem::applyEffect() {
-    PlayerAttributes::getInstance().SetHealth(PlayerAttributes::getInstance().GetHealth() + 1);
     this->playEffectAndRemove();
+    PlayerAttributes::getInstance().SetHealth(PlayerAttributes::getInstance().GetHealth() + 1);
 }
 
 Size HealthItem::getScaledSize() const {

@@ -16,10 +16,8 @@ Bullet::~Bullet()
 
 Bullet* Bullet::createBullet(const std::string& image, const Vec2& direction, float speed)
 {
-    CCLOG("createBullet called");
-
     Bullet* bullet = new (std::nothrow) Bullet();
-    bullet->setScale(Constants::BulletScale);
+
     if (bullet && bullet->initWithProperties(image, direction, speed))
     {
         bullet->autorelease();
@@ -40,34 +38,14 @@ bool Bullet::initWithProperties(const std::string& image, const Vec2& direction,
         return false;
     }
 
-    // Add PhysicsBody to the bullet
-    auto physicsBody = PhysicsBody::createCircle(this->getContentSize().width / 2);
-    physicsBody->setContactTestBitmask(true);
-    this->setPhysicsBody(physicsBody);
-
-    this->setTag(Constants::BulletTag); // Set the tag for the bullet
-
     setDirection(direction);
     setSpeed(speed);
 
-    this->scheduleUpdate();
+    // Set the rotation of the bullet sprite to match the direction
+    float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
+    this->setRotation(-angle + 90);
+
     return true;
-}
-
-void Bullet::update(float delta)
-{
-    if (!_active) return;
-
-    Vec2 position = this->getPosition();
-    position += _direction * _speed * delta;
-    this->setPosition(position);
-
-    // Remove bullet if it goes out of the screen
-    auto winSize = Director::getInstance()->getWinSize();
-    if (position.x < 0 || position.x > winSize.width || position.y < 0 || position.y > winSize.height)
-    {
-        this->deactivate();
-    }
 }
 
 void Bullet::setDirection(const Vec2& direction)
@@ -91,9 +69,43 @@ void Bullet::deactivate()
 {
     _active = false;
     this->setVisible(false);
+    this->stopAllActions(); // Stop any ongoing actions
 }
 
 bool Bullet::isActive() const
 {
     return _active;
+}
+
+void Bullet::reset()
+{
+    _direction = Vec2::ZERO;
+    _speed = 0.0f;
+    _active = false;
+    this->setVisible(false);
+    this->stopAllActions(); // Stop any ongoing actions
+}
+
+void Bullet::moveIndefinitely()
+{
+    // Calculate the target position far outside the screen bounds
+    Vec2 targetPosition = this->getPosition() + _direction * 10000;
+
+    // Create a move action
+    auto moveAction = MoveTo::create(10000 / _speed, targetPosition);
+
+    // Create a callback to check if the bullet is off-screen
+    auto checkOffScreen = CallFunc::create([this]() {
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        auto origin = Director::getInstance()->getVisibleOrigin();
+        Rect visibleRect(origin.x, origin.y, visibleSize.width, visibleSize.height);
+
+        if (!visibleRect.containsPoint(this->getPosition()))
+        {
+            this->deactivate();
+        }
+        });
+
+    // Run the actions sequentially with a repeat to keep checking off-screen status
+    this->runAction(RepeatForever::create(Sequence::create(moveAction, checkOffScreen, nullptr)));
 }

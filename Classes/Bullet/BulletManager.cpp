@@ -44,6 +44,7 @@ void BulletManager::SpawnBullet(const Vec2& position, const Vec2& direction, flo
         bullet->setDirection(direction);
         bullet->setSpeed(speed);
         bullet->activate();
+        bullet->setPhysicsBody(false);
         activeBullets.push_back(bullet);
         Director::getInstance()->getRunningScene()->addChild(bullet);
     }
