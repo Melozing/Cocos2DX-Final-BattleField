@@ -1,4 +1,3 @@
-// PlayerGame3.h
 #ifndef __PLAYER_GAME3_H__
 #define __PLAYER_GAME3_H__
 
@@ -21,7 +20,6 @@ public:
     void onMouseMove(cocos2d::Event* event);
     void onMouseDown(cocos2d::Event* event);
     void update(float delta) override;
-    BulletManager* bulletManager;
 
 private:
     void initAnimation();
@@ -29,11 +27,10 @@ private:
     void updateTurretRotation();
     void setTurretRotation(float angle);
 
- 
     cocos2d::Sprite* turretSprite;
     cocos2d::Sprite* modelCharac;
     cocos2d::Vec2 _mousePos;
-    BulletPool* bulletPool;
+    BulletManager* bulletManager;
     PlayerMovement* playerMovement;
     bool isShooting;
 };
