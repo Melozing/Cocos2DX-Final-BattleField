@@ -57,7 +57,7 @@ bool SuicideBomberEnemy::init()
     contactListener->onContactBegin = CC_CALLBACK_1(SuicideBomberEnemy::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    CCLOG("SuicideBomberEnemy initialized successfully");
+    //CCLOG("SuicideBomberEnemy initialized successfully");
     return true;
 }
 

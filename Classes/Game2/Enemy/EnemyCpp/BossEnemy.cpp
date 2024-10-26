@@ -68,7 +68,7 @@ bool BossEnemy::init()
         this->addChild(_reloadSprite);
     }
 
-    CCLOG("BossEnemy initialized successfully");
+    //CCLOG("BossEnemy initialized successfully");
     return true;
 }
 

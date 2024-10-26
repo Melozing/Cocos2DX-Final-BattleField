@@ -30,7 +30,7 @@ void EnemyUtils::moveToPlayer(Sprite* enemy, float speed, bool& isMoving, Action
             isMoving = true;
         }
 
-        CCLOG("Enemy moving to player: (%f, %f)", pos.x, pos.y);
+        //CCLOG("Enemy moving to player: (%f, %f)", pos.x, pos.y);
     }
     else
     {

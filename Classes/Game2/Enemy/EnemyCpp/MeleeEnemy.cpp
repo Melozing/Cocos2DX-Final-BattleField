@@ -58,7 +58,7 @@ bool MeleeEnemy::init()
     contactListener->onContactBegin = CC_CALLBACK_1(MeleeEnemy::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    CCLOG("MeleeEnemy initialized successfully");
+    //CCLOG("MeleeEnemy initialized successfully");
     return true;
 }
 
@@ -121,7 +121,7 @@ void MeleeEnemy::createDeathAnimation()
 
 void MeleeEnemy::update(float delta)
 {
-    CCLOG("MeleeEnemy update called");
+    //CCLOG("MeleeEnemy update called");
     if (_isDead)
     {
         return;

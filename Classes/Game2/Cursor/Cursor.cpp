@@ -37,3 +37,13 @@ void Cursor::updateCursorPosition() {
     mousePos.y = std::max(0.0f, std::min(mousePos.y, winSize.height));
     this->setPosition(mousePos);
 }
+
+void Cursor::changeSprite(const std::string& filename) {
+    if (this->initWithFile(filename)) {
+        CCLOG("Sprite changed to %s", filename.c_str());
+        this->autorelease();
+    }
+    else {
+        CCLOG("Failed to change sprite to %s", filename.c_str());
+    }
+}

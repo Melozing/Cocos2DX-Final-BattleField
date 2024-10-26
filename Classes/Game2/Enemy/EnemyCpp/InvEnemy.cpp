@@ -69,7 +69,7 @@ bool InvEnemy::init()
     contactListener->onContactBegin = CC_CALLBACK_1(InvEnemy::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    CCLOG("InvEnemy initialized successfully");
+    //CCLOG("InvEnemy initialized successfully");
     return true;
 }
 

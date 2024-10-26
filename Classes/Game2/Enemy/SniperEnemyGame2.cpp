@@ -85,7 +85,7 @@ bool SniperEnemyGame2::init()
     contactListener->onContactBegin = CC_CALLBACK_1(SniperEnemyGame2::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    CCLOG("SniperEnemyGame2 initialized successfully");
+    //CCLOG("SniperEnemyGame2 initialized successfully");
     return true;
 }
 
@@ -148,7 +148,7 @@ void SniperEnemyGame2::createDeathAnimation()
 
 void SniperEnemyGame2::update(float delta)
 {
-    CCLOG("SniperEnemyGame2 update called");
+    //CCLOG("SniperEnemyGame2 update called");
     if (_isDead)
     {
         return;

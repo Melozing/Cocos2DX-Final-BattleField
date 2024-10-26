@@ -3,7 +3,6 @@
 #include "Controller/SceneController.h"
 #include "Constants/Constants.h"
 
-
 USING_NS_CC;
 
 bool BaseScene::init() {
@@ -42,6 +41,9 @@ bool BaseScene::init() {
     if (_cursor) {
         _cursor->setPosition(visibleSize / 2); // Set initial position
         this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order 1
+    }
+    else {
+        CCLOG("Failed to create cursor");
     }
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
