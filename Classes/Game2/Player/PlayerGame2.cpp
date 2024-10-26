@@ -201,8 +201,8 @@ void PlayerGame2::shootBullet(const Vec2& direction)
 {
     CCLOG("shootBullet called");
 
-    Vec2 normalizedDirection = direction.getNormalized();
-    bulletManager->SpawnBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed);
+    //Vec2 normalizedDirection = direction.getNormalized();
+    //bulletManager->SpawnBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed);
 }
 
 void PlayerGame2::throwGrenade(const Vec2& direction, float duration)

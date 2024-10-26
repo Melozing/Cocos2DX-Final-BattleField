@@ -101,6 +101,5 @@ bool Game3Scene::init() {
         return false;
     }
     this->addChild(_cursor, Constants::ORDER_LAYER_UI + 99);
-
     return true;
 }

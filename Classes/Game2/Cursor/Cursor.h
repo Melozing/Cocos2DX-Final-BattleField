@@ -9,6 +9,7 @@ public:
     Cursor();
     static Cursor* create(const std::string& filename);
     void updateCursorPosition();
+    void changeSprite(const std::string& filename);
     bool _isUpdating;
 private:
     void initMouseListener();

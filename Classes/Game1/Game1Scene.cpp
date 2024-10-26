@@ -61,7 +61,6 @@ bool Game1Scene::init() {
 
     this->scheduleUpdate();
     this->scheduleCollectibleSpawning();
-
     return true;
 }
 

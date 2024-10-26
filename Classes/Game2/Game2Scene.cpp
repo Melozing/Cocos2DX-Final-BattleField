@@ -1,8 +1,7 @@
-﻿// Game2Scene.cpp
-#include "Game2/Game2Scene.h"
+﻿#include "Game2/Game2Scene.h"
 #include "Manager/PhysicsManager.h"
 #include "Constants/Constants.h"
-
+#include "Manager/BackgroundManager.h"
 
 #include "Game2/Enemy/Enemyh/MeleeEnemy.h"
 #include "Game2/Enemy/Enemyh/SniperEnemy.h"
@@ -16,12 +15,17 @@ const uint32_t PLAYER_BITMASK = 0x0001;
 const uint32_t TILE_BITMASK = 0x0002;
 
 cocos2d::Scene* Game2Scene::createScene() {
-    return Game2Scene::create();
+    auto scene = Scene::createWithPhysics(); // Create scene with physics
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    auto layer = Game2Scene::create();
+    layer->setPhysicWorld(scene->getPhysicsWorld());
+    scene->addChild(layer);
+    return scene;
 }
 
 bool Game2Scene::init() {
     if (!BaseScene::init()) {
-        CCLOG("Failed to initialize Scene");
+        CCLOG("Failed to initialize BaseScene");
         return false;
     }
 
@@ -33,10 +37,7 @@ bool Game2Scene::init() {
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     // Load the background image
-    auto background = Sprite::create("assets_game/gameplay/game2/game2.png");
-    background->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    background->setScale(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
-    this->addChild(background, -1); // Add background at a lower z-order
+    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/game2.png", Constants::ORDER_LAYER_BACKGROUND);
 
     // Create the player at the center of the screen
     _player = PlayerGame2::createPlayerGame2();
@@ -51,8 +52,19 @@ bool Game2Scene::init() {
     // Setup keyboard event listeners
     setupKeyboardEventListeners();
 
-    // Setup cursor
-    setupCursor();
+    // Initialize and setup cursor
+    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
+    if (_cursor) {
+        _cursor->setAnchorPoint(Vec2(0.5, 0.5));
+        _cursor->setScale(0.03f); // Adjust scale as needed
+        _cursor->setPosition(visibleSize / 2); // Set initial position
+        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order
+        setupCursor();
+    }
+    else {
+        CCLOG("Failed to create cursor");
+    }
+
 
     // Spawn enemies at specific points
     this->schedule([this](float delta) {
@@ -64,6 +76,16 @@ bool Game2Scene::init() {
     this->scheduleUpdate();
 
     return true;
+}
+
+void Game2Scene::setupCursor() {
+    if (_cursor) {
+        CCLOG("Changing cursor sprite...");
+        _cursor->changeSprite("assets_game/player/tam.png");
+    }
+    else {
+        CCLOG("Cursor is not initialized");
+    }
 }
 
 void Game2Scene::setupKeyboardEventListeners() {
@@ -81,16 +103,6 @@ void Game2Scene::setupKeyboardEventListeners() {
         };
 
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
-}
-
-void Game2Scene::setupCursor() {
-    Director::getInstance()->getOpenGLView()->setCursorVisible(false);
-    _cursor = Cursor::create("assets_game/player/tam.png");
-    if (!_cursor) {
-        CCLOG("Failed to create Cursor");
-        return;
-    }
-    this->addChild(_cursor);
 }
 
 void Game2Scene::update(float delta) {
