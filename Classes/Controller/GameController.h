@@ -19,6 +19,7 @@ public:
     void replayGame(const std::string& soundtrackPath);
     void init();
     void toggleCursorVisibility(bool visible);
+
     bool musicStarted;
     int audioID;
 private:

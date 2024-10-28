@@ -45,6 +45,7 @@ bool Game2Scene::init() {
         CCLOG("Failed to create PlayerGame2");
         return false;
     }
+
     _player->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     _player->setName("PlayerGame2");
     this->addChild(_player);
@@ -53,18 +54,17 @@ bool Game2Scene::init() {
     setupKeyboardEventListeners();
 
     // Initialize and setup cursor
-    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
-    if (_cursor) {
-        _cursor->setAnchorPoint(Vec2(0.5, 0.5));
-        _cursor->setScale(0.03f); // Adjust scale as needed
-        _cursor->setPosition(visibleSize / 2); // Set initial position
-        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order
-        setupCursor();
-    }
-    else {
-        CCLOG("Failed to create cursor");
-    }
-
+    //_cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
+    //if (_cursor) {
+    //    _cursor->setAnchorPoint(Vec2(0.5, 0.5));
+    //    _cursor->setScale(0.03f); // Adjust scale as needed
+    //    _cursor->setPosition(visibleSize / 2); // Set initial position
+    //    this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order
+    //    setupCursor();
+    //}
+    //else {
+    //    CCLOG("Failed to create cursor");
+    //}
 
     // Spawn enemies at specific points
     this->schedule([this](float delta) {
@@ -136,7 +136,7 @@ void Game2Scene::spawnEnemies() {
         float x = point.x * (visibleSize.width / 1920.0f);
         float y = point.y * (visibleSize.height / 1080.0f);
 
-        auto enemy = MeleeEnemy::create();
+        auto enemy = SniperEnemy::create();
         if (enemy) {
             enemy->setPosition(Vec2(x + origin.x, y + origin.y));
             this->addChild(enemy);

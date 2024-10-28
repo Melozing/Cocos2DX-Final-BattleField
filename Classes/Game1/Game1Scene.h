@@ -127,6 +127,9 @@ private:
     ShieldSkill* _shield; 
     void activateShield(); 
     void deactivateShield();
+
+    //Cursor
+    void initCursor();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

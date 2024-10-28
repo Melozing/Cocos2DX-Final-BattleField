@@ -95,11 +95,13 @@ bool Game3Scene::init() {
     
     // Add cursor
     Director::getInstance()->getOpenGLView()->setCursorVisible(false);
-    _cursor = Cursor::create("assets_game/player/tam.png");
+    _cursor = Cursor::create("assets_game/player/bullseye_white.png");
     if (!_cursor) {
         CCLOG("Failed to create Cursor");
         return false;
     }
+    _cursor->setName("Cursor"); // Set name for the cursor
     this->addChild(_cursor, Constants::ORDER_LAYER_UI + 99);
+
     return true;
 }

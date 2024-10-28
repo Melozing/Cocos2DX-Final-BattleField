@@ -61,6 +61,17 @@ bool MainMenu::init() {
         });
     this->addChild(buttonG3);
 
+    // Create and position exit button
+    auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Exit_BTN.png");
+    exitButton->setScale(SpriteController::updateSpriteScale(exitButton, 0.08f));
+    exitButton->setPosition(Vec2(visibleSize.width / 2, exitButton->getContentSize().height / 2 + 10)); // Position at the bottom
+    exitButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            Director::getInstance()->end(); // Exit the game
+        }
+        });
+    this->addChild(exitButton);
+
     // Create and add the custom cursor
     Director::getInstance()->getOpenGLView()->setCursorVisible(false);
     _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");

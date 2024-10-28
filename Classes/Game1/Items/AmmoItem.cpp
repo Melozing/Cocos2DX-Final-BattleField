@@ -18,9 +18,9 @@ AmmoItem* AmmoItem::create() {
 
 bool AmmoItem::init() {
     if (!Node::init()) return false;
-    _currentSprite = Sprite::create("assets_game/items/items_superpower.png");
+    _currentSprite = Sprite::create("assets_game/items/ao.png");
     _currentSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
-    _spriteScale = SpriteController::updateSpriteScale(_currentSprite, 0.08f);
+    _spriteScale = SpriteController::updateSpriteScale(_currentSprite, 0.07f);
     //_currentSprite->setScale(_spriteScale);
     this->addChild(_currentSprite);
     this->setScale(_spriteScale);
@@ -41,8 +41,30 @@ void AmmoItem::initPhysicsBody() {
 
 void AmmoItem::applyEffect() {
     PlayerAttributes::getInstance().SetAmmo(PlayerAttributes::getInstance().GetAmmo() + 1);
-    this->playEffectAndRemove();
+    this->setVisible(true);
+    this->setOpacity(255);
+
+    // Scale up to _scaleFactor times over 0.5 seconds
+    auto scaleUp = ScaleTo::create(0.5f, _scaleFactor);
+
+    // Fade out over 0.5 seconds
+    auto fadeOut = FadeOut::create(0.5f);
+
+    // Run the scale and fade actions simultaneously
+    auto scaleAndFade = Spawn::create(scaleUp, fadeOut, nullptr);
+
+    // Call playEffectAndRemove after scale and fade actions are complete
+    auto callPlayEffectAndRemove = CallFunc::create([this]() {
+        this->playEffectAndRemove();
+        });
+
+    // Create a sequence to run scaleAndFade, then callPlayEffectAndRemove
+    auto sequence = Sequence::create(scaleAndFade, callPlayEffectAndRemove, nullptr);
+
+    // Run the sequence on the sprite
+    _currentSprite->runAction(sequence);
 }
+
 
 void AmmoItem::playEffectAndRemove() {
     if (this->getPhysicsBody()) {
