@@ -47,3 +47,7 @@ void Cursor::changeSprite(const std::string& filename) {
         CCLOG("Failed to change sprite to %s", filename.c_str());
     }
 }
+
+void Cursor::changeColor(const Color3B& color) {
+    this->setColor(color);
+}

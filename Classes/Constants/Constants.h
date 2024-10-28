@@ -76,6 +76,7 @@ public:
     //game3
     static const float GroundY;
     static const float BackgroundSpeed ;
+    static const float DISTANCE_FROM_PLAYER_TO_POINTER;
     static const float PlayerScale3;
     static const float PLAYER_SPEED_GAME3;
     static const float BulletGame3Speed;

@@ -109,7 +109,10 @@ void GameController::pauseGame(const std::function<void()>& exitAction, const st
                 };
 
             auto pausePanel = PausePanel::createPanel([this]() {
-                this->resumeGame();
+                // Simulate Enter key press event
+                EventKeyboard event(EventKeyboard::KeyCode::KEY_ENTER, true);
+                auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+                eventDispatcher->dispatchEvent(&event);
                 }, retryAction, exitAction, backAction);
 
             if (pausePanel) {
@@ -122,6 +125,7 @@ void GameController::pauseGame(const std::function<void()>& exitAction, const st
         }
     }
 }
+
 
 
 void GameController::showEndGamePanel(Layer* panel, const std::function<void()>& retryAction, const std::string& soundtrackPath) {
@@ -158,10 +162,15 @@ bool GameController::isGameOver() const {
 
 void GameController::resumeGame() {
     if (paused) {
-		toggleCursorVisibility(false);
+        toggleCursorVisibility(false);
         auto director = Director::getInstance();
         director->resume();
         paused = false;
+
+        // Simulate Enter key press event
+        EventKeyboard event(EventKeyboard::KeyCode::KEY_ENTER, true);
+        auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+        eventDispatcher->dispatchEvent(&event);
 
         auto runningScene = director->getRunningScene();
         if (runningScene) {

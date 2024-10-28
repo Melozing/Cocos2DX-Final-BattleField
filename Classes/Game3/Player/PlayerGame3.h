@@ -19,13 +19,15 @@ public:
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onMouseMove(cocos2d::Event* event);
     void onMouseDown(cocos2d::Event* event);
+    void onMouseUp(cocos2d::Event* event);
     void update(float delta) override;
 
 private:
     void initAnimation();
     void shootBullet();
     void updateTurretRotation();
-    void setTurretRotation(float angle);
+    bool updateDistanceToMouse(const Vec2& position);
+    float calculateDistanceToMouse(const Vec2& position);
 
     cocos2d::Sprite* turretSprite;
     cocos2d::Sprite* modelCharac;
@@ -33,6 +35,10 @@ private:
     BulletManager* bulletManager;
     PlayerMovement* playerMovement;
     bool isShooting;
+    float distanceToMouse;
+    bool isMouseDown; 
+    float shootDelay;
+    float timeSinceLastShot;
 };
 
 #endif // __PLAYER_GAME3_H__

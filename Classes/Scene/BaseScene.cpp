@@ -15,7 +15,10 @@ bool BaseScene::init() {
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
             if (!GameController::getInstance()->isGameOver()) {
-                _cursor->setVisible(false);
+                if (_cursor)
+                {
+                    _cursor->setVisible(false);
+                }
                 auto exitAction = []() {
                     Director::getInstance()->end();
                     };
@@ -25,26 +28,14 @@ bool BaseScene::init() {
         }
         else if (keyCode == EventKeyboard::KeyCode::KEY_ENTER) {
             if (GameController::getInstance()->isPaused()) {
-                _cursor->setVisible(true);
+                if (_cursor)
+                {
+                    _cursor->setVisible(true);
+                }
                 GameController::getInstance()->resumeGame();
             }
         }
         };
-
-    // Create and add the custom cursor
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Director::getInstance()->getOpenGLView()->setCursorVisible(false);
-    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
-    _cursor->setAnchorPoint(Vec2(0.5, 0.5));
-    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
-    _cursor->setVisible(true);
-    if (_cursor) {
-        _cursor->setPosition(visibleSize / 2); // Set initial position
-        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order 1
-    }
-    else {
-        CCLOG("Failed to create cursor");
-    }
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     return true;

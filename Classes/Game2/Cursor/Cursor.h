@@ -10,7 +10,9 @@ public:
     static Cursor* create(const std::string& filename);
     void updateCursorPosition();
     void changeSprite(const std::string& filename);
+    void changeColor(const cocos2d::Color3B& color); // Ensure cocos2d namespace is used
     bool _isUpdating;
+
 private:
     void initMouseListener();
     void onMouseMove(cocos2d::Event* event);

@@ -88,8 +88,9 @@ const uint32_t Constants::enemy2_bitmask = 0x0002;
 
 //game3
 const float Constants::GroundY = 70.0f;
+const float Constants::DISTANCE_FROM_PLAYER_TO_POINTER = 0.07f;
 const float Constants::BackgroundSpeed = 50.0f;
-const float Constants::PlayerScale3 = 1.5f; 
+const float Constants::PlayerScale3 = 0.08f; 
 const float Constants::PLAYER_SPEED_GAME3 = 250.0f;
 const float Constants::BulletGame3Speed = 1500.0f;
 const float Constants::EnemyGame3Speed_1 = 700.0f;

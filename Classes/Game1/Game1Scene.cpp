@@ -25,7 +25,7 @@ using namespace cocos2d::experimental;
 
 cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
     layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
@@ -58,10 +58,25 @@ bool Game1Scene::init() {
     initEvents();
     initSound();
     initSpawning();
+    initCursor();
 
     this->scheduleUpdate();
     this->scheduleCollectibleSpawning();
     return true;
+}
+
+void Game1Scene::initCursor() {
+    // Create and add the custom cursor
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Director::getInstance()->getOpenGLView()->setCursorVisible(false);
+    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
+    _cursor->setAnchorPoint(Vec2(0.5, 0.5));
+    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
+    _cursor->setVisible(true);
+    if (_cursor) {
+        _cursor->setPosition(visibleSize / 2); // Set initial position
+        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order 1
+    }
 }
 
 void Game1Scene::initPhysics(const Size& visibleSize) {
@@ -194,7 +209,7 @@ void Game1Scene::initSound() {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
         this->scheduleOnce([this](float) { this->unschedule("collectible_item_spawn_key"); }, musicDuration - 9.5f, "stop_collectible_spawning_key");
         }, 0.1f, "get_music_duration_key");
-    //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
+    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->schedule([this](float dt) {
         updateLoadingBar(dt);
@@ -266,14 +281,13 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
                 _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
             }
             else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
-                activateShield();
                 ammoItem->applyEffect(); // Apply the effect of the collectible item
+                activateShield();
             }
         }
     }
     return true;
 }
-
 
 void Game1Scene::activateShield() {
     if (_shield) {
