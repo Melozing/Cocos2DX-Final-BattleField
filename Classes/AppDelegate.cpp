@@ -45,8 +45,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         int screenWidth = GetSystemMetrics(SM_CXSCREEN);
         int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-        //glview = GLViewImpl::createWithFullScreen("Test123"); //Neu Muon FullScreen thi dung cai nay  
-        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, screenWidth, screenHeight)); // Che do khong vien
+        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, screenWidth, screenHeight));
 
         // Windows specific code to make the window borderless
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
@@ -59,7 +58,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         exStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
         SetWindowLong(hwnd, GWL_EXSTYLE, exStyle);
 
-        // Adjust window size to match the screen size
+        // Adjust window size and position to match the screen size
         SetWindowPos(hwnd, NULL, 0, 0, screenWidth, screenHeight, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOOWNERZORDER);
 #endif
 
@@ -82,7 +81,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Set the design resolution size to match the screen size
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    glview->setDesignResolutionSize(screenWidth, screenHeight, ResolutionPolicy::SHOW_ALL);
+    glview->setDesignResolutionSize(screenWidth, screenHeight, ResolutionPolicy::NO_BORDER);
 
     register_all_packages();
 
@@ -94,7 +93,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     return true;
 }
-
 
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();

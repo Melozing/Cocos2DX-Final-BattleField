@@ -9,7 +9,7 @@ USING_NS_CC;
 class SpriteController {
 public:
     // Animation handling
-    Animation* createAnimation(const std::string& prefixName, int frameCount, float delay);
+    static Animation* createAnimation(const std::string& prefixName, int frameCount, float delay);
     void changeAnimation(const std::string& namePrefix, int numOrder);
     static float updateSpriteScale(Sprite* sprite, float size);
     static float updateSpriteScale(cocos2d::Node* node, float size);

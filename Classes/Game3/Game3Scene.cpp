@@ -1,7 +1,7 @@
 ﻿#include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
-#include "Game3/enemy/EnemyPlane3.h"
-#include "Game3/enemy/EnemyPlane1.h" 
+#include "Game3/enemy/EnemyPlaneBullet.h"
+#include "Game3/enemy/EnemyPlaneBoom.h" 
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
@@ -30,78 +30,86 @@ bool Game3Scene::init() {
         return Game3Scene::createScene();
         });
 
-    // Set the background using BackgroundManager
+    setupBackground();
+    setupPlayer();
+    setupEnemies();
+    setupCursor();
+
+    return true;
+}
+
+void Game3Scene::setupBackground() {
     BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/Game3Background.png", Constants::ORDER_LAYER_BACKGROUND);
+}
 
-    // Add sprite playergame3
-    auto _player = PlayerGame3::createPlayerGame3();
-    if (!_player) {
+void Game3Scene::setupPlayer() {
+    auto player = PlayerGame3::createPlayerGame3();
+    if (!player) {
         CCLOG("Failed to create PlayerGame3");
-        return false;
+        return;
     }
-    this->addChild(_player);
-   
-    // Add keyboard event listener
-    auto eventListener = EventListenerKeyboard::create();
+    this->addChild(player);
+    setupEventListeners(player);
+}
 
-    eventListener->onKeyPressed = [_player](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode)
-        {
-        case EventKeyboard::KeyCode::KEY_A:
-        case EventKeyboard::KeyCode::KEY_D:
-        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-            _player->onKeyPressed(keyCode, event);
-            break;
-        default:
-            break;
-        }
-        };
-
-    eventListener->onKeyReleased = [_player](EventKeyboard::KeyCode keyCode, Event* event) {
-        switch (keyCode)
-        {
-        case EventKeyboard::KeyCode::KEY_A:
-        case EventKeyboard::KeyCode::KEY_D:
-        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-            _player->onKeyReleased(keyCode, event);
-            break;
-        default:
-            break;
-        }
-        };
-    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
-
-    // Add sprite enemy game 3
-    auto enemyPlane = EnemyPlane3::createEnemyPlan3();
-    if (!enemyPlane) {
-        CCLOG("Failed to create EnemyPlane3");
-        return false;
+void Game3Scene::setupEnemies() {
+    auto enemyPlaneBullet = EnemyPlaneBullet::createEnemyBullet();
+    if (!enemyPlaneBullet) {
+        CCLOG("Failed to create EnemyPlaneBullet");
+        return;
     }
-    this->addChild(enemyPlane);
 
-    // Add sprite enemy plane 1
-    auto enemyPlane1 = EnemyPlane1::createEnemyPlane1();
-    if (!enemyPlane1) {
-        CCLOG("Failed to create EnemyPlane1");
-        return false;
+    auto enemyPlaneBoom = EnemyPlaneBoom::createEnemyPlaneBoom();
+    if (!enemyPlaneBoom) {
+        CCLOG("Failed to create EnemyPlaneBoom");
+        return;
     }
-    this->addChild(enemyPlane1);
+    this->addChild(enemyPlaneBoom);
+    this->addChild(enemyPlaneBullet);
 
-    //Spawn enemy after delay
-    EnemyPlane3::spawnEnemyAfterDelay(3.0f, this);
-    EnemyPlane1::spawnEnemyAfterDelay(6.0f, this);
-    
-    // Add cursor
+    EnemyPlaneBullet::spawnEnemyAfterDelay(3.0f, this);
+    EnemyPlaneBoom::spawnEnemyAfterDelay(6.0f, this);
+}
+
+void Game3Scene::setupCursor() {
     Director::getInstance()->getOpenGLView()->setCursorVisible(false);
     _cursor = Cursor::create("assets_game/player/bullseye_white.png");
     if (!_cursor) {
         CCLOG("Failed to create Cursor");
-        return false;
+        return;
     }
-    _cursor->setName("Cursor"); // Set name for the cursor
+    _cursor->setName("Cursor");
     this->addChild(_cursor, Constants::ORDER_LAYER_UI + 99);
+}
 
-    return true;
+void Game3Scene::setupEventListeners(PlayerGame3* player) {
+    auto eventListener = EventListenerKeyboard::create();
+
+    eventListener->onKeyPressed = [player](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode) {
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+            player->onKeyPressed(keyCode, event);
+            break;
+        default:
+            break;
+        }
+        };
+
+    eventListener->onKeyReleased = [player](EventKeyboard::KeyCode keyCode, Event* event) {
+        switch (keyCode) {
+        case EventKeyboard::KeyCode::KEY_A:
+        case EventKeyboard::KeyCode::KEY_D:
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+            player->onKeyReleased(keyCode, event);
+            break;
+        default:
+            break;
+        }
+        };
+
+    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 }

@@ -134,13 +134,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>Plane_enemy_bom.png</string>
+            <string>enemy_plane_boom.png</string>
             <key>size</key>
             <string>{660,51}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:13c7b138092d2886db04a8184284635a:8897ec1cb3dbce432c061cdc7c4590b4:797c497e4043551969141016c787eb40$</string>
             <key>textureFileName</key>
-            <string>Plane_enemy_bom.png</string>
+            <string>enemy_plane_boom.png</string>
         </dict>
     </dict>
 </plist>
