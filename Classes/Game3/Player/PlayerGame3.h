@@ -29,6 +29,11 @@ private:
     bool updateDistanceToMouse(const Vec2& position);
     float calculateDistanceToMouse(const Vec2& position);
 
+    void setupInitialPosition();
+    void setupTurret();
+    void setupEventListeners();
+    void setupManagers();
+
     cocos2d::Sprite* turretSprite;
     cocos2d::Sprite* modelCharac;
     cocos2d::Vec2 _mousePos;
@@ -36,7 +41,7 @@ private:
     PlayerMovement* playerMovement;
     bool isShooting;
     float distanceToMouse;
-    bool isMouseDown; 
+    bool isMouseDown;
     float shootDelay;
     float timeSinceLastShot;
 };

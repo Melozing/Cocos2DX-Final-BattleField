@@ -252,7 +252,7 @@
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlane3.cpp">
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Button\BaseButton.cpp">
@@ -267,7 +267,7 @@
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlane1.cpp">
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Grenade\Grenade.cpp">
@@ -344,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Panel\BasePanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBase.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -467,7 +470,7 @@
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlane3.h">
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Button\BaseButton.h">
@@ -482,7 +485,7 @@
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlane1.h">
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Grenade\Grenade.h">
@@ -562,6 +565,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Panel\BasePanel.h">
       <Filter>src\UXUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBase.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

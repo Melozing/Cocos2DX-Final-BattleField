@@ -19,8 +19,12 @@ private:
 
     Cursor* _cursor;
 
-    void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+    void setupBackground();
+    void setupPlayer();
+    void setupEnemies();
+    void setupCursor();
+    void setupEventListeners(PlayerGame3* player);
+
 };
 
 #endif // __GAME3SCENE_SCENE_H__

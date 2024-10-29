@@ -41,6 +41,23 @@ bool PlayerGame3::init()
         return false;
     }
 
+    setupInitialPosition();
+    setupTurret();
+    setupEventListeners();
+    setupManagers();
+
+    // Schedule update method
+    this->scheduleUpdate();
+
+    // Initialize shooting variables
+    isMouseDown = false;
+    shootDelay = 0.5f;
+    timeSinceLastShot = 0.0f;
+    return true;
+}
+
+void PlayerGame3::setupInitialPosition()
+{
     // Get the visible size of the screen
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -51,7 +68,10 @@ bool PlayerGame3::init()
     // Set the initial position of the player
     this->setPosition(Vec2(initialPosX, initialPosY));
     this->setAnchorPoint(Vec2(0.5, 0.5));
+}
 
+void PlayerGame3::setupTurret()
+{
     // Create turret sprite and add to tank
     turretSprite = Sprite::create("assets_game/player/tank_barrel_2.png");
     if (turretSprite) {
@@ -63,7 +83,10 @@ bool PlayerGame3::init()
     else {
         CCLOG("Failed to load texture for Turret");
     }
+}
 
+void PlayerGame3::setupEventListeners()
+{
     // Add keyboard event listener
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame3::onKeyPressed, this);
@@ -76,19 +99,13 @@ bool PlayerGame3::init()
     mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame3::onMouseDown, this);
     mouseListener->onMouseUp = CC_CALLBACK_1(PlayerGame3::onMouseUp, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+}
 
-    // Schedule update method
-    this->scheduleUpdate();
-
+void PlayerGame3::setupManagers()
+{
     // Initialize BulletManager
     bulletManager = new BulletManager(100, "assets_game/player/1.png");
     playerMovement = new PlayerMovement(this, Constants::PLAYER_SPEED_GAME3);
-
-    // Initialize shooting variables
-    isMouseDown = false;
-    shootDelay = 0.5f; 
-    timeSinceLastShot = 0.0f;
-    return true;
 }
 
 void PlayerGame3::initAnimation()
@@ -135,7 +152,9 @@ void PlayerGame3::onMouseDown(Event* event)
     if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
     {
         isMouseDown = true;
-        shootBullet();
+        if (timeSinceLastShot >= shootDelay) {
+            shootBullet();
+        }
     }
 }
 
@@ -150,15 +169,13 @@ void PlayerGame3::onMouseUp(Event* event)
 
 void PlayerGame3::shootBullet()
 {
-    // Bắn ngay lập tức khi click đầu tiên
-    if (timeSinceLastShot < shootDelay && timeSinceLastShot > 0.0f) {
+    if (timeSinceLastShot < shootDelay) {
         return;
     }
 
     Vec2 turretPosition = this->convertToWorldSpace(turretSprite->getPosition());
     // Update the distance between the player and the mouse position
     if (!updateDistanceToMouse(turretPosition)) {
-        CCLOG("Cannot shoot, mouse is too close to the player.");
         return; // Do not shoot if the mouse is too close
     }
 
@@ -186,7 +203,6 @@ void PlayerGame3::shootBullet()
         // Move bullet indefinitely
         bullet->moveIndefinitely();
 
-        // Reset thời gian đã trôi qua sau khi bắn
         timeSinceLastShot = 0.0f;
     }
     else {
@@ -221,8 +237,11 @@ void PlayerGame3::update(float delta)
         if (timeSinceLastShot >= shootDelay)
         {
             shootBullet();
-            timeSinceLastShot = 0.0f;
         }
+    }
+    else
+    {
+        timeSinceLastShot += delta;
     }
 }
 
