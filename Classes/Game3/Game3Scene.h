@@ -10,8 +10,10 @@
 class Game3Scene : public BaseScene {
 public:
     static cocos2d::Scene* createScene();
+    float _elapsedTime;
     virtual bool init() override;
     CREATE_FUNC(Game3Scene);
+    void setupLoadingBar();
 
 private:
     cocos2d::PhysicsWorld* world;
@@ -24,6 +26,7 @@ private:
     void setupEnemies();
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);
+	
 
 };
 

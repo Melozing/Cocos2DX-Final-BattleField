@@ -8,8 +8,10 @@
 #include "Controller/GameController.h"
 #include "Manager/BackgroundManager.h"
 #include "Game2/Cursor/Cursor.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
+
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
@@ -34,6 +36,7 @@ bool Game3Scene::init() {
     setupPlayer();
     setupEnemies();
     setupCursor();
+    setupLoadingBar();
 
     return true;
 }
@@ -112,4 +115,38 @@ void Game3Scene::setupEventListeners(PlayerGame3* player) {
         };
 
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
+}
+
+void Game3Scene::setupLoadingBar() {
+    // Tạo một thanh tải (loading bar) với hình ảnh từ đường dẫn "assets_game/UXUI/Loading/City.png"
+    auto loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/City.png");
+    if (!loadingBar) {
+        // Nếu không tạo được thanh tải, ghi log lỗi và thoát khỏi hàm
+        CCLOG("Failed to create LoadingBar");
+        return;
+    }
+    // Đặt phần trăm ban đầu của thanh tải là 0
+    loadingBar->setPercent(0);
+    // Đặt vị trí của thanh tải ở giữa màn hình
+    loadingBar->setPosition(Vec2(Director::getInstance()->getVisibleSize().width / 2,
+        Director::getInstance()->getVisibleSize().height / 2));
+    // Đặt tên cho thanh tải là "LoadingBar"
+    loadingBar->setName("LoadingBar");
+    // Thêm thanh tải vào cảnh với thứ tự lớp (layer) là Constants::ORDER_LAYER_UI + 100
+    this->addChild(loadingBar, Constants::ORDER_LAYER_UI + 100);
+    CCLOG("LoadingBar added to the scene");
+
+    // Lên lịch hàm cập nhật để cập nhật phần trăm của thanh tải
+    this->schedule([loadingBar](float dt) {
+        // Lấy phần trăm hiện tại của thanh tải
+        float percent = loadingBar->getPercent();
+        // Nếu phần trăm hiện tại nhỏ hơn 100
+        if (percent < 100) {
+            // Tăng phần trăm lên 1
+            percent += 1;
+            // Cập nhật phần trăm mới cho thanh tải
+            loadingBar->setPercent(percent);
+        }
+        // Lên lịch hàm cập nhật mỗi 0.1 giây với tên "update_loading_bar"
+        }, 0.1f, "update_loading_bar");
 }
