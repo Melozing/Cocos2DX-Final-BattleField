@@ -118,35 +118,49 @@ void Game3Scene::setupEventListeners(PlayerGame3* player) {
 }
 
 void Game3Scene::setupLoadingBar() {
-    // Tạo một thanh tải (loading bar) với hình ảnh từ đường dẫn "assets_game/UXUI/Loading/City.png"
+    // Create loading bars
     auto loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/City.png");
-    if (!loadingBar) {
-        // Nếu không tạo được thanh tải, ghi log lỗi và thoát khỏi hàm
-        CCLOG("Failed to create LoadingBar");
+    auto loadingBar_black = cocos2d::Sprite::create("assets_game/UXUI/Loading/City_Black.png");
+    if (!loadingBar || !loadingBar_black) {
+        CCLOG("Failed to create LoadingBars");
         return;
     }
-    // Đặt phần trăm ban đầu của thanh tải là 0
-    loadingBar->setPercent(0);
-    // Đặt vị trí của thanh tải ở giữa màn hình
-    loadingBar->setPosition(Vec2(Director::getInstance()->getVisibleSize().width / 2,
-        Director::getInstance()->getVisibleSize().height / 2));
-    // Đặt tên cho thanh tải là "LoadingBar"
-    loadingBar->setName("LoadingBar");
-    // Thêm thanh tải vào cảnh với thứ tự lớp (layer) là Constants::ORDER_LAYER_UI + 100
-    this->addChild(loadingBar, Constants::ORDER_LAYER_UI + 100);
-    CCLOG("LoadingBar added to the scene");
 
-    // Lên lịch hàm cập nhật để cập nhật phần trăm của thanh tải
-    this->schedule([loadingBar](float dt) {
-        // Lấy phần trăm hiện tại của thanh tải
+    // Set initial properties
+    loadingBar->setPercent(0);
+    loadingBar_black->setScale(0.5f);
+    loadingBar->setScale(0.5f);
+
+    // Position loading bars
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto loadingBarSize = loadingBar->getContentSize() * 0.5f;
+    Vec2 position(visibleSize.width - loadingBarSize.width / 2, visibleSize.height - loadingBarSize.height / 2);
+    loadingBar->setPosition(position);
+    loadingBar_black->setPosition(position);
+
+    // Add loading bars to the scene
+    this->addChild(loadingBar_black, Constants::ORDER_LAYER_UI);
+    this->addChild(loadingBar, Constants::ORDER_LAYER_UI + 100);
+
+    // Schedule loading bar updates
+    float duration = 60.0f; // 1 minute
+    float increment = 100.0f / (duration * 60.0f); // Increment per frame (assuming 60 FPS)
+
+    this->schedule([loadingBar, increment](float dt) {
         float percent = loadingBar->getPercent();
-        // Nếu phần trăm hiện tại nhỏ hơn 100
         if (percent < 100) {
-            // Tăng phần trăm lên 1
-            percent += 1;
-            // Cập nhật phần trăm mới cho thanh tải
+            percent += increment; // Increase loading percentage
             loadingBar->setPercent(percent);
         }
-        // Lên lịch hàm cập nhật mỗi 0.1 giây với tên "update_loading_bar"
-        }, 0.1f, "update_loading_bar");
+        else {
+            loadingBar->setPercent(100);
+            // Transition to the next scene or perform any other action
+        }
+        }, 1.0f / 60.0f, "loading_bar_update_key");
 }
+
+
+
+
+
+
