@@ -382,7 +382,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\uv\prebuilt\win32\*.*" "$(OutDir)"</Com
     <ClCompile Include="..\..\external\flatbuffers\idl_gen_go.cpp" />
     <ClCompile Include="..\..\external\flatbuffers\idl_gen_text.cpp" />
     <ClCompile Include="..\..\external\flatbuffers\idl_parser.cpp" />
-    <ClCompile Include="..\..\external\fmod\FMODAudioEngine.cpp" />
     <ClCompile Include="..\..\external\md5\md5.c" />
     <ClCompile Include="..\..\external\poly2tri\common\shapes.cc" />
     <ClCompile Include="..\..\external\poly2tri\sweep\advancing_front.cc" />
@@ -964,7 +963,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\uv\prebuilt\win32\*.*" "$(OutDir)"</Com
     <ClInclude Include="..\..\external\flatbuffers\flatbuffers.h" />
     <ClInclude Include="..\..\external\flatbuffers\idl.h" />
     <ClInclude Include="..\..\external\flatbuffers\util.h" />
-    <ClInclude Include="..\..\external\fmod\FMODAudioEngine.h" />
     <ClInclude Include="..\..\external\json\document.h" />
     <ClInclude Include="..\..\external\json\filereadstream.h" />
     <ClInclude Include="..\..\external\json\filewritestream.h" />

@@ -14,11 +14,43 @@ Scene* LoadingScene::createScene(const std::string& nextSceneName) {
 bool LoadingScene::init() {
     if (!Scene::init()) return false;
 
+    initCursor();
+    initBackground();
+    initLoadingBar();
+
+    // Start loading after a brief delay
+    loadingBar->setVisible(false); // Initially hide the loading bar
+    this->scheduleOnce([this](float) {
+        loadingBar->setVisible(true);
+        startLoading();
+        }, 0.5f, "start_loading_key"); // Delay before starting the loading
+    return true;
+}
+
+void LoadingScene::initCursor() {
+    // Create and add the custom cursor
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Director::getInstance()->getOpenGLView()->setCursorVisible(false);
+    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
+    _cursor->setAnchorPoint(Vec2(0.5, 0.5));
+    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
+    _cursor->setVisible(true);
+    _cursor->setInitialPosition();
+    if (_cursor) {
+        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order 1
+    }
+}
+
+
+void LoadingScene::initBackground() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
-
-    // Set background
     BackgroundManager::getInstance()->setBackground(this, "assets_game/UXUI/Background/background_ui.jpg");
+}
+
+void LoadingScene::initLoadingBar() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
 
     // Create and position the loading bar
     auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
@@ -39,16 +71,7 @@ bool LoadingScene::init() {
 
     // Add loading bar to the scene
     this->addChild(loadingBar);
-
-    // Start loading after a brief delay
-    loadingBar->setVisible(false); // Initially hide the loading bar
-    this->scheduleOnce([this](float) {
-        loadingBar->setVisible(true);
-        startLoading();
-        }, 0.5f, "start_loading_key"); // Delay before starting the loading
-    return true;
 }
-
 
 void LoadingScene::setNextSceneName(const std::string& sceneName) {
     nextSceneName = sceneName;
@@ -61,7 +84,6 @@ void LoadingScene::startLoading() {
         float percent = loadingBar->getPercent();
         percent += 0.5f; // Increase loading percentage
         loadingBar->setPercent(percent);
-
 
         if (percent >= 100) {
             loadingBar->setPercent(100);
@@ -77,4 +99,3 @@ void LoadingScene::startLoading() {
         }
         }, 0.5f / 60.0f, "loading_bar_update_key");
 }
-

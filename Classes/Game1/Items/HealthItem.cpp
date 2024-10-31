@@ -21,7 +21,6 @@ bool HealthItem::init() {
     _currentSprite = Sprite::create("assets_game/items/cao_sao_vang.png");
     _currentSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
     _spriteScale = SpriteController::updateSpriteScale(_currentSprite, 0.07f);
-    //_currentSprite->setScale(_spriteScale);
     this->addChild(_currentSprite);
     this->setScale(_spriteScale); 
     this->scheduleUpdate();
@@ -40,7 +39,7 @@ void HealthItem::initPhysicsBody() {
 }
 
 void HealthItem::applyEffect() {
-    PlayerAttributes::getInstance().SetAmmo(PlayerAttributes::getInstance().GetHealth() + 1);
+    PlayerAttributes::getInstance().SetHealth(PlayerAttributes::getInstance().GetHealth() + 1);
     this->setVisible(true);
     this->setOpacity(255);
 
@@ -85,7 +84,9 @@ void HealthItem::returnToPool() {
 
 void HealthItem::reset() {
     // Reset the state of the HealthItem
+    auto fadeIn = FadeIn::create(0.5f);
     this->setOpacity(255);
     this->setVisible(true);
     this->initPhysicsBody();
+    _currentSprite->runAction(fadeIn);
 }

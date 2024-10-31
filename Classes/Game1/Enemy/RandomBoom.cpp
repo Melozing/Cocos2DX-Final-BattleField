@@ -136,7 +136,7 @@ void RandomBoom::onMissileHitTarget() {
     if (!explosionSprite) {
         explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
         explosionSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
-        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.085f));
+        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.078f));
         explosionSprite->setPosition(position);
         _spriteBatchNodeExplosion->addChild(explosionSprite);
     }
@@ -150,6 +150,7 @@ void RandomBoom::onMissileHitTarget() {
 
     //Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width, GetContentSizeSprite(explosionSprite).height);
     explosionSpriteDump = Sprite::createWithSpriteFrameName("explosions7.png");
+    explosionSpriteDump->setScale(SpriteController::updateSpriteScale(explosionSpriteDump, 0.15f));
     explosionBody = PhysicsBody::createBox(GetContentSizeSprite(explosionSpriteDump));
     explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
     explosionBody->setContactTestBitmask(true);
