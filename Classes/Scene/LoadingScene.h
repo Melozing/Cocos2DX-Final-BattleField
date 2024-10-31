@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include "Game2/Cursor/Cursor.h"
 
 USING_NS_CC;
 
@@ -18,6 +19,11 @@ public:
     void setNextSceneName(const std::string& sceneName);
 
 private:
+    void initLoadingBar();
+    void initBackground();
+    void initCursor();
+
+    Cursor* _cursor;
     ui::LoadingBar* loadingBar;
     Sprite* border;
     std::string nextSceneName; // Store the name of the next scene

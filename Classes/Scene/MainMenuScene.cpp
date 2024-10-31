@@ -77,8 +77,8 @@ bool MainMenu::init() {
     _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
     _cursor->setAnchorPoint(Vec2(0.5, 0.5));
     _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
+    _cursor->setInitialPosition();
     if (_cursor) {
-        _cursor->setPosition(visibleSize / 2); // Set initial position
         this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order 1
     }
 

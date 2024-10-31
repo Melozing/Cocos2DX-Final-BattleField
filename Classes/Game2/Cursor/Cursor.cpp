@@ -1,4 +1,4 @@
-#include "Game2/Cursor/Cursor.h"
+#include "Cursor.h"
 
 USING_NS_CC;
 
@@ -9,6 +9,7 @@ Cursor* Cursor::create(const std::string& filename) {
     if (pRet && pRet->initWithFile(filename)) {
         pRet->autorelease();
         pRet->initMouseListener();
+        pRet->setInitialPosition();
         return pRet;
     }
     else {
@@ -20,6 +21,17 @@ Cursor* Cursor::create(const std::string& filename) {
 void Cursor::initMouseListener() {
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(Cursor::onMouseMove, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+}
+
+void Cursor::setInitialPosition() {
+    // Create a temporary event listener to get the initial mouse position
+    auto mouseListener = EventListenerMouse::create();
+    mouseListener->onMouseMove = [this, mouseListener](EventMouse* event) mutable {
+        _mousePos = Vec2(event->getCursorX(), event->getCursorY());
+        updateCursorPosition();
+        _eventDispatcher->removeEventListener(mouseListener);
+        };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 

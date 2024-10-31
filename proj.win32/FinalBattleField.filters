@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Constants">
+      <UniqueIdentifier>{b6ecde5c-bbce-4449-bf17-54d9eae09ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Controller">
+      <UniqueIdentifier>{135473d8-5e84-4f68-9176-7b824838a51f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scene">
+      <UniqueIdentifier>{55db5daf-b5de-4a9e-982c-a455d94f2aeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UXUI">
+      <UniqueIdentifier>{ac4203b3-0586-4f6b-ba69-d8d6a4016278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UXUI\Panel">
+      <UniqueIdentifier>{437cedd3-cb47-4d24-a179-ec323ff2e4bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UXUI\Buttons">
+      <UniqueIdentifier>{5270998c-1bea-4c35-a657-351b144361f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay">
+      <UniqueIdentifier>{1752828f-bc55-4fa2-a5b1-cdd416cbdb11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items">
+      <UniqueIdentifier>{f9310f16-26c7-4a8e-906f-f4861a892bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy">
+      <UniqueIdentifier>{53b321df-85de-457a-9568-df5754c75932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1">
+      <UniqueIdentifier>{e912a495-fd84-4c69-8b7c-42f4d19ee22a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2">
+      <UniqueIdentifier>{c537c4c3-5228-4afc-bd55-e634aa85b349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Bullet">
+      <UniqueIdentifier>{6c30be57-c649-417d-a9b9-744e2cf7a5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Background">
+      <UniqueIdentifier>{3e661f6c-f412-42af-9cf0-6438b5d93150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player">
+      <UniqueIdentifier>{dbc8a0f4-d853-4635-94f6-194d202d36a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame1">
+      <UniqueIdentifier>{e9128f5a-d130-4f6f-8b73-0f59d7a825bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2">
+      <UniqueIdentifier>{7a0cbbf1-3080-47b3-8f8b-92badcc3ad05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\PlayerHealth">
+      <UniqueIdentifier>{b0209af1-01b7-487b-8044-544a741901eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Utils">
+      <UniqueIdentifier>{f6bc2651-ea34-4798-bfb7-b8ab73290b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Manager">
+      <UniqueIdentifier>{c5bfda46-f738-45fb-881a-28f22f850d96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FlyingBullet">
+      <UniqueIdentifier>{5b858b39-3399-4a4b-a305-c46fc1c1b5d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingRock">
+      <UniqueIdentifier>{7058d170-9603-41b9-9674-b2a6ee4f44b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\RandomBoom">
+      <UniqueIdentifier>{8dea75d9-e7fc-46b3-ad7c-2be5ad2540dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Health">
+      <UniqueIdentifier>{1a7e387e-18dc-41d2-91d8-c114fd8c980a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Ammo">
+      <UniqueIdentifier>{8d2ac1b9-7962-4a3c-9f0e-a1eda4ebf427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scene\Gameplay">
+      <UniqueIdentifier>{607703e8-3e04-49c6-9d51-b8032ff9e9a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame3">
+      <UniqueIdentifier>{5165925f-38b7-43be-9077-c6b4dc99dd97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame3">
+      <UniqueIdentifier>{90a5611c-0c27-4f26-8fa6-01f493318a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\Enemyh">
+      <UniqueIdentifier>{6f565c7e-243a-4576-ac25-38d12858d65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\EnemyCpp">
+      <UniqueIdentifier>{b86b6162-9293-482b-b168-ce6709301518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Grenade">
+      <UniqueIdentifier>{7c98527b-5b19-44a1-a243-16e904393be1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Controller\SoundAndMusic">
+      <UniqueIdentifier>{18c232ed-47ac-44ab-a961-f0d8a229e5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Controller\Sprite">
+      <UniqueIdentifier>{a9076c34-8d39-457e-bd47-b59fd2b09be9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FanBullet">
+      <UniqueIdentifier>{76c97b4b-cb51-4d60-94d6-c1c744d9e248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingTree">
+      <UniqueIdentifier>{56802360-56d0-4086-ab31-24b1441dcaf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Manager\Game1">
+      <UniqueIdentifier>{cc74159c-527f-4ff2-a0dc-bb2b1fc78dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Manager\AllUse">
+      <UniqueIdentifier>{dab5cbc4-be88-453c-8403-a450f9be9fb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Effect">
+      <UniqueIdentifier>{cbab5db8-0d71-4727-871d-630aa5e3ed2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Effect\Game1">
+      <UniqueIdentifier>{c1fa6e31-7e42-44e2-a8e9-0326c41a4ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Skill">
+      <UniqueIdentifier>{c7e8b817-eba1-4258-b580-c8c64a12f7ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Skill\Game1">
+      <UniqueIdentifier>{4720d492-7cec-4ae7-89ea-8d232d890ae0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Background\Background.cpp">
+      <Filter>src\Gameplay\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\GameController.cpp">
+      <Filter>src\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Constants\Constants.cpp">
+      <Filter>src\Constants</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PlayerAttributes\PlayerAttributes.cpp">
+      <Filter>src\Gameplay\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\MathFunction.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\LoadingScene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Player\HealthPlayerGame1.cpp">
+      <Filter>src\Gameplay\PlayerHealth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SceneController.cpp">
+      <Filter>src\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\CollectibleItem.cpp">
+      <Filter>src\Gameplay\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\BaseScene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Panel\PausePanel.cpp">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\Bullet.cpp">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\BulletPool.cpp">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FlyingBulletPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingRockPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\RandomBoomPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingRock.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp">
+      <Filter>src\Gameplay\Items\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\HealthItemPool.cpp">
+      <Filter>src\Gameplay\Items\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\AmmoItemPool.cpp">
+      <Filter>src\Gameplay\Items\Ammo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp">
+      <Filter>src\Gameplay\Items\Ammo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Game1Scene.cpp">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Game2Scene.cpp">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Game3Scene.cpp">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Button\ReplayButton.cpp">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Button\ExitButton.cpp">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Button\BaseButton.cpp">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\Pool.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\tilemap.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Grenade\Grenade.cpp">
+      <Filter>src\Grenade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SoundController.cpp">
+      <Filter>src\Controller\SoundAndMusic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\SpriteController.cpp">
+      <Filter>src\Controller\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FanBullet.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FanBulletPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PositionManager.cpp">
+      <Filter>src\Manager\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Effect\EffectObject.cpp">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\SpriteFrameCacheManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingTreePool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillI.cpp">
+      <Filter>src\Gameplay\Skill\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillItemPool.cpp">
+      <Filter>src\Gameplay\Skill\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\BossEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\InvEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MeleeEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SniperEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game4\Game4Scene.cpp">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Panel\BasePanel.cpp">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBase.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HelloWorldScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Background\Background.h">
+      <Filter>src\Gameplay\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\GameController.h">
+      <Filter>src\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Constants\Constants.h">
+      <Filter>src\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PlayerAttributes\PlayerAttributes.h">
+      <Filter>src\Gameplay\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\MathFunction.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\LoadingScene.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Player\HealthPlayerGame1.h">
+      <Filter>src\Gameplay\PlayerHealth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SceneController.h">
+      <Filter>src\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\CollectibleItem.h">
+      <Filter>src\Gameplay\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\GameOverPanel.h">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\MainMenuScene.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\BaseScene.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\PausePanel.h">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\VictoryPanel.h">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h">
+      <Filter>src\Gameplay\Player\PlayerGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
+      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\Bullet.h">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\BulletPool.h">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Bullet\BulletManager.h">
+      <Filter>src\Gameplay\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FlyingBulletPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingRockPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\RandomBoomPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingRock.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
+      <Filter>src\Gameplay\Items\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\HealthItemPool.h">
+      <Filter>src\Gameplay\Items\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\AmmoItemPool.h">
+      <Filter>src\Gameplay\Items\Ammo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h">
+      <Filter>src\Gameplay\Items\Ammo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Game1Scene.h">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Game2Scene.h">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Game3Scene.h">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Button\ReplayButton.h">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Button\ExitButton.h">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Button\BaseButton.h">
+      <Filter>src\UXUI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\Pool.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\tilemap.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Grenade\Grenade.h">
+      <Filter>src\Grenade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SoundController.h">
+      <Filter>src\Controller\SoundAndMusic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\SpriteController.h">
+      <Filter>src\Controller\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FanBullet.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FanBulletPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\SpawnEvent.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PositionManager.h">
+      <Filter>src\Manager\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\BackgroundManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PhysicsManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Effect\EffectObject.h">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\SpriteFrameCacheManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\SpriteBatchNodeManager.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingTreePool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Skills\ShieldSkill.h">
+      <Filter>src\Gameplay\Skill\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Skills\ShieldSkillItemPool.h">
+      <Filter>src\Gameplay\Skill\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\EnemyUtils.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MeleeEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SniperEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\BossEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\InvEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game4\Game4Scene.h">
+      <Filter>src\Scene\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\BasePanel.h">
+      <Filter>src\UXUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBase.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

@@ -85,7 +85,9 @@ void AmmoItem::returnToPool() {
 
 void AmmoItem::reset() {
     // Reset the state of the AmmoItem
+    auto fadeIn = FadeIn::create(0.5f);
     this->setOpacity(255);
     this->setVisible(true);
     this->initPhysicsBody();
+    _currentSprite->runAction(fadeIn);
 }

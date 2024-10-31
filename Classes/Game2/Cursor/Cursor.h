@@ -3,21 +3,21 @@
 
 #include "cocos2d.h"
 
-class Cursor : public cocos2d::Sprite
-{
+class Cursor : public cocos2d::Sprite {
 public:
     Cursor();
     static Cursor* create(const std::string& filename);
-    void updateCursorPosition();
+    void initMouseListener();
+    void setInitialPosition();
     void changeSprite(const std::string& filename);
-    void changeColor(const cocos2d::Color3B& color); // Ensure cocos2d namespace is used
-    bool _isUpdating;
+    void changeColor(const cocos2d::Color3B& color);
 
 private:
-    void initMouseListener();
     void onMouseMove(cocos2d::Event* event);
+    void updateCursorPosition();
 
     cocos2d::Vec2 _mousePos;
+    bool _isUpdating;
 };
 
 #endif // __CURSOR_H__

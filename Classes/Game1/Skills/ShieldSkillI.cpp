@@ -49,10 +49,9 @@ void ShieldSkill::activate(float duration) {
         _isActive = true;
         this->setVisible(true);
         this->setOpacity(0);
-        auto fadeIn = FadeIn::create(0.3f);
+        auto fadeIn = FadeIn::create(duration);
         this->runAction(Sequence::create(
             fadeIn,
-            DelayTime::create(duration),
             CallFunc::create([this]() { this->deactivate(); }),
             nullptr
         ));

@@ -81,7 +81,7 @@ void Game3Scene::setupCursor() {
         CCLOG("Failed to create Cursor");
         return;
     }
-    _cursor->setName("Cursor");
+    _cursor->setInitialPosition();
     this->addChild(_cursor, Constants::ORDER_LAYER_UI + 99);
 }
 

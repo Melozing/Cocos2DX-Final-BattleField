@@ -45,7 +45,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         int screenWidth = GetSystemMetrics(SM_CXSCREEN);
         int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-        glview = GLViewImpl::createWithRect("Test123", Rect(0, 0, screenWidth, screenHeight));
+        glview = GLViewImpl::createWithRect("FinalBattleField", Rect(0, 0, screenWidth, screenHeight));
 
         // Windows specific code to make the window borderless
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
@@ -69,13 +69,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
         // Linux specific code to make the window borderless
         // Replace with actual code to make the window borderless on Linux
 #else
-        glview = GLViewImpl::create("Test123");
+        glview = GLViewImpl::create("FinalBattleField");
 #endif
         director->setOpenGLView(glview);
     }
 
     glview->setCursorVisible(true);
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
     director->setAnimationInterval(1.0f / 120);
 
     // Set the design resolution size to match the screen size

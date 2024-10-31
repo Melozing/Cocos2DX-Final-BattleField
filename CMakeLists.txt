@@ -25,7 +25,7 @@
 
 cmake_minimum_required(VERSION 3.6)
 
-set(APP_NAME TrainCocos2dx)
+set(APP_NAME FinalBattleField)
 
 project(${APP_NAME})
 

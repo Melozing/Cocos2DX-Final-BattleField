@@ -44,13 +44,13 @@ const float Constants::DISTANCE_ENEMY_FALLING = 0.05f;
 //PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
-const float Constants::PLAYER_MOVESPEED = 270.0f;
+const float Constants::PLAYER_MOVESPEED = 300.0f;
 const int Constants::PLAYER_HEALTH = 3;
 
 const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
 const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
-const float Constants::SHIELD_DURATION = 0.3f;
 // SHIELD GAME 1
+const float Constants::SHIELD_DURATION = 0.3f;
 const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
 const float Constants::SHIELD_TIME_OF_EXISTENCE = 5.0f;
 //game1
