@@ -18,7 +18,7 @@ public:
     void spawnEnemies();
     void setupKeyboardEventListeners();
     void setupCursor();
-
+    bool onContactBegin(cocos2d::PhysicsContact& contact);
 private:
     // Physics world
     cocos2d::PhysicsWorld* world;

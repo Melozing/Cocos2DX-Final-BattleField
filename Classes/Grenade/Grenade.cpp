@@ -45,7 +45,11 @@ bool Grenade::init(const Vec2& startPosition, const Vec2& direction, float throw
             }
             }, 2.0f, "explode_key"); // Thời gian nhấp nháy trước khi nổ
         }), nullptr));
-
+    auto physicsBody = PhysicsBody::createCircle(10.0f); // Bán kính vật lý của lựu đạn
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setCollisionBitmask(0x0004); // Bitmask cho lựu đạn
+    physicsBody->setGravityEnable(false);
+    this->setPhysicsBody(physicsBody);
     return true;
 }
 
@@ -106,7 +110,7 @@ void Grenade::explode()
 void Grenade::dealDamage()
 {
     // Tạo một hình tròn đại diện cho vùng gây sát thương
-    float damageRadius = 100.0f; // Bán kính gây sát thương
+    float damageRadius = 150.0f; // Bán kính gây sát thương
     auto damageCircle = DrawNode::create();
     damageCircle->drawSolidCircle(this->getPosition(), damageRadius, 0, 50, Color4F(1, 0, 0, 0.5f));
     this->getParent()->addChild(damageCircle);
@@ -122,7 +126,11 @@ void Grenade::dealDamage()
         {
             // Gây sát thương cho đối tượng
             // Giả sử các đối tượng khác có phương thức takeDamage(int damage)
-            //child->takeDamage(50); // Gây 50 sát thương
+            if (child->getName() == "PlayerGame2" || child->getName() == "Enemy") {
+                // Gây sát thương cho người chơi hoặc kẻ địch
+                // child->takeDamage(50); // Gây 50 sát thương
+                child->removeFromParent(); // Xóa đối tượng khỏi cảnh
+            }
         }
     }
 
