@@ -54,24 +54,32 @@ bool Game2Scene::init() {
     setupKeyboardEventListeners();
 
     // Initialize and setup cursor
-    //_cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
-    //if (_cursor) {
-    //    _cursor->setAnchorPoint(Vec2(0.5, 0.5));
-    //    _cursor->setScale(0.03f); // Adjust scale as needed
-    //    _cursor->setPosition(visibleSize / 2); // Set initial position
-    //    this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order
-    //    setupCursor();
-    //}
-    //else {
-    //    CCLOG("Failed to create cursor");
-    //}
-
+    /*_cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
+    if (_cursor) {
+        _cursor->setAnchorPoint(Vec2(0.5, 0.5));
+        _cursor->setScale(0.03f); // Adjust scale as needed
+        _cursor->setPosition(visibleSize / 2); // Set initial position
+        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order
+        //setupCursor();
+    }
+    else {
+        CCLOG("Failed to create cursor");
+    }*/
+    //Initialize and setup cursor
+    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
+    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f)); // Adjust scale as needed
+    this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR);
     // Spawn enemies at specific points
     this->schedule([this](float delta) {
         spawnEnemies();
         }, 5.0f, "spawn_enemy_key");
 
     CCLOG("Game2Scene initialized successfully");
+
+    // Đăng ký sự kiện va chạm
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     this->scheduleUpdate();
 
@@ -136,7 +144,8 @@ void Game2Scene::spawnEnemies() {
         float x = point.x * (visibleSize.width / 1920.0f);
         float y = point.y * (visibleSize.height / 1080.0f);
 
-        auto enemy = SniperEnemy::create();
+        auto enemy = MeleeEnemy::create();
+		enemy->setName("Enemy");
         if (enemy) {
             enemy->setPosition(Vec2(x + origin.x, y + origin.y));
             this->addChild(enemy);
@@ -144,3 +153,49 @@ void Game2Scene::spawnEnemies() {
         }
     }
 }
+bool Game2Scene::onContactBegin(PhysicsContact& contact) {
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
+
+    if (!nodeA || !nodeB) {
+        return false;
+    }
+
+    if ((nodeA->getName() == "PlayerGame2" && nodeB->getName() == "Grenade") ||
+        (nodeB->getName() == "PlayerGame2" && nodeA->getName() == "Grenade")) {
+        // Xử lý va chạm với người chơi
+        if (nodeA->getName() == "Grenade") {
+            nodeA->removeFromParent();
+        }
+        else {
+            nodeB->removeFromParent();
+        }
+        _player->die();
+    }
+
+    if ((nodeA->getName() == "Enemy" && nodeB->getName() == "Grenade") ||
+        (nodeB->getName() == "Enemy" && nodeA->getName() == "Grenade")) {
+        if (nodeA->getName() == "Grenade") {
+            nodeA->removeFromParent();
+        }
+        else {
+            nodeB->removeFromParent();
+        }
+        if (nodeA->getName() == "Enemy") {
+            auto enemy = dynamic_cast<MeleeEnemy*>(nodeA);
+            if (enemy) {
+				enemy->die();
+            }
+        }
+        else {
+            auto enemy = dynamic_cast<MeleeEnemy*>(nodeB);
+            if (enemy) {
+                enemy->die();
+            }
+        }
+    }
+
+    return true;
+}
+
+
