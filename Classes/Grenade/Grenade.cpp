@@ -1,7 +1,7 @@
 ﻿#include "Grenade/Grenade.h"
 #include "Constants/Constants.h"
 #include "Controller/SpriteController.h"
-
+#include "Game2/Enemy/EnemyBase.h"
 USING_NS_CC;
 
 Grenade* Grenade::createGrenade(const Vec2& startPosition, const Vec2& direction, float throwDuration)
@@ -10,6 +10,7 @@ Grenade* Grenade::createGrenade(const Vec2& startPosition, const Vec2& direction
     if (grenade && grenade->init(startPosition, direction, throwDuration))
     {
         grenade->autorelease();
+		grenade->setScale(0.5f);
         return grenade;
     }
     CC_SAFE_DELETE(grenade);
@@ -125,10 +126,17 @@ void Grenade::dealDamage()
         if (child->getBoundingBox().intersectsCircle(this->getPosition(), damageRadius))
         {
             // Gây sát thương cho đối tượng
-            // Giả sử các đối tượng khác có phương thức takeDamage(int damage)
-            if (child->getName() == "PlayerGame2" || child->getName() == "Enemy") {
-                // Gây sát thương cho người chơi hoặc kẻ địch
-                // child->takeDamage(50); // Gây 50 sát thương
+            auto enemy = dynamic_cast<EnemyBase*>(child);
+            if (enemy)
+            {
+                enemy->setHealth(enemy->getHealth() - 50); // Gây sát thương 50 điểm
+                if (enemy->getHealth() <= 0)
+                {
+                    enemy->die();
+                }
+            }
+            else if (child->getName() == "PlayerGame2")
+            {
                 child->removeFromParent(); // Xóa đối tượng khỏi cảnh
             }
         }
@@ -137,6 +145,7 @@ void Grenade::dealDamage()
     // Xóa hình tròn sau khi gây sát thương
     damageCircle->removeFromParent();
 }
+
 
 float Grenade::calculateThrowDistance(float holdTime)
 {

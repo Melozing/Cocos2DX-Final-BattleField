@@ -184,7 +184,7 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         if (nodeA->getName() == "Enemy") {
             auto enemy = dynamic_cast<MeleeEnemy*>(nodeA);
             if (enemy) {
-				enemy->die();
+                enemy->die();
             }
         }
         else {

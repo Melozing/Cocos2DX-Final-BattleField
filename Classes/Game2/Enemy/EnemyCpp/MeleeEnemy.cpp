@@ -161,6 +161,7 @@ void MeleeEnemy::die()
         }), nullptr));
 }
 
+
 bool MeleeEnemy::onContactBegin(PhysicsContact& contact)
 {
     auto nodeA = contact.getShapeA()->getBody()->getNode();
