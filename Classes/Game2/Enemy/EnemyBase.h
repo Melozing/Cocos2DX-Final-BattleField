@@ -25,12 +25,15 @@ public:
     void setDamage(int damage);
     int getDamage() const;
 
+    void takeDamage(int damage);
 protected:
     int _health;
     float _speed;
     int _damage;
     bool _isDead;
     bool _isAttacking;
+
+    cocos2d::PhysicsBody* _physicsBody;
 
     virtual void createIdleAnimation() = 0;
     virtual void createAttackAnimation() = 0;

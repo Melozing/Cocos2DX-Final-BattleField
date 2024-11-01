@@ -22,7 +22,6 @@ private:
 
     void moveToPlayer();
     void attackPlayer();
-    bool onContactBegin(cocos2d::PhysicsContact& contact);
     cocos2d::RepeatForever* _idleAnimation;
     cocos2d::RepeatForever* _walkAnimation;
     cocos2d::Animate* _attackAnimation;

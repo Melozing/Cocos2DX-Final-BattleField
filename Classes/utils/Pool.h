@@ -15,3 +15,4 @@ public:
 private:
     std::vector<T> poolOf;
 };
+class BulletGame2;

@@ -2,9 +2,12 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "Bullet/BulletManager.h"
+//#include "Bullet/BulletManager.h"
 #include "Controller/SpriteController.h"
 #include "Manager/PlayerMovementManager.h"
+
+#include "Grenade/BulletGame2.h"
+#include "Grenade/PoolBulletGame2.h" 
 
 class PlayerGame2 : public cocos2d::Sprite, public SpriteController
 {
@@ -26,14 +29,26 @@ public:
     void RotateToMouse();
     void shootBullet(const cocos2d::Vec2& direction);
     void throwGrenade(const cocos2d::Vec2& direction, float duration);
+    void reload();
+
     void die();
 
+    const int maxMagazineSize = 30;
+    const int initialAmmo = 120;
 private:
     cocos2d::Vec2 _mousePos;
     bool _isMouseDown;
     float _mousePressDuration;
     bool _isThrowingGrenade;
     cocos2d::Sprite* modelCharac;
-    BulletManager* bulletManager;
+    cocos2d::Sprite* _reloadSprite;
     PlayerMovement* playerMovement;
+    PoolBulletGame2 bulletPool;
+    int totalAmmo;
+    int currentMagazine;
+    bool isReloading;
+    float reloadTime;
+    Label* _ammoLabel;
+    void updateAmmoDisplay();
 };
+

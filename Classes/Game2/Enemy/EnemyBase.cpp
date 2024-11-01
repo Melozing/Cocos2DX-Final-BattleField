@@ -19,7 +19,13 @@ bool EnemyBase::init()
     {
         return false;
     }
-
+    _physicsBody = PhysicsBody::createBox(this->getContentSize());
+    _physicsBody->setContactTestBitmask(true);
+    _physicsBody->setDynamic(false); // Set to true if the enemy should be affected by physics
+    _physicsBody->setCategoryBitmask(0x01);
+    _physicsBody->setCollisionBitmask(0x01);
+    _physicsBody->setContactTestBitmask(0x01);
+    this->setPhysicsBody(_physicsBody);
     this->scheduleUpdate();
     return true;
 }
@@ -94,5 +100,12 @@ void EnemyBase::updateRotationToPlayer()
     else
     {
         CCLOG("Player not found");
+    }
+}
+
+void EnemyBase::takeDamage(int damage) {
+    _health -= damage;
+    if (_health <= 0) {
+        die();
     }
 }
