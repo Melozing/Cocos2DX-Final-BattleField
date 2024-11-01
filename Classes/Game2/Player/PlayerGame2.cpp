@@ -3,8 +3,11 @@
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "cocos2d.h"
-#include "Bullet/Bullet.h"
+
+
 #include "Grenade/Grenade.h"
+#include "Grenade/BulletGame2.h"
+#include "Grenade/PoolBulletGame2.h"
 
 USING_NS_CC;
 
@@ -13,14 +16,17 @@ PlayerGame2::PlayerGame2()
     _isMouseDown(false),
     _mousePressDuration(0.0f),
     _isThrowingGrenade(false),
-    bulletManager(nullptr),
-    playerMovement(nullptr) // Initialize to nullptr
+    playerMovement(nullptr),
+    bulletPool(30),
+    totalAmmo(initialAmmo),
+    currentMagazine(maxMagazineSize),
+    isReloading(false),
+    reloadTime(2.0f)
 {
 }
 
 PlayerGame2::~PlayerGame2()
 {
-    delete bulletManager;
     delete playerMovement;
 }
 
@@ -65,8 +71,21 @@ bool PlayerGame2::init() {
 
     this->scheduleUpdate();
 
-    bulletManager = new BulletManager(100, "assets_game/player/ball.png");
+    //bulletManager = new BulletManager(100, "assets_game/player/ball.png");
     playerMovement = new PlayerMovement(this, Constants::PlayerSpeed); // Properly initialize PlayerMovement
+    
+    _ammoLabel = Label::createWithTTF("0/0", "fonts/Marker Felt.ttf", 24);
+    _ammoLabel->setPosition(Vec2(this->getContentSize().width / 2, -100)); // Đặt vị trí của label phía sau lưng người chơi
+    this->addChild(_ammoLabel, 1);
+
+
+    _reloadSprite = Sprite::create("assets_game/effects/Reload.png");
+    _reloadSprite->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height + 20));
+    _reloadSprite->setVisible(false);
+	_reloadSprite->setScale(0.5f);
+    this->addChild(_reloadSprite, 1);
+    updateAmmoDisplay();
+
     return true;
 }
 
@@ -146,6 +165,7 @@ void PlayerGame2::onMouseUp(Event* event)
     }
 }
 
+
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_W || keyCode == EventKeyboard::KeyCode::KEY_A ||
@@ -154,6 +174,10 @@ void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
         keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW || keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
     {
         playerMovement->onKeyPressed(keyCode);
+    }
+    else if (keyCode == EventKeyboard::KeyCode::KEY_R)
+    {
+        reload();
     }
 }
 
@@ -185,6 +209,29 @@ void PlayerGame2::update(float delta)
     {
         _mousePressDuration += delta;
     }
+    if (isReloading)
+    {
+        reloadTime -= delta;
+        if (reloadTime <= 0)
+        {
+            int bulletsToReload = maxMagazineSize - currentMagazine;
+            if (totalAmmo >= bulletsToReload)
+            {
+                currentMagazine += bulletsToReload;
+                totalAmmo -= bulletsToReload;
+            }
+            else
+            {
+                currentMagazine += totalAmmo;
+                totalAmmo = 0;
+            }
+            isReloading = false;
+            reloadTime = 2.0f;
+            _reloadSprite->stopAllActions();
+            _reloadSprite->setVisible(false);
+            updateAmmoDisplay();
+        }
+    }
 }
 
 void PlayerGame2::RotateToMouse()
@@ -199,11 +246,24 @@ void PlayerGame2::RotateToMouse()
 
 void PlayerGame2::shootBullet(const Vec2& direction)
 {
-    CCLOG("shootBullet called");
+    if (isReloading || currentMagazine <= 0)
+    {
+        return; // Cannot shoot while reloading or if the magazine is empty
+    }
 
-    //Vec2 normalizedDirection = direction.getNormalized();
-    //bulletManager->SpawnBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed);
+    Vec2 normalizedDirection = direction.getNormalized();
+    BulletGame2* bullet = BulletGame2::createBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed, Constants::BulletDamage2);
+    if (bullet)
+    {
+        this->getParent()->addChild(bullet);
+    }
+
+    currentMagazine--;
+    updateAmmoDisplay(); // Update ammo display after shooting
 }
+
+
+
 
 void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
 {
@@ -214,4 +274,25 @@ void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
 void PlayerGame2::die()
 {
     this->removeFromParent();
+}
+void PlayerGame2::reload()
+{
+    if (isReloading || currentMagazine == maxMagazineSize || totalAmmo == 0)
+    {
+        return; // Already reloading, magazine is full, or no ammo left
+    }
+
+    isReloading = true;
+    reloadTime = 2.0f; // Start reload time
+    _reloadSprite->setVisible(true);
+
+    auto rotateAction = RotateBy::create(1.0f, 360.0f);
+    _reloadSprite->runAction(RepeatForever::create(rotateAction));
+}
+void PlayerGame2::updateAmmoDisplay()
+{
+    if (_ammoLabel)
+    {
+        _ammoLabel->setString(StringUtils::format("%d/%d", currentMagazine, totalAmmo));
+    }
 }

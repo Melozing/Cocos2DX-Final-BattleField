@@ -348,6 +348,12 @@
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBase.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Grenade\BulletGame2.cpp">
+      <Filter>src\Grenade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Grenade\PoolBulletGame2.cpp">
+      <Filter>src\Grenade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -568,6 +574,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBase.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Grenade\BulletGame2.h">
+      <Filter>src\Grenade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Grenade\PoolBulletGame2.h">
+      <Filter>src\Grenade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

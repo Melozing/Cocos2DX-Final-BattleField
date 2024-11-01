@@ -1,9 +1,13 @@
+﻿// Pool.cpp
 #include "Pool.h"
+#include "Grenade/BulletGame2.h"
 
+// Định nghĩa các hàm template
 template <class T>
 Pool<T>::Pool()
 {
 }
+
 template <class T>
 Pool<T>::~Pool()
 {
@@ -20,7 +24,7 @@ T Pool<T>::PopElement()
 {
     if (poolOf.empty())
     {
-        throw std::out_of_range("Pool is empty");
+        return nullptr; // Trả về nullptr nếu pool trống
     }
     T elem = poolOf.back();
     poolOf.pop_back();
@@ -33,6 +37,5 @@ void Pool<T>::AddElement(T element)
     poolOf.push_back(element);
 }
 
-//template class Pool<std::shared_ptr<Projectile>>;
-//template class Pool<std::shared_ptr<ExplosionBullet>>;
-//template class Pool<std::shared_ptr<Enemy>>;
+// Khai báo các template đặc biệt
+template class Pool<std::shared_ptr<BulletGame2>>;

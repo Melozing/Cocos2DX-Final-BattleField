@@ -15,11 +15,12 @@ const uint32_t PLAYER_BITMASK = 0x0001;
 const uint32_t TILE_BITMASK = 0x0002;
 
 cocos2d::Scene* Game2Scene::createScene() {
-    auto scene = Scene::createWithPhysics(); // Create scene with physics
+    auto scene = Scene::createWithPhysics();
     scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+
     auto layer = Game2Scene::create();
-    layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
+
     return scene;
 }
 
@@ -195,6 +196,19 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         }
     }
 
+    // Handle bullet collision with enemy
+    if ((nodeA->getName() == "Bullet" && nodeB->getName() == "Enemy") ||
+        (nodeB->getName() == "Bullet" && nodeA->getName() == "Enemy")) {
+        // Handle bullet and enemy collision
+        auto bullet = (nodeA->getName() == "Bullet") ? nodeA : nodeB;
+        auto enemy = (nodeA->getName() == "Enemy") ? nodeA : nodeB;
+
+        // Apply damage to the enemy
+        dynamic_cast<EnemyBase*>(enemy)->takeDamage(dynamic_cast<BulletGame2*>(bullet)->getDamage());
+
+        // Remove the bullet
+        bullet->removeFromParent();
+    }
     return true;
 }
 

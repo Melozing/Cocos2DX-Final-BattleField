@@ -43,7 +43,7 @@ bool MeleeEnemy::init()
     this->setScale(Constants::EnemyScale);
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
-    this->setTag(Constants::EnemyTag); // Set the tag for the enemy
+    //this->setTag(Constants::EnemyTag); // Set the tag for the enemy
 
     // Create animations
     createIdleAnimation();
@@ -52,13 +52,6 @@ bool MeleeEnemy::init()
 
     // Schedule update method
     this->scheduleUpdate();
-
-    // Set up collision detection
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(MeleeEnemy::onContactBegin, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
-
-    //CCLOG("MeleeEnemy initialized successfully");
     return true;
 }
 
@@ -162,16 +155,3 @@ void MeleeEnemy::die()
 }
 
 
-bool MeleeEnemy::onContactBegin(PhysicsContact& contact)
-{
-    auto nodeA = contact.getShapeA()->getBody()->getNode();
-    auto nodeB = contact.getShapeB()->getBody()->getNode();
-
-    if ((nodeA && nodeA->getTag() == Constants::BulletTag) || (nodeB && nodeB->getTag() == Constants::BulletTag))
-    {
-        this->die();
-        return true;
-    }
-
-    return false;
-}
