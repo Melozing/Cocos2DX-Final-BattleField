@@ -7,15 +7,11 @@
 class EnemyPlaneBullet : public EnemyPlaneBase {
 public:
     static EnemyPlaneBullet* createEnemyBullet();
-
+    void reset();
     virtual bool init() override;
-
-    static void spawnEnemyAfterDelay(float delay, cocos2d::Node* parent);
-
+    static void spawnEnemy(cocos2d::Node* parent);
     void initAnimation();
-
 private:
     cocos2d::SpriteBatchNode* spriteBatchNode;
 };
-
 #endif

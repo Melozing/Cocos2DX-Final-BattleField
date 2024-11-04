@@ -18,7 +18,11 @@ public:
     static const float PLAYER_HEALTH_PADDING_Y;
     // SHIELD GAME 1
 	static const float SHIELD_DURATION;
-	static const float SHIELD_TIME_OF_EXISTENCE;
+    static const float SHIELD_TIME_OF_EXISTENCE;
+	// ITEM 
+	static const float ITEM_SCALE_FACTOR;
+	static const float ITEM_EFFECT_DURATION;
+	static const float ITEM_SIZE_RATIO;
 	//EFFECT_GAME1
     static const std::string EFFECT_EXPLOSION_NAME;
     static const float EFFECT_EXPLOSION_PADDING_SCREEN;

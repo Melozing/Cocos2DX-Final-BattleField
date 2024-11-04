@@ -49,6 +49,35 @@ Animation* SpriteController::createAnimation(const std::string& prefixName, int 
     return Animation::createWithSpriteFrames(animFrames, delay);
 }
 
+Animation* SpriteController::createForwardReverseAnimation(const std::string& prefixName, int frameCount, float delay)
+{
+    Vector<SpriteFrame*> animFrames;
+
+    // Add frames from 1 to frameCount
+    for (int i = 1; i <= frameCount; ++i)
+    {
+        std::string frameName = prefixName + StringUtils::format("%d.png", i);
+        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName);
+        if (frame)
+        {
+            animFrames.pushBack(frame);
+        }
+    }
+
+    // Add frames from frameCount back to 1
+    for (int i = frameCount; i >= 1; --i)
+    {
+        std::string frameName = prefixName + StringUtils::format("%d.png", i);
+        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName);
+        if (frame)
+        {
+            animFrames.pushBack(frame);
+        }
+    }
+
+    return Animation::createWithSpriteFrames(animFrames, delay);
+}
+
 float SpriteController::calculateScreenRatio(float ratio) {
     auto visibleSize = Director::getInstance()->getVisibleSize();
 

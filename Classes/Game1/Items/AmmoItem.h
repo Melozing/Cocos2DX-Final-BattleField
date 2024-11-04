@@ -13,8 +13,10 @@ public:
     virtual void returnToPool() override;
     virtual void playEffectAndRemove() override;
     void reset();
+    void initAnimation();
 private:
 	void initPhysicsBody(); 
+	void RemovePhysicBody();
 };
 
 #endif // __AMMO_ITEM_H__
