@@ -1,4 +1,8 @@
 #include "EnemyPlaneBase.h"
+#include "EnemyPlaneBoom.h"
+#include "EnemyPlaneBoomPool.h"
+#include "EnemyPlaneBullet.h"
+#include "EnemyPlaneBulletPool.h"
 
 USING_NS_CC;
 
@@ -9,7 +13,8 @@ bool EnemyPlaneBase::init() {
     return true;
 }
 
-void EnemyPlaneBase::move(const Size& visibleSize, float speed) {
+void EnemyPlaneBase::moveFromLeftToRight(const Size& visibleSize, float speed) {
+
     float startX = -this->getContentSize().width / 2;
     float endX = visibleSize.width + this->getContentSize().width / 2;
 
@@ -17,15 +22,15 @@ void EnemyPlaneBase::move(const Size& visibleSize, float speed) {
     float moveDuration = distance / speed;
 
     auto moveRight = MoveTo::create(moveDuration, Vec2(endX, this->getPositionY()));
-    auto removeSelf = CallFunc::create([this]() {
-        this->removeFromParentAndCleanup(true);
+    auto returnToPool = CallFunc::create([this]() {
+        this->returnToPool();
         });
 
-    auto sequence = Sequence::create(moveRight, removeSelf, nullptr);
+    auto sequence = Sequence::create(moveRight, returnToPool, nullptr);
     this->runAction(sequence);
 }
 
-void EnemyPlaneBase::moveRightToLeft(const Size& visibleSize, float speed) {
+void EnemyPlaneBase::moveFromRightToLeft(const Size& visibleSize, float speed) {
     float startX = visibleSize.width + this->getContentSize().width / 2;
     float endX = -this->getContentSize().width / 2;
 
@@ -37,59 +42,31 @@ void EnemyPlaneBase::moveRightToLeft(const Size& visibleSize, float speed) {
     }
 
     auto moveLeft = MoveTo::create(moveDuration, Vec2(endX, this->getPositionY()));
-    auto removeSelf = CallFunc::create([this]() {
-        this->removeFromParentAndCleanup(true);
+    auto returnToPool = CallFunc::create([this]() {
+        this->returnToPool();
         });
 
-    auto sequence = Sequence::create(moveLeft, removeSelf, nullptr);
+    auto sequence = Sequence::create(moveLeft, returnToPool, nullptr);
     this->runAction(sequence);
 }
 
-void EnemyPlaneBase::moveAndReturn(const Size& visibleSize, float speed) {
-    float startXLeft = -this->getContentSize().width / 2;
-    float endXRight = visibleSize.width + this->getContentSize().width / 2;
+void EnemyPlaneBase::returnToPool() {
+    this->stopAllActions();
+    this->setVisible(false);
+    this->removeFromParentAndCleanup(false);
 
-    float distanceLeftToRight = endXRight - startXLeft;
-    float moveDurationLeftToRight = distanceLeftToRight / speed;
-
-    auto moveRight = MoveTo::create(moveDurationLeftToRight, Vec2(endXRight, this->getPositionY()));
-    auto flipRight = CallFunc::create([this]() {
-        if (this->modelCharac) {
-            this->modelCharac->setFlippedX(false);
-        }
-        });
-
-    float startXRight = visibleSize.width + this->getContentSize().width / 2;
-    float endXLeft = -this->getContentSize().width / 2;
-
-    float distanceRightToLeft = startXRight - endXLeft;
-    float moveDurationRightToLeft = distanceRightToLeft / speed;
-
-    auto moveLeft = MoveTo::create(moveDurationRightToLeft, Vec2(endXLeft, this->getPositionY()));
-    auto flipLeft = CallFunc::create([this]() {
-        if (this->modelCharac) {
-            this->modelCharac->setFlippedX(true);
-        }
-        });
-
-    auto removeSelf = CallFunc::create([this]() {
-        this->removeFromParentAndCleanup(true);
-        });
-
-    auto sequence = Sequence::create(moveRight, flipRight, moveLeft, flipLeft, removeSelf, nullptr);
-    this->runAction(sequence);
+    if (dynamic_cast<EnemyPlaneBullet*>(this)) {
+        EnemyPlaneBulletPool::getInstance()->returnEnemy(static_cast<EnemyPlaneBullet*>(this));
+    }
+    else if (dynamic_cast<EnemyPlaneBoom*>(this)) {
+        EnemyPlaneBoomPool::getInstance()->returnEnemy(static_cast<EnemyPlaneBoom*>(this));
+    }
 }
 
-void EnemyPlaneBase::spawnEnemyAfterDelay(float delay, Node* parent, std::function<EnemyPlaneBase* ()> createEnemyFunc) {
-    auto delayAction = DelayTime::create(delay);
-    auto spawnAction = CallFunc::create([parent, createEnemyFunc]() {
-        auto enemy = createEnemyFunc();
-        if (enemy) {
-            parent->addChild(enemy);
-        }
-        });
-
-    auto sequence = Sequence::create(delayAction, spawnAction, nullptr);
-    auto repeatAction = RepeatForever::create(sequence);
-    parent->runAction(repeatAction);
+void EnemyPlaneBase::resetSprite() {
+    if (this->modelCharac) {
+        this->modelCharac->setFlippedX(false); 
+    }
+    this->stopAllActions();
+    this->setVisible(true);
 }

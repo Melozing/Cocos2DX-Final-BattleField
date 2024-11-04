@@ -130,6 +130,12 @@
     <Filter Include="src\Gameplay\Skill\Game1">
       <UniqueIdentifier>{4720d492-7cec-4ae7-89ea-8d232d890ae0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom">
+      <UniqueIdentifier>{2f0f6129-0aca-4b41-83bb-82694d0830d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet">
+      <UniqueIdentifier>{ddea1dae-f279-4511-adda-51219a0fbd0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -252,9 +258,6 @@
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Button\BaseButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
     </ClCompile>
@@ -266,9 +269,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Grenade\Grenade.cpp">
       <Filter>src\Grenade</Filter>
@@ -353,6 +353,18 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Grenade\PoolBulletGame2.cpp">
       <Filter>src\Grenade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,9 +488,6 @@
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h">
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Button\BaseButton.h">
       <Filter>src\UXUI\Buttons</Filter>
     </ClInclude>
@@ -490,9 +499,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Grenade\Grenade.h">
       <Filter>src\Grenade</Filter>
@@ -580,6 +586,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Grenade\PoolBulletGame2.h">
       <Filter>src\Grenade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

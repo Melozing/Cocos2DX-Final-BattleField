@@ -13,7 +13,6 @@ public:
     float _elapsedTime;
     virtual bool init() override;
     CREATE_FUNC(Game3Scene);
-    void setupLoadingBar();
 
 private:
     cocos2d::PhysicsWorld* world;
@@ -23,11 +22,10 @@ private:
 
     void setupBackground();
     void setupPlayer();
-    void setupEnemies();
+    void initSpawning();
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);
-	
-
+    void initPools(); 
 };
 
 #endif // __GAME3SCENE_SCENE_H__

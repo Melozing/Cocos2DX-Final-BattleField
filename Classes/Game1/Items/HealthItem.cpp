@@ -1,4 +1,3 @@
-// HealthItem.cpp
 #include "HealthItem.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/SpriteController.h"
@@ -18,20 +17,32 @@ HealthItem* HealthItem::create() {
 
 bool HealthItem::init() {
     if (!Node::init()) return false;
-    _currentSprite = Sprite::create("assets_game/items/cao_sao_vang.png");
-    _currentSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
-    _spriteScale = SpriteController::updateSpriteScale(_currentSprite, 0.07f);
-    this->addChild(_currentSprite);
-    this->setScale(_spriteScale); 
     this->scheduleUpdate();
+    this->initAnimation(); // Initialize the animation
     this->initPhysicsBody();
     return true;
 }
 
+void HealthItem::initAnimation() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Health.plist");
+
+    auto spriteBatchNode = SpriteBatchNode::create("assets_game/items/Health.png");
+    this->addChild(spriteBatchNode);
+
+    _currentSprite = Sprite::createWithSpriteFrameName("Health1.png");
+    _spriteScale = SpriteController::updateSpriteScale(_currentSprite, Constants::ITEM_SIZE_RATIO);
+    _currentSprite->setScale(_spriteScale);
+
+    spriteBatchNode->addChild(_currentSprite);
+
+    auto animateCharac = Animate::create(SpriteController::createForwardReverseAnimation("Health", 30, 0.03f));
+    _currentSprite->runAction(RepeatForever::create(animateCharac));
+}
 
 void HealthItem::initPhysicsBody() {
     // Create and attach a physics body
-    auto physicsBody = PhysicsBody::createBox(_currentSprite->getContentSize());
+    Size reducedSize = Size(_currentSprite->getContentSize().width * 0.65, _currentSprite->getContentSize().height * 0.65);
+    auto physicsBody = PhysicsBody::createBox(reducedSize);
     physicsBody->setCollisionBitmask(0x03);
     physicsBody->setContactTestBitmask(true);
     physicsBody->setDynamic(false);
@@ -43,11 +54,12 @@ void HealthItem::applyEffect() {
     this->setVisible(true);
     this->setOpacity(255);
 
+    _scaleFactor = SpriteController::updateSpriteScale(_currentSprite, Constants::ITEM_SCALE_FACTOR + 0.03f);
     // Scale up to _scaleFactor times over 0.5 seconds
-    auto scaleUp = ScaleTo::create(0.5f, _scaleFactor);
+    auto scaleUp = ScaleTo::create(Constants::ITEM_EFFECT_DURATION, _scaleFactor);
 
     // Fade out over 0.5 seconds
-    auto fadeOut = FadeOut::create(0.5f);
+    auto fadeOut = FadeOut::create(Constants::ITEM_EFFECT_DURATION);
 
     // Run the scale and fade actions simultaneously
     auto scaleAndFade = Spawn::create(scaleUp, fadeOut, nullptr);
@@ -56,23 +68,28 @@ void HealthItem::applyEffect() {
     auto callPlayEffectAndRemove = CallFunc::create([this]() {
         this->playEffectAndRemove();
         });
+    auto callRemovePhysicBody = CallFunc::create([this]() {
+        this->RemovePhysicBody();
+        });
 
     // Create a sequence to run scaleAndFade, then callPlayEffectAndRemove
-    auto sequence = Sequence::create(scaleAndFade, callPlayEffectAndRemove, nullptr);
+    auto sequence = Sequence::create(callRemovePhysicBody, scaleAndFade, callPlayEffectAndRemove, nullptr);
 
     // Run the sequence on the sprite
     _currentSprite->runAction(sequence);
 }
 
-
 Size HealthItem::getScaledSize() const {
     return SpriteController::GetContentSizeSprite(_currentSprite);;
 }
 
-void HealthItem::playEffectAndRemove() {
+void HealthItem::RemovePhysicBody() {
     if (this->getPhysicsBody()) {
         this->removeComponent(this->getPhysicsBody()); // Remove PhysicsBody
     }
+}
+
+void HealthItem::playEffectAndRemove() {
     this->returnToPool();
 }
 

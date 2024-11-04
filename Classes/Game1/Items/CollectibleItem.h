@@ -19,7 +19,7 @@ protected:
     cocos2d::Sprite* _currentSprite;
     float _speed = Constants::FALLINGROCK_ITEMS_SPEED; 
     float _spriteScale;
-    float _scaleFactor = 1.2f; // Default scale factor
+    float _scaleFactor; // Default scale factor
 };
 
 #endif // __COLLECTIBLE_ITEM_H__
