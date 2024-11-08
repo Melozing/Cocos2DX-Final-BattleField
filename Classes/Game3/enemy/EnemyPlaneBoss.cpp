@@ -35,10 +35,10 @@ void EnemyPlaneBoss::initAnimation() {
     }
 
     modelCharac = Sprite::createWithSpriteFrameName("B52.png");
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.1f)); // Adjust scale as needed
+    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.5f)); // Adjust scale as needed
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(SpriteController::createAnimation("B52", 8, 0.1f)); // Adjust frame count and duration as needed
+    auto animateCharac = Animate::create(SpriteController::createAnimation("B52", 1, 0.1f)); // Adjust frame count and duration as needed
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
@@ -61,6 +61,7 @@ void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
         }
     }
 }
+
 
 void EnemyPlaneBoss::reset() {
     this->stopAllActions();
