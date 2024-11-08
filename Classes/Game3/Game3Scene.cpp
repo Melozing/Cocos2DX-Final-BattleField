@@ -71,6 +71,9 @@ void Game3Scene::initSpawning() {
     this->schedule([this](float) {
         EnemyPlaneBoom::spawnEnemy(this);
         }, 1.0f, "spawn_boom_key");
+    this->schedule([this](float) {
+        EnemyPlaneBoss::spawnEnemy(this);
+        }, 1.0f, "spawn_Boss_key");
 }
 
 void Game3Scene::setupCursor() {
