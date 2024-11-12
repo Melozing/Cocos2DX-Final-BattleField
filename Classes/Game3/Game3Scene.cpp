@@ -4,6 +4,8 @@
 #include "Game3/enemy/EnemyPlaneBoom.h"
 #include "Game3/enemy/EnemyPlaneBulletPool.h"
 #include "Game3/enemy/EnemyPlaneBoomPool.h"
+#include "Game3/enemy/EnemyPlaneBossPool.h"
+#include "Game3/enemy/EnemyPlaneBoss.h"
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
@@ -60,6 +62,7 @@ void Game3Scene::initPools() {
     BulletPool::getInstance()->initPool(10);
     EnemyPlaneBulletPool::getInstance()->initPool(10); // Initialize pool with 10 bullets
     EnemyPlaneBoomPool::getInstance()->initPool(10); // Initialize pool with 10 booms
+	EnemyPlaneBossPool::getInstance()->initPool(1); // Initialize pool with 1 boss
 }
 
 void Game3Scene::initSpawning() {
@@ -70,6 +73,9 @@ void Game3Scene::initSpawning() {
     this->schedule([this](float) {
         EnemyPlaneBoom::spawnEnemy(this);
         }, 1.0f, "spawn_boom_key");
+    this->schedule([this](float) {
+        EnemyPlaneBoss::spawnEnemy(this);
+        }, 1.0f, "spawn_Boss_key");
 }
 
 void Game3Scene::setupCursor() {
