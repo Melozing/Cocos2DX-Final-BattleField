@@ -75,7 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     glview->setCursorVisible(true);
-    director->setDisplayStats(false);
+    director->setDisplayStats(true);
     director->setAnimationInterval(1.0f / 120);
 
     // Set the design resolution size to match the screen size

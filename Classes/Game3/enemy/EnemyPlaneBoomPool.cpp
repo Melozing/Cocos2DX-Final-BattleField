@@ -18,10 +18,17 @@ void EnemyPlaneBoomPool::initPool(int poolSize) {
             _availableEnemies.push(enemy);
         }
     }
+    CCLOG("EnemyPlaneBoomPool initialized with %d enemies", poolSize);
 }
 
 EnemyPlaneBoom* EnemyPlaneBoomPool::getEnemy() {
     if (_availableEnemies.empty()) {
+        EnemyPlaneBoom* enemy = EnemyPlaneBoom::createEnemyPlaneBoom();
+        if (enemy) {
+            enemy->retain();
+            enemy->reset();
+            return enemy;
+        }
         return nullptr;
     }
     EnemyPlaneBoom* enemy = _availableEnemies.front();
@@ -42,4 +49,5 @@ void EnemyPlaneBoomPool::resetPool() {
         _availableEnemies.pop();
         enemy->release();
     }
+    CCLOG("EnemyPlaneBoomPool reset. All enemies released.");
 }

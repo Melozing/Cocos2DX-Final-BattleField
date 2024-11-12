@@ -1,45 +1,53 @@
-// BulletPool.cpp
 #include "Bullet/BulletPool.h"
 #include "Bullet/Bullet.h"
+#include "cocos2d.h"
 
-BulletPool::BulletPool(size_t size) : poolSize(size)
-{
-    for (size_t i = 0; i < poolSize; ++i)
-    {
-        Bullet* bullet = new Bullet();
-        bullet->retain(); // Increase reference count
-        bullet->deactivate();
-        pool.push_back(bullet);
+USING_NS_CC;
+
+BulletPool* BulletPool::getInstance() {
+    static BulletPool instance;
+    return &instance;
+}
+
+void BulletPool::initPool(int poolSize) {
+    for (int i = 0; i < poolSize; ++i) {
+        Bullet* bullet = Bullet::create();
+        if (bullet) {
+            bullet->retain();
+            bullet->reset();
+            _availableBullets.push(bullet);
+        }
     }
 }
 
-BulletPool::~BulletPool()
-{
-    for (Bullet* bullet : pool)
-    {
-        bullet->release(); // Decrease reference count
+Bullet* BulletPool::getBullet() {
+    if (_availableBullets.empty()) {
+        Bullet* bullet = Bullet::create();
+        if (bullet) {
+            bullet->retain();
+            bullet->reset();
+            return bullet;
+        }
+        return nullptr;
+    }
+    Bullet* bullet = _availableBullets.front();
+    _availableBullets.pop();
+    bullet->setVisible(true);
+    return bullet;
+}
+
+void BulletPool::returnBullet(Bullet* bullet) {
+    if (bullet) {
+        bullet->reset();
+        bullet->removeFromParentAndCleanup(false);
+        _availableBullets.push(bullet);
     }
 }
 
-Bullet* BulletPool::getBullet()
-{
-    if (!pool.empty())
-    {
-        Bullet* bullet = pool.back();
-        pool.pop_back();
-        bullet->activate();
-        return bullet;
+void BulletPool::resetPool() {
+    while (!_availableBullets.empty()) {
+        Bullet* bullet = _availableBullets.front();
+        _availableBullets.pop();
+        bullet->release();
     }
-    return nullptr; // Or create a new bullet if pool is empty
-}
-
-void BulletPool::returnBullet(Bullet* bullet)
-{
-    bullet->deactivate();
-    pool.push_back(bullet);
-}
-
-size_t BulletPool::getRemainingBullets() const
-{
-    return pool.size();
 }

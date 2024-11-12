@@ -1,25 +1,11 @@
 ﻿#include "PlayerGame3.h"
 #include "Constants/Constants.h"
-#include "Bullet/Bullet.h"
-#include "Bullet/BulletPool.h"
 #include "utils/MathFunction.h"
 #include "Manager/PlayerMovementManager.h"
 #include "Controller/GameController.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
-
-PlayerGame3::PlayerGame3()
-    : bulletManager(nullptr),
-    playerMovement(nullptr)
-{
-}
-
-PlayerGame3::~PlayerGame3()
-{
-    delete bulletManager;
-    delete playerMovement;
-}
 
 PlayerGame3* PlayerGame3::createPlayerGame3()
 {
@@ -103,8 +89,6 @@ void PlayerGame3::setupEventListeners()
 
 void PlayerGame3::setupManagers()
 {
-    // Initialize BulletManager
-    bulletManager = new BulletManager(100, "assets_game/player/1.png");
     playerMovement = new PlayerMovement(this, Constants::PLAYER_SPEED_GAME3);
 }
 
@@ -122,7 +106,8 @@ void PlayerGame3::initAnimation()
 
 void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    if (keyCode == EventKeyboard::KeyCode::KEY_A || keyCode == EventKeyboard::KeyCode::KEY_D)
+    if (keyCode == EventKeyboard::KeyCode::KEY_A || keyCode == EventKeyboard::KeyCode::KEY_D
+        || keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
     {
         playerMovement->onKeyPressed(keyCode);
     }
@@ -135,7 +120,8 @@ void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 
 void PlayerGame3::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    if (keyCode == EventKeyboard::KeyCode::KEY_A || keyCode == EventKeyboard::KeyCode::KEY_D)
+    if (keyCode == EventKeyboard::KeyCode::KEY_A || keyCode == EventKeyboard::KeyCode::KEY_D
+        || keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
     {
         playerMovement->onKeyReleased(keyCode);
     }
@@ -188,27 +174,23 @@ void PlayerGame3::shootBullet()
     Vec2 direction = _mousePos - turretWorldPos;
     direction.normalize();
 
-    // Create bullet sprite and set its properties
-    Bullet* bullet = Bullet::createBullet("assets_game/player/1.png", direction, Constants::BulletGame3Speed);
-    bullet->setScale(SpriteController::updateSpriteScale(bullet, 0.07f));
-
+    // Get bullet from pool and set its properties
+    Bullet* bullet = BulletPool::getInstance()->getBullet();
     if (bullet) {
         bullet->setPosition(turretWorldPos);
         bullet->setDirection(direction);
-        bullet->setSpeed(Constants::BulletGame3Speed);
-        bullet->activate();
+        bullet->setSpeed(Constants::BulletGame3Speed * 0.6f);
+        bullet->reset(); // Ensure the bullet is reset and active
 
         this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER - 5);
-
-        // Move bullet indefinitely
-        bullet->moveIndefinitely();
 
         timeSinceLastShot = 0.0f;
     }
     else {
-        CCLOG("Failed to create bullet");
+        CCLOG("Failed to get bullet from pool");
     }
 }
+
 
 void PlayerGame3::onMouseMove(Event* event)
 {
@@ -227,7 +209,22 @@ void PlayerGame3::update(float delta)
 {
     playerMovement->update(delta);
 
-    bulletManager->Update(delta);
+    // Get the visible size and origin of the screen
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+
+    // Define padding
+    float padding = SpriteController::calculateScreenRatio(0.05f); // Adjust this value as needed
+
+    // Get the player's current position
+    Vec2 currentPosition = this->getPosition();
+
+    // Clamp the player's position within the screen boundaries with padding
+    float clampedX = std::max(origin.x + padding, std::min(currentPosition.x, origin.x + visibleSize.width - padding));
+    float clampedY = std::max(origin.y + padding, std::min(currentPosition.y, origin.y + visibleSize.height - padding));
+
+    // Set the clamped position
+    this->setPosition(Vec2(clampedX, clampedY));
 
     updateTurretRotation();
 

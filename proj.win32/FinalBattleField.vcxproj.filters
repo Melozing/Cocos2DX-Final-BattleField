@@ -207,9 +207,6 @@
     <ClCompile Include="..\Classes\Bullet\BulletPool.cpp">
       <Filter>src\Gameplay\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Bullet\BulletManager.cpp">
-      <Filter>src\Gameplay\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClCompile>
@@ -435,9 +432,6 @@
       <Filter>src\Gameplay\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletPool.h">
-      <Filter>src\Gameplay\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Bullet\BulletManager.h">
       <Filter>src\Gameplay\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">

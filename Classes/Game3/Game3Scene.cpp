@@ -38,6 +38,7 @@ bool Game3Scene::init() {
     initPools();
     setupCursor();
     initSpawning();
+	setupContactListener();
     return true;
 }
 
@@ -56,6 +57,7 @@ void Game3Scene::setupPlayer() {
 }
 
 void Game3Scene::initPools() {
+    BulletPool::getInstance()->initPool(10);
     EnemyPlaneBulletPool::getInstance()->initPool(10); // Initialize pool with 10 bullets
     EnemyPlaneBoomPool::getInstance()->initPool(10); // Initialize pool with 10 booms
 }
@@ -89,4 +91,39 @@ void Game3Scene::setupEventListeners(PlayerGame3* player) {
         player->onKeyReleased(keyCode, event);
         };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, player);
+}
+
+void Game3Scene::setupContactListener() {
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(Game3Scene::onContactBegin, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+}
+
+bool Game3Scene::onContactBegin(PhysicsContact& contact) {
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
+
+    if (nodeA && nodeB) {
+        if (dynamic_cast<Bullet*>(nodeA) && dynamic_cast<EnemyPlaneBase*>(nodeB)) {
+            handleBulletEnemyCollision(static_cast<Bullet*>(nodeA), static_cast<EnemyPlaneBase*>(nodeB));
+        }
+        else if (dynamic_cast<Bullet*>(nodeB) && dynamic_cast<EnemyPlaneBase*>(nodeA)) {
+            handleBulletEnemyCollision(static_cast<Bullet*>(nodeB), static_cast<EnemyPlaneBase*>(nodeA));
+        }
+    }
+    return true;
+}
+
+void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy) {
+    // Return bullet to pool
+    BulletPool::getInstance()->returnBullet(bullet);
+    bullet->removeFromParentAndCleanup(false);
+
+    // Trigger explosion on enemy
+    if (auto enemyBullet = dynamic_cast<EnemyPlaneBullet*>(enemy)) {
+        enemyBullet->explode();
+    }
+    else if (auto enemyBoom = dynamic_cast<EnemyPlaneBoom*>(enemy)) {
+        enemyBoom->explode();
+    }
 }
