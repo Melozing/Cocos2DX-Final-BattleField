@@ -1,27 +1,24 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "Controller/SpriteController.h"
 
-class Bullet : public cocos2d::Sprite
+class Bullet : public cocos2d::Sprite, public SpriteController
 {
 public:
-    Bullet();
-    ~Bullet();
-
-    static Bullet* createBullet(const std::string& image, const cocos2d::Vec2& direction, float speed);
-    bool initWithProperties(const std::string& image, const cocos2d::Vec2& direction, float speed);
+    static Bullet* create();
+    bool init() override;
 
     void setDirection(const cocos2d::Vec2& direction);
     void setSpeed(float speed);
-
-    void activate();
-    void deactivate();
-    bool isActive() const;
+    Size GetSize();
     void reset();
-    void moveIndefinitely();
+
+    void update(float delta) override;
+
 private:
     cocos2d::Vec2 _direction;
     float _speed;
     bool _active;
+    cocos2d::Sprite* modelCharac;
 };
-

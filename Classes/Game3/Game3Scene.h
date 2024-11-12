@@ -5,6 +5,7 @@
 #include "cocos2d.h"
 #include "Game3/Player/PlayerGame3.h"
 #include "Scene/BaseScene.h"
+#include "Game3/enemy/EnemyPlaneBase.h"
 #include <Game2/Cursor/Cursor.h>
 
 class Game3Scene : public BaseScene {
@@ -26,6 +27,9 @@ private:
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);
     void initPools(); 
+    void setupContactListener();
+    bool onContactBegin(cocos2d::PhysicsContact& contact);
+    void handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy);
 };
 
 #endif // __GAME3SCENE_SCENE_H__

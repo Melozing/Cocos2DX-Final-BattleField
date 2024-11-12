@@ -20,10 +20,19 @@ bool EnemyPlaneBoom::init() {
     }
 
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/enemy_plane_boom.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
 
     initAnimation();
 
+    // Initialize explosion batch node
+    explosionBatchNode = SpriteBatchNode::create("assets_game/fx/explosions.png");
+    this->addChild(explosionBatchNode);
+
     return true;
+}
+
+Size EnemyPlaneBoom::GetSize() {
+    return GetContentSizeSprite(modelCharac);
 }
 
 void EnemyPlaneBoom::initAnimation() {
@@ -52,11 +61,11 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
 
         if (spawnFromLeft) {
             enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, randomY));
-            enemy->moveFromLeftToRight(visibleSize, Constants::SpeedEnemyPlaneBoom);
+            enemy->moveFromLeftToRight(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
         }
         else {
             enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
-            enemy->moveFromRightToLeft(visibleSize, Constants::SpeedEnemyPlaneBoom);
+            enemy->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
         }
     }
 }
@@ -64,5 +73,42 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
 void EnemyPlaneBoom::reset() {
     this->stopAllActions();
     this->setVisible(true);
-    spriteBatchNode = SpriteBatchNode::create("assets_game/enemies/enemy_plane_boom.png");
+    createPhysicsBody();
+}
+
+void EnemyPlaneBoom::explode() {
+    this->removeComponent(this->getPhysicsBody());
+
+    if (!explosionSprite) {
+        explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
+        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.078f));
+        explosionBatchNode->addChild(explosionSprite);
+    }
+
+    explosionSprite->setPosition(modelCharac->getPosition());
+    explosionSprite->setVisible(true);
+
+    auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);
+    auto animate = Animate::create(explosionAnimation);
+
+    explosionSprite->runAction(Sequence::create(
+        animate,
+        CallFunc::create([this]() {
+            explosionSprite->setVisible(false);
+            this->returnToPool();
+            }),
+        nullptr
+    ));
+}
+
+void EnemyPlaneBoom::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
+    physicsBody->setGravityEnable(false);
+    this->addComponent(physicsBody);
 }

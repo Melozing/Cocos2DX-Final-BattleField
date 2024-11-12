@@ -2,16 +2,14 @@
 #define __PLAYER_GAME3_H__
 
 #include "cocos2d.h"
-#include "Bullet/BulletManager.h"
 #include "Manager/PlayerMovementManager.h"
 #include "Controller/SpriteController.h"
+#include "Bullet/Bullet.h"
+#include "Bullet/BulletPool.h"
 
 class PlayerGame3 : public cocos2d::Sprite, public SpriteController
 {
 public:
-    PlayerGame3();
-    virtual ~PlayerGame3();
-
     static PlayerGame3* createPlayerGame3();
     virtual bool init() override;
 
@@ -37,7 +35,6 @@ private:
     cocos2d::Sprite* turretSprite;
     cocos2d::Sprite* modelCharac;
     cocos2d::Vec2 _mousePos;
-    BulletManager* bulletManager;
     PlayerMovement* playerMovement;
     bool isShooting;
     float distanceToMouse;

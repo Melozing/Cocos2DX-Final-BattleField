@@ -1,24 +1,13 @@
-// Bullet.cpp
 #include "Bullet/Bullet.h"
+#include "BulletPool.h"
 #include "Constants/Constants.h"
 USING_NS_CC;
 
-Bullet::Bullet()
-    : _direction(Vec2::ZERO),
-    _speed(0.0f),
-    _active(false)
-{
-}
-
-Bullet::~Bullet()
-{
-}
-
-Bullet* Bullet::createBullet(const std::string& image, const Vec2& direction, float speed)
+Bullet* Bullet::create()
 {
     Bullet* bullet = new (std::nothrow) Bullet();
 
-    if (bullet && bullet->initWithProperties(image, direction, speed))
+    if (bullet && bullet->init())
     {
         bullet->autorelease();
         return bullet;
@@ -30,28 +19,38 @@ Bullet* Bullet::createBullet(const std::string& image, const Vec2& direction, fl
     }
 }
 
-bool Bullet::initWithProperties(const std::string& image, const Vec2& direction, float speed)
+bool Bullet::init()
 {
-    if (!Sprite::initWithFile(image))
-    {
-        CCLOG("Failed to load bullet image: %s", image.c_str());
+    if (!Sprite::init()) {
         return false;
     }
 
-    setDirection(direction);
-    setSpeed(speed);
+    modelCharac = Sprite::create("assets_game/player/1.png");
+    this->addChild(modelCharac);
 
-    // Set the rotation of the bullet sprite to match the direction
-    float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
-    this->setRotation(-angle + 90);
+    // Add physics body
+    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
+    physicsBody->setGravityEnable(false);
+    this->addComponent(physicsBody);
 
+    this->scheduleUpdate();
     return true;
+}
+
+Size Bullet::GetSize() {
+    return GetContentSizeSprite(modelCharac);
 }
 
 void Bullet::setDirection(const Vec2& direction)
 {
     _direction = direction;
     _direction.normalize();
+
+    // Set the rotation of the bullet sprite to match the direction
+    float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
+    this->setRotation(-angle + 90);
 }
 
 void Bullet::setSpeed(float speed)
@@ -59,53 +58,30 @@ void Bullet::setSpeed(float speed)
     _speed = speed;
 }
 
-void Bullet::activate()
-{
-    _active = true;
-    this->setVisible(true);
-}
-
-void Bullet::deactivate()
-{
-    _active = false;
-    this->setVisible(false);
-    this->stopAllActions(); // Stop any ongoing actions
-}
-
-bool Bullet::isActive() const
-{
-    return _active;
-}
-
 void Bullet::reset()
 {
-    _direction = Vec2::ZERO;
-    _speed = 0.0f;
-    _active = false;
-    this->setVisible(false);
-    this->stopAllActions(); // Stop any ongoing actions
+    _active = true; // Set active to true
+    this->setVisible(true);
+    this->stopAllActions();
 }
 
-void Bullet::moveIndefinitely()
+void Bullet::update(float delta)
 {
-    // Calculate the target position far outside the screen bounds
-    Vec2 targetPosition = this->getPosition() + _direction * 10000;
+    if (!_active) return;
 
-    // Create a move action
-    auto moveAction = MoveTo::create(10000 / _speed, targetPosition);
+    // Move the bullet
+    Vec2 currentPosition = this->getPosition();
+    Vec2 movement = _direction * _speed * delta;
+    this->setPosition(currentPosition + movement);
 
-    // Create a callback to check if the bullet is off-screen
-    auto checkOffScreen = CallFunc::create([this]() {
-        auto visibleSize = Director::getInstance()->getVisibleSize();
-        auto origin = Director::getInstance()->getVisibleOrigin();
-        Rect visibleRect(origin.x, origin.y, visibleSize.width, visibleSize.height);
+    // Check if the bullet is off-screen
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    Rect visibleRect(origin.x, origin.y, visibleSize.width, visibleSize.height);
 
-        if (!visibleRect.containsPoint(this->getPosition()))
-        {
-            this->deactivate();
-        }
-        });
-
-    // Run the actions sequentially with a repeat to keep checking off-screen status
-    this->runAction(RepeatForever::create(Sequence::create(moveAction, checkOffScreen, nullptr)));
+    if (!visibleRect.containsPoint(this->getPosition()))
+    {
+        BulletPool::getInstance()->returnBullet(this);
+        this->removeFromParentAndCleanup(false);
+    }
 }

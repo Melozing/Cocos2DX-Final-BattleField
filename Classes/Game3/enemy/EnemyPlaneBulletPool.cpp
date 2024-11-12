@@ -22,6 +22,12 @@ void EnemyPlaneBulletPool::initPool(int poolSize) {
 
 EnemyPlaneBullet* EnemyPlaneBulletPool::getEnemy() {
     if (_availableEnemies.empty()) {
+        EnemyPlaneBullet* enemy = EnemyPlaneBullet::createEnemyBullet();
+        if (enemy) {
+            enemy->retain();
+            enemy->reset();
+            return enemy;
+        }
         return nullptr;
     }
     EnemyPlaneBullet* enemy = _availableEnemies.front();

@@ -1,20 +1,16 @@
-// BulletPool.h
 #pragma once
 
 #include "Bullet/Bullet.h"
-#include <vector>
+#include <queue>
 
-class BulletPool
-{
+class BulletPool {
 public:
-    BulletPool(size_t size);
-    ~BulletPool();
-
+    static BulletPool* getInstance();
+    void initPool(int poolSize);
     Bullet* getBullet();
     void returnBullet(Bullet* bullet);
-    size_t getRemainingBullets() const;
+    void resetPool();
 
 private:
-    std::vector<Bullet*> pool;
-    size_t poolSize;
+    std::queue<Bullet*> _availableBullets;
 };
