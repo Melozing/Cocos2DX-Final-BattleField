@@ -53,11 +53,11 @@ void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
 
         if (spawnFromLeft) {
             enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, randomY));
-            enemy->moveFromLeftToRight(visibleSize, Constants::SpeedEnemyPlaneBoss); // Adjust speed constant as needed
+            enemy->moveFromLeftToRight(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
         }
         else {
             enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
-            enemy->moveFromRightToLeft(visibleSize, Constants::SpeedEnemyPlaneBoss); // Adjust speed constant as needed
+            enemy->moveFromRightToLeft(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
         }
     }
 }
