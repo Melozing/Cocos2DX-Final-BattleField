@@ -182,7 +182,9 @@ void PlayerGame3::shootBullet()
         bullet->setSpeed(Constants::BulletGame3Speed * 0.6f);
         bullet->reset(); // Ensure the bullet is reset and active
 
-        this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER - 5);
+        if (bullet->getParent() == nullptr) {
+            this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER - 5);
+        }
 
         timeSinceLastShot = 0.0f;
     }

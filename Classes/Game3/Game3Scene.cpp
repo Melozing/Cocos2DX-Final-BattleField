@@ -18,7 +18,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game3Scene::create();
     scene->addChild(layer);
@@ -123,7 +123,6 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
 void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy) {
     // Return bullet to pool
     BulletPool::getInstance()->returnBullet(bullet);
-    bullet->removeFromParentAndCleanup(false);
 
     // Trigger explosion on enemy
     if (auto enemyBullet = dynamic_cast<EnemyPlaneBullet*>(enemy)) {
