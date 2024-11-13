@@ -37,6 +37,7 @@ void EnemyUtils::moveToPlayer(Sprite* enemy, float speed, bool& isMoving, Action
         CCLOG("Player not found");
     }
 }
+
 bool EnemyUtils::isWithinRange(Sprite* enemy, Sprite* player, float range)
 {
     if (player)

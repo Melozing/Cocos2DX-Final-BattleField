@@ -10,12 +10,13 @@ public:
     virtual ~MeleeEnemy();
     virtual bool init() override;
     CREATE_FUNC(MeleeEnemy);
-    void die();
+
 protected:
     virtual void createIdleAnimation() override;
     virtual void createAttackAnimation() override;
     virtual void createDeathAnimation() override;
-	void update(float delta) override;
+    virtual void update(float delta) override;
+
 private:
     cocos2d::Vec2 _velocity;
     bool _isMoving;
