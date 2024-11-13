@@ -5,7 +5,7 @@
 USING_NS_CC;
 
 EnemyBase::EnemyBase()
-    : _health(100), _speed(Constants::EnemySpeed), _damage(10), _isDead(false), _isAttacking(false)
+    : _health(100), _speed(Constants::EnemySpeed), _damage(10), _attackRange(50.0f), _isDead(false), _isAttacking(false), _isMoving(false)
 {
 }
 
@@ -19,13 +19,8 @@ bool EnemyBase::init()
     {
         return false;
     }
-    _physicsBody = PhysicsBody::createBox(this->getContentSize());
-    _physicsBody->setContactTestBitmask(true);
-    _physicsBody->setDynamic(false); // Set to true if the enemy should be affected by physics
-    _physicsBody->setCategoryBitmask(0x01);
-    _physicsBody->setCollisionBitmask(0x01);
-    _physicsBody->setContactTestBitmask(0x01);
-    this->setPhysicsBody(_physicsBody);
+
+    createPhysicsBody();
     this->scheduleUpdate();
     return true;
 }
@@ -42,18 +37,20 @@ void EnemyBase::update(float delta)
 
 void EnemyBase::die()
 {
-    /* _isDead = true;
-     this->runAction(Sequence::create(createDeathAnimation(), CallFunc::create([this]() {
-         this->removeFromParent();
-         }), nullptr));*/
+    _isDead = true;
+    auto animateCharac = Animate::create(createDeathAnimation());
+    this->runAction(Sequence::create(animateCharac, CallFunc::create([this]() {
+        this->removeFromParent();
+        }), nullptr));
 }
 
 void EnemyBase::attack()
 {
-    /* _isAttacking = true;
-     this->runAction(Sequence::create(createAttackAnimation(), CallFunc::create([this]() {
-         _isAttacking = false;
-         }), nullptr));*/
+    _isAttacking = true;
+    auto animateCharac = Animate::create(createAttackAnimation());
+    this->runAction(Sequence::create(animateCharac, CallFunc::create([this]() {
+        _isAttacking = false;
+        }), nullptr));
 }
 
 void EnemyBase::setHealth(int health)
@@ -86,6 +83,16 @@ int EnemyBase::getDamage() const
     return _damage;
 }
 
+void EnemyBase::setAttackRange(float range)
+{
+    _attackRange = range;
+}
+
+float EnemyBase::getAttackRange() const
+{
+    return _attackRange;
+}
+
 void EnemyBase::updateRotationToPlayer()
 {
     auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
@@ -109,3 +116,25 @@ void EnemyBase::takeDamage(int damage) {
         die();
     }
 }
+
+void EnemyBase::moveToPlayer()
+{
+    EnemyUtils::moveToPlayer(this, _speed, _isMoving, createAnimation("walk", 5, 0.07f));
+}
+
+Size EnemyBase::GetSize() {
+    return GetContentSizeSprite(this);
+}
+
+void EnemyBase::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
+    physicsBody->setGravityEnable(false);
+    this->addComponent(physicsBody);
+}
+

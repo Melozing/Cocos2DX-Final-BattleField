@@ -1,4 +1,4 @@
-// MeleeEnemy.cpp
+﻿// MeleeEnemy.cpp
 #include "Game2/Enemy/Enemyh/MeleeEnemy.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
@@ -10,10 +10,17 @@ USING_NS_CC;
 MeleeEnemy::MeleeEnemy()
     : _velocity(Vec2::ZERO), _isMoving(false)
 {
+    _health = 100;
+    _damage = 10;
+    _speed = Constants::EnemySpeed;
+    _attackRange = 50.0f;
 }
 
 MeleeEnemy::~MeleeEnemy()
 {
+    CC_SAFE_RELEASE(_idleAnimation);
+    CC_SAFE_RELEASE(_attackAnimation);
+    CC_SAFE_RELEASE(_deathAnimation);
 }
 
 bool MeleeEnemy::init()
@@ -42,8 +49,6 @@ bool MeleeEnemy::init()
 
     this->setScale(Constants::EnemyScale);
     this->setAnchorPoint(Vec2(0.5, 0.5));
-
-    //this->setTag(Constants::EnemyTag); // Set the tag for the enemy
 
     // Create animations
     createIdleAnimation();
@@ -89,7 +94,7 @@ void MeleeEnemy::createAttackAnimation()
     }
 
     auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _attackAnimation = Animate::create(animation);
+    _attackAnimation = RepeatForever::create(Animate::create(animation));
     _attackAnimation->retain();
 }
 
@@ -114,7 +119,6 @@ void MeleeEnemy::createDeathAnimation()
 
 void MeleeEnemy::update(float delta)
 {
-    //CCLOG("MeleeEnemy update called");
     if (_isDead)
     {
         return;
@@ -125,12 +129,19 @@ void MeleeEnemy::update(float delta)
         return;
     }
 
-    moveToPlayer();
-}
-
-void MeleeEnemy::moveToPlayer()
-{
-    EnemyUtils::moveToPlayer(this, _speed, _isMoving, _idleAnimation);
+    auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
+    if (player)
+    {
+        float distanceToPlayer = this->getPosition().distance(player->getPosition());
+        if (distanceToPlayer <= _attackRange)
+        {
+            attackPlayer();
+        }
+        else
+        {
+            moveToPlayer();
+        }
+    }
 }
 
 void MeleeEnemy::attackPlayer()
@@ -140,7 +151,7 @@ void MeleeEnemy::attackPlayer()
         auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
         if (player)
         {
-            player->die();
+            player->takeDamage(_damage); // Gây sát thương cho người chơi
         }
         _isAttacking = false;
         }), nullptr));
@@ -153,5 +164,3 @@ void MeleeEnemy::die()
         this->removeFromParent();
         }), nullptr));
 }
-
-
