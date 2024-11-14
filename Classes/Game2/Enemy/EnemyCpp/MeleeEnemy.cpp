@@ -93,9 +93,9 @@ void MeleeEnemy::createAttackAnimation()
         }
     }
 
-    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
+   /* auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
     _attackAnimation = RepeatForever::create(Animate::create(animation));
-    _attackAnimation->retain();
+    _attackAnimation->retain();*/
 }
 
 void MeleeEnemy::createDeathAnimation()
@@ -139,28 +139,28 @@ void MeleeEnemy::update(float delta)
         }
         else
         {
-            moveToPlayer();
+            //moveToPlayer();
         }
     }
 }
 
 void MeleeEnemy::attackPlayer()
 {
-    _isAttacking = true;
+    /*_isAttacking = true;
     this->runAction(Sequence::create(_attackAnimation, CallFunc::create([this]() {
         auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
         if (player)
         {
-            player->takeDamage(_damage); // Gây sát thương cho người chơi
+            player->takeDamage(_damage);
         }
         _isAttacking = false;
-        }), nullptr));
+        }), nullptr));*/
 }
 
-void MeleeEnemy::die()
-{
-    _isDead = true;
-    this->runAction(Sequence::create(_deathAnimation, CallFunc::create([this]() {
-        this->removeFromParent();
-        }), nullptr));
-}
+//void MeleeEnemy::die()
+//{
+//    _isDead = true;
+//    this->runAction(Sequence::create(_deathAnimation, CallFunc::create([this]() {
+//        this->removeFromParent();
+//        }), nullptr));
+//}

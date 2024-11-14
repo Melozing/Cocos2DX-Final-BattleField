@@ -37,20 +37,20 @@ void EnemyBase::update(float delta)
 
 void EnemyBase::die()
 {
-    _isDead = true;
+    /*_isDead = true;
     auto animateCharac = Animate::create(createDeathAnimation());
     this->runAction(Sequence::create(animateCharac, CallFunc::create([this]() {
         this->removeFromParent();
-        }), nullptr));
+        }), nullptr));*/
 }
 
 void EnemyBase::attack()
 {
-    _isAttacking = true;
+    /*_isAttacking = true;
     auto animateCharac = Animate::create(createAttackAnimation());
     this->runAction(Sequence::create(animateCharac, CallFunc::create([this]() {
         _isAttacking = false;
-        }), nullptr));
+        }), nullptr));*/
 }
 
 void EnemyBase::setHealth(int health)
@@ -119,7 +119,7 @@ void EnemyBase::takeDamage(int damage) {
 
 void EnemyBase::moveToPlayer()
 {
-    EnemyUtils::moveToPlayer(this, _speed, _isMoving, createAnimation("walk", 5, 0.07f));
+    //EnemyUtils::moveToPlayer(this, _speed, _isMoving, createAnimation("walk", 5, 0.07f));
 }
 
 Size EnemyBase::GetSize() {

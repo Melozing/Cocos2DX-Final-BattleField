@@ -21,7 +21,7 @@ private:
     cocos2d::Vec2 _velocity;
     bool _isMoving;
 
-    void moveToPlayer();
+    //void moveToPlayer();
     void attackPlayer();
     cocos2d::RepeatForever* _idleAnimation;
     cocos2d::RepeatForever* _walkAnimation;
