@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Constants/Constants.h"
 #include "Controller/SpriteController.h"
+#include "Game2/Enemy/EnemyUtils.h"
 
 class EnemyBase : public cocos2d::Sprite, public SpriteController
 {
@@ -25,20 +26,29 @@ public:
     void setDamage(int damage);
     int getDamage() const;
 
+    void setAttackRange(float range);
+    float getAttackRange() const;
+
     void takeDamage(int damage);
+
+    Size GetSize();
+    void createPhysicsBody();
+
 protected:
     int _health;
     float _speed;
     int _damage;
+    float _attackRange;
     bool _isDead;
     bool _isAttacking;
+    bool _isMoving;
 
     cocos2d::PhysicsBody* _physicsBody;
 
     virtual void createIdleAnimation() = 0;
     virtual void createAttackAnimation() = 0;
     virtual void createDeathAnimation() = 0;
-    virtual void moveToPlayer() = 0;
+    virtual void moveToPlayer();
     virtual void updateRotationToPlayer();
 };
 
