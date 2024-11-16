@@ -16,7 +16,7 @@ protected:
     virtual cocos2d::Animation* createAttackAnimation() override;
     virtual cocos2d::Animation* createDeathAnimation() override;
     virtual void update(float delta) override;
-
+    virtual void createPhysicsBody() override;
 private:
     cocos2d::Vec2 _velocity;
     bool _isMoving;
@@ -26,4 +26,3 @@ private:
     cocos2d::Animate* _attackAnimation;
     cocos2d::Animate* _deathAnimation;
 };
-

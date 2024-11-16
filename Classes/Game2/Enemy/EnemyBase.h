@@ -26,9 +26,9 @@ public:
     void updateRotationToPlayer();
     void takeDamage(int damage);
     Size GetSize();
-    void createPhysicsBody();
+    virtual void createPhysicsBody();
 
-proteted :
+protected:
     int _health;
     float _speed;
     int _damage;
@@ -37,9 +37,7 @@ proteted :
     bool _isAttacking;
     bool _isMoving;
 
-    cocos2d::Animation* createDeathAnimation();
-    cocos2d::Animation* createAttackAnimation();
-    cocos2d::Animation* createIdleAnimation();
+    virtual Animation* createIdleAnimation();
+    virtual Animation* createAttackAnimation();
+    virtual Animation* createDeathAnimation(); 
 };
-
-

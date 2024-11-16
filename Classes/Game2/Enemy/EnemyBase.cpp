@@ -51,7 +51,8 @@ void EnemyBase::attack() {
 }
 
 void EnemyBase::moveToPlayer() {
-    EnemyUtils::moveToPlayer(this, _speed, _isMoving, createIdleAnimation());
+    auto walkAnimation = Animate::create(createIdleAnimation());
+    EnemyUtils::moveToPlayer(this, _speed, _isMoving, walkAnimation);
 }
 
 void EnemyBase::setHealth(int health)
@@ -133,6 +134,7 @@ void EnemyBase::createPhysicsBody() {
     physicsBody->setGravityEnable(false);
     this->addComponent(physicsBody);
 }
+
 
 cocos2d::Animation* EnemyBase::createDeathAnimation() {
     auto animation = Animation::create();

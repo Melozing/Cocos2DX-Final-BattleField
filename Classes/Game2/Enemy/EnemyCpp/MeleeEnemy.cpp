@@ -58,11 +58,22 @@ bool MeleeEnemy::init()
     _deathAnimation = Animate::create(createDeathAnimation());
     _deathAnimation->retain();
 
+    createPhysicsBody();
     // Schedule update method
     this->scheduleUpdate();
     return true;
 }
 
+void MeleeEnemy::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
+    physicsBody->setGravityEnable(false);
+    this->addComponent(physicsBody);
+}
 cocos2d::Animation* MeleeEnemy::createIdleAnimation()
 {
     Vector<SpriteFrame*> animFrames;
@@ -153,4 +164,3 @@ void MeleeEnemy::attackPlayer()
         _isAttacking = false;
         }), nullptr));
 }
-

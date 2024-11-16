@@ -198,7 +198,6 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         }
     }
 
-    // Handle bullet collision with enemy
     if ((nodeA->getName() == "Bullet" && nodeB->getName() == "Enemy") ||
         (nodeB->getName() == "Bullet" && nodeA->getName() == "Enemy")) {
         // Handle bullet and enemy collision
