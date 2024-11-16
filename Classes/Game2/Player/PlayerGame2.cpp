@@ -21,7 +21,8 @@ PlayerGame2::PlayerGame2()
     totalAmmo(initialAmmo),
     currentMagazine(maxMagazineSize),
     isReloading(false),
-    reloadTime(2.0f)
+    reloadTime(2.0f),
+	_health(100)
 {
 }
 
@@ -294,5 +295,15 @@ void PlayerGame2::updateAmmoDisplay()
     if (_ammoLabel)
     {
         _ammoLabel->setString(StringUtils::format("%d/%d", currentMagazine, totalAmmo));
+    }
+}
+void PlayerGame2::takeDamage(int damage) {
+    // Implement the logic for taking damage
+    // For example, reduce the player's health
+    // If health reaches 0, call the die() method
+    // Assuming you have a health member variable
+    _health -= damage;
+    if (_health <= 0) {
+        die();
     }
 }

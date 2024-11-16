@@ -6,33 +6,27 @@
 #include "Controller/SpriteController.h"
 #include "Game2/Enemy/EnemyUtils.h"
 
-class EnemyBase : public cocos2d::Sprite, public SpriteController
-{
+class EnemyBase : public cocos2d::Sprite, public SpriteController {
 public:
     EnemyBase();
     virtual ~EnemyBase();
-
     virtual bool init() override;
     virtual void update(float delta) override;
-    virtual void die();
-    virtual void attack();
-
+    void die();
+    void attack();
+    void moveToPlayer();
     void setHealth(int health);
     int getHealth() const;
-
     void setSpeed(float speed);
     float getSpeed() const;
-
     void setDamage(int damage);
     int getDamage() const;
-
     void setAttackRange(float range);
     float getAttackRange() const;
-
+    void updateRotationToPlayer();
     void takeDamage(int damage);
-
     Size GetSize();
-    void createPhysicsBody();
+    virtual void createPhysicsBody();
 
 protected:
     int _health;
@@ -43,12 +37,7 @@ protected:
     bool _isAttacking;
     bool _isMoving;
 
-    cocos2d::PhysicsBody* _physicsBody;
-
-    virtual void createIdleAnimation() = 0;
-    virtual void createAttackAnimation() = 0;
-    virtual void createDeathAnimation() = 0;
-    virtual void moveToPlayer();
-    virtual void updateRotationToPlayer();
+    virtual Animation* createIdleAnimation();
+    virtual Animation* createAttackAnimation();
+    virtual Animation* createDeathAnimation(); 
 };
-

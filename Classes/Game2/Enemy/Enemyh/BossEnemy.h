@@ -1,4 +1,4 @@
-#ifndef __BOSS_ENEMY_H__
+/*#ifndef __BOSS_ENEMY_H__
 #define __BOSS_ENEMY_H__
 
 #include "Game2/Enemy/EnemyBase.h"
@@ -42,3 +42,4 @@ private:
 };
 
 #endif // __BOSS_ENEMY_H__
+*/

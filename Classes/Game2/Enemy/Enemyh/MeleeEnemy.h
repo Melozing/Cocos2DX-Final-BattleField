@@ -12,19 +12,17 @@ public:
     CREATE_FUNC(MeleeEnemy);
 
 protected:
-    virtual void createIdleAnimation() override;
-    virtual void createAttackAnimation() override;
-    virtual void createDeathAnimation() override;
+    virtual cocos2d::Animation* createIdleAnimation() override;
+    virtual cocos2d::Animation* createAttackAnimation() override;
+    virtual cocos2d::Animation* createDeathAnimation() override;
     virtual void update(float delta) override;
-
+    virtual void createPhysicsBody() override;
 private:
     cocos2d::Vec2 _velocity;
     bool _isMoving;
 
-    //void moveToPlayer();
     void attackPlayer();
     cocos2d::RepeatForever* _idleAnimation;
-    cocos2d::RepeatForever* _walkAnimation;
     cocos2d::Animate* _attackAnimation;
     cocos2d::Animate* _deathAnimation;
 };

@@ -27,28 +27,25 @@ bool Grenade::init(const Vec2& startPosition, const Vec2& direction, float throw
     this->setPosition(startPosition);
     _direction = direction.getNormalized();
     _throwDuration = throwDuration;
-
-    // Tải explosion.plist vào SpriteFrameCache
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/effects/explosion.plist");
 
     float throwDistance = calculateThrowDistance(_throwDuration);
 
-    auto rotate = RotateBy::create(throwDuration, 360); // Xoay 360 độ
+    auto rotate = RotateBy::create(throwDuration, 360);
     auto moveBy = MoveBy::create(throwDuration, _direction * throwDistance);
     auto spawn = Spawn::create(rotate, moveBy, nullptr);
 
     this->runAction(Sequence::create(spawn, CallFunc::create([this]() {
-        // Sau khi ném xong, lựu đạn sẽ tồn tại trên mặt đất và nhấp nháy
         this->createImpactEffect();
         this->scheduleOnce([this](float) {
             if (this->getParent() != nullptr) {
                 this->explode();
             }
-            }, 2.0f, "explode_key"); // Thời gian nhấp nháy trước khi nổ
+            }, 2.0f, "explode_key"); 
         }), nullptr));
-    auto physicsBody = PhysicsBody::createCircle(10.0f); // Bán kính vật lý của lựu đạn
+    auto physicsBody = PhysicsBody::createCircle(10.0f);
     physicsBody->setContactTestBitmask(true);
-    physicsBody->setCollisionBitmask(0x0004); // Bitmask cho lựu đạn
+    physicsBody->setCollisionBitmask(0x0004);
     physicsBody->setGravityEnable(false);
     this->setPhysicsBody(physicsBody);
     return true;
@@ -56,13 +53,10 @@ bool Grenade::init(const Vec2& startPosition, const Vec2& direction, float throw
 
 void Grenade::createImpactEffect()
 {
-    // Tạo hiệu ứng khi lựu đạn rơi xuống
     auto impactSprite = Sprite::create("assets_game/effects/warning.png");
     impactSprite->setPosition(this->getPosition());
     this->getParent()->addChild(impactSprite);
-
-    // Chạy animation nhấp nháy cho impactSprite
-    auto blink = Blink::create(2.0f, 7); // Nhấp nháy trong 2.0 giây, 7 lần
+    auto blink = Blink::create(2.0f, 7);
     impactSprite->runAction(Sequence::create(blink, CallFunc::create([impactSprite]() {
         impactSprite->removeFromParent();
         }), nullptr));
@@ -70,7 +64,6 @@ void Grenade::createImpactEffect()
 
 void Grenade::explode()
 {
-    // Tạo Animation cho vụ nổ từ explosion.plist
     Vector<SpriteFrame*> frames;
     for (int i = 1; i <= 6; ++i)
     {
@@ -84,52 +77,36 @@ void Grenade::explode()
         frames.pushBack(frame);
     }
 
-    auto animation = Animation::createWithSpriteFrames(frames, 0.1f); // Thời gian giữa các khung hình
+    auto animation = Animation::createWithSpriteFrames(frames, 0.1f);
     auto animate = Animate::create(animation);
-    auto repeatAnimate = Repeat::create(animate, 1); // Lặp lại animation 3 lần
-
-    // Tạo Sprite để hiển thị Animation
+    auto repeatAnimate = Repeat::create(animate, 1);
     auto explosionSprite = Sprite::createWithSpriteFrame(frames.front());
     explosionSprite->setPosition(this->getPosition());
     this->getParent()->addChild(explosionSprite);
-
-    // Xóa hình ảnh lựu đạn
     this->setVisible(false);
-
     explosionSprite->runAction(Sequence::create(repeatAnimate, CallFunc::create([explosionSprite, this]() {
         explosionSprite->removeFromParent();
         this->removeFromParent();
         }), nullptr));
-
-    // Gây sát thương
     this->dealDamage();
-
-    // Logic gây sát thương ở đây
-    // ...
 }
 
 void Grenade::dealDamage()
 {
-    // Tạo một hình tròn đại diện cho vùng gây sát thương
-    float damageRadius = 150.0f; // Bán kính gây sát thương
+    float damageRadius = 120.0f;
     auto damageCircle = DrawNode::create();
     damageCircle->drawSolidCircle(this->getPosition(), damageRadius, 0, 50, Color4F(1, 0, 0, 0.5f));
     this->getParent()->addChild(damageCircle);
-
-    // Kiểm tra va chạm với các đối tượng khác trong game
     auto children = this->getParent()->getChildren();
     for (auto child : children)
     {
         if (child == this) continue;
-
-        // Giả sử các đối tượng khác có phương thức getBoundingBox()
         if (child->getBoundingBox().intersectsCircle(this->getPosition(), damageRadius))
         {
-            // Gây sát thương cho đối tượng
             auto enemy = dynamic_cast<EnemyBase*>(child);
             if (enemy)
             {
-                enemy->setHealth(enemy->getHealth() - 50); // Gây sát thương 50 điểm
+                enemy->setHealth(enemy->getHealth() - 50);
                 if (enemy->getHealth() <= 0)
                 {
                     enemy->die();
@@ -137,22 +114,20 @@ void Grenade::dealDamage()
             }
             else if (child->getName() == "PlayerGame2")
             {
-                child->removeFromParent(); // Xóa đối tượng khỏi cảnh
+                child->removeFromParent();
             }
         }
     }
-
-    // Xóa hình tròn sau khi gây sát thương
     damageCircle->removeFromParent();
 }
 
 
 float Grenade::calculateThrowDistance(float holdTime)
 {
-    const float maxHoldTime = 2.0f; // Thời gian giữ chuột tối đa
-    const float minThrowDistance = 100.0f; // Khoảng cách ném tối thiểu
-    const float maxThrowDistance = Constants::GrenadeThrowDistance; // Khoảng cách ném tối đa
-    float normalizedHoldTime = fmod(holdTime, maxHoldTime * 2.0f); // Chu kỳ tăng giảm lực
+    const float maxHoldTime = 2.0f;
+    const float minThrowDistance = 100.0f;
+    const float maxThrowDistance = Constants::GrenadeThrowDistance;
+    float normalizedHoldTime = fmod(holdTime, maxHoldTime * 2.0f);
 
     if (normalizedHoldTime > maxHoldTime)
     {

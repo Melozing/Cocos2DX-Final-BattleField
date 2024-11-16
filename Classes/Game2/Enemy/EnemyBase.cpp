@@ -1,7 +1,6 @@
-// EnemyBase.cpp
 #include "EnemyBase.h"
 #include "Game2/Player/PlayerGame2.h"
-
+#include "Game2/Enemy/EnemyUtils.h"
 USING_NS_CC;
 
 EnemyBase::EnemyBase()
@@ -13,12 +12,12 @@ EnemyBase::~EnemyBase()
 {
 }
 
-bool EnemyBase::init()
-{
-    if (!Sprite::init())
-    {
+bool EnemyBase::init() {
+    if (!Sprite::init()) {
         return false;
     }
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
 
     createPhysicsBody();
     this->scheduleUpdate();
@@ -35,22 +34,25 @@ void EnemyBase::update(float delta)
     moveToPlayer();
 }
 
-void EnemyBase::die()
-{
-    /*_isDead = true;
+void EnemyBase::die() {
+    _isDead = true;
     auto animateCharac = Animate::create(createDeathAnimation());
     this->runAction(Sequence::create(animateCharac, CallFunc::create([this]() {
         this->removeFromParent();
-        }), nullptr));*/
+        }), nullptr));
 }
 
-void EnemyBase::attack()
-{
-    /*_isAttacking = true;
+void EnemyBase::attack() {
+    _isAttacking = true;
     auto animateCharac = Animate::create(createAttackAnimation());
     this->runAction(Sequence::create(animateCharac, CallFunc::create([this]() {
         _isAttacking = false;
-        }), nullptr));*/
+        }), nullptr));
+}
+
+void EnemyBase::moveToPlayer() {
+    auto walkAnimation = Animate::create(createIdleAnimation());
+    EnemyUtils::moveToPlayer(this, _speed, _isMoving, walkAnimation);
 }
 
 void EnemyBase::setHealth(int health)
@@ -117,11 +119,6 @@ void EnemyBase::takeDamage(int damage) {
     }
 }
 
-void EnemyBase::moveToPlayer()
-{
-    //EnemyUtils::moveToPlayer(this, _speed, _isMoving, createAnimation("walk", 5, 0.07f));
-}
-
 Size EnemyBase::GetSize() {
     return GetContentSizeSprite(this);
 }
@@ -138,3 +135,21 @@ void EnemyBase::createPhysicsBody() {
     this->addComponent(physicsBody);
 }
 
+
+cocos2d::Animation* EnemyBase::createDeathAnimation() {
+    auto animation = Animation::create();
+    animation->setDelayPerUnit(0.1f);
+    return animation;
+}
+
+cocos2d::Animation* EnemyBase::createAttackAnimation() {
+    auto animation = Animation::create();
+    animation->setDelayPerUnit(0.1f);
+    return animation;
+}
+
+cocos2d::Animation* EnemyBase::createIdleAnimation() {
+    auto animation = Animation::create();
+    animation->setDelayPerUnit(0.1f);
+    return animation;
+}

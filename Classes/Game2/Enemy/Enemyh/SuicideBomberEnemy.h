@@ -1,4 +1,4 @@
-#ifndef __SUICIDE_BOMBER_ENEMY_H__
+/*#ifndef __SUICIDE_BOMBER_ENEMY_H__
 #define __SUICIDE_BOMBER_ENEMY_H__
 
 #include "Game2/Enemy/EnemyBase.h"
@@ -33,3 +33,4 @@ private:
 };
 
 #endif // __SUICIDE_BOMBER_ENEMY_H__
+*/

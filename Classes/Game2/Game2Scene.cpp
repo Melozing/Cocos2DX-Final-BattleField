@@ -55,29 +55,15 @@ bool Game2Scene::init() {
     setupKeyboardEventListeners();
 
     // Initialize and setup cursor
-    /*_cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
-    if (_cursor) {
-        _cursor->setAnchorPoint(Vec2(0.5, 0.5));
-        _cursor->setScale(0.03f); // Adjust scale as needed
-        _cursor->setPosition(visibleSize / 2); // Set initial position
-        this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order
-        //setupCursor();
-    }
-    else {
-        CCLOG("Failed to create cursor");
-    }*/
-    //Initialize and setup cursor
     _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
     _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f)); // Adjust scale as needed
     this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR);
-    // Spawn enemies at specific points
+
     this->schedule([this](float delta) {
         spawnEnemies();
         }, 5.0f, "spawn_enemy_key");
 
     CCLOG("Game2Scene initialized successfully");
-
-    // Đăng ký sự kiện va chạm
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -117,7 +103,6 @@ void Game2Scene::setupKeyboardEventListeners() {
 void Game2Scene::update(float delta) {
     if (_player) {
         _player->update(delta);
-        // Ensure the player stays within the screen bounds
         const auto visibleSize = Director::getInstance()->getVisibleSize();
         const Vec2 origin = Director::getInstance()->getVisibleOrigin();
         Vec2 pos = _player->getPosition();
@@ -132,28 +117,45 @@ void Game2Scene::update(float delta) {
 void Game2Scene::spawnEnemies() {
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    // Define spawn points in the original resolution (1920x1080)
     Vec2 spawnPoints[] = {
         Vec2(585, 330),
         Vec2(1520, 460),
         Vec2(1020, 900)
     };
-
-    // Adjust spawn points based on the current screen size
     for (const auto& point : spawnPoints) {
         float x = point.x * (visibleSize.width / 1920.0f);
         float y = point.y * (visibleSize.height / 1080.0f);
-
-        auto enemy = MeleeEnemy::create();
-		enemy->setName("Enemy");
-        if (enemy) {
-            enemy->setPosition(Vec2(x + origin.x, y + origin.y));
-            this->addChild(enemy);
-            enemy->scheduleUpdate();
-        }
+        spawnEnemy("MeleeEnemy", Vec2(x + origin.x, y + origin.y));
     }
 }
+
+void Game2Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
+    EnemyBase* enemy = nullptr;
+
+    if (enemyType == "MeleeEnemy") {
+        enemy = MeleeEnemy::create();
+    }
+    /*else if (enemyType == "SniperEnemy") {
+        enemy = SniperEnemy::create();
+    }
+    else if (enemyType == "InvEnemy") {
+        enemy = InvEnemy::create();
+    }
+    else if (enemyType == "SuicideBomberEnemy") {
+        enemy = SuicideBomberEnemy::create();
+    }
+    else if (enemyType == "BossEnemy") {
+        enemy = BossEnemy::create();
+    }*/
+
+    if (enemy) {
+        enemy->setName("Enemy");
+        enemy->setPosition(position);
+        this->addChild(enemy);
+        enemy->scheduleUpdate();
+    }
+}
+
 bool Game2Scene::onContactBegin(PhysicsContact& contact) {
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
@@ -196,7 +198,6 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         }
     }
 
-    // Handle bullet collision with enemy
     if ((nodeA->getName() == "Bullet" && nodeB->getName() == "Enemy") ||
         (nodeB->getName() == "Bullet" && nodeA->getName() == "Enemy")) {
         // Handle bullet and enemy collision
@@ -211,5 +212,3 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
     }
     return true;
 }
-
-

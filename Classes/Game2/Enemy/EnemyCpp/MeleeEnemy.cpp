@@ -51,16 +51,30 @@ bool MeleeEnemy::init()
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
     // Create animations
-    createIdleAnimation();
-    createAttackAnimation();
-    createDeathAnimation();
+    _idleAnimation = RepeatForever::create(Animate::create(createIdleAnimation()));
+    _idleAnimation->retain();
+    _attackAnimation = Animate::create(createAttackAnimation());
+    _attackAnimation->retain();
+    _deathAnimation = Animate::create(createDeathAnimation());
+    _deathAnimation->retain();
 
+    createPhysicsBody();
     // Schedule update method
     this->scheduleUpdate();
     return true;
 }
 
-void MeleeEnemy::createIdleAnimation()
+void MeleeEnemy::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
+    physicsBody->setGravityEnable(false);
+    this->addComponent(physicsBody);
+}
+cocos2d::Animation* MeleeEnemy::createIdleAnimation()
 {
     Vector<SpriteFrame*> animFrames;
     char str[100] = { 0 };
@@ -74,12 +88,10 @@ void MeleeEnemy::createIdleAnimation()
         }
     }
 
-    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _idleAnimation = RepeatForever::create(Animate::create(animation));
-    _idleAnimation->retain();
+    return Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
 }
 
-void MeleeEnemy::createAttackAnimation()
+cocos2d::Animation* MeleeEnemy::createAttackAnimation()
 {
     Vector<SpriteFrame*> animFrames;
     char str[100] = { 0 };
@@ -93,12 +105,10 @@ void MeleeEnemy::createAttackAnimation()
         }
     }
 
-   /* auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _attackAnimation = RepeatForever::create(Animate::create(animation));
-    _attackAnimation->retain();*/
+    return Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
 }
 
-void MeleeEnemy::createDeathAnimation()
+cocos2d::Animation* MeleeEnemy::createDeathAnimation()
 {
     Vector<SpriteFrame*> animFrames;
     char str[100] = { 0 };
@@ -112,9 +122,7 @@ void MeleeEnemy::createDeathAnimation()
         }
     }
 
-    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _deathAnimation = Animate::create(animation);
-    _deathAnimation->retain();
+    return Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
 }
 
 void MeleeEnemy::update(float delta)
@@ -139,14 +147,14 @@ void MeleeEnemy::update(float delta)
         }
         else
         {
-            //moveToPlayer();
+            moveToPlayer();
         }
     }
 }
 
 void MeleeEnemy::attackPlayer()
 {
-    /*_isAttacking = true;
+    _isAttacking = true;
     this->runAction(Sequence::create(_attackAnimation, CallFunc::create([this]() {
         auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
         if (player)
@@ -154,13 +162,5 @@ void MeleeEnemy::attackPlayer()
             player->takeDamage(_damage);
         }
         _isAttacking = false;
-        }), nullptr));*/
+        }), nullptr));
 }
-
-//void MeleeEnemy::die()
-//{
-//    _isDead = true;
-//    this->runAction(Sequence::create(_deathAnimation, CallFunc::create([this]() {
-//        this->removeFromParent();
-//        }), nullptr));
-//}

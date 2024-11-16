@@ -1,4 +1,4 @@
-// InvEnemy.cpp
+/*// InvEnemy.cpp
 #include "Game2/Enemy/Enemyh/InvEnemy.h"
 #include "Game2/Player/PlayerGame2.h"
 #include "Game2/Enemy/EnemyUtils.h"
@@ -231,3 +231,4 @@ void InvEnemy::die()
         this->removeFromParent();
         }), nullptr));
 }
+*/
