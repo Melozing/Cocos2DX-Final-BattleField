@@ -30,12 +30,13 @@ public:
     void shootBullet(const cocos2d::Vec2& direction);
     void throwGrenade(const cocos2d::Vec2& direction, float duration);
     void reload();
-
+    void takeDamage(int damage);
     void die();
 
     const int maxMagazineSize = 30;
     const int initialAmmo = 120;
 private:
+    int _health;
     cocos2d::Vec2 _mousePos;
     bool _isMouseDown;
     float _mousePressDuration;

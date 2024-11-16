@@ -19,6 +19,7 @@ public:
     void setupKeyboardEventListeners();
     void setupCursor();
     bool onContactBegin(cocos2d::PhysicsContact& contact);
+
 private:
     // Physics world
     cocos2d::PhysicsWorld* world;
@@ -28,6 +29,8 @@ private:
     PlayerGame2* _player;
     Cursor* _cursor;
     Sprite* _followSprite;
+
+    void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
 };
 
 #endif // __GAME2_SCENE_H__

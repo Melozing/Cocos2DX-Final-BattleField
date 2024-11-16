@@ -1,4 +1,3 @@
-// EnemyUtils.cpp
 #include "Game2/Enemy/EnemyUtils.h"
 #include "Game2/Player/PlayerGame2.h"
 #include "Constants/Constants.h"

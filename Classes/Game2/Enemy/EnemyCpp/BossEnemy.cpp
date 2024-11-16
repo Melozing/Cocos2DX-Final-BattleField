@@ -1,4 +1,4 @@
-// BossEnemy.cpp
+/*// BossEnemy.cpp
 #include "Game2/Enemy/Enemyh/BossEnemy.h"
 #include "Game2/Player/PlayerGame2.h"
 #include "Game2/Enemy/EnemyUtils.h"
@@ -236,3 +236,4 @@ void BossEnemy::die()
         this->removeFromParent();
         }), nullptr));
 }
+*/

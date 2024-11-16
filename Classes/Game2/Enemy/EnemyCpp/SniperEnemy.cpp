@@ -1,4 +1,4 @@
-﻿#include "Game2/Enemy/Enemyh/SniperEnemy.h"
+﻿/*#include "Game2/Enemy/Enemyh/SniperEnemy.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "Game2/Player/PlayerGame2.h"
@@ -209,3 +209,4 @@ bool SniperEnemy::onContactBegin(PhysicsContact& contact)
 
     return false;
 }
+*/
