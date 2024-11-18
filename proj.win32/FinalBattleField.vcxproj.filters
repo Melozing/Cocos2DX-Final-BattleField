@@ -139,6 +139,9 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss">
       <UniqueIdentifier>{4e9607e5-6639-4b77-b795-0aba3b01fd38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane">
+      <UniqueIdentifier>{766d547f-0c26-4248-a6d1-5b894cce1f8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -371,6 +374,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBossPool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlane.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -607,6 +616,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBossPool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlane.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

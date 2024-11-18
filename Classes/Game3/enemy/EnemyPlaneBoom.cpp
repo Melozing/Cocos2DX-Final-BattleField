@@ -1,6 +1,7 @@
 ﻿#include "EnemyPlaneBoom.h"
 #include "EnemyPlaneBoomPool.h"
 #include "Constants/Constants.h"
+#include "BoomForEnemyPlanePool.h"
 
 USING_NS_CC;
 
@@ -27,6 +28,10 @@ bool EnemyPlaneBoom::init() {
     // Initialize explosion batch node
     explosionBatchNode = SpriteBatchNode::create("assets_game/fx/explosions.png");
     this->addChild(explosionBatchNode);
+
+    // Initialize boom
+    boom = BoomForEnemyPlane::createBoom();
+    this->addChild(boom);
 
     return true;
 }
@@ -67,48 +72,26 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
             enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
             enemy->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
         }
+
+        // Schedule to spawn boom after 2 seconds
+        enemy->scheduleOnce(CC_SCHEDULE_SELECTOR(EnemyPlaneBoom::spawnBoom), 2.0f);
+    }
+}
+
+void EnemyPlaneBoom::spawnBoom(float dt) {
+    if (boom) {
+        boom->setPosition(this->getPosition());
+        boom->setVisible(true);
+        boom->moveDown();
     }
 }
 
 void EnemyPlaneBoom::reset() {
-    this->stopAllActions();
+    // Reset the state of the EnemyPlaneBoom
     this->setVisible(true);
-    createPhysicsBody();
-}
-
-void EnemyPlaneBoom::explode() {
-    this->removeComponent(this->getPhysicsBody());
-
-    if (!explosionSprite) {
-        explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
-        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.078f));
-        explosionBatchNode->addChild(explosionSprite);
+    this->setPosition(Vec2::ZERO);
+    this->stopAllActions();
+    if (boom) {
+        boom->reset();
     }
-
-    explosionSprite->setPosition(modelCharac->getPosition());
-    explosionSprite->setVisible(true);
-
-    auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);
-    auto animate = Animate::create(explosionAnimation);
-
-    explosionSprite->runAction(Sequence::create(
-        animate,
-        CallFunc::create([this]() {
-            explosionSprite->setVisible(false);
-            this->returnToPool();
-            }),
-        nullptr
-    ));
-}
-
-void EnemyPlaneBoom::createPhysicsBody() {
-    if (this->getPhysicsBody() != nullptr) {
-        this->removeComponent(this->getPhysicsBody());
-    }
-
-    auto physicsBody = PhysicsBody::createBox(this->GetSize());
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setDynamic(false);
-    physicsBody->setGravityEnable(false);
-    this->addComponent(physicsBody);
 }

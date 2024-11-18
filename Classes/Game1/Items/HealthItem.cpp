@@ -18,7 +18,7 @@ HealthItem* HealthItem::create() {
 bool HealthItem::init() {
     if (!Node::init()) return false;
     this->scheduleUpdate();
-    this->initAnimation(); // Initialize the animation
+    this->initAnimation(); 
     this->initPhysicsBody();
     return true;
 }
@@ -104,6 +104,7 @@ void HealthItem::reset() {
     auto fadeIn = FadeIn::create(0.5f);
     this->setOpacity(255);
     this->setVisible(true);
+    this->initAnimation();
     this->initPhysicsBody();
     _currentSprite->runAction(fadeIn);
 }
