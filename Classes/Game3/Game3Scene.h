@@ -27,6 +27,7 @@ private:
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);
     void initPools(); 
+	void scheduleBossSpawn();
     void setupContactListener();
     bool onContactBegin(cocos2d::PhysicsContact& contact);
     void handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy);
