@@ -98,6 +98,7 @@ void EnemyPlaneBoom::spawnBoom(bool spawnFromLeft) {
 
 void EnemyPlaneBoom::reset() {
     // Reset the state of the EnemyPlaneBoom
+    modelCharac->setVisible(true);
     this->setVisible(true);
     this->setPosition(Vec2::ZERO);
     this->stopAllActions();
@@ -116,6 +117,7 @@ void EnemyPlaneBoom::explode() {
     }
 
     explosionSprite->setPosition(modelCharac->getPosition());
+    modelCharac->setVisible(false);
     explosionSprite->setVisible(true);
 
     auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);

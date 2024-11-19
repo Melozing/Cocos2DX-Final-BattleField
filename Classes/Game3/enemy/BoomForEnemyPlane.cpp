@@ -20,18 +20,48 @@ bool BoomForEnemyPlane::init() {
         return false;
     }
 
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+
     modelCharac = Sprite::create("assets_game/enemies/Boom.png");
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.07f));
     this->addChild(modelCharac);
 
+    this->createPhysicsBody();
+
+    // Initialize explosion batch node
+    explosionBatchNode = SpriteBatchNode::create("assets_game/fx/explosions.png");
+    this->addChild(explosionBatchNode);
+
     return true;
 }
 
+Size BoomForEnemyPlane::GetSize() {
+    return SpriteController::GetContentSizeSprite(modelCharac);
+}
+
+void BoomForEnemyPlane::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+
+    physicsBody->setDynamic(false);
+    physicsBody->setCategoryBitmask(0x01);
+    physicsBody->setCollisionBitmask(0x01);
+    physicsBody->setContactTestBitmask(0x01);
+    physicsBody->setGravityEnable(false);
+    this->setPhysicsBody(physicsBody);
+}
+
 void BoomForEnemyPlane::reset() {
+    modelCharac->setVisible(true);
     this->setVisible(true);
     this->setRotation(0);
 }
+
 void BoomForEnemyPlane::moveDown(bool spawnFromLeft) {
+    this->createPhysicsBody();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     float moveDuration = 4.0f;
     float rotateDuration = 2.0f;
@@ -60,7 +90,34 @@ void BoomForEnemyPlane::moveDown(bool spawnFromLeft) {
     this->runAction(sequence);
 }
 
+void BoomForEnemyPlane::explode() {
+    // Create explosion effect
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
 
+    if (!explosionSprite) {
+        explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
+        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.078f));
+        explosionBatchNode->addChild(explosionSprite);
+    }
+
+    explosionSprite->setPosition(modelCharac->getPosition());
+    modelCharac->setVisible(false);
+    explosionSprite->setVisible(true);
+
+    auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);
+    auto animate = Animate::create(explosionAnimation);
+
+    explosionSprite->runAction(Sequence::create(
+        animate,
+        CallFunc::create([this]() {
+            explosionSprite->setVisible(false);
+            this->returnToPool();
+            }),
+        nullptr
+    ));
+}
 
 void BoomForEnemyPlane::returnToPool() {
     this->stopAllActions();

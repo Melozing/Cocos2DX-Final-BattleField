@@ -10,10 +10,14 @@ public:
     virtual bool init() override;
     void moveDown(bool spawnFromLeft);
     void returnToPool();
+    void explode();
+    void createPhysicsBody();
 private:
-    void checkOutOfScreen();
+    cocos2d::Size GetSize();
     bool isOutOfScreen;
     cocos2d::Sprite* modelCharac;
+    cocos2d::SpriteBatchNode* explosionBatchNode;
+    cocos2d::Sprite* explosionSprite;
 };
 
 #endif // __BOOMFORENEMYPLANE_H__

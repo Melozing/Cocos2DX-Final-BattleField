@@ -112,14 +112,36 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
     auto nodeB = contact.getShapeB()->getBody()->getNode();
 
     if (nodeA && nodeB) {
-        if (dynamic_cast<Bullet*>(nodeA) && dynamic_cast<EnemyPlaneBase*>(nodeB)) {
-            handleBulletEnemyCollision(static_cast<Bullet*>(nodeA), static_cast<EnemyPlaneBase*>(nodeB));
+        auto bullet = dynamic_cast<Bullet*>(nodeA);
+        auto enemy = dynamic_cast<EnemyPlaneBase*>(nodeB);
+        auto boom = dynamic_cast<BoomForEnemyPlane*>(nodeB);
+
+        if (bullet && enemy) {
+            handleBulletEnemyCollision(bullet, enemy);
         }
-        else if (dynamic_cast<Bullet*>(nodeB) && dynamic_cast<EnemyPlaneBase*>(nodeA)) {
-            handleBulletEnemyCollision(static_cast<Bullet*>(nodeB), static_cast<EnemyPlaneBase*>(nodeA));
+        else if (bullet && boom) {
+            handleBulletBoomCollision(bullet, boom);
+        }
+        else {
+            bullet = dynamic_cast<Bullet*>(nodeB);
+            enemy = dynamic_cast<EnemyPlaneBase*>(nodeA);
+            boom = dynamic_cast<BoomForEnemyPlane*>(nodeA);
+
+            if (bullet && enemy) {
+                handleBulletEnemyCollision(bullet, enemy);
+            }
+            else if (bullet && boom) {
+                handleBulletBoomCollision(bullet, boom);
+            }
         }
     }
+
     return true;
+}
+
+void Game3Scene::handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom) {
+    bullet->removeFromParent();
+    boom->explode();
 }
 
 void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy) {
