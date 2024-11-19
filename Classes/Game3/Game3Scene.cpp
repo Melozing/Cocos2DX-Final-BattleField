@@ -41,7 +41,8 @@ bool Game3Scene::init() {
     initPools();
     setupCursor();
     initSpawning();
-	setupContactListener();
+    setupContactListener();
+    scheduleBossSpawn(); // Schedule boss spawn after 30 seconds
     return true;
 }
 
@@ -64,7 +65,7 @@ void Game3Scene::initPools() {
     EnemyPlaneBulletPool::getInstance()->initPool(10); // Initialize pool with 10 bullets
     BoomForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 bullets
     EnemyPlaneBoomPool::getInstance()->initPool(10); // Initialize pool with 10 booms
-	EnemyPlaneBossPool::getInstance()->initPool(1); // Initialize pool with 1 boss
+    EnemyPlaneBossPool::getInstance()->initPool(1); // Initialize pool with 1 boss
 }
 
 void Game3Scene::initSpawning() {
@@ -74,10 +75,12 @@ void Game3Scene::initSpawning() {
 
     this->schedule([this](float) {
         EnemyPlaneBoom::spawnEnemy(this);
+
         }, 3.0f, "spawn_boom_key");
     this->schedule([this](float) {
+
         EnemyPlaneBoss::spawnEnemy(this);
-        }, 1.0f, "spawn_Boss_key");
+        }, 30.0f, "spawn_boss_key");
 }
 
 void Game3Scene::setupCursor() {
