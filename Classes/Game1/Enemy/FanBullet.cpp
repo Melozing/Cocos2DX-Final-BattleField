@@ -17,8 +17,8 @@ FanBullet* FanBullet::create() {
 }
 
 void FanBullet::reset() {
-    //this->setVisible(false);
-    //_direction = Vec2::ZERO; // Reset direction
+    this->setVisible(false);
+    _direction = Vec2::ZERO; // Reset direction
 }
 
 

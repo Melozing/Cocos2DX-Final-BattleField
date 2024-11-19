@@ -19,7 +19,7 @@ private:
     void initAnimation();
 
     cocos2d::Vec2 _direction;
-    float _speed = 500.0f; // Example speed value
+    float _speed = 500.0f;
     cocos2d::SpriteBatchNode* spriteBatchNode = nullptr;
     cocos2d::Sprite* modelCharac = nullptr;
 };

@@ -15,7 +15,7 @@ public:
     void initAnimation();
     void explode();
     void createPhysicsBody();
-    void spawnBoom(float dt);
+    void spawnBoom(bool spawnFromLeft);
 private:
     cocos2d::SpriteBatchNode* spriteBatchNode;
     cocos2d::SpriteBatchNode* explosionBatchNode;

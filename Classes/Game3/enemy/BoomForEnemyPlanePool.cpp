@@ -1,4 +1,5 @@
 #include "BoomForEnemyPlanePool.h"
+#include "BoomForEnemyPlane.h"
 
 USING_NS_CC;
 
@@ -25,12 +26,14 @@ BoomForEnemyPlane* BoomForEnemyPlanePool::getBoom() {
         if (boom) {
             boom->retain();
             boom->reset();
+            CCLOG("BoomPool empty. Created new boom. Current pool size: %lu", _availableBooms.size());
             return boom;
         }
         return nullptr;
     }
     BoomForEnemyPlane* boom = _availableBooms.front();
     _availableBooms.pop();
+    CCLOG("Boom retrieved from pool. Current pool size: %lu", _availableBooms.size());
     return boom;
 }
 
@@ -38,6 +41,7 @@ void BoomForEnemyPlanePool::returnBoom(BoomForEnemyPlane* boom) {
     if (boom) {
         boom->reset();
         _availableBooms.push(boom);
+        CCLOG("Boom returned to pool. Current pool size: %lu", _availableBooms.size());
     }
 }
 
@@ -49,3 +53,4 @@ void BoomForEnemyPlanePool::resetPool() {
     }
     CCLOG("BoomPool reset. All booms released.");
 }
+

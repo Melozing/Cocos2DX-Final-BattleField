@@ -18,7 +18,6 @@ void EnemyPlaneBoomPool::initPool(int poolSize) {
             _availableEnemies.push(enemy);
         }
     }
-    CCLOG("EnemyPlaneBoomPool initialized with %d enemies", poolSize);
 }
 
 EnemyPlaneBoom* EnemyPlaneBoomPool::getEnemy() {
@@ -49,5 +48,4 @@ void EnemyPlaneBoomPool::resetPool() {
         _availableEnemies.pop();
         enemy->release();
     }
-    CCLOG("EnemyPlaneBoomPool reset. All enemies released.");
 }
