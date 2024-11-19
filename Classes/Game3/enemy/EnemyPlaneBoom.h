@@ -3,6 +3,7 @@
 
 #include "EnemyPlaneBase.h"
 #include "Controller/SpriteController.h"
+#include "BoomForEnemyPlane.h"
 
 class EnemyPlaneBoom : public EnemyPlaneBase {
 public:
@@ -14,10 +15,12 @@ public:
     void initAnimation();
     void explode();
     void createPhysicsBody();
+    void spawnBoom(bool spawnFromLeft);
 private:
     cocos2d::SpriteBatchNode* spriteBatchNode;
     cocos2d::SpriteBatchNode* explosionBatchNode;
     cocos2d::Sprite* explosionSprite;
+    BoomForEnemyPlane* boom; // Add this line
 };
 
-#endif
+#endif // __ENEMY_PLANE_BOOM_H__

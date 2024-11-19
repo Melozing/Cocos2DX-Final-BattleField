@@ -6,6 +6,7 @@
 #include "Game3/enemy/EnemyPlaneBoomPool.h"
 #include "Game3/enemy/EnemyPlaneBossPool.h"
 #include "Game3/enemy/EnemyPlaneBoss.h"
+#include "Game3/enemy/BoomForEnemyPlanePool.h"
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
@@ -18,7 +19,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game3Scene::create();
     scene->addChild(layer);
@@ -62,6 +63,7 @@ void Game3Scene::setupPlayer() {
 void Game3Scene::initPools() {
     BulletPool::getInstance()->initPool(10);
     EnemyPlaneBulletPool::getInstance()->initPool(10); // Initialize pool with 10 bullets
+    BoomForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 bullets
     EnemyPlaneBoomPool::getInstance()->initPool(10); // Initialize pool with 10 booms
     EnemyPlaneBossPool::getInstance()->initPool(1); // Initialize pool with 1 boss
 }
@@ -69,15 +71,14 @@ void Game3Scene::initPools() {
 void Game3Scene::initSpawning() {
     this->schedule([this](float) {
         EnemyPlaneBullet::spawnEnemy(this);
-        }, 1.0f, "spawn_bullet_key");
+        }, 3.0f, "spawn_bullet_key");
 
     this->schedule([this](float) {
         EnemyPlaneBoom::spawnEnemy(this);
-        }, 1.0f, "spawn_boom_key");
-}
 
-void Game3Scene::scheduleBossSpawn() {
-    this->scheduleOnce([this](float) {
+        }, 3.0f, "spawn_boom_key");
+    this->schedule([this](float) {
+
         EnemyPlaneBoss::spawnEnemy(this);
         }, 30.0f, "spawn_boss_key");
 }
@@ -114,14 +115,36 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
     auto nodeB = contact.getShapeB()->getBody()->getNode();
 
     if (nodeA && nodeB) {
-        if (dynamic_cast<Bullet*>(nodeA) && dynamic_cast<EnemyPlaneBase*>(nodeB)) {
-            handleBulletEnemyCollision(static_cast<Bullet*>(nodeA), static_cast<EnemyPlaneBase*>(nodeB));
+        auto bullet = dynamic_cast<Bullet*>(nodeA);
+        auto enemy = dynamic_cast<EnemyPlaneBase*>(nodeB);
+        auto boom = dynamic_cast<BoomForEnemyPlane*>(nodeB);
+
+        if (bullet && enemy) {
+            handleBulletEnemyCollision(bullet, enemy);
         }
-        else if (dynamic_cast<Bullet*>(nodeB) && dynamic_cast<EnemyPlaneBase*>(nodeA)) {
-            handleBulletEnemyCollision(static_cast<Bullet*>(nodeB), static_cast<EnemyPlaneBase*>(nodeA));
+        else if (bullet && boom) {
+            handleBulletBoomCollision(bullet, boom);
+        }
+        else {
+            bullet = dynamic_cast<Bullet*>(nodeB);
+            enemy = dynamic_cast<EnemyPlaneBase*>(nodeA);
+            boom = dynamic_cast<BoomForEnemyPlane*>(nodeA);
+
+            if (bullet && enemy) {
+                handleBulletEnemyCollision(bullet, enemy);
+            }
+            else if (bullet && boom) {
+                handleBulletBoomCollision(bullet, boom);
+            }
         }
     }
+
     return true;
+}
+
+void Game3Scene::handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom) {
+    bullet->removeFromParent();
+    boom->explode();
 }
 
 void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy) {

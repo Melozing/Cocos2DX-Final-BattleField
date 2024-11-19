@@ -105,6 +105,7 @@ void AmmoItem::reset() {
     auto fadeIn = FadeIn::create(0.5f);
     this->setOpacity(255);
     this->setVisible(true);
+    this->initAnimation();
     this->initPhysicsBody();
     _currentSprite->runAction(fadeIn);
 }

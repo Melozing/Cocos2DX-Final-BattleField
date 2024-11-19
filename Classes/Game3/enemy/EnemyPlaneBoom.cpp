@@ -1,6 +1,7 @@
 ﻿#include "EnemyPlaneBoom.h"
 #include "EnemyPlaneBoomPool.h"
 #include "Constants/Constants.h"
+#include "BoomForEnemyPlanePool.h"
 
 USING_NS_CC;
 
@@ -56,7 +57,11 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
         enemy->resetSprite();
         parent->addChild(enemy);
         auto visibleSize = Director::getInstance()->getVisibleSize();
-        float randomY = random(visibleSize.height / 2, visibleSize.height);
+
+        // Define the range to spawn near the top of the screen
+        float topBuffer = visibleSize.height / 4;
+        float randomY = random(visibleSize.height - topBuffer, visibleSize.height - enemy->getContentSize().height / 2);
+
         bool spawnFromLeft = random(0, 1) == 0;
 
         if (spawnFromLeft) {
@@ -67,17 +72,43 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
             enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
             enemy->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
         }
+
+        // Create physics body when spawning
+        enemy->createPhysicsBody();
+
+        // Schedule to spawn boom at a random interval between 2 to 3 seconds
+        float randomInterval = random(3.0f, 6.0f);
+        enemy->schedule([enemy, spawnFromLeft](float dt) {
+            enemy->spawnBoom(spawnFromLeft);
+            }, randomInterval, "spawn_boom_key");
+    }
+}
+
+void EnemyPlaneBoom::spawnBoom(bool spawnFromLeft) {
+    auto boom = BoomForEnemyPlanePool::getInstance()->getBoom();
+    if (boom) {
+        boom->setPosition(this->getPosition());
+        if (boom->getParent() == nullptr) {
+            this->getParent()->addChild(boom);
+        }
+        boom->setVisible(true);
+        boom->moveDown(spawnFromLeft);
     }
 }
 
 void EnemyPlaneBoom::reset() {
-    this->stopAllActions();
+    // Reset the state of the EnemyPlaneBoom
+    modelCharac->setVisible(true);
     this->setVisible(true);
-    createPhysicsBody();
+    this->setPosition(Vec2::ZERO);
+    this->stopAllActions();
 }
 
 void EnemyPlaneBoom::explode() {
-    this->removeComponent(this->getPhysicsBody());
+    // Remove physics body when exploding
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
 
     if (!explosionSprite) {
         explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
@@ -86,6 +117,7 @@ void EnemyPlaneBoom::explode() {
     }
 
     explosionSprite->setPosition(modelCharac->getPosition());
+    modelCharac->setVisible(false);
     explosionSprite->setVisible(true);
 
     auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);

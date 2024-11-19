@@ -57,7 +57,7 @@ void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent) {
         enemy->resetSprite();
         parent->addChild(enemy);
         auto visibleSize = Director::getInstance()->getVisibleSize();
-        float randomY = random(visibleSize.height / 2, visibleSize.height);
+        float randomY = random(visibleSize.height * 0.75f, visibleSize.height * 0.83f); 
         bool spawnFromLeft = random(0, 1) == 0;
 
         if (spawnFromLeft) {
@@ -71,9 +71,11 @@ void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent) {
     }
 }
 
+
 void EnemyPlaneBullet::reset() {
+    modelCharac->setVisible(true);
+    this->setPosition(Vec2::ZERO);
     this->stopAllActions();
-    this->setVisible(true);
     createPhysicsBody();
 }
 
@@ -87,6 +89,7 @@ void EnemyPlaneBullet::explode() {
     }
 
     explosionSprite->setPosition(modelCharac->getPosition());
+    modelCharac->setVisible(false);
     explosionSprite->setVisible(true);
 
     auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);

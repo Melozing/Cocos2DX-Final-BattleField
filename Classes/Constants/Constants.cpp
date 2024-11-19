@@ -23,7 +23,7 @@ const float Constants::PADDING_VERTICAL_UI_EXITBUTTON = 0.02f;
 const float Constants::PADDING_HORIZONTAL_UI_PANEL = 0.04f;
 const float Constants::PADDING_HORIZONTAL_UI_EXITBUTTON = 0.02f;
 //ITEM
-const float Constants::ITEM_SCALE_FACTOR = 0.25f;
+const float Constants::ITEM_SCALE_FACTOR = 0.16f;
 const float Constants::ITEM_EFFECT_DURATION = 0.3f;
 const float Constants::ITEM_SIZE_RATIO = 0.07f;
 //EFFECT_GAME1
