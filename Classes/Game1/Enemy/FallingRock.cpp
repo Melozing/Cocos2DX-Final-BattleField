@@ -1,5 +1,7 @@
 #include "FallingRock.h"
 #include "FallingRockPool.h"
+#include "Controller/SpriteController.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 
@@ -14,34 +16,18 @@ FallingRock* FallingRock::create() {
 }
 
 bool FallingRock::init() {
-    if (!Node::init()) { // Assuming Node is the superclass
+    if (!Sprite::init()) { // Assuming Sprite is the superclass
         return false;
     }
-    // Load sprite frames for both rock and landmine
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/falling_rock.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
-
-    // Create the sprite batch nodes
-    _spriteBatchNodeRock = SpriteBatchNode::create("assets_game/enemies/falling_rock.png");
-    _spriteBatchNodeLandmine = SpriteBatchNode::create("assets_game/enemies/landmine.png");
-
-    this->addChild(_spriteBatchNodeRock);
-    this->addChild(_spriteBatchNodeLandmine);
 
     // Randomly select either ROCK or LANDMINE
     _spriteType = (rand() % 2 == 0) ? SpriteType::ROCK : SpriteType::LANDMINE;
-
-    // Initialize the animation based on the chosen sprite type
-    initAnimation();
-    // Schedule update to run every frame
-    this->scheduleUpdate();
 
     return true;
 }
 
 void FallingRock::reset() {
-    _spriteBatchNodeRock = SpriteBatchNode::create("assets_game/enemies/falling_rock.png");
-    _spriteBatchNodeLandmine = SpriteBatchNode::create("assets_game/enemies/landmine.png");
+    this->setVisible(false);
 }
 
 Size FallingRock::GetSize() {
@@ -53,16 +39,31 @@ void FallingRock::initAnimation() {
 
     // Depending on the sprite type, set appropriate properties
     if (_spriteType == SpriteType::ROCK) {
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/falling_rock.plist");
         spriteFrameName = "falling_rock1.png";
         _animationDelay = 0.07f; // Animation delay for rock
+
+        _spriteBatchNodeRock = SpriteBatchNode::create("assets_game/enemies/falling_rock.png");
+
+        if (_spriteBatchNodeRock->getParent() == nullptr) {
+            this->addChild(_spriteBatchNodeRock);
+        }
 
         // Create the sprite and add it to the rock batch node
         _currentSprite = Sprite::createWithSpriteFrameName(spriteFrameName);
         _spriteBatchNodeRock->addChild(_currentSprite);
     }
     else {
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
         spriteFrameName = "landmine1.png";
         _animationDelay = 0.15f; // Animation delay for landmine
+
+        _spriteBatchNodeLandmine = SpriteBatchNode::create("assets_game/enemies/landmine.png");
+
+
+        if (_spriteBatchNodeLandmine->getParent() == nullptr) {
+            this->addChild(_spriteBatchNodeLandmine);
+        }
 
         // Create the sprite and add it to the landmine batch node
         _currentSprite = Sprite::createWithSpriteFrameName(spriteFrameName);
@@ -78,7 +79,8 @@ void FallingRock::initAnimation() {
 
 void FallingRock::spawn(const Vec2& startPosition) {
     this->setPosition(startPosition);
-
+    this->setVisible(true);
+    initAnimation();
     // Define target position off-screen at the bottom
     Vec2 endPosition = Vec2(startPosition.x, -SpriteController::calculateScreenRatio(Constants::FALLINGROCK_ITEMS_OFFSET));
 
@@ -91,29 +93,16 @@ void FallingRock::spawn(const Vec2& startPosition) {
 
     // Callback to remove rock when it moves off-screen
     auto removeRock = CallFunc::create([this]() {
-        this->removeWhenOutOfScreen();
+        this->returnToPool();
         });
 
     // Run move action and remove when done
     this->runAction(Sequence::create(moveDown, removeRock, nullptr));
 }
 
-void FallingRock::update(float delta) {
-	this->removeWhenOutOfScreen();
-}
-
-void FallingRock::removeWhenOutOfScreen() {
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    if (this->getPosition().y < -this->getContentSize().height - 50.0f) {
-        this->stopAllActions();
-        this->removeFromParentAndCleanup(false);
-        FallingRockPool::getInstance()->returnEnemy(this);
-    }
-}
-
-
-FallingRock::~FallingRock() {
-    // Remove sprite frames from cache when object is destroyed
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/falling_rock.plist");
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/landmine.plist");
+void FallingRock::returnToPool() {
+    this->setVisible(false);
+    this->stopAllActions();
+    this->removeFromParentAndCleanup(false);
+    FallingRockPool::getInstance()->returnEnemy(this);
 }

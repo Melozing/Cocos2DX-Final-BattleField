@@ -39,10 +39,6 @@ void RandomBoom::reset() {
     }
     if (explosionSprite) {
         explosionSprite->setVisible(false);
-        explosionSprite->setVisible(false);
-        explosionSprite->setVisible(false);
-        explosionSprite->setVisible(false);
-        explosionSprite->setVisible(false);
         explosionSprite->stopAllActions();
     }
     this->unscheduleAllCallbacks(); // Unschedule all callbacks

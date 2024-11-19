@@ -70,9 +70,6 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame1\FlyingBullet">
       <UniqueIdentifier>{5b858b39-3399-4a4b-a305-c46fc1c1b5d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingRock">
-      <UniqueIdentifier>{7058d170-9603-41b9-9674-b2a6ee4f44b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Gameplay\Enemy\EnemyGame1\RandomBoom">
       <UniqueIdentifier>{8dea75d9-e7fc-46b3-ad7c-2be5ad2540dc}</UniqueIdentifier>
     </Filter>
@@ -109,9 +106,6 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame1\FanBullet">
       <UniqueIdentifier>{76c97b4b-cb51-4d60-94d6-c1c744d9e248}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingTree">
-      <UniqueIdentifier>{56802360-56d0-4086-ab31-24b1441dcaf8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Manager\Game1">
       <UniqueIdentifier>{cc74159c-527f-4ff2-a0dc-bb2b1fc78dcc}</UniqueIdentifier>
     </Filter>
@@ -141,6 +135,15 @@
     </Filter>
     <Filter Include="src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane">
       <UniqueIdentifier>{766d547f-0c26-4248-a6d1-5b894cce1f8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingObject">
+      <UniqueIdentifier>{8a13c573-1396-45b8-bb62-7555cf5c1394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock">
+      <UniqueIdentifier>{7058d170-9603-41b9-9674-b2a6ee4f44b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree">
+      <UniqueIdentifier>{56802360-56d0-4086-ab31-24b1441dcaf8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,7 +223,7 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FallingRockPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\RandomBoomPool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
@@ -229,7 +232,7 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FallingRock.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp">
       <Filter>src\Gameplay\Items\Health</Filter>
@@ -289,7 +292,7 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Manager\PositionManager.cpp">
       <Filter>src\Manager\Game1</Filter>
@@ -316,7 +319,7 @@
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTreePool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillI.cpp">
       <Filter>src\Gameplay\Skill\Game1</Filter>
@@ -380,6 +383,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Enemy\FallingObject.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -459,7 +465,7 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FallingRockPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\RandomBoomPool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
@@ -468,7 +474,7 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FallingRock.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingRock</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
       <Filter>src\Gameplay\Items\Health</Filter>
@@ -531,7 +537,7 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\PositionManager.h">
       <Filter>src\Manager\Game1</Filter>
@@ -558,7 +564,7 @@
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FallingTreePool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingTree</Filter>
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Skills\ShieldSkill.h">
       <Filter>src\Gameplay\Skill\Game1</Filter>
@@ -622,6 +628,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Enemy\FallingObject.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
