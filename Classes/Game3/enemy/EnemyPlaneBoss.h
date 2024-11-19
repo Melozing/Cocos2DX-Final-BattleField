@@ -7,6 +7,7 @@
 class EnemyPlaneBoss : public EnemyPlaneBase {
 public:
     static EnemyPlaneBoss* createEnemyPlaneBoss();
+
     virtual bool init() override;
     void initAnimation();
     static void spawnEnemy(cocos2d::Node* parent);

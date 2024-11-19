@@ -48,17 +48,31 @@ void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
         enemy->resetSprite();
         parent->addChild(enemy);
         auto visibleSize = Director::getInstance()->getVisibleSize();
-        float randomY = random(visibleSize.height / 2, visibleSize.height);
-        bool spawnFromLeft = random(0, 1) == 0;
+        auto origin = Director::getInstance()->getVisibleOrigin();
 
-        if (spawnFromLeft) {
-            enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, randomY));
-            enemy->moveFromLeftToRight(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
-        }
-        else {
-            enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
-            enemy->moveFromRightToLeft(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
-        }
+        // Set initial position to the left side of the screen
+        enemy->setPosition(Vec2(origin.x - enemy->getContentSize().width / 2, origin.y + visibleSize.height / 2));
+
+        // Create a move action to move the enemy to the center of the screen
+        auto moveToCenter = MoveTo::create(2.0f, Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2)); // Adjust duration as needed
+
+        // Run the move action
+        enemy->runAction(moveToCenter);
+
+        /*enemy->resetSprite();
+        parent->addChild(enemy);
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        float randomY = random(visibleSize.height / 2, visibleSize.height);
+        bool spawnFromLeft = random(0, 1) == 0;*/
+
+        //if (spawnFromLeft) {
+        //    enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, randomY));
+        //    enemy->moveFromLeftToRight(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
+        //}
+        //else {
+        //    enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
+        //    enemy->moveFromRightToLeft(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
+        //}
     }
 }
 
