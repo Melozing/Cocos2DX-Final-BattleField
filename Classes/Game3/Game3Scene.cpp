@@ -83,6 +83,13 @@ void Game3Scene::initSpawning() {
         }, 30.0f, "spawn_boss_key");
 }
 
+void Game3Scene::scheduleBossSpawn() {
+    this->scheduleOnce([this](float) {
+        EnemyPlaneBoss::spawnEnemy(this);
+        }, 30.0f, "spawn_boss_key");
+}
+
+
 void Game3Scene::setupCursor() {
     _cursor = Cursor::create("assets_game/player/bullseye_white.png");
     if (!_cursor) {

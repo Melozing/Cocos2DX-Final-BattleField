@@ -247,6 +247,7 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     if (_playerAttributes->IsDead()) return true;
+    return true;
 
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
@@ -522,7 +523,6 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
         if (rand() % 2 == 0) {
             auto rock = FallingRockPool::getInstance()->getEnemy();
             if (rock) {
-                rock->reset();
                 rock->spawn(spawnPosition);
                 auto size = rock->GetSize();
                 auto rockBody = PhysicsBody::createCircle(size.width / 2);
@@ -533,7 +533,6 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
         } else {
             auto tree = FallingTreePool::getInstance()->getEnemy();
             if (tree) {
-                tree->reset();
                 tree->spawn(spawnPosition);
                 auto size = tree->GetSize();
                 auto treeBody = PhysicsBody::createCircle(size.width / 2);
