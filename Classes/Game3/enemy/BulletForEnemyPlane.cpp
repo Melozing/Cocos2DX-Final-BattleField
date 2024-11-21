@@ -47,9 +47,8 @@ void BulletForEnemyPlane::createPhysicsBody() {
     auto physicsBody = PhysicsBody::createBox(this->GetSize() * 0.4f);
 
     physicsBody->setDynamic(false);
-    physicsBody->setCategoryBitmask(0x01);
-    physicsBody->setCollisionBitmask(0x01);
-    physicsBody->setContactTestBitmask(0x02);
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
     physicsBody->setGravityEnable(false);
     this->setPhysicsBody(physicsBody);
 }

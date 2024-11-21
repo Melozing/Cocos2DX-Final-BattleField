@@ -58,6 +58,8 @@ void PlayerGame3::setupInitialPosition()
 
 void PlayerGame3::setupTurret()
 {
+    if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
+
     // Create turret sprite and add to tank
     turretSprite = Sprite::create("assets_game/player/tank_barrel_2.png");
     if (turretSprite) {
@@ -155,6 +157,8 @@ void PlayerGame3::onMouseUp(Event* event)
 
 void PlayerGame3::shootBullet()
 {
+    if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
+
     if (timeSinceLastShot < shootDelay) {
         return;
     }
@@ -245,6 +249,8 @@ void PlayerGame3::update(float delta)
 }
 
 void PlayerGame3::updateTurretRotation() {
+    if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
+
     if (turretSprite) {
         // Get the turret's world position
         Vec2 turretPosition = this->convertToWorldSpace(turretSprite->getPosition());

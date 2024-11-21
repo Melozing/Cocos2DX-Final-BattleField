@@ -1,5 +1,6 @@
 #include "RandomBoom.h"
 #include "RandomBoomPool.h"
+#include "utils/PhysicsShapeCache.h"
 #include "Constants/Constants.h"
 #include "cocos2d.h"
 
@@ -147,12 +148,23 @@ void RandomBoom::onMissileHitTarget() {
     //Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width, GetContentSizeSprite(explosionSprite).height);
     explosionSpriteDump = Sprite::createWithSpriteFrameName("explosions7.png");
     explosionSpriteDump->setScale(SpriteController::updateSpriteScale(explosionSpriteDump, 0.15f));
-    explosionBody = PhysicsBody::createBox(GetContentSizeSprite(explosionSpriteDump));
-    explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
-    explosionBody->setContactTestBitmask(true);
-    explosionBody->setGravityEnable(false);
-    explosionBody->setDynamic(false);
-    explosionSprite->setPhysicsBody(explosionBody);
+    
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/RandomBoomExplosionGame1.plist");
+
+    auto originalSize = explosionSpriteDump->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    explosionBody = physicsCache->createBody("RandomBoomExplosionGame1", originalSize, scaledSize);
+    physicsCache->resizeBody(explosionBody, "RandomBoomExplosionGame1", originalSize, 0.9f);
+    if (explosionBody) {
+        explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
+        explosionBody->setContactTestBitmask(true);
+        explosionBody->setDynamic(false);
+        explosionBody->setGravityEnable(false);
+
+        explosionSprite->setPhysicsBody(explosionBody);
+    }
 
     explosionSprite->runAction(Sequence::create(
         animate,

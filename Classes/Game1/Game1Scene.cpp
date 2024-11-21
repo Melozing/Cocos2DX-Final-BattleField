@@ -130,25 +130,17 @@ void Game1Scene::initPlayer(const Size& visibleSize) {
 }
 
 void Game1Scene::initUI(const Size& visibleSize) {
-    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
-    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
+    customLoadingBar = CustomLoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png", "assets_game/UXUI/Loading/Load_Bar_Bg.png", 0.25f);
+    customLoadingBar->setLoadingBarRotation(-90);
+    customLoadingBar->setLoadingBarPosition(Vec2(visibleSize.width - customLoadingBar->getLoadingBar()->getContentSize().height / 2, visibleSize.height / 2));
 
-    _loadingBar = cocos2d::ui::LoadingBar::create("assets_game/UXUI/Loading/Load_Bar_Fg.png");
-    _loadingBar->setDirection(cocos2d::ui::LoadingBar::Direction::LEFT);
-    _loadingBar->setRotation(-90);
-    _loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
-    _loadingBar->setPercent(0);
-    _loadingBar->setAnchorPoint(Vec2(0.5, 0.5));
-    _loadingBar->setPosition(Vec2(visibleSize.width - _loadingBar->getContentSize().height / 2, visibleSize.height / 2));
+    // Calculate the position for the border
+    auto loadingPos = customLoadingBar->getLoadingBar()->getPosition();
+    customLoadingBar->setBorderPosition(loadingPos);
+    customLoadingBar->setBorderRotation(-90);
 
-    border = Sprite::create("assets_game/UXUI/Loading/Load_Bar_Bg.png");
-    auto loadingPos = _loadingBar->getPosition();
-    border->setPosition(loadingPos);
-    border->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.25f));
-    border->setRotation(-90);
-    border->setAnchorPoint(Vec2(0.5, 0.5));
-    this->addChild(border, Constants::ORDER_LAYER_UI);
-    this->addChild(_loadingBar, Constants::ORDER_LAYER_UI);
+    this->addChild(customLoadingBar, Constants::ORDER_LAYER_UI);
+    _loadingBar = customLoadingBar->getLoadingBar();
 }
 
 void Game1Scene::initEvents() {

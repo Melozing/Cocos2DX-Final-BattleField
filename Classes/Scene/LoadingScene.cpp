@@ -1,4 +1,5 @@
 #include "LoadingScene.h"
+#include "LoadingBar/CustomLoadingBar.h"
 #include "Controller/SceneController.h"
 #include "Controller/SpriteController.h"
 #include "Manager/BackgroundManager.h"
@@ -41,7 +42,6 @@ void LoadingScene::initCursor() {
     }
 }
 
-
 void LoadingScene::initBackground() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
@@ -52,25 +52,20 @@ void LoadingScene::initLoadingBar() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
-    // Create and position the loading bar
-    auto _spriteLoading = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
-    auto _spriteLoadingBorder = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_Border.png");
-    loadingBar = ui::LoadingBar::create("assets_game/UXUI/Loading/Loading_Bar_A.png");
-    loadingBar->setPercent(0);
-    loadingBar->setScale(SpriteController::updateSpriteScale(_spriteLoading, 0.57f));
-    loadingBar->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + loadingBar->getContentSize().height + SpriteController::calculateScreenRatio(0.05f)));
+    customLoadingBar = CustomLoadingBar::create("assets_game/UXUI/Loading/Loading_Bar_A.png", "assets_game/UXUI/Loading/Loading_Bar_Border.png", 0.57f);
+    customLoadingBar->setLoadingBarPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + customLoadingBar->getLoadingBar()->getContentSize().height + SpriteController::calculateScreenRatio(0.05f)));
 
-    // Create and position the border
-    border = Sprite::create("assets_game/UXUI/Loading/Loading_Bar_Border.png");
-    border->setScale(SpriteController::updateSpriteScale(_spriteLoadingBorder, 0.6f));
-    auto loadingPos = loadingBar->getPosition();
-    float loadingBarHeight = loadingBar->getContentSize().height * loadingBar->getScaleY() + loadingBar->getScaleY();
+    auto loadingPos = customLoadingBar->getLoadingBar()->getPosition();
+    float loadingBarHeight = customLoadingBar->getLoadingBar()->getContentSize().height * customLoadingBar->getLoadingBar()->getScaleY() + SpriteController::calculateScreenRatio(0.001f);
     loadingPos.y += loadingBarHeight;
-    border->setPosition(loadingPos);
-    this->addChild(border, -1); // Place border behind the loading bar
+    customLoadingBar->setBorderPosition(loadingPos);
 
-    // Add loading bar to the scene
-    this->addChild(loadingBar);
+    customLoadingBar->setLoadingBarScale(SpriteController::updateSpriteScale(customLoadingBar->getLoadingBar(), 0.57f));
+    customLoadingBar->setBorderScale(SpriteController::updateSpriteScale(customLoadingBar->getBorder(), 0.6f));
+
+    this->addChild(customLoadingBar);
+
+    loadingBar = customLoadingBar->getLoadingBar();
 }
 
 void LoadingScene::setNextSceneName(const std::string& sceneName) {
@@ -78,6 +73,11 @@ void LoadingScene::setNextSceneName(const std::string& sceneName) {
 }
 
 void LoadingScene::startLoading() {
+    if (!loadingBar) {
+        CCLOG("Loading bar is not initialized.");
+        return;
+    }
+
     auto currentScene = Director::getInstance()->getRunningScene();
 
     this->schedule([this](float dt) {
@@ -99,3 +99,4 @@ void LoadingScene::startLoading() {
         }
         }, 0.5f / 60.0f, "loading_bar_update_key");
 }
+

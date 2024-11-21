@@ -24,6 +24,7 @@
 #include "Items/HealthItemPool.h"
 #include "Skills/ShieldSkill.h"
 #include "Skills/ShieldSkillItemPool.h"
+#include "LoadingBar/CustomLoadingBar.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
 #include "Controller/SoundController.h"
@@ -70,6 +71,7 @@ private:
     float musicDuration;
 
     // UI elements
+    CustomLoadingBar* customLoadingBar;
     cocos2d::ui::LoadingBar* _loadingBar;
     Sprite* border;
 

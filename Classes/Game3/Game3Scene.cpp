@@ -20,7 +20,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game3Scene::create();
     scene->addChild(layer);
@@ -44,6 +44,7 @@ bool Game3Scene::init() {
     initSpawning();
     setupContactListener();
     scheduleBossSpawn(); // Schedule boss spawn after 30 seconds
+    initHealthBar();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
@@ -65,6 +66,27 @@ void Game3Scene::setupPlayer() {
     this->addChild(player);
     setupEventListeners(player);
 }
+
+void Game3Scene::initHealthBar() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    healthBar = CustomLoadingBar::create("assets_game/UXUI/Loading/health_bar_g3_progress.png", "assets_game/UXUI/Loading/health_bar_g3_border.png", 0.25f);
+    healthBar->setLoadingBarRotation(-90);
+    healthBar->setLoadingBarPosition(Vec2(healthBar->getLoadingBar()->getContentSize().height + SpriteController::calculateScreenRatio(0.03f) / 2, visibleSize.height / 2));
+
+    // Adjust the border position to be lower than the loading bar
+    auto loadingPos = healthBar->getLoadingBar()->getPosition();
+    float loadingBarHeight = SpriteController::calculateScreenRatio(0.01f);
+    loadingPos.y -= loadingBarHeight; // Move the border lower
+    healthBar->setBorderPosition(loadingPos);
+
+    healthBar->setBorderRotation(-90);
+    healthBar->setPercent(100);
+    healthBar->setLoadingBarScale(SpriteController::updateSpriteScale(healthBar->getLoadingBar(), 0.133f));
+    healthBar->setBorderScale(SpriteController::updateSpriteScale(healthBar->getBorder(), 0.155f));
+
+    this->addChild(healthBar, Constants::ORDER_LAYER_UI);
+}
+
 
 void Game3Scene::initPools() {
     BulletPool::getInstance()->initPool(10);
@@ -174,14 +196,6 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
     return true;
 }
 
-void Game3Scene::handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy) {
-    bulletForEnemy->explode();
-}
-
-void Game3Scene::handleBoomCityCollision(BoomForEnemyPlane* boom) {
-    boom->explode();
-}
-
 void Game3Scene::handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom) {
     bullet->removeFromParent();
     boom->explode();
@@ -199,4 +213,41 @@ void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enem
         enemyBoom->explode();
     }
 }
+
+void Game3Scene::handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy) {
+    bulletForEnemy->explode();
+
+    if (healthBar->getPercent() <= 0) return;
+    // Assuming you have a method to get the current health
+    float currentHealth = healthBar->getPercent();
+    float newHealth = currentHealth - 5; // Decrease health by 10 (example value)
+    updateHealthBar(newHealth);
+}
+
+
+void Game3Scene::handleBoomCityCollision(BoomForEnemyPlane* boom) {
+    boom->explode();
+
+    if (healthBar->getPercent() <= 0) return;
+    float currentHealth = healthBar->getPercent();
+    float newHealth = currentHealth - 10; // Decrease health by 10 (example value)
+    updateHealthBar(newHealth);
+}
+
+void Game3Scene::checkHealthBar() {
+    if (healthBar->getPercent() <= 0) {
+        this->stopAllActions();
+        GameController::getInstance()->GameOver(
+            []() { Director::getInstance()->end(); }, // Exit action
+            []() -> Scene* { return Game3Scene::createScene(); }, // Create scene function
+            Constants::pathSoundTrackGame1 // Soundtrack path
+        );
+    }
+}
+
+void Game3Scene::updateHealthBar(float health) {
+    healthBar->setPercent(health);
+    checkHealthBar();
+}
+
 

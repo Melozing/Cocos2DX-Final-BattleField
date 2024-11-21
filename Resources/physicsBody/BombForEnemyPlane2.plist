@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>1</integer>
+        </dict>
+        <key>category_names</key>
+        <array>
+        </array>
+        <key>bodies</key>
+        <dict>
+            <key>BombForEnemyPlane2</key>
+            <dict>
+                <key>anchorpoint</key>
+                <string>{ 0.50072,0.50000 }</string>
+                <key>is_dynamic</key>
+                <false/>
+                <key>affected_by_gravity</key>
+                <false/>
+                <key>allows_rotation</key>
+                <true/>
+                <key>linear_damping</key>
+                <real>0</real>
+                <key>velocity_limit</key>
+                <real>1e+06</real>
+                <key>angular_damping</key>
+                <real>0</real>
+                <key>angular_velocity_limit</key>
+                <real>1e+06</real>
+                <key>fixtures</key>
+                <array>
+                    <dict>
+                        <key>density</key>
+                        <real>2</real>
+                        <key>restitution</key>
+                        <real>0.2</real>
+                        <key>friction</key>
+                        <real>0.7</real>
+                        <key>tag</key>
+                        <integer>0</integer>
+                        <key>group</key>
+                        <integer>0</integer>
+                        <key>category_mask</key>
+                        <integer>4294967295</integer>
+                        <key>collision_mask</key>
+                        <integer>4294967295</integer>
+                        <key>contact_test_mask</key>
+                        <integer>0</integer>
+                        <key>fixture_type</key>
+                        <string>POLYGON</string>
+                        <key>polygons</key>
+                        <array>
+                            <array>
+                                <string>{ 63.00000,616.00000 }</string>
+                                <string>{ 79.50000,526.50000 }</string>
+                                <string>{ -89.50000,530.50000 }</string>
+                                <string>{ -66.00000,617.00000 }</string>
+                                <string>{ 3.50000,710.50000 }</string>
+                            </array>
+                            <array>
+                                <string>{ 307.00000,418.00000 }</string>
+                                <string>{ 263.50000,337.50000 }</string>
+                                <string>{ 186.50000,267.50000 }</string>
+                                <string>{ -228.50000,165.50000 }</string>
+                                <string>{ -196.00000,246.00000 }</string>
+                                <string>{ 79.50000,526.50000 }</string>
+                                <string>{ 313.50000,708.50000 }</string>
+                            </array>
+                            <array>
+                                <string>{ -313.00000,-487.00000 }</string>
+                                <string>{ -327.00000,-417.00000 }</string>
+                                <string>{ 337.00000,-276.00000 }</string>
+                                <string>{ 344.00000,-496.00000 }</string>
+                                <string>{ 151.00000,-692.00000 }</string>
+                                <string>{ -19.50000,-708.50000 }</string>
+                                <string>{ -138.50000,-682.50000 }</string>
+                                <string>{ -240.00000,-612.00000 }</string>
+                            </array>
+                            <array>
+                                <string>{ 218.00000,-662.00000 }</string>
+                                <string>{ 151.00000,-692.00000 }</string>
+                                <string>{ 344.00000,-496.00000 }</string>
+                                <string>{ 290.00000,-604.00000 }</string>
+                            </array>
+                            <array>
+                                <string>{ 337.00000,-276.00000 }</string>
+                                <string>{ -327.00000,-417.00000 }</string>
+                                <string>{ -316.00000,-257.00000 }</string>
+                                <string>{ -228.50000,165.50000 }</string>
+                                <string>{ 186.50000,267.50000 }</string>
+                            </array>
+                            <array>
+                                <string>{ -332.50000,713.50000 }</string>
+                                <string>{ -331.50000,713.50000 }</string>
+                                <string>{ -89.50000,530.50000 }</string>
+                                <string>{ -196.00000,246.00000 }</string>
+                                <string>{ -280.00000,320.00000 }</string>
+                                <string>{ -335.50000,393.50000 }</string>
+                            </array>
+                            <array>
+                                <string>{ -89.50000,530.50000 }</string>
+                                <string>{ 79.50000,526.50000 }</string>
+                                <string>{ -196.00000,246.00000 }</string>
+                            </array>
+                        </array>
+                    </dict>
+                </array>
+            </dict>
+        </dict>
+    </dict>
+</plist>
+
+
+
+
