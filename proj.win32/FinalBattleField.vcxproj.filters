@@ -145,6 +145,9 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree">
       <UniqueIdentifier>{56802360-56d0-4086-ab31-24b1441dcaf8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane">
+      <UniqueIdentifier>{ddd64e19-d8c5-491b-b01c-7d79f1aca973}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -386,6 +389,15 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FallingObject.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Player\CityCollisionArea.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlane.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -631,6 +643,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FallingObject.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Player\CityCollisionArea.h">
+      <Filter>src\Gameplay\Player\PlayerGame3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlane.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

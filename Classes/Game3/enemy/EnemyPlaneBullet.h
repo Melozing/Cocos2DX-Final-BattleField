@@ -14,10 +14,15 @@ public:
     void initAnimation();
     void explode();
     void createPhysicsBody();
+    void spawnBullets();
 private:
     cocos2d::SpriteBatchNode* spriteBatchNode;
     cocos2d::SpriteBatchNode* explosionBatchNode;
+    cocos2d::Sprite* warningSign;
     cocos2d::Sprite* explosionSprite;
+    void showWarningSign();
+    void hideWarningSign();
 };
+
 
 #endif
