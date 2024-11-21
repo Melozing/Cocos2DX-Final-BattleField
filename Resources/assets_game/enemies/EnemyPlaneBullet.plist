@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>EnemyPlaneBullet1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,187},{243,76}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,51},{243,76}}</string>
+				<key>sourceSize</key>
+				<string>{243,184}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{244,0},{243,135}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,28},{243,135}}</string>
+				<key>sourceSize</key>
+				<string>{243,184}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,264},{243,184}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{243,184}}</string>
+				<key>sourceSize</key>
+				<string>{243,184}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{244,136},{243,135}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,20},{243,135}}</string>
+				<key>sourceSize</key>
+				<string>{243,184}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,130},{243,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,77},{243,56}}</string>
+				<key>sourceSize</key>
+				<string>{243,184}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,66},{243,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,51},{243,63}}</string>
+				<key>sourceSize</key>
+				<string>{243,184}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet7.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{243,65}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,55},{243,65}}</string>
+				<key>sourceSize</key>
+				<string>{243,184}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{512,512}</string>
+			<key>textureFileName</key>
+			<string>EnemyPlaneBullet.png</string>
+			</dict>
+		</dict>
+</plist>

@@ -198,6 +198,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlane.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.cpp" />
+    <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlane.cpp" />
+    <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBase.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.cpp" />
@@ -206,6 +208,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.cpp" />
     <ClCompile Include="..\Classes\Game3\Game3Scene.cpp" />
+    <ClCompile Include="..\Classes\Game3\Player\CityCollisionArea.cpp" />
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp" />
     <ClCompile Include="..\Classes\Game4\Game4Scene.cpp" />
     <ClCompile Include="..\Classes\Grenade\BulletGame2.cpp" />
@@ -281,6 +284,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h" />
     <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlane.h" />
     <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.h" />
+    <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlane.h" />
+    <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBase.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.h" />
@@ -289,6 +294,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.h" />
     <ClInclude Include="..\Classes\Game3\Game3Scene.h" />
+    <ClInclude Include="..\Classes\Game3\Player\CityCollisionArea.h" />
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h" />
     <ClInclude Include="..\Classes\Game4\Game4Scene.h" />
     <ClInclude Include="..\Classes\Grenade\BulletGame2.h" />

@@ -37,7 +37,7 @@ bool PlayerGame3::init()
 
     // Initialize shooting variables
     isMouseDown = false;
-    shootDelay = 0.5f;
+    shootDelay = 0.3f;
     timeSinceLastShot = 0.0f;
     return true;
 }

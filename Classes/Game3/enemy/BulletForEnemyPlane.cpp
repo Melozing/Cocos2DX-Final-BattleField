@@ -1,29 +1,29 @@
-#include "BoomForEnemyPlane.h"
-#include "BoomForEnemyPlanePool.h"
+#include "BulletForEnemyPlane.h"
+#include "BulletForEnemyPlanePool.h"
 #include "Controller/SpriteController.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
 
-BoomForEnemyPlane* BoomForEnemyPlane::createBoom() {
-    BoomForEnemyPlane* boom = new (std::nothrow) BoomForEnemyPlane();
-    if (boom && boom->init()) {
-        boom->autorelease();
-        return boom;
+BulletForEnemyPlane* BulletForEnemyPlane::createBullet() {
+    BulletForEnemyPlane* bullet = new (std::nothrow) BulletForEnemyPlane();
+    if (bullet && bullet->init()) {
+        bullet->autorelease();
+        return bullet;
     }
-    CC_SAFE_DELETE(boom);
+    CC_SAFE_DELETE(bullet);
     return nullptr;
 }
 
-bool BoomForEnemyPlane::init() {
+bool BulletForEnemyPlane::init() {
     if (!Sprite::init()) {
         return false;
     }
 
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
 
-    modelCharac = Sprite::create("assets_game/enemies/Boom.png");
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.07f));
+    modelCharac = Sprite::create("assets_game/enemies/BulletPlane.png");
+    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.03f));
     this->addChild(modelCharac);
 
     this->createPhysicsBody();
@@ -35,16 +35,16 @@ bool BoomForEnemyPlane::init() {
     return true;
 }
 
-Size BoomForEnemyPlane::GetSize() {
+Size BulletForEnemyPlane::GetSize() {
     return SpriteController::GetContentSizeSprite(modelCharac);
 }
 
-void BoomForEnemyPlane::createPhysicsBody() {
+void BulletForEnemyPlane::createPhysicsBody() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
 
-    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+    auto physicsBody = PhysicsBody::createBox(this->GetSize() * 0.4f);
 
     physicsBody->setDynamic(false);
     physicsBody->setCategoryBitmask(0x01);
@@ -54,43 +54,40 @@ void BoomForEnemyPlane::createPhysicsBody() {
     this->setPhysicsBody(physicsBody);
 }
 
-void BoomForEnemyPlane::reset() {
+void BulletForEnemyPlane::reset() {
     modelCharac->setVisible(true);
     this->setVisible(true);
     this->setRotation(0);
 }
 
-void BoomForEnemyPlane::moveDown(bool spawnFromLeft) {
+// BulletForEnemyPlane.cpp
+
+void BulletForEnemyPlane::moveDown(float angle) {
     this->createPhysicsBody();
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    float moveDuration = 4.0f;
-    float rotateDuration = 2.0f;
-    Vec2 moveBy = Vec2(0, -visibleSize.height);
+    auto origin = Director::getInstance()->getVisibleOrigin();
 
-    // Adjust the movement to be diagonal based on the spawn direction
-    float horizontalShift = visibleSize.width / 10; // Reduce the horizontal shift
+    // Calculate the target position within the screen bounds
+    float targetX = this->getPositionX() + visibleSize.height * tan(CC_DEGREES_TO_RADIANS(angle));
+    float targetY = origin.y;
 
-    float rotationAngle = 15.0f; // Define the rotation angle
+    // Ensure the target position is within the screen bounds
+    targetX = std::max(origin.x, std::min(targetX, origin.x + visibleSize.width));
 
-    if (!spawnFromLeft) {
-        moveBy.x = horizontalShift; // Move to the right
-        rotationAngle = -rotationAngle; // Rotate to the left
-    }
-    else {
-        moveBy.x = -horizontalShift; // Move to the left
-        rotationAngle = rotationAngle; // Rotate to the right
-    }
+    Vec2 targetPosition = Vec2(targetX, targetY);
+    float moveDuration = 0.8f;
 
-    auto moveAction = MoveBy::create(moveDuration, moveBy);
-    auto rotateAction = RotateBy::create(rotateDuration, rotationAngle);
-    auto spawnAction = Spawn::createWithTwoActions(moveAction, rotateAction);
-    auto sequence = Sequence::create(spawnAction, CallFunc::create([this]() {
+    // Rotate the bullet sprite to match the angle
+    this->setRotation(-angle - 90); // Adjust rotation to match the sprite's initial orientation
+
+    auto moveAction = MoveTo::create(moveDuration, targetPosition);
+    auto sequence = Sequence::create(moveAction, CallFunc::create([this]() {
         this->returnToPool();
         }), nullptr);
     this->runAction(sequence);
 }
 
-void BoomForEnemyPlane::explode() {
+void BulletForEnemyPlane::explode() {
     // Stop all actions to prevent further movement
     this->stopAllActions();
 
@@ -122,10 +119,9 @@ void BoomForEnemyPlane::explode() {
     ));
 }
 
-
-void BoomForEnemyPlane::returnToPool() {
+void BulletForEnemyPlane::returnToPool() {
     this->stopAllActions();
     this->removeFromParent();
     this->setVisible(false);
-    BoomForEnemyPlanePool::getInstance()->returnBoom(this);
+    BulletForEnemyPlanePool::getInstance()->returnBullet(this);
 }

@@ -4,9 +4,11 @@
 
 #include "cocos2d.h"
 #include "Game3/Player/PlayerGame3.h"
+#include "Game3/Player/CityCollisionArea.h"
 #include "Scene/BaseScene.h"
 #include "Game3/enemy/EnemyPlaneBase.h"
 #include "Game3/enemy/BoomForEnemyPlane.h"
+#include "Game3/enemy/BulletForEnemyPlane.h"
 #include <Game2/Cursor/Cursor.h>
 
 class Game3Scene : public BaseScene {
@@ -21,6 +23,7 @@ private:
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
 
     Cursor* _cursor;
+    CityCollisionArea* cityCollisionArea;
 
     void setupBackground();
     void setupPlayer();
@@ -33,6 +36,8 @@ private:
     bool onContactBegin(cocos2d::PhysicsContact& contact);
     void handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy);
     void handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom);
+    void handleBoomCityCollision(BoomForEnemyPlane* boom);
+    void handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy);
 };
 
 #endif // __GAME3SCENE_SCENE_H__

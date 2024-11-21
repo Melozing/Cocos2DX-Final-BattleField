@@ -3,6 +3,7 @@
 #include "Game3/enemy/EnemyPlaneBullet.h"
 #include "Game3/enemy/EnemyPlaneBoom.h"
 #include "Game3/enemy/EnemyPlaneBulletPool.h"
+#include "Game3/enemy/BulletForEnemyPlanePool.h"
 #include "Game3/enemy/EnemyPlaneBoomPool.h"
 #include "Game3/enemy/EnemyPlaneBossPool.h"
 #include "Game3/enemy/EnemyPlaneBoss.h"
@@ -19,7 +20,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game3Scene::create();
     scene->addChild(layer);
@@ -43,6 +44,11 @@ bool Game3Scene::init() {
     initSpawning();
     setupContactListener();
     scheduleBossSpawn(); // Schedule boss spawn after 30 seconds
+
+    // Create the collision area for the city
+    cityCollisionArea = CityCollisionArea::createCityCollisionArea();
+    this->addChild(cityCollisionArea);
+
     return true;
 }
 
@@ -63,10 +69,12 @@ void Game3Scene::setupPlayer() {
 void Game3Scene::initPools() {
     BulletPool::getInstance()->initPool(10);
     EnemyPlaneBulletPool::getInstance()->initPool(10); // Initialize pool with 10 bullets
-    BoomForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 bullets
+    BoomForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 booms
     EnemyPlaneBoomPool::getInstance()->initPool(10); // Initialize pool with 10 booms
     EnemyPlaneBossPool::getInstance()->initPool(1); // Initialize pool with 1 boss
+    BulletForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 bullets for enemy plane
 }
+
 
 void Game3Scene::initSpawning() {
     this->schedule([this](float) {
@@ -122,31 +130,56 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
     auto nodeB = contact.getShapeB()->getBody()->getNode();
 
     if (nodeA && nodeB) {
-        auto bullet = dynamic_cast<Bullet*>(nodeA);
-        auto enemy = dynamic_cast<EnemyPlaneBase*>(nodeB);
-        auto boom = dynamic_cast<BoomForEnemyPlane*>(nodeB);
+        auto bulletPlayer = dynamic_cast<Bullet*>(nodeA);
+        auto cityCollisionArea = dynamic_cast<CityCollisionArea*>(nodeA);
 
-        if (bullet && enemy) {
-            handleBulletEnemyCollision(bullet, enemy);
+        auto enemy = dynamic_cast<EnemyPlaneBase*>(nodeB);
+        auto boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeB);
+        auto bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeB);
+
+        if (bulletPlayer && enemy) {
+            handleBulletEnemyCollision(bulletPlayer, enemy);
         }
-        else if (bullet && boom) {
-            handleBulletBoomCollision(bullet, boom);
+        else if (bulletPlayer && boomForEnemyPlane) {
+            handleBulletBoomCollision(bulletPlayer, boomForEnemyPlane);
+        }
+        else if (boomForEnemyPlane && cityCollisionArea) {
+            handleBoomCityCollision(boomForEnemyPlane);
+        }
+        else if (bulletForEnemyPlane && cityCollisionArea) {
+            handleBulletForEnemyCityCollision(bulletForEnemyPlane);
         }
         else {
-            bullet = dynamic_cast<Bullet*>(nodeB);
-            enemy = dynamic_cast<EnemyPlaneBase*>(nodeA);
-            boom = dynamic_cast<BoomForEnemyPlane*>(nodeA);
+            bulletPlayer = dynamic_cast<Bullet*>(nodeB);
+            cityCollisionArea = dynamic_cast<CityCollisionArea*>(nodeB);
 
-            if (bullet && enemy) {
-                handleBulletEnemyCollision(bullet, enemy);
+            enemy = dynamic_cast<EnemyPlaneBase*>(nodeA);
+            boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeA);
+            bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeA);
+
+            if (bulletPlayer && enemy) {
+                handleBulletEnemyCollision(bulletPlayer, enemy);
             }
-            else if (bullet && boom) {
-                handleBulletBoomCollision(bullet, boom);
+            else if (bulletPlayer && boomForEnemyPlane) {
+                handleBulletBoomCollision(bulletPlayer, boomForEnemyPlane);
+            }
+            else if (boomForEnemyPlane && cityCollisionArea) {
+                handleBoomCityCollision(boomForEnemyPlane);
+            }
+            else if (bulletForEnemyPlane && cityCollisionArea) {
+                handleBulletForEnemyCityCollision(bulletForEnemyPlane);
             }
         }
     }
-
     return true;
+}
+
+void Game3Scene::handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy) {
+    bulletForEnemy->explode();
+}
+
+void Game3Scene::handleBoomCityCollision(BoomForEnemyPlane* boom) {
+    boom->explode();
 }
 
 void Game3Scene::handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom) {
@@ -166,3 +199,4 @@ void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enem
         enemyBoom->explode();
     }
 }
+

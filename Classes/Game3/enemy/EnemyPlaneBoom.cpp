@@ -59,7 +59,7 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
         auto visibleSize = Director::getInstance()->getVisibleSize();
 
         // Define the range to spawn near the top of the screen
-        float topBuffer = visibleSize.height / 4;
+        float topBuffer = visibleSize.height / 6; // Smaller range
         float randomY = random(visibleSize.height - topBuffer, visibleSize.height - enemy->getContentSize().height / 2);
 
         bool spawnFromLeft = random(0, 1) == 0;
