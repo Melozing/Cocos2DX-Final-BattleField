@@ -148,6 +148,9 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane">
       <UniqueIdentifier>{ddd64e19-d8c5-491b-b01c-7d79f1aca973}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UXUI\LoadingBar">
+      <UniqueIdentifier>{facb884a-82b8-417d-a85e-70cb40ad7c2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -398,6 +401,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LoadingBar\CustomLoadingBar.cpp">
+      <Filter>src\UXUI\LoadingBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\PhysicsShapeCache.cpp">
+      <Filter>src\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -652,6 +661,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LoadingBar\CustomLoadingBar.h">
+      <Filter>src\UXUI\LoadingBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\PhysicsShapeCache.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

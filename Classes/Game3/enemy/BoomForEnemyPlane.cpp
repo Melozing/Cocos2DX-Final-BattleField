@@ -1,5 +1,6 @@
 #include "BoomForEnemyPlane.h"
 #include "BoomForEnemyPlanePool.h"
+#include "utils/PhysicsShapeCache.h"
 #include "Controller/SpriteController.h"
 #include "cocos2d.h"
 
@@ -44,14 +45,20 @@ void BoomForEnemyPlane::createPhysicsBody() {
         this->removeComponent(this->getPhysicsBody());
     }
 
-    auto physicsBody = PhysicsBody::createBox(this->GetSize());
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/BombForEnemyPlane2.plist");
 
-    physicsBody->setDynamic(false);
-    physicsBody->setCategoryBitmask(0x01);
-    physicsBody->setCollisionBitmask(0x01);
-    physicsBody->setContactTestBitmask(0x02);
-    physicsBody->setGravityEnable(false);
-    this->setPhysicsBody(physicsBody);
+    auto originalSize = modelCharac->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBody("BombForEnemyPlane2", originalSize, scaledSize);
+    if (physicsBody) {
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+
+        this->setPhysicsBody(physicsBody);
+    }
 }
 
 void BoomForEnemyPlane::reset() {

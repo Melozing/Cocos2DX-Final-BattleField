@@ -1,4 +1,3 @@
-// Game3Scene.h
 #ifndef __GAME3SCENE_SCENE_H__
 #define __GAME3SCENE_SCENE_H__
 
@@ -9,6 +8,7 @@
 #include "Game3/enemy/EnemyPlaneBase.h"
 #include "Game3/enemy/BoomForEnemyPlane.h"
 #include "Game3/enemy/BulletForEnemyPlane.h"
+#include "LoadingBar/CustomLoadingBar.h"
 #include <Game2/Cursor/Cursor.h>
 
 class Game3Scene : public BaseScene {
@@ -24,6 +24,7 @@ private:
 
     Cursor* _cursor;
     CityCollisionArea* cityCollisionArea;
+    CustomLoadingBar* healthBar;
 
     void setupBackground();
     void setupPlayer();
@@ -38,6 +39,9 @@ private:
     void handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom);
     void handleBoomCityCollision(BoomForEnemyPlane* boom);
     void handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy);
+    void initHealthBar();
+    void checkHealthBar();
+    void updateHealthBar(float health);
 };
 
 #endif // __GAME3SCENE_SCENE_H__

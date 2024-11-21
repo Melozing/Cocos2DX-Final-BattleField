@@ -1,4 +1,5 @@
 #include "Cursor.h"
+#include "Controller/GameController.h"
 
 USING_NS_CC;
 
@@ -42,6 +43,8 @@ void Cursor::onMouseMove(cocos2d::Event* event) {
 }
 
 void Cursor::updateCursorPosition() {
+    if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
+
     auto mousePos = Director::getInstance()->convertToGL(_mousePos);
     auto winSize = Director::getInstance()->getWinSize();
     mousePos.y = winSize.height - mousePos.y;

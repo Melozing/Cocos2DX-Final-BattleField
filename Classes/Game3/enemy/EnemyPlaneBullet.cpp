@@ -1,6 +1,7 @@
 ﻿#include "EnemyPlaneBullet.h"
 #include "EnemyPlaneBulletPool.h"
 #include "BulletForEnemyPlanePool.h"
+#include "utils/PhysicsShapeCache.h"
 #include "Constants/Constants.h"
 
 USING_NS_CC;
@@ -165,9 +166,19 @@ void EnemyPlaneBullet::createPhysicsBody() {
         this->removeComponent(this->getPhysicsBody());
     }
 
-    auto physicsBody = PhysicsBody::createBox(this->GetSize());
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setDynamic(false);
-    physicsBody->setGravityEnable(false);
-    this->addComponent(physicsBody);
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/EnemyPlaneBullet.plist");
+
+    auto originalSize = modelCharac->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBody("EnemyPlaneBullet", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "EnemyPlaneBullet", originalSize, 0.5f);
+    if (physicsBody) {
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+
+        this->setPhysicsBody(physicsBody);
+    }
 }
