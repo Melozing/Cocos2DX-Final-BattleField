@@ -1,8 +1,8 @@
-// AmmoItem.cpp
 #include "AmmoItem.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/SpriteController.h"
 #include "AmmoItemPool.h"
+#include "utils/PhysicsShapeCache.h"
 
 USING_NS_CC;
 
@@ -26,13 +26,19 @@ bool AmmoItem::init() {
 
 void AmmoItem::initPhysicsBody() {
     // Create and attach a physics body
-    Size reducedSize = Size(_currentSprite->getContentSize().width * 0.35, _currentSprite->getContentSize().height * 0.35);
-    auto physicsBody = PhysicsBody::createBox(reducedSize);
-    physicsBody->setCollisionBitmask(0x03);
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setDynamic(false);
-    this->setPhysicsBody(physicsBody);
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/ItemAmmo.plist");
 
+    auto originalSize = _currentSprite->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBody("ItemAmmo", originalSize, scaledSize* 0.5f);
+    if (physicsBody) {
+        physicsBody->setCollisionBitmask(0x03);
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setDynamic(false);
+        this->setPhysicsBody(physicsBody);
+    }
 }
 
 void AmmoItem::initAnimation() {

@@ -13,12 +13,13 @@ public:
     void setSpeed(float speed);
     Size GetSize();
     void reset();
-
-    void update(float delta) override;
+    void spawn(const cocos2d::Vec2& startPosition, float angle);
+    void startMovement();
+    void removeWhenOutOfScreen();
+    void returnPool();
 
 private:
     cocos2d::Vec2 _direction;
     float _speed;
-    bool _active;
     cocos2d::Sprite* modelCharac;
 };

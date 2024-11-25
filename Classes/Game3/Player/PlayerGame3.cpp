@@ -113,7 +113,7 @@ void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
     {
         playerMovement->onKeyPressed(keyCode);
     }
-    else if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+    if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
     {
         isMouseDown = true;
         shootBullet();
@@ -159,14 +159,14 @@ void PlayerGame3::shootBullet()
 {
     if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
 
-    if (timeSinceLastShot < shootDelay) {
-        return;
-    }
-
     Vec2 turretPosition = this->convertToWorldSpace(turretSprite->getPosition());
     // Update the distance between the player and the mouse position
     if (!updateDistanceToMouse(turretPosition)) {
         return; // Do not shoot if the mouse is too close
+    }
+
+    if (timeSinceLastShot < shootDelay) {
+        return;
     }
 
     // Calculate the local position of the anchor point (0.5f, 1.0f) in the turret's coordinate system
@@ -181,14 +181,16 @@ void PlayerGame3::shootBullet()
     // Get bullet from pool and set its properties
     Bullet* bullet = BulletPool::getInstance()->getBullet();
     if (bullet) {
+        bullet->setVisible(true);
         bullet->setPosition(turretWorldPos);
         bullet->setDirection(direction);
-        bullet->setSpeed(Constants::BulletGame3Speed * 0.6f);
-        bullet->reset(); // Ensure the bullet is reset and active
+        bullet->reset();
 
         if (bullet->getParent() == nullptr) {
             this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER - 5);
         }
+
+        bullet->spawn(turretWorldPos, -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90); // Start the bullet movement
 
         timeSinceLastShot = 0.0f;
     }
@@ -196,7 +198,6 @@ void PlayerGame3::shootBullet()
         CCLOG("Failed to get bullet from pool");
     }
 }
-
 
 void PlayerGame3::onMouseMove(Event* event)
 {

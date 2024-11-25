@@ -2,6 +2,7 @@
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/SpriteController.h"
 #include "HealthItemPool.h"
+#include "utils/PhysicsShapeCache.h"
 
 USING_NS_CC;
 
@@ -41,12 +42,19 @@ void HealthItem::initAnimation() {
 
 void HealthItem::initPhysicsBody() {
     // Create and attach a physics body
-    Size reducedSize = Size(_currentSprite->getContentSize().width * 0.65, _currentSprite->getContentSize().height * 0.65);
-    auto physicsBody = PhysicsBody::createBox(reducedSize);
-    physicsBody->setCollisionBitmask(0x03);
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setDynamic(false);
-    this->setPhysicsBody(physicsBody);
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/ItemHealth.plist");
+
+    auto originalSize = _currentSprite->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBody("ItemHealth", originalSize, scaledSize * 0.8f);
+    if (physicsBody) {
+        physicsBody->setCollisionBitmask(0x03);
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setDynamic(false);
+        this->setPhysicsBody(physicsBody);
+    }
 }
 
 void HealthItem::applyEffect() {

@@ -1,7 +1,10 @@
-#pragma once
+#ifndef BULLETPOOL_H
+#define BULLETPOOL_H
 
-#include "Bullet/Bullet.h"
+#include "cocos2d.h"
+#include "Bullet.h"
 #include <queue>
+
 
 class BulletPool {
 public:
@@ -14,3 +17,6 @@ public:
 private:
     std::queue<Bullet*> _availableBullets;
 };
+
+#endif // BULLETPOOL_H
+

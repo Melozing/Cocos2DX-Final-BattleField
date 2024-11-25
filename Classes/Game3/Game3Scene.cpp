@@ -116,7 +116,7 @@ void Game3Scene::initSpawning() {
 void Game3Scene::scheduleBossSpawn() {
     this->scheduleOnce([this](float) {
         EnemyPlaneBoss::spawnEnemy(this);
-        }, 30.0f, "spawn_boss_key");
+        }, 3.0f, "spawn_boss_key");
 }
 
 
@@ -197,13 +197,13 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
 }
 
 void Game3Scene::handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom) {
-    bullet->removeFromParent();
+    bullet->returnPool();
     boom->explode();
 }
 
 void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy) {
     // Return bullet to pool
-    BulletPool::getInstance()->returnBullet(bullet);
+    bullet->returnPool();
 
     // Trigger explosion on enemy
     if (auto enemyBullet = dynamic_cast<EnemyPlaneBullet*>(enemy)) {
@@ -235,6 +235,7 @@ void Game3Scene::handleBoomCityCollision(BoomForEnemyPlane* boom) {
 }
 
 void Game3Scene::checkHealthBar() {
+    return;
     if (healthBar->getPercent() <= 0) {
         this->stopAllActions();
         GameController::getInstance()->GameOver(

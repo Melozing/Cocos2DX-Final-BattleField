@@ -90,7 +90,7 @@ void Game1Scene::initPhysics(const Size& visibleSize) {
 }
 
 void Game1Scene::initBackground() {
-    background = Background::createBackground("assets_game/gameplay/bg_new.jpg", 150.0f);
+    background = Background::createBackground("assets_game/gameplay/bg_new_art.jpg", 150.0f);
     this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
 }
 
@@ -494,13 +494,6 @@ void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
         if (fanBullet) {
             // Spawn the FanBullet
             fanBullet->spawn(spawnPosition, angle);
-
-            // Create a PhysicsBody for the FanBullet
-            Size reducedSize = Size(fanBullet->GetSize().width * 0.65, fanBullet->GetSize().height * 0.65); // Reduce size by 10%
-            auto fanBulletBody = PhysicsBody::createBox(reducedSize);
-            setPhysicsBodyChar(fanBulletBody, 0x02);
-            // Attach the PhysicsBody to the FanBullet
-            fanBullet->setPhysicsBody(fanBulletBody);
             // Add the FanBullet to the scene
             this->addChild(fanBullet, Constants::ORDER_LAYER_CHARACTER);
         }
