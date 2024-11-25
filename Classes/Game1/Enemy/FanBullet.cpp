@@ -2,6 +2,7 @@
 #include "Controller/SpriteController.h"
 #include "FanBulletPool.h"
 #include "Constants/Constants.h"
+#include "utils/PhysicsShapeCache.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -17,6 +18,7 @@ FanBullet* FanBullet::create() {
 }
 
 void FanBullet::reset() {
+    this->setRotation(0);
     this->setVisible(false);
     _direction = Vec2::ZERO; // Reset direction
 }
@@ -47,6 +49,7 @@ void FanBullet::initAnimation() {
 
     auto animateCharac = Animate::create(createAnimation("flying_bullet", 4, 0.07f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
+    this->createPhysicsBody();
 }
 
 void FanBullet::spawn(const cocos2d::Vec2& startPosition, float angle) {
@@ -63,6 +66,28 @@ void FanBullet::spawn(const cocos2d::Vec2& startPosition, float angle) {
     // Move the bullet continuously in the specified direction
     auto moveForever = RepeatForever::create(MoveBy::create(1.0f, _direction * _speed));
     this->runAction(moveForever);
+}
+
+void FanBullet::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/EnemyFanBullet.plist");
+
+    auto originalSize = modelCharac->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBody("EnemyFanBullet", originalSize, scaledSize * 1.8f);
+    if (physicsBody) {
+        physicsBody->setCollisionBitmask(0x02);
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+
+        this->setPhysicsBody(physicsBody);
+    }
 }
 
 void FanBullet::update(float delta) {
@@ -83,6 +108,9 @@ void FanBullet::removeWhenOutOfScreen() {
         currentPosition.y > origin.y + visibleSize.height + this->getContentSize().height + offset) {
         this->stopAllActions();
         this->removeFromParentAndCleanup(false);
+        if (this->getPhysicsBody() != nullptr) {
+            this->removeComponent(this->getPhysicsBody());
+        }
         FanBulletPool::getInstance()->returnEnemy(this); // Return to pool
     }
 }

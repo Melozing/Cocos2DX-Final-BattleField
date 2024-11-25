@@ -1,5 +1,5 @@
-#include "Bullet/BulletPool.h"
-#include "Bullet/Bullet.h"
+#include "BulletPool.h"
+#include "Bullet.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -22,24 +22,16 @@ void BulletPool::initPool(int poolSize) {
 
 Bullet* BulletPool::getBullet() {
     if (_availableBullets.empty()) {
-        Bullet* bullet = Bullet::create();
-        if (bullet) {
-            bullet->retain();
-            bullet->reset();
-            return bullet;
-        }
         return nullptr;
     }
     Bullet* bullet = _availableBullets.front();
     _availableBullets.pop();
-    bullet->setVisible(true);
     return bullet;
 }
 
 void BulletPool::returnBullet(Bullet* bullet) {
     if (bullet) {
         bullet->reset();
-        bullet->removeFromParentAndCleanup(false);
         _availableBullets.push(bullet);
     }
 }

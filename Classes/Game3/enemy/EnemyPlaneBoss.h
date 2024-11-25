@@ -12,6 +12,9 @@ public:
     void initAnimation();
     static void spawnEnemy(cocos2d::Node* parent);
     void reset();
+    Size GetSize();
+private:
+    void createPhysicsBody();
     cocos2d::SpriteBatchNode* spriteBatchNode;
 };
 

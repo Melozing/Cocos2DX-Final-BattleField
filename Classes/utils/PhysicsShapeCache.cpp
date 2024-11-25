@@ -164,7 +164,7 @@ void PhysicsShapeCache::resizeBody(PhysicsBody* physicsBody, const std::string& 
     float scaleX = scaleFactor;
     float scaleY = scaleFactor;
 
-    CCLOG("Resizing: ScaleX = %f, ScaleY = %f", scaleX, scaleY);
+    //CCLOG("Resizing: ScaleX = %f, ScaleY = %f", scaleX, scaleY);
 
     for (auto shape : shapes) {
         physicsBody->removeShape(shape);

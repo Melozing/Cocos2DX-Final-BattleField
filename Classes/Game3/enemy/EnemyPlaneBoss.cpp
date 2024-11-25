@@ -1,6 +1,7 @@
 #include "EnemyPlaneBoss.h"
 #include "EnemyPlaneBossPool.h"
 #include "Constants/Constants.h"
+#include "utils/PhysicsShapeCache.h"
 #include <Controller/SpriteController.h>
 
 USING_NS_CC;
@@ -40,6 +41,7 @@ void EnemyPlaneBoss::initAnimation() {
 
     auto animateCharac = Animate::create(SpriteController::createAnimation("B52", 1, 0.1f)); // Adjust frame count and duration as needed
     modelCharac->runAction(RepeatForever::create(animateCharac));
+    createPhysicsBody();
 }
 
 void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
@@ -82,3 +84,29 @@ void EnemyPlaneBoss::reset() {
     this->setVisible(true);
     spriteBatchNode = SpriteBatchNode::create("assets_game/enemies/B52.png");
 }
+
+Size EnemyPlaneBoss::GetSize() {
+    return SpriteController::GetContentSizeSprite(modelCharac);
+}
+
+void EnemyPlaneBoss::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/EnemyPlaneBoss.plist");
+
+    auto originalSize = modelCharac->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBody("EnemyPlaneBoss", originalSize, scaledSize);
+    if (physicsBody) {
+        physicsBody->setContactTestBitmask(false);
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+
+        this->setPhysicsBody(physicsBody);
+    }
+}
+
