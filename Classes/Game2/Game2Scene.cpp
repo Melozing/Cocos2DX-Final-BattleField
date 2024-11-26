@@ -9,6 +9,8 @@
 #include "Game2/Enemy/Enemyh/SuicideBomberEnemy.h"
 #include "Game2/Enemy/Enemyh/BossEnemy.h"
 
+#include "Game2/Items/ItemsSpawn.h"
+
 USING_NS_CC;
 
 const uint32_t PLAYER_BITMASK = 0x0001;
@@ -153,6 +155,7 @@ void Game2Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& p
         enemy->setPosition(position);
         this->addChild(enemy);
         enemy->scheduleUpdate();
+        
     }
 }
 
