@@ -408,6 +408,9 @@
     <ClCompile Include="..\Classes\utils\PhysicsShapeCache.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
+      <Filter>src\Gameplay\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -667,6 +670,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\utils\PhysicsShapeCache.h">
       <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
+      <Filter>src\Gameplay\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
