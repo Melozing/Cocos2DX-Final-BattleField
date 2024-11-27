@@ -3,6 +3,7 @@
 #include "utils/MathFunction.h"
 #include "Manager/PlayerMovementManager.h"
 #include "Controller/GameController.h"
+#include "Game3/Enemy/EnemyPlaneBoss.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -39,6 +40,11 @@ bool PlayerGame3::init()
     isMouseDown = false;
     shootDelay = 0.3f;
     timeSinceLastShot = 0.0f;
+    
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(PlayerGame3::onContactBegin, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
     return true;
 }
 
@@ -71,6 +77,34 @@ void PlayerGame3::setupTurret()
     else {
         CCLOG("Failed to load texture for Turret");
     }
+}
+
+bool PlayerGame3::onContactBegin(PhysicsContact& contact)
+{
+    auto shapeA = contact.getShapeA();
+    auto shapeB = contact.getShapeB();
+
+    auto bodyA = shapeA->getBody();
+    auto bodyB = shapeB->getBody();
+
+    auto nodeA = bodyA->getNode();
+    auto nodeB = bodyB->getNode();
+
+    if (nodeA && nodeB) {
+        if ((dynamic_cast<Bullet*>(nodeA) && dynamic_cast<EnemyPlaneBoss*>(nodeB)) ||
+            (dynamic_cast<Bullet*>(nodeB) && dynamic_cast<EnemyPlaneBoss*>(nodeA))) {
+            auto bullet = dynamic_cast<Bullet*>(nodeA) ? dynamic_cast<Bullet*>(nodeA) : dynamic_cast<Bullet*>(nodeB);
+            auto enemy = dynamic_cast<EnemyPlaneBoss*>(nodeA) ? dynamic_cast<EnemyPlaneBoss*>(nodeA) : dynamic_cast<EnemyPlaneBoss*>(nodeB);
+
+            if (bullet && enemy) {
+                enemy->takeDamage(Constants::BulletDamage2); // Giảm máu của boss
+                bullet->setVisible(false);
+                bullet->removeFromParent();
+            }
+        }
+    }
+
+    return true;
 }
 
 void PlayerGame3::setupEventListeners()

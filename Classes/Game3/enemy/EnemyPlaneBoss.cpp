@@ -1,4 +1,4 @@
-#include "EnemyPlaneBoss.h"
+﻿#include "EnemyPlaneBoss.h"
 #include "EnemyPlaneBossPool.h"
 #include "Constants/Constants.h"
 #include "utils/PhysicsShapeCache.h"
@@ -24,6 +24,9 @@ bool EnemyPlaneBoss::init() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/B52.plist");
 
     initAnimation();
+
+    // Initialize health
+    health = Constants::HealthEnemyPlaneBoss;
 
     return true;
 }
@@ -60,24 +63,8 @@ void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
 
         // Run the move action
         enemy->runAction(moveToCenter);
-
-        /*enemy->resetSprite();
-        parent->addChild(enemy);
-        auto visibleSize = Director::getInstance()->getVisibleSize();
-        float randomY = random(visibleSize.height / 2, visibleSize.height);
-        bool spawnFromLeft = random(0, 1) == 0;*/
-
-        //if (spawnFromLeft) {
-        //    enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, randomY));
-        //    enemy->moveFromLeftToRight(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
-        //}
-        //else {
-        //    enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
-        //    enemy->moveFromRightToLeft(visibleSize, Constants::SpeedEnemyPlane_BOSS); // Adjust speed constant as needed
-        //}
     }
 }
-
 
 void EnemyPlaneBoss::reset() {
     this->stopAllActions();
@@ -87,6 +74,14 @@ void EnemyPlaneBoss::reset() {
 
 Size EnemyPlaneBoss::GetSize() {
     return SpriteController::GetContentSizeSprite(modelCharac);
+}
+
+void EnemyPlaneBoss::takeDamage(float damage) { // Sửa chữ ký hàm
+    health -= damage;
+    if (health <= 0) {
+        this->setVisible(false);
+        this->removeFromParent();
+    }
 }
 
 void EnemyPlaneBoss::createPhysicsBody() {
@@ -102,11 +97,10 @@ void EnemyPlaneBoss::createPhysicsBody() {
 
     auto physicsBody = physicsCache->createBody("EnemyPlaneBoss", originalSize, scaledSize);
     if (physicsBody) {
-        physicsBody->setContactTestBitmask(false);
+        physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);
         physicsBody->setGravityEnable(false);
 
         this->setPhysicsBody(physicsBody);
     }
 }
-

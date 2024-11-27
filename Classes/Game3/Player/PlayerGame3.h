@@ -19,6 +19,7 @@ public:
     void onMouseDown(cocos2d::Event* event);
     void onMouseUp(cocos2d::Event* event);
     void update(float delta) override;
+    bool onContactBegin(cocos2d::PhysicsContact& contact);
 
 private:
     void initAnimation();
