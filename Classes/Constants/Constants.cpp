@@ -101,6 +101,7 @@ const float Constants::BulletGame3Speed = 1500.0f;
 const float Constants::EnemyPlaneBulletGame3Speed = 200.0f;
 const float Constants::EnemyPlaneBoomGame3Speed = 300.0f;
 const float Constants::SpeedEnemyPlane_BOSS = 100.0f;
+const float Constants::HealthEnemyPlaneBoss = 100.0f;
 
 //VictoryPanel
 const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victory/victory.mp3";

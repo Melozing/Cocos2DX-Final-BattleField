@@ -17,6 +17,7 @@ public:
     float _elapsedTime;
     virtual bool init() override;
     CREATE_FUNC(Game3Scene);
+    
 
 private:
     cocos2d::PhysicsWorld* world;
@@ -41,6 +42,7 @@ private:
     void handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy);
     void initHealthBar();
     void checkHealthBar();
+	
     void updateHealthBar(float health);
 };
 

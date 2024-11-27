@@ -88,6 +88,7 @@ public:
     static const float EnemyPlaneBulletGame3Speed; //Speed Enemy Plane 3
 	static const float EnemyPlaneBoomGame3Speed; //Speed Enemy Plane 1
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
+	static const float HealthEnemyPlaneBoss;
 	
 	//VictoryPanel
 	static const std::string VICTORY_SOUNDTRACK_PATH;
