@@ -3,8 +3,6 @@
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "cocos2d.h"
-
-
 #include "Grenade/Grenade.h"
 #include "Grenade/BulletGame2.h"
 #include "Grenade/PoolBulletGame2.h"
@@ -22,13 +20,14 @@ PlayerGame2::PlayerGame2()
     currentMagazine(maxMagazineSize),
     isReloading(false),
     reloadTime(2.0f),
-	_health(100)
+    attributes(new PlayerAttributes(100, 120))
 {
 }
 
 PlayerGame2::~PlayerGame2()
 {
     delete playerMovement;
+	delete attributes;
 }
 
 PlayerGame2* PlayerGame2::createPlayerGame2()
@@ -54,11 +53,6 @@ bool PlayerGame2::init() {
     this->setScale(Constants::PlayerScale);
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
-    /*auto physicsBody = PhysicsBody::createBox(this->getContentSize());
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setGravityEnable(false);
-    this->setPhysicsBody(physicsBody);*/
-
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = CC_CALLBACK_1(PlayerGame2::onMouseMove, this);
     mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame2::onMouseDown, this);
@@ -72,7 +66,6 @@ bool PlayerGame2::init() {
 
     this->scheduleUpdate();
 
-    //bulletManager = new BulletManager(100, "assets_game/player/ball.png");
     playerMovement = new PlayerMovement(this, Constants::PlayerSpeed); // Properly initialize PlayerMovement
     
     _ammoLabel = Label::createWithTTF("0/0", "fonts/Marker Felt.ttf", 24);
@@ -87,6 +80,9 @@ bool PlayerGame2::init() {
     this->addChild(_reloadSprite, 1);
     updateAmmoDisplay();
 
+    
+
+    createPhysicsBody();
     return true;
 }
 
@@ -195,6 +191,11 @@ void PlayerGame2::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 void PlayerGame2::update(float delta)
 {
+    if (attributes->IsDead())
+    {
+        die();
+    }
+
     playerMovement->update(delta);
     RotateToMouse();
     if (playerMovement->getSpeed() > 0)
@@ -233,6 +234,18 @@ void PlayerGame2::update(float delta)
             updateAmmoDisplay();
         }
     }
+    auto items = this->getParent()->getChildren();
+    for (auto item : items) {
+        if (item->getName() == "HealthItem" && this->getBoundingBox().intersectsRect(item->getBoundingBox())) {
+            pickUpHealth(20); // Example: picking up 20 health
+            item->removeFromParent();
+        }
+        else if (item->getName() == "AmmoItem" && this->getBoundingBox().intersectsRect(item->getBoundingBox())) {
+            pickUpAmmo(10); // Example: picking up 10 ammo
+            item->removeFromParent();
+        }
+    }
+    
 }
 
 void PlayerGame2::RotateToMouse()
@@ -272,15 +285,11 @@ void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
     this->getParent()->addChild(grenade);
 }
 
-void PlayerGame2::die()
-{
-    this->removeFromParent();
-}
 void PlayerGame2::reload()
 {
     if (isReloading || currentMagazine == maxMagazineSize || totalAmmo == 0)
     {
-        return; // Already reloading, magazine is full, or no ammo left
+        return;
     }
 
     isReloading = true;
@@ -290,20 +299,39 @@ void PlayerGame2::reload()
     auto rotateAction = RotateBy::create(1.0f, 360.0f);
     _reloadSprite->runAction(RepeatForever::create(rotateAction));
 }
-void PlayerGame2::updateAmmoDisplay()
+
+void PlayerGame2::takeDamage(int damage)
 {
-    if (_ammoLabel)
+    attributes->TakeDamage(damage);
+    if (attributes->IsDead())
     {
-        _ammoLabel->setString(StringUtils::format("%d/%d", currentMagazine, totalAmmo));
-    }
-}
-void PlayerGame2::takeDamage(int damage) {
-    // Implement the logic for taking damage
-    // For example, reduce the player's health
-    // If health reaches 0, call the die() method
-    // Assuming you have a health member variable
-    _health -= damage;
-    if (_health <= 0) {
         die();
     }
 }
+void PlayerGame2::die()
+{
+    this->removeFromParent();
+}
+void PlayerGame2::pickUpHealth(int healthAmount)
+{
+    attributes->IncreaseHealth(healthAmount);
+}
+
+void PlayerGame2::pickUpAmmo(int ammoAmount)
+{
+    attributes->SetAmmo(attributes->GetAmmo() + ammoAmount);
+    updateAmmoDisplay();
+}
+
+void PlayerGame2::updateAmmoDisplay()
+{
+    _ammoLabel->setString(StringUtils::format("%d/%d", currentMagazine, totalAmmo));
+}
+
+void PlayerGame2::createPhysicsBody() {
+    auto physicsBody = PhysicsBody::createBox(this->getContentSize());
+    physicsBody->setContactTestBitmask(true);
+    physicsBody->setGravityEnable(false);
+    this->setPhysicsBody(physicsBody);
+}
+
