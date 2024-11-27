@@ -1,16 +1,13 @@
-// PlayerGame2.h
 #pragma once
 
 #include "cocos2d.h"
-//#include "Bullet/BulletManager.h"
 #include "Controller/SpriteController.h"
 #include "Manager/PlayerMovementManager.h"
-
 #include "Grenade/BulletGame2.h"
-#include "Grenade/PoolBulletGame2.h" 
+#include "Grenade/PoolBulletGame2.h"
+#include "PlayerAttributes/PlayerAttributes.h"
 
-class PlayerGame2 : public cocos2d::Sprite, public SpriteController
-{
+class PlayerGame2 : public cocos2d::Sprite, public SpriteController {
 public:
     PlayerGame2();
     virtual ~PlayerGame2();
@@ -32,11 +29,13 @@ public:
     void reload();
     void takeDamage(int damage);
     void die();
+    void pickUpHealth(int healthAmount);
+    void pickUpAmmo(int ammoAmount);
 
     const int maxMagazineSize = 30;
     const int initialAmmo = 120;
+
 private:
-    int _health;
     cocos2d::Vec2 _mousePos;
     bool _isMouseDown;
     float _mousePressDuration;
@@ -49,7 +48,10 @@ private:
     int currentMagazine;
     bool isReloading;
     float reloadTime;
-    Label* _ammoLabel;
+    cocos2d::Label* _ammoLabel;
     void updateAmmoDisplay();
+
+    PlayerAttributes* attributes;
+    void createPhysicsBody();
 };
 
