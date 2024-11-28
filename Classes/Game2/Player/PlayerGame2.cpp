@@ -331,7 +331,8 @@ void PlayerGame2::updateAmmoDisplay()
 void PlayerGame2::createPhysicsBody() {
     auto physicsBody = PhysicsBody::createBox(this->getContentSize());
     physicsBody->setContactTestBitmask(true);
+    physicsBody->setDynamic(false);
     physicsBody->setGravityEnable(false);
-    this->setPhysicsBody(physicsBody);
+    this->addComponent(physicsBody);
 }
 

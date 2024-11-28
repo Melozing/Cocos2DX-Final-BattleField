@@ -3,14 +3,9 @@
 #include "Constants/Constants.h"
 USING_NS_CC;
 
-BulletGame2::BulletGame2()
-    : _direction(Vec2::ZERO), _speed(0.0f)
-{
-}
+BulletGame2::BulletGame2(): _direction(Vec2::ZERO), _speed(0.0f), _damage(0){}
 
-BulletGame2::~BulletGame2()
-{
-}
+BulletGame2::~BulletGame2(){}
 
 BulletGame2* BulletGame2::createBullet(const Vec2& position, const Vec2& direction, float speed,int damage)
 {
@@ -29,9 +24,9 @@ BulletGame2* BulletGame2::createBullet(const Vec2& position, const Vec2& directi
         physicsBody->setContactTestBitmask(true);
         physicsBody->setGravityEnable(false);
         physicsBody->setVelocity(direction * speed);
-		physicsBody->setCategoryBitmask(0x02);
-		physicsBody->setCollisionBitmask(0x01);
-		physicsBody->setContactTestBitmask(0x01);
+		physicsBody->setCategoryBitmask(0x01);
+		physicsBody->setCollisionBitmask(0x02);
+		physicsBody->setContactTestBitmask(0x02);
         bullet->setPhysicsBody(physicsBody);
 
         return bullet;
