@@ -8,9 +8,9 @@
 #include "Game2/Enemy/Enemyh/InvEnemy.h"
 #include "Game2/Enemy/Enemyh/SuicideBomberEnemy.h"
 #include "Game2/Enemy/Enemyh/BossEnemy.h"
-
+#include "Controller/GameController.h"
 #include "Game2/Items/ItemsSpawn.h"
-
+#include "ui/CocosGUI.h"
 USING_NS_CC;
 
 const uint32_t PLAYER_BITMASK = 0x0001;
@@ -38,6 +38,11 @@ bool Game2Scene::init() {
 
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    _isGameOver = false;
+    PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
+    _playerAttributes = &PlayerAttributes::getInstance();
+
 
     // Load the background image
     BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/game2.png", Constants::ORDER_LAYER_BACKGROUND);
@@ -70,9 +75,68 @@ bool Game2Scene::init() {
     contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
+    initHealthBar();
+
     this->scheduleUpdate();
 
     return true;
+}
+
+void Game2Scene::initHealthBar() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    _healthBar = CustomLoadingBar::create("assets_game/UXUI/Loading/health_bar_g3_progress.png", "assets_game/UXUI/Loading/health_bar_g3_border.png", 0.25f);
+    _healthBar->setLoadingBarRotation(-90);
+    _healthBar->setLoadingBarPosition(Vec2(_healthBar->getLoadingBar()->getContentSize().height + SpriteController::calculateScreenRatio(0.03f) / 2, visibleSize.height / 2));
+
+    // Adjust the border position to be lower than the loading bar
+    auto loadingPos = _healthBar->getLoadingBar()->getPosition();
+    float loadingBarHeight = SpriteController::calculateScreenRatio(0.01f);
+    loadingPos.y -= loadingBarHeight; // Move the border lower
+    _healthBar->setBorderPosition(loadingPos);
+
+    _healthBar->setBorderRotation(-90);
+    _healthBar->setPercent(100);
+    _healthBar->setLoadingBarScale(SpriteController::updateSpriteScale(_healthBar->getLoadingBar(), 0.133f));
+    _healthBar->setBorderScale(SpriteController::updateSpriteScale(_healthBar->getBorder(), 0.155f));
+
+    this->addChild(_healthBar, Constants::ORDER_LAYER_UI);
+}
+
+
+void Game2Scene::updateHealthBar() {
+    float healthPercent = (static_cast<float>(_playerAttributes->GetHealth()) / Constants::Player_Health2) * 100.0f;
+    _healthBar->setPercent(healthPercent);
+}
+
+void Game2Scene::checkGameOver() {
+    if (_playerAttributes->GetHealth() <= 0) {
+        _isGameOver = true;
+        auto gameOverLabel = Label::createWithTTF("Game Over", "fonts/Marker Felt.ttf", 48);
+        gameOverLabel->setPosition(Director::getInstance()->getVisibleSize() / 2);
+        this->addChild(gameOverLabel);
+
+        GameController::getInstance()->GameOver(
+            [this]() {
+                Director::getInstance()->end();
+            },
+            []() -> Scene* {
+                return Game2Scene::createScene();
+            },
+            Constants::pathSoundTrackGame1 // Add the soundtrack path here
+        );
+    }
+}
+
+void Game2Scene::resetGameState() {
+    // Unschedule existing tasks
+    this->unscheduleAllCallbacks();
+
+    // Reset game state
+    _isGameOver = false;
+    PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
+    _playerAttributes = &PlayerAttributes::getInstance();
+
+    this->scheduleUpdate(); 
 }
 
 void Game2Scene::setupCursor() {
@@ -114,6 +178,11 @@ void Game2Scene::update(float delta) {
 
         _player->setPosition(pos);
     }
+    // Update health bar
+    updateHealthBar();
+
+    // Check for game over
+    checkGameOver();
 }
 
 void Game2Scene::spawnEnemies() {
@@ -167,9 +236,9 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         return false;
     }
 
+    // Handle collision between player and grenade
     if ((nodeA->getName() == "PlayerGame2" && nodeB->getName() == "Grenade") ||
         (nodeB->getName() == "PlayerGame2" && nodeA->getName() == "Grenade")) {
-        // Xử lý va chạm với người chơi
         if (nodeA->getName() == "Grenade") {
             nodeA->removeFromParent();
         }
@@ -179,6 +248,7 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         _player->die();
     }
 
+    // Handle collision between enemy and grenade
     if ((nodeA->getName() == "Enemy" && nodeB->getName() == "Grenade") ||
         (nodeB->getName() == "Enemy" && nodeA->getName() == "Grenade")) {
         if (nodeA->getName() == "Grenade") {
@@ -203,15 +273,20 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
 
     if ((nodeA->getName() == "Bullet" && nodeB->getName() == "Enemy") ||
         (nodeB->getName() == "Bullet" && nodeA->getName() == "Enemy")) {
-        // Handle bullet and enemy collision
         auto bullet = (nodeA->getName() == "Bullet") ? nodeA : nodeB;
         auto enemy = (nodeA->getName() == "Enemy") ? nodeA : nodeB;
 
         // Apply damage to the enemy
-        dynamic_cast<EnemyBase*>(enemy)->takeDamage(dynamic_cast<BulletGame2*>(bullet)->getDamage());
+        auto enemyBase = dynamic_cast<EnemyBase*>(enemy);
+        auto bulletGame2 = dynamic_cast<BulletGame2*>(bullet);
+        if (enemyBase && bulletGame2) {
+            enemyBase->takeDamage(bulletGame2->getDamage());
+        }
 
         // Remove the bullet
         bullet->removeFromParent();
     }
+
     return true;
 }
+

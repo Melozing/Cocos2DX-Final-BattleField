@@ -144,6 +144,9 @@ void EnemyBase::createPhysicsBody() {
     physicsBody->setContactTestBitmask(true);
     physicsBody->setDynamic(false);
     physicsBody->setGravityEnable(false);
+    physicsBody->setCategoryBitmask(0x02);
+    physicsBody->setCollisionBitmask(0x01);
+	physicsBody->setContactTestBitmask(0x01);
     this->addComponent(physicsBody);
 }
 

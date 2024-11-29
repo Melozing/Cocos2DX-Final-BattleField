@@ -46,6 +46,7 @@ public:
     static const std::string GAME3_SCENE_NAME;
     static const std::string MAINMENU_SCENE_NAME;
     //Game2
+    static const int Player_Health2;
     static const float TIME_TO_WIN;
     static const std::string pathSoundTrackGame1;
     static const float BulletSpeed;
