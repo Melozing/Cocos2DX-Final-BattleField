@@ -19,10 +19,12 @@ public:
 private:
     void createPhysicsBody();
     void moveUpAndReturnToPool();
+    void startExplosions();
     cocos2d::SpriteBatchNode* spriteBatchNode;
     float health;
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
+    bool isExploding;
 };
 
 #endif // ENEMYPLANE_BOSS_H

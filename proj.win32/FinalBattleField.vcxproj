@@ -210,6 +210,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.cpp" />
     <ClCompile Include="..\Classes\Game3\Game3Scene.cpp" />
+    <ClCompile Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.cpp" />
+    <ClCompile Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.cpp" />
+    <ClCompile Include="..\Classes\Game3\Items\ItemBaseGame3.cpp" />
+    <ClCompile Include="..\Classes\Game3\Items\ItemPoolGane3.cpp" />
+    <ClCompile Include="..\Classes\Game3\Items\UpgradeBulletItemGame3.cpp" />
     <ClCompile Include="..\Classes\Game3\Player\CityCollisionArea.cpp" />
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp" />
     <ClCompile Include="..\Classes\Game4\Game4Scene.cpp" />
@@ -300,6 +305,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.h" />
     <ClInclude Include="..\Classes\Game3\Game3Scene.h" />
+    <ClInclude Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.h" />
+    <ClInclude Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.h" />
+    <ClInclude Include="..\Classes\Game3\Items\ItemBaseGame3.h" />
+    <ClInclude Include="..\Classes\Game3\Items\ItemPoolGane3.h" />
+    <ClInclude Include="..\Classes\Game3\Items\UpgradeBulletItemGame3.h" />
     <ClInclude Include="..\Classes\Game3\Player\CityCollisionArea.h" />
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h" />
     <ClInclude Include="..\Classes\Game4\Game4Scene.h" />

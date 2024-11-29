@@ -137,19 +137,6 @@ void EnemyPlaneBullet::reset() {
     this->stopAllActions();
 }
 
-void EnemyPlaneBullet::explode() {
-    this->stopAllActions();
-    if (this->getPhysicsBody() != nullptr) {
-        this->removeComponent(this->getPhysicsBody());
-    }
-    this->setVisible(false);
-    auto explosion = Explosion::create(this->getPosition(), [this]() {
-        this->returnToPool();
-        });
-    this->getParent()->addChild(explosion);
-}
-
-
 void EnemyPlaneBullet::createPhysicsBody() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());

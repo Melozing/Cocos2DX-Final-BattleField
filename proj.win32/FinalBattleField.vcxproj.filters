@@ -70,12 +70,6 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame1\RandomBoom">
       <UniqueIdentifier>{8dea75d9-e7fc-46b3-ad7c-2be5ad2540dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Gameplay\Items\Health">
-      <UniqueIdentifier>{1a7e387e-18dc-41d2-91d8-c114fd8c980a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Gameplay\Items\Ammo">
-      <UniqueIdentifier>{8d2ac1b9-7962-4a3c-9f0e-a1eda4ebf427}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Scene\Gameplay">
       <UniqueIdentifier>{607703e8-3e04-49c6-9d51-b8032ff9e9a8}</UniqueIdentifier>
     </Filter>
@@ -154,6 +148,27 @@
     <Filter Include="src\Gameplay\Effect\Explode">
       <UniqueIdentifier>{daac3c84-207b-4ba8-b6d7-06dee7c811b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Items\Game1">
+      <UniqueIdentifier>{fd327023-fd11-4d5a-a0a3-237bf79d969a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Game1\Health">
+      <UniqueIdentifier>{1a7e387e-18dc-41d2-91d8-c114fd8c980a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Game1\Ammo">
+      <UniqueIdentifier>{8d2ac1b9-7962-4a3c-9f0e-a1eda4ebf427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Game3">
+      <UniqueIdentifier>{c9fc580f-4dd4-4b70-a270-62b715fae84a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Game3\UpgradeBulletItem">
+      <UniqueIdentifier>{48561d5e-739a-4248-801d-347c37867cee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Game3\IncreaseBulletCountItem">
+      <UniqueIdentifier>{d0f45ab5-7ba3-4049-be3a-bb75696a32ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Items\Game3\HealthRecoveryItem">
+      <UniqueIdentifier>{1571d674-eaa8-48c4-bb3c-21918de93e92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -188,9 +203,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Controller\SceneController.cpp">
       <Filter>src\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Items\CollectibleItem.cpp">
-      <Filter>src\Gameplay\Items</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
@@ -244,16 +256,16 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp">
-      <Filter>src\Gameplay\Items\Health</Filter>
+      <Filter>src\Gameplay\Items\Game1\Health</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\HealthItemPool.cpp">
-      <Filter>src\Gameplay\Items\Health</Filter>
+      <Filter>src\Gameplay\Items\Game1\Health</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\AmmoItemPool.cpp">
-      <Filter>src\Gameplay\Items\Ammo</Filter>
+      <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp">
-      <Filter>src\Gameplay\Items\Ammo</Filter>
+      <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Game1Scene.cpp">
       <Filter>src\Scene\Gameplay</Filter>
@@ -411,11 +423,29 @@
     <ClCompile Include="..\Classes\utils\PhysicsShapeCache.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
-      <Filter>src\Gameplay\Items</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\FX\Explodable.cpp">
       <Filter>src\Gameplay\Effect\Explode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game1\Items\CollectibleItem.cpp">
+      <Filter>src\Gameplay\Items\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
+      <Filter>src\Gameplay\Items\Game1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Items\ItemBaseGame3.cpp">
+      <Filter>src\Gameplay\Items\Game3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Items\UpgradeBulletItemGame3.cpp">
+      <Filter>src\Gameplay\Items\Game3\UpgradeBulletItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.cpp">
+      <Filter>src\Gameplay\Items\Game3\IncreaseBulletCountItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.cpp">
+      <Filter>src\Gameplay\Items\Game3\HealthRecoveryItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\Items\ItemPoolGane3.cpp">
+      <Filter>src\Gameplay\Items\Game3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,9 +481,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Controller\SceneController.h">
       <Filter>src\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Items\CollectibleItem.h">
-      <Filter>src\Gameplay\Items</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h">
       <Filter>src\UXUI\Panel</Filter>
@@ -507,16 +534,16 @@
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
-      <Filter>src\Gameplay\Items\Health</Filter>
+      <Filter>src\Gameplay\Items\Game1\Health</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\HealthItemPool.h">
-      <Filter>src\Gameplay\Items\Health</Filter>
+      <Filter>src\Gameplay\Items\Game1\Health</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\AmmoItemPool.h">
-      <Filter>src\Gameplay\Items\Ammo</Filter>
+      <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h">
-      <Filter>src\Gameplay\Items\Ammo</Filter>
+      <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Game1Scene.h">
       <Filter>src\Scene\Gameplay</Filter>
@@ -677,11 +704,29 @@
     <ClInclude Include="..\Classes\utils\PhysicsShapeCache.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
-      <Filter>src\Gameplay\Items</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\FX\Explodable.h">
       <Filter>src\Gameplay\Effect\Explode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
+      <Filter>src\Gameplay\Items\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game1\Items\CollectibleItem.h">
+      <Filter>src\Gameplay\Items\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Items\ItemBaseGame3.h">
+      <Filter>src\Gameplay\Items\Game3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Items\UpgradeBulletItemGame3.h">
+      <Filter>src\Gameplay\Items\Game3\UpgradeBulletItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.h">
+      <Filter>src\Gameplay\Items\Game3\IncreaseBulletCountItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.h">
+      <Filter>src\Gameplay\Items\Game3\HealthRecoveryItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\Items\ItemPoolGane3.h">
+      <Filter>src\Gameplay\Items\Game3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

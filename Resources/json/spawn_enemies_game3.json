@@ -6,12 +6,12 @@
       "enemyType": "EnemyPlaneBullet"
     },
     {
-      "spawnTimes": [3.0, 8.0, 15.0],
-      "skillTimes": [2.0, 2.5, 3.0],
+      "spawnTimes": [3.0, 4.0, 5.0, 8.0, 15.0],
+      "skillTimes": [2.0, 5.0, 7.5, 10.0, 17.0],
       "enemyType": "EnemyPlaneBoom"
     },
     {
-      "spawnTimes": [1.0],
+      "spawnTimes": [10.0],
       "skillTimes": [0.0],
       "enemyType": "EnemyPlaneBoss"
     }

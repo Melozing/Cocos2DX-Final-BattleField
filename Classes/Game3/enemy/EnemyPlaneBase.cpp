@@ -3,6 +3,8 @@
 #include "EnemyPlaneBoomPool.h"
 #include "EnemyPlaneBullet.h"
 #include "EnemyPlaneBulletPool.h"
+#include "Game3/Items/ItemBaseGame3.h"
+#include "Game3/Items/ItemPoolGane3.h"
 
 USING_NS_CC;
 
@@ -70,4 +72,52 @@ void EnemyPlaneBase::resetSprite() {
     }
     this->stopAllActions();
     this->setVisible(true);
+}
+
+void EnemyPlaneBase::explode() {
+    this->stopAllActions();
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+    this->setVisible(false);
+    auto explosion = Explosion::create(this->getPosition(), [this]() {
+        this->returnToPool();
+        });
+    this->getParent()->addChild(explosion);
+
+    // Drop a random item
+    dropRandomItem();
+}
+
+void EnemyPlaneBase::dropRandomItem() {
+    // Define the drop chance (e.g., 50% chance to drop an item)
+    float dropChance = 0.5f; // 50% chance
+
+    // Generate a random number between 0 and 1
+    float randomValue = CCRANDOM_0_1();
+
+    // Check if the random value is less than the drop chance
+    if (randomValue < dropChance) {
+        // Proceed to drop an item
+        int randomItem = random(0, 2); // Assuming 3 types of items
+        ItemBaseGame3* item = nullptr;
+
+        switch (randomItem) {
+        case 0:
+            item = UpgradeBulletItemPool::getInstance()->getItem();
+            break;
+        case 1:
+            item = IncreaseBulletCountItemPool::getInstance()->getItem();
+            break;
+        case 2:
+            item = HealthRecoveryItemPool::getInstance()->getItem();
+            break;
+        }
+
+        if (item) {
+            item->setPosition(this->getPosition());
+            this->getParent()->addChild(item);
+            item->moveDown();
+        }
+    }
 }

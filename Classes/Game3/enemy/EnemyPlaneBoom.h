@@ -13,7 +13,6 @@ public:
     Size GetSize();
     static void spawnEnemy(cocos2d::Node* parent, float skillTime);
     void initAnimation();
-    void explode();
     void createPhysicsBody();
     void spawnBoom(bool spawnFromLeft);
 private:
