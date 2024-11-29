@@ -4,8 +4,8 @@
 #include "cocos2d.h"
 #include "Manager/PlayerMovementManager.h"
 #include "Controller/SpriteController.h"
-#include "Bullet/Bullet.h"
-#include "Bullet/BulletPool.h"
+#include "Bullet/BulletPlayerGame3.h"
+#include "Bullet/BulletPoolPlayerGame3.h"
 
 class PlayerGame3 : public cocos2d::Sprite, public SpriteController
 {
@@ -19,7 +19,6 @@ public:
     void onMouseDown(cocos2d::Event* event);
     void onMouseUp(cocos2d::Event* event);
     void update(float delta) override;
-    bool onContactBegin(cocos2d::PhysicsContact& contact);
 
 private:
     void initAnimation();

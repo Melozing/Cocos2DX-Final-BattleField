@@ -16,6 +16,10 @@
 #include "Game2/Cursor/Cursor.h"
 #include "ui/CocosGUI.h"
 
+#include "json/document.h"
+#include "json/filereadstream.h"
+#include <fstream>
+
 USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
@@ -43,8 +47,8 @@ bool Game3Scene::init() {
     setupCursor();
     initSpawning();
     setupContactListener();
-    scheduleBossSpawn(); // Schedule boss spawn after 30 seconds
     initHealthBar();
+    initBossHealthBar();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
@@ -87,9 +91,30 @@ void Game3Scene::initHealthBar() {
     this->addChild(healthBar, Constants::ORDER_LAYER_UI);
 }
 
+void Game3Scene::initBossHealthBar() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    bossHealthBar = CustomLoadingBar::create("assets_game/UXUI/Loading/BossbarGame3.png", "assets_game/UXUI/Loading/BossbarGame3_Border.png", 0.25f);
+    bossHealthBar->setLoadingBarRotation(-90);
+    bossHealthBar->setLoadingBarPosition(Vec2(visibleSize.width - bossHealthBar->getLoadingBar()->getContentSize().height / 2, visibleSize.height / 2));
+
+    // Adjust the border position to be lower than the loading bar
+    auto loadingPos = bossHealthBar->getLoadingBar()->getPosition();
+    float loadingBarHeight = SpriteController::calculateScreenRatio(0.0035f);
+    float loadingBarWeight = SpriteController::calculateScreenRatio(0.0011f);
+    loadingPos.y -= loadingBarHeight; // Move the border lower
+    loadingPos.x -= loadingBarWeight; // Move the border lower
+    bossHealthBar->setBorderPosition(loadingPos);
+
+    bossHealthBar->setBorderRotation(-90);
+    bossHealthBar->setPercent(100);
+    bossHealthBar->setLoadingBarScale(SpriteController::updateSpriteScale(bossHealthBar->getLoadingBar(), 0.133f));
+    bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.17f));
+
+    this->addChild(bossHealthBar, Constants::ORDER_LAYER_UI);
+}
 
 void Game3Scene::initPools() {
-    BulletPool::getInstance()->initPool(10);
+    BulletPoolPlayerGame3::getInstance()->initPool(10);
     EnemyPlaneBulletPool::getInstance()->initPool(10); // Initialize pool with 10 bullets
     BoomForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 booms
     EnemyPlaneBoomPool::getInstance()->initPool(10); // Initialize pool with 10 booms
@@ -97,28 +122,63 @@ void Game3Scene::initPools() {
     BulletForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 bullets for enemy plane
 }
 
-
 void Game3Scene::initSpawning() {
-    this->schedule([this](float) {
-        EnemyPlaneBullet::spawnEnemy(this);
-        }, 3.0f, "spawn_bullet_key");
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game3.json");
 
-    this->schedule([this](float) {
-        EnemyPlaneBoom::spawnEnemy(this);
+    FILE* fp = fopen(filePath.c_str(), "rb");
+    if (!fp) {
+        CCLOG("Failed to open spawn schedule file.");
+        return;
+    }
 
-        }, 3.0f, "spawn_boom_key");
-    this->schedule([this](float) {
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document document;
+    document.ParseStream(is);
+    fclose(fp);
 
-        EnemyPlaneBoss::spawnEnemy(this);
-        }, 30.0f, "spawn_boss_key");
+    if (!document.IsObject()) {
+        CCLOG("Failed to parse JSON");
+        return;
+    }
+
+    const rapidjson::Value& spawnEvents = document["spawnEvents"];
+    for (rapidjson::SizeType i = 0; i < spawnEvents.Size(); ++i) {
+        const rapidjson::Value& event = spawnEvents[i];
+        const rapidjson::Value& spawnTimes = event["spawnTimes"];
+        const rapidjson::Value& skillTimes = event["skillTimes"];
+        std::string enemyType = event["enemyType"].GetString();
+
+        for (rapidjson::SizeType j = 0; j < spawnTimes.Size(); ++j) {
+            float spawnTime = spawnTimes[j].GetFloat();
+            float skillTime = skillTimes[j].GetFloat();
+
+            this->scheduleOnce([this, enemyType, skillTime](float) {
+                if (enemyType == "EnemyPlaneBullet") {
+                    auto enemy = EnemyPlaneBulletPool::getInstance()->getEnemy();
+                    if (enemy) {
+                        this->addChild(enemy);
+                        enemy->spawnEnemy(this, skillTime);
+                    }
+                }
+                else if (enemyType == "EnemyPlaneBoom") {
+                    auto enemy = EnemyPlaneBoomPool::getInstance()->getEnemy();
+                    if (enemy) {
+                        this->addChild(enemy);
+                        enemy->spawnEnemy(this, skillTime);
+                    }
+                }
+                else if (enemyType == "EnemyPlaneBoss") {
+                    enemyBoos = EnemyPlaneBossPool::getInstance()->getEnemy();
+                    if (enemyBoos) {
+                        enemyBoos->spawnEnemy(this);
+                        this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
+                    }
+                }
+                }, spawnTime, "spawn_enemy_key_" + std::to_string(i) + "_" + std::to_string(j));
+        }
+    }
 }
-
-void Game3Scene::scheduleBossSpawn() {
-    this->scheduleOnce([this](float) {
-        EnemyPlaneBoss::spawnEnemy(this);
-        }, 3.0f, "spawn_boss_key");
-}
-
 
 void Game3Scene::setupCursor() {
     _cursor = Cursor::create("assets_game/player/bullseye_white.png");
@@ -152,7 +212,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
     auto nodeB = contact.getShapeB()->getBody()->getNode();
 
     if (nodeA && nodeB) {
-        auto bulletPlayer = dynamic_cast<Bullet*>(nodeA);
+        auto bulletPlayer = dynamic_cast<BulletPlayerGame3*>(nodeA);
         auto cityCollisionArea = dynamic_cast<CityCollisionArea*>(nodeA);
 
         auto enemy = dynamic_cast<EnemyPlaneBase*>(nodeB);
@@ -172,7 +232,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             handleBulletForEnemyCityCollision(bulletForEnemyPlane);
         }
         else {
-            bulletPlayer = dynamic_cast<Bullet*>(nodeB);
+            bulletPlayer = dynamic_cast<BulletPlayerGame3*>(nodeB);
             cityCollisionArea = dynamic_cast<CityCollisionArea*>(nodeB);
 
             enemy = dynamic_cast<EnemyPlaneBase*>(nodeA);
@@ -196,21 +256,24 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
     return true;
 }
 
-void Game3Scene::handleBulletBoomCollision(Bullet* bullet, BoomForEnemyPlane* boom) {
+void Game3Scene::handleBulletBoomCollision(BulletPlayerGame3* bullet, BoomForEnemyPlane* boom) {
     bullet->returnPool();
     boom->explode();
 }
 
-void Game3Scene::handleBulletEnemyCollision(Bullet* bullet, EnemyPlaneBase* enemy) {
-    // Return bullet to pool
-    bullet->returnPool();
-
-    // Trigger explosion on enemy
+void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlaneBase* enemy) {
     if (auto enemyBullet = dynamic_cast<EnemyPlaneBullet*>(enemy)) {
         enemyBullet->explode();
+        bullet->returnPool();
     }
     else if (auto enemyBoom = dynamic_cast<EnemyPlaneBoom*>(enemy)) {
         enemyBoom->explode();
+        bullet->returnPool();
+    }
+    else if (enemyBoos = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
+        this->handleBossDamage(Constants::BulletDamageGame3);
+        bullet->hideModelCharac();
+        bullet->explode();
     }
 }
 
@@ -251,4 +314,16 @@ void Game3Scene::updateHealthBar(float health) {
     checkHealthBar();
 }
 
+void Game3Scene::handleBossDamage(float damage) {
+    if (enemyBoos) {
+        enemyBoos->takeDamage(damage);
+        float healthPercent = (enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100;
+        updateBossHealthBar(healthPercent);
+    }
+}
 
+void Game3Scene::updateBossHealthBar(float healthPercent) {
+    if (bossHealthBar) {
+        bossHealthBar->setPercent(healthPercent);
+    }
+}
