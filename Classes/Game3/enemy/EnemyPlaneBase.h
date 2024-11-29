@@ -3,8 +3,9 @@
 
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
+#include "FX/Explodable.h"
 
-class EnemyPlaneBase : public cocos2d::Sprite, public SpriteController {
+class EnemyPlaneBase : public SpriteController, public Explosion {
 public:
     virtual bool init() override;
 

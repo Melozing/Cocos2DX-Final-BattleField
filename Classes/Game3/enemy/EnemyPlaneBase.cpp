@@ -7,7 +7,7 @@
 USING_NS_CC;
 
 bool EnemyPlaneBase::init() {
-    if (!Sprite::init()) {
+    if (!Node::init()) {
         return false;
     }
     this->scheduleUpdate(); // Schedule the update function

@@ -2,6 +2,7 @@
 #include "BoomForEnemyPlanePool.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Controller/SpriteController.h"
+#include "FX/Explodable.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -101,34 +102,19 @@ void BoomForEnemyPlane::explode() {
     // Stop all actions to prevent further movement
     this->stopAllActions();
 
-    // Create explosion effect
+    // Remove physics body if it exists
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
 
-    if (!explosionSprite) {
-        explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
-        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.078f));
-        explosionBatchNode->addChild(explosionSprite);
-    }
-
-    explosionSprite->setPosition(modelCharac->getPosition());
     modelCharac->setVisible(false);
-    explosionSprite->setVisible(true);
 
-    auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);
-    auto animate = Animate::create(explosionAnimation);
-
-    explosionSprite->runAction(Sequence::create(
-        animate,
-        CallFunc::create([this]() {
-            explosionSprite->setVisible(false);
-            this->returnToPool();
-            }),
-        nullptr
-    ));
+    // Create explosion effect
+    auto explosion = Explosion::create(this->getPosition(), [this]() {
+        this->returnToPool();
+        }); // Adjust the scale as needed
+    this->getParent()->addChild(explosion);
 }
-
 
 void BoomForEnemyPlane::returnToPool() {
     this->stopAllActions();

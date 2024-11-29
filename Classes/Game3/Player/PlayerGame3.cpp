@@ -41,10 +41,6 @@ bool PlayerGame3::init()
     shootDelay = 0.3f;
     timeSinceLastShot = 0.0f;
     
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(PlayerGame3::onContactBegin, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
-
     return true;
 }
 
@@ -77,34 +73,6 @@ void PlayerGame3::setupTurret()
     else {
         CCLOG("Failed to load texture for Turret");
     }
-}
-
-bool PlayerGame3::onContactBegin(PhysicsContact& contact)
-{
-    auto shapeA = contact.getShapeA();
-    auto shapeB = contact.getShapeB();
-
-    auto bodyA = shapeA->getBody();
-    auto bodyB = shapeB->getBody();
-
-    auto nodeA = bodyA->getNode();
-    auto nodeB = bodyB->getNode();
-
-    if (nodeA && nodeB) {
-        if ((dynamic_cast<Bullet*>(nodeA) && dynamic_cast<EnemyPlaneBoss*>(nodeB)) ||
-            (dynamic_cast<Bullet*>(nodeB) && dynamic_cast<EnemyPlaneBoss*>(nodeA))) {
-            auto bullet = dynamic_cast<Bullet*>(nodeA) ? dynamic_cast<Bullet*>(nodeA) : dynamic_cast<Bullet*>(nodeB);
-            auto enemy = dynamic_cast<EnemyPlaneBoss*>(nodeA) ? dynamic_cast<EnemyPlaneBoss*>(nodeA) : dynamic_cast<EnemyPlaneBoss*>(nodeB);
-
-            if (bullet && enemy) {
-                enemy->takeDamage(Constants::BulletDamage2); // Giảm máu của boss
-                bullet->setVisible(false);
-                bullet->removeFromParent();
-            }
-        }
-    }
-
-    return true;
 }
 
 void PlayerGame3::setupEventListeners()
@@ -213,18 +181,17 @@ void PlayerGame3::shootBullet()
     direction.normalize();
 
     // Get bullet from pool and set its properties
-    Bullet* bullet = BulletPool::getInstance()->getBullet();
+    BulletPlayerGame3* bullet = BulletPoolPlayerGame3::getInstance()->getBullet();
     if (bullet) {
         bullet->setVisible(true);
-        bullet->setPosition(turretWorldPos);
+        //bullet->setPosition(turretWorldPos);
         bullet->setDirection(direction);
         bullet->reset();
+        bullet->spawn(turretWorldPos, -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90); // Start the bullet movement
 
         if (bullet->getParent() == nullptr) {
-            this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER - 5);
+            this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER + 5);
         }
-
-        bullet->spawn(turretWorldPos, -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90); // Start the bullet movement
 
         timeSinceLastShot = 0.0f;
     }
