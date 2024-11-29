@@ -102,15 +102,6 @@ void EnemyPlaneBoom::reset() {
     this->setPosition(Vec2::ZERO);
 }
 
-void EnemyPlaneBoom::explode() {
-    this->removeComponent(this->getPhysicsBody());
-    modelCharac->setVisible(false);
-    auto explosion = Explosion::create(this->getPosition(), [this]() {
-        this->returnToPool();
-        });
-    this->getParent()->addChild(explosion);
-}
-
 void EnemyPlaneBoom::createPhysicsBody() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());

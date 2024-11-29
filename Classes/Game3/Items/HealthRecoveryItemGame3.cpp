@@ -1,0 +1,17 @@
+#include "HealthRecoveryItemGame3.h"
+#include "Controller/SpriteController.h" 
+
+USING_NS_CC;
+
+bool HealthRecoveryItemGame3::init() {
+    if (!ItemBaseGame3::init()) {
+        return false;
+    }
+    this->setTexture("assets_game/items/non_coi.png");
+    this->setScale(SpriteController::updateSpriteScale(this, 0.07f)); 
+    return true;
+}
+
+void HealthRecoveryItemGame3::applyEffect() {
+    // Implement the effect of recovering health
+}

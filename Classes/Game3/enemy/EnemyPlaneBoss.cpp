@@ -126,7 +126,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
     auto moveToCenterX = MoveTo::create(1.0f, Vec2(origin.x + visibleSize.width / 2, this->getPositionY()));
 
     // Create a move action to move the boss up and out of the screen (higher than before)
-    auto moveToTop = MoveTo::create(3.0f, Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height + this->GetSize().height * 2)); 
+    auto moveToTop = MoveTo::create(3.0f, Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height + this->GetSize().height * 2));
 
     // Create a scale action to scale the boss down to a smaller size
     auto scaleDown = ScaleTo::create(1.5f, 0.1f);
@@ -136,12 +136,33 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
 
     // Create a sequence to move to center X, then run the move and scale actions, then return to pool
     auto sequence = Sequence::create(moveToCenterX, moveAndScale, CallFunc::create([this]() {
+        this->isExploding = false; // Stop explosions
         this->removeFromParentAndCleanup(false);
         EnemyPlaneBossPool::getInstance()->returnEnemy(this);
         }), nullptr);
 
     // Run the sequence action
     this->runAction(sequence);
+
+    // Start explosions
+    this->isExploding = true;
+    this->startExplosions();
+}
+
+void EnemyPlaneBoss::startExplosions() {
+    float delayBetweenExplosions = 0.1f; // Adjust the delay between explosions as needed
+
+    this->schedule([this](float dt) {
+        if (this->isExploding) {
+            float randomX = random(-this->GetSize().width / 2, this->GetSize().width / 2);
+            float randomY = random(-this->GetSize().height / 2.7, this->GetSize().height / 2.7);
+            auto explosion = Explosion::create(Vec2(randomX, randomY), nullptr); // Adjust scale as needed
+            this->addChild(explosion, Constants::ORDER_LAYER_CHARACTER + 1);
+        }
+        else {
+            this->unschedule("explosion_schedule_key");
+        }
+        }, delayBetweenExplosions, "explosion_schedule_key");
 }
 
 void EnemyPlaneBoss::createPhysicsBody() {

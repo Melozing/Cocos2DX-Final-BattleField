@@ -13,6 +13,8 @@ public:
     void moveFromRightToLeft(const cocos2d::Size& visibleSize, float speed);
     void returnToPool();
     void resetSprite();
+    void explode();
+    void dropRandomItem();
     void update(float delta);
 protected:
     cocos2d::Sprite* modelCharac;

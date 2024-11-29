@@ -33,7 +33,7 @@ bool BulletPlayerGame3::init()
 
     initAnimation();
 
-    this->setSpeed(Constants::BulletGame3Speed * 0.2f);
+    this->setSpeed(Constants::BulletGame3Speed);
     return true;
 }
 
