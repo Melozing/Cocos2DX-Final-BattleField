@@ -76,11 +76,20 @@ Size EnemyPlaneBoss::GetSize() {
     return SpriteController::GetContentSizeSprite(modelCharac);
 }
 
-void EnemyPlaneBoss::takeDamage(float damage) { // Sửa chữ ký hàm
+void EnemyPlaneBoss::takeDamage(float damage) {
     health -= damage;
     if (health <= 0) {
-        this->setVisible(false);
-        this->removeFromParent();
+        // Move the enemy off the screen to the right
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        auto origin = Director::getInstance()->getVisibleOrigin();
+        auto moveOffScreen = MoveTo::create(2.0f, Vec2(origin.x + visibleSize.width + this->getContentSize().width / 2, this->getPositionY())); // Adjust duration as needed
+
+        // Run the move action and then remove the enemy from the parent
+        auto sequence = Sequence::create(moveOffScreen, CallFunc::create([this]() {
+            this->removeFromParent();
+            }), nullptr);
+
+        this->runAction(sequence);
     }
 }
 
