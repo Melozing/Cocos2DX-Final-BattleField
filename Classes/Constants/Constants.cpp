@@ -61,6 +61,7 @@ const float Constants::SHIELD_TIME_OF_EXISTENCE = 5.0f;
 const std::string Constants::pathSoundTrackGame1 = "assets_game/sounds/Game1/bg_music_game1.mp3";
 
 //game2
+const int Constants::Player_Health2 = 100;
 const float Constants::BulletSpeed = 1500.f;
 const float Constants::PlayerSpeed = 200.0f;
 const float Constants::PlayerScale = 0.7f;
@@ -102,6 +103,7 @@ const float Constants::EnemyPlaneBulletGame3Speed = 200.0f;
 const float Constants::EnemyPlaneBoomGame3Speed = 300.0f;
 const float Constants::SpeedEnemyPlane_BOSS = 100.0f;
 const float Constants::HealthEnemyPlaneBoss = 100.0f;
+const float Constants::BulletDamageGame3 = 10.0f;
 
 //VictoryPanel
 const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victory/victory.mp3";

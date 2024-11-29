@@ -43,9 +43,6 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame2">
       <UniqueIdentifier>{c537c4c3-5228-4afc-bd55-e634aa85b349}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Gameplay\Bullet">
-      <UniqueIdentifier>{6c30be57-c649-417d-a9b9-744e2cf7a5a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Gameplay\Background">
       <UniqueIdentifier>{3e661f6c-f412-42af-9cf0-6438b5d93150}</UniqueIdentifier>
     </Filter>
@@ -151,6 +148,12 @@
     <Filter Include="src\UXUI\LoadingBar">
       <UniqueIdentifier>{facb884a-82b8-417d-a85e-70cb40ad7c2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame3\BulletPlayerGame3">
+      <UniqueIdentifier>{6c30be57-c649-417d-a9b9-744e2cf7a5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Effect\Explode">
+      <UniqueIdentifier>{daac3c84-207b-4ba8-b6d7-06dee7c811b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -216,11 +219,11 @@
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Bullet\Bullet.cpp">
-      <Filter>src\Gameplay\Bullet</Filter>
+    <ClCompile Include="..\Classes\Bullet\BulletPlayerGame3.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Bullet\BulletPool.cpp">
-      <Filter>src\Gameplay\Bullet</Filter>
+    <ClCompile Include="..\Classes\Bullet\BulletPoolPlayerGame3.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
@@ -411,6 +414,9 @@
     <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
       <Filter>src\Gameplay\Items</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\FX\Explodable.cpp">
+      <Filter>src\Gameplay\Effect\Explode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -476,11 +482,11 @@
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Bullet\Bullet.h">
-      <Filter>src\Gameplay\Bullet</Filter>
+    <ClInclude Include="..\Classes\Bullet\BulletPlayerGame3.h">
+      <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Bullet\BulletPool.h">
-      <Filter>src\Gameplay\Bullet</Filter>
+    <ClInclude Include="..\Classes\Bullet\BulletPoolPlayerGame3.h">
+      <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
@@ -673,6 +679,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
       <Filter>src\Gameplay\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FX\Explodable.h">
+      <Filter>src\Gameplay\Effect\Explode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

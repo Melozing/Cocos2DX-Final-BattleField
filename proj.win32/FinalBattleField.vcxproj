@@ -151,8 +151,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\Bullet\Bullet.cpp" />
-    <ClCompile Include="..\Classes\Bullet\BulletPool.cpp" />
+    <ClCompile Include="..\Classes\Bullet\BulletPlayerGame3.cpp" />
+    <ClCompile Include="..\Classes\Bullet\BulletPoolPlayerGame3.cpp" />
     <ClCompile Include="..\Classes\Button\BaseButton.cpp" />
     <ClCompile Include="..\Classes\Button\ExitButton.cpp" />
     <ClCompile Include="..\Classes\Button\ReplayButton.cpp" />
@@ -161,6 +161,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Controller\SceneController.cpp" />
     <ClCompile Include="..\Classes\Controller\SoundController.cpp" />
     <ClCompile Include="..\Classes\Controller\SpriteController.cpp" />
+    <ClCompile Include="..\Classes\FX\Explodable.cpp" />
     <ClCompile Include="..\Classes\Game1\Background\Background.cpp" />
     <ClCompile Include="..\Classes\Game1\Effect\EffectObject.cpp" />
     <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp" />
@@ -239,8 +240,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\Bullet\Bullet.h" />
-    <ClInclude Include="..\Classes\Bullet\BulletPool.h" />
+    <ClInclude Include="..\Classes\Bullet\BulletPlayerGame3.h" />
+    <ClInclude Include="..\Classes\Bullet\BulletPoolPlayerGame3.h" />
     <ClInclude Include="..\Classes\Button\BaseButton.h" />
     <ClInclude Include="..\Classes\Button\ExitButton.h" />
     <ClInclude Include="..\Classes\Button\ReplayButton.h" />
@@ -249,6 +250,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Controller\SceneController.h" />
     <ClInclude Include="..\Classes\Controller\SoundController.h" />
     <ClInclude Include="..\Classes\Controller\SpriteController.h" />
+    <ClInclude Include="..\Classes\FX\Explodable.h" />
     <ClInclude Include="..\Classes\Game1\Background\Background.h" />
     <ClInclude Include="..\Classes\Game1\Effect\EffectObject.h" />
     <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h" />

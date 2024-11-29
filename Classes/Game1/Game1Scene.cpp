@@ -201,7 +201,7 @@ void Game1Scene::initSound() {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
         this->scheduleOnce([this](float) { this->unschedule("collectible_item_spawn_key"); }, musicDuration - 10.5f, "stop_collectible_spawning_key");
         }, 0.1f, "get_music_duration_key");
-    //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
+    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->schedule([this](float dt) {
         updateLoadingBar(dt);

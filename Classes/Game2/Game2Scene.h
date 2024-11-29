@@ -5,7 +5,7 @@
 #include "Cursor/Cursor.h"
 #include "Scene/BaseScene.h"
 #include "Game2/Player/PlayerGame2.h"
-
+#include "LoadingBar/CustomLoadingBar.h"
 class Game2Scene : public BaseScene
 {
 public:
@@ -19,17 +19,21 @@ public:
     void setupKeyboardEventListeners();
     void setupCursor();
     bool onContactBegin(cocos2d::PhysicsContact& contact);
-
+    void checkGameOver();
+    void resetGameState();
 private:
-    // Physics world
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
+    bool _isGameOver;
 
+    CustomLoadingBar* _healthBar;
+    PlayerAttributes* _playerAttributes;
     cocos2d::TMXTiledMap* _tileMap;
     PlayerGame2* _player;
     Cursor* _cursor;
     Sprite* _followSprite;
-
+    void updateHealthBar();
+    void initHealthBar();
     void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
 };
 

@@ -46,6 +46,7 @@ public:
     static const std::string GAME3_SCENE_NAME;
     static const std::string MAINMENU_SCENE_NAME;
     //Game2
+    static const int Player_Health2;
     static const float TIME_TO_WIN;
     static const std::string pathSoundTrackGame1;
     static const float BulletSpeed;
@@ -89,6 +90,7 @@ public:
 	static const float EnemyPlaneBoomGame3Speed; //Speed Enemy Plane 1
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
 	static const float HealthEnemyPlaneBoss;
+	static const float BulletDamageGame3;
 	
 	//VictoryPanel
 	static const std::string VICTORY_SOUNDTRACK_PATH;

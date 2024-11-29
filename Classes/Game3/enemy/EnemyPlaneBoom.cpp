@@ -25,10 +25,6 @@ bool EnemyPlaneBoom::init() {
 
     initAnimation();
 
-    // Initialize explosion batch node
-    explosionBatchNode = SpriteBatchNode::create("assets_game/fx/explosions.png");
-    this->addChild(explosionBatchNode);
-
     return true;
 }
 
@@ -51,9 +47,10 @@ void EnemyPlaneBoom::initAnimation() {
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
+void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime) {
     auto enemy = EnemyPlaneBoomPool::getInstance()->getEnemy();
     if (enemy) {
+        enemy->setVisible(true);
         enemy->resetSprite();
         parent->addChild(enemy);
         auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -76,11 +73,10 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent) {
         // Create physics body when spawning
         enemy->createPhysicsBody();
 
-        // Schedule to spawn boom at a random interval between 2 to 3 seconds
-        float randomInterval = random(3.0f, 6.0f);
+        // Schedule to spawn boom at the specified skill time
         enemy->schedule([enemy, spawnFromLeft](float dt) {
             enemy->spawnBoom(spawnFromLeft);
-            }, randomInterval, "spawn_boom_key");
+            }, skillTime, "spawn_boom_key");
     }
 }
 
@@ -98,39 +94,21 @@ void EnemyPlaneBoom::spawnBoom(bool spawnFromLeft) {
 
 void EnemyPlaneBoom::reset() {
     // Reset the state of the EnemyPlaneBoom
-    modelCharac->setVisible(true);
-    this->setVisible(true);
-    this->setPosition(Vec2::ZERO);
     this->stopAllActions();
-}
-
-void EnemyPlaneBoom::explode() {
-    // Remove physics body when exploding
+    this->setVisible(false);
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
+    this->setPosition(Vec2::ZERO);
+}
 
-    if (!explosionSprite) {
-        explosionSprite = Sprite::createWithSpriteFrameName("explosions7.png");
-        explosionSprite->setScale(SpriteController::updateSpriteScale(explosionSprite, 0.078f));
-        explosionBatchNode->addChild(explosionSprite);
-    }
-
-    explosionSprite->setPosition(modelCharac->getPosition());
+void EnemyPlaneBoom::explode() {
+    this->removeComponent(this->getPhysicsBody());
     modelCharac->setVisible(false);
-    explosionSprite->setVisible(true);
-
-    auto explosionAnimation = SpriteController::createAnimation("explosions", 10, 0.041f);
-    auto animate = Animate::create(explosionAnimation);
-
-    explosionSprite->runAction(Sequence::create(
-        animate,
-        CallFunc::create([this]() {
-            explosionSprite->setVisible(false);
-            this->returnToPool();
-            }),
-        nullptr
-    ));
+    auto explosion = Explosion::create(this->getPosition(), [this]() {
+        this->returnToPool();
+        });
+    this->getParent()->addChild(explosion);
 }
 
 void EnemyPlaneBoom::createPhysicsBody() {
