@@ -77,7 +77,7 @@ void RandomBoom::showWarning(const Vec2& position) {
     _warningSprite->setPosition(position);
     _warningSprite->setVisible(true);
 
-    auto warningAnimation = createAnimation("warning_rocket", 4, 0.15f);
+    auto warningAnimation = createAnimation("warning_rocket", 50, 0.01f);
     if (warningAnimation) {
         auto animateWarning = Animate::create(warningAnimation);
         _warningSprite->runAction(RepeatForever::create(animateWarning));

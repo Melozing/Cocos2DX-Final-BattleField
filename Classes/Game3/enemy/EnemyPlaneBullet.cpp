@@ -149,7 +149,7 @@ void EnemyPlaneBullet::createPhysicsBody() {
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBody("EnemyPlaneBullet", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "EnemyPlaneBullet", originalSize, 0.5f);
+    physicsCache->resizeBody(physicsBody, "EnemyPlaneBullet", originalSize, 0.2f);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);

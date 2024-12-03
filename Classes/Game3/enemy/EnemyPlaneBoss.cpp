@@ -1,5 +1,6 @@
 ﻿#include "EnemyPlaneBoss.h"
 #include "EnemyPlaneBossPool.h"
+#include "Game3/enemy/BoomForEnemyPlanePool.h"
 #include "Constants/Constants.h"
 #include "utils/PhysicsShapeCache.h"
 #include <Controller/SpriteController.h>
@@ -32,6 +33,8 @@ bool EnemyPlaneBoss::init() {
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
 
+    // Initialize phase
+    currentPhase = Phase::PHASE_1;
     return true;
 }
 
@@ -82,6 +85,7 @@ void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
     this->runAction(Sequence::create(spawnAction, CallFunc::create([this]() {
         this->createPhysicsBody();
         this->moveLeftRight();
+        this->executePhaseSkills();
         }), nullptr));
 }
 
@@ -111,7 +115,73 @@ Size EnemyPlaneBoss::GetSize() {
 void EnemyPlaneBoss::takeDamage(float damage) {
     health -= damage;
     if (health <= 0) {
+        // Update phase before moving up and returning to the pool
+        updatePhase();
         moveUpAndReturnToPool();
+    }
+}
+
+void EnemyPlaneBoss::updatePhase() {
+    // Increment the phase
+    if (currentPhase == Phase::PHASE_1) {
+        currentPhase = Phase::PHASE_2;
+    }
+    else if (currentPhase == Phase::PHASE_2) {
+        currentPhase = Phase::PHASE_3;
+    }
+    else {
+        // If already in PHASE_3, reset to PHASE_1 for the next cycle
+        currentPhase = Phase::PHASE_1;
+    }
+
+    // Reset health for the new phase
+    health = Constants::HealthEnemyPlaneBoss;
+
+    // Execute skills for the new phase
+    executePhaseSkills();
+}
+
+void EnemyPlaneBoss::executePhaseSkills() {
+    switch (currentPhase) {
+    case Phase::PHASE_1:
+        // Execute skills for phase 1
+        this->schedule([this](float dt) {
+            this->dropBooms();
+            }, 5.0f, "drop_booms_key");
+        break;
+    case Phase::PHASE_2:
+        // Execute skills for phase 2
+        break;
+    case Phase::PHASE_3:
+        // Execute skills for phase 3 with increased power and frequency
+        break;
+    }
+}
+
+void EnemyPlaneBoss::dropBooms() {
+    auto boomPool = BoomForEnemyPlanePool::getInstance();
+
+    // Calculate positions using the Ratio method
+    float offsetX = SpriteController::calculateScreenRatio(0.15f); // Increase the ratio for wider X distance
+    float offsetY = SpriteController::calculateScreenRatio(0.07f); // Decrease the ratio for lower Y position
+
+    Vec2 positions[4] = {
+        Vec2(this->getPositionX() - 1.5 * offsetX, this->getPositionY() - offsetY), // Left far
+        Vec2(this->getPositionX() - offsetX, this->getPositionY() - offsetY), // Left near
+        Vec2(this->getPositionX() + offsetX, this->getPositionY() - offsetY), // Right near
+        Vec2(this->getPositionX() + 1.5 * offsetX, this->getPositionY() - offsetY) // Right far
+    };
+
+    for (const auto& pos : positions) {
+        auto boom = boomPool->getBoom();
+        if (boom) {
+            boom->setPosition(pos);
+            if (boom->getParent() == nullptr) {
+                this->getParent()->addChild(boom);
+            }
+            boom->setVisible(true);
+            boom->moveDown(pos.x < this->getPositionX());
+        }
     }
 }
 
@@ -171,13 +241,11 @@ void EnemyPlaneBoss::createPhysicsBody() {
     }
 
     auto physicsCache = PhysicsShapeCache::getInstance();
-    physicsCache->addShapesWithFile("physicsBody/EnemyPlaneBoss.plist");
-
     auto originalSize = modelCharac->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
-    auto physicsBody = physicsCache->createBody("EnemyPlaneBoss", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "EnemyPlaneBoss", originalSize, 2.40f);
+    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/EnemyPlaneBoss.plist", "EnemyPlaneBoss", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "EnemyPlaneBoss", originalSize, 1.40f);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);

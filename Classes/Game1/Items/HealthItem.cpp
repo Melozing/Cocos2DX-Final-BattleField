@@ -18,17 +18,18 @@ HealthItem* HealthItem::create() {
 
 bool HealthItem::init() {
     if (!Node::init()) return false;
-    this->scheduleUpdate();
-    this->initAnimation(); 
-    this->initPhysicsBody();
+    //this->initAnimation(); 
+    //this->initPhysicsBody();
     return true;
 }
 
 void HealthItem::initAnimation() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Health.plist");
 
-    auto spriteBatchNode = SpriteBatchNode::create("assets_game/items/Health.png");
-    this->addChild(spriteBatchNode);
+    if (spriteBatchNode == nullptr) {
+        spriteBatchNode = SpriteBatchNode::create("assets_game/items/Health.png");
+        this->addChild(spriteBatchNode);
+    }
 
     _currentSprite = Sprite::createWithSpriteFrameName("Health1.png");
     _spriteScale = SpriteController::updateSpriteScale(_currentSprite, Constants::ITEM_SIZE_RATIO);
@@ -40,7 +41,10 @@ void HealthItem::initAnimation() {
     _currentSprite->runAction(RepeatForever::create(animateCharac));
 }
 
+
 void HealthItem::initPhysicsBody() {
+    this->RemovePhysicBody();
+
     // Create and attach a physics body
     auto physicsCache = PhysicsShapeCache::getInstance();
     physicsCache->addShapesWithFile("physicsBody/ItemHealth.plist");
@@ -48,7 +52,9 @@ void HealthItem::initPhysicsBody() {
     auto originalSize = _currentSprite->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
-    auto physicsBody = physicsCache->createBody("ItemHealth", originalSize, scaledSize * 0.8f);
+    auto physicsBody = physicsCache->createBody("ItemHealth", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "ItemHealth", originalSize, 0.13f);
+
     if (physicsBody) {
         physicsBody->setCollisionBitmask(0x03);
         physicsBody->setContactTestBitmask(true);
@@ -58,19 +64,18 @@ void HealthItem::initPhysicsBody() {
 }
 
 void HealthItem::applyEffect() {
+    this->stopAllActions();
+    this->RemovePhysicBody();
     PlayerAttributes::getInstance().SetHealth(PlayerAttributes::getInstance().GetHealth() + 1);
-    this->setVisible(true);
-    this->setOpacity(255);
 
-    _scaleFactor = SpriteController::updateSpriteScale(_currentSprite, Constants::ITEM_SCALE_FACTOR + 0.03f);
     // Scale up to _scaleFactor times over 0.5 seconds
-    auto scaleUp = ScaleTo::create(Constants::ITEM_EFFECT_DURATION, _scaleFactor);
+    auto scaleUp = ScaleTo::create(Constants::ITEM_EFFECT_DURATION, _spriteScale + Constants::ITEM_SCALE_FACTOR);
 
     // Fade out over 0.5 seconds
     auto fadeOut = FadeOut::create(Constants::ITEM_EFFECT_DURATION);
 
     // Run the scale and fade actions simultaneously
-    auto scaleAndFade = Spawn::create(scaleUp, fadeOut, nullptr);
+    auto scaleAndFade = Spawn::create(fadeOut, scaleUp, nullptr);
 
     // Call playEffectAndRemove after scale and fade actions are complete
     auto callPlayEffectAndRemove = CallFunc::create([this]() {
@@ -108,11 +113,8 @@ void HealthItem::returnToPool() {
 }
 
 void HealthItem::reset() {
-    // Reset the state of the HealthItem
-    auto fadeIn = FadeIn::create(0.5f);
-    this->setOpacity(255);
-    this->setVisible(true);
-    this->initAnimation();
-    this->initPhysicsBody();
-    _currentSprite->runAction(fadeIn);
+    if (_currentSprite) {
+        _currentSprite->setScale(_spriteScale);
+    }
+    this->setVisible(false);
 }

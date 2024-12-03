@@ -16,10 +16,22 @@ public:
     Size GetSize();
     void moveLeftRight();
     float getHealth() const;
+
 private:
     void createPhysicsBody();
     void moveUpAndReturnToPool();
     void startExplosions();
+    void updatePhase();
+    void executePhaseSkills();
+    void dropBooms();
+
+    enum class Phase {
+        PHASE_1,
+        PHASE_2,
+        PHASE_3
+    };
+
+    Phase currentPhase;
     cocos2d::SpriteBatchNode* spriteBatchNode;
     float health;
     cocos2d::Size visibleSize;

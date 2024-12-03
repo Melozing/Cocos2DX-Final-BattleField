@@ -8,7 +8,12 @@ bool IncreaseBulletCountItemGame3::init() {
         return false;
     }
     this->setTexture("assets_game/items/hop_dan.png");
-    this->setScale(SpriteController::updateSpriteScale(this, 0.07f)); 
+    this->setScale(SpriteController::updateSpriteScale(this, 0.07f));
+
+    // Set the physics body info
+    this->setPhysicsBodyInfo("physicsBody/IncreaseBulletCountItem.plist", "IncreaseBulletCountItem");
+    initialScale = this->getScale();
+
     return true;
 }
 

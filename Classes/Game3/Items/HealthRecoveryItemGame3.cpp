@@ -1,5 +1,5 @@
 #include "HealthRecoveryItemGame3.h"
-#include "Controller/SpriteController.h" 
+#include "Controller/SpriteController.h"
 
 USING_NS_CC;
 
@@ -8,7 +8,11 @@ bool HealthRecoveryItemGame3::init() {
         return false;
     }
     this->setTexture("assets_game/items/non_coi.png");
-    this->setScale(SpriteController::updateSpriteScale(this, 0.07f)); 
+    this->setScale(SpriteController::updateSpriteScale(this, 0.07f));
+
+    // Set the physics body info
+    this->setPhysicsBodyInfo("physicsBody/HealthRecoveryItem.plist", "HealthRecoveryItem");
+    initialScale = this->getScale();
     return true;
 }
 

@@ -47,12 +47,10 @@ void BoomForEnemyPlane::createPhysicsBody() {
     }
 
     auto physicsCache = PhysicsShapeCache::getInstance();
-    physicsCache->addShapesWithFile("physicsBody/BombForEnemyPlane3.plist");
-
     auto originalSize = modelCharac->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
-    auto physicsBody = physicsCache->createBody("BombForEnemyPlane3", originalSize, scaledSize);
+    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/BombForEnemyPlane3.plist", "BombForEnemyPlane3", originalSize, scaledSize);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);
@@ -61,6 +59,7 @@ void BoomForEnemyPlane::createPhysicsBody() {
         this->setPhysicsBody(physicsBody);
     }
 }
+
 
 void BoomForEnemyPlane::reset() {
     modelCharac->setVisible(true);

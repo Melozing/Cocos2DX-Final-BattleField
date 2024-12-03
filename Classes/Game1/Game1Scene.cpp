@@ -14,6 +14,7 @@
 #include "Constants/Constants.h"
 #include "ui/UILoadingBar.h"
 #include "audio/include/AudioEngine.h"
+#include "Manager/BackgroundManager.h"
 #include <ctime> 
 #include "json/document.h"
 #include "json/filereadstream.h"
@@ -59,6 +60,7 @@ bool Game1Scene::init() {
     initSound();
     initSpawning();
     initCursor();
+    setupContactListener();
 
     this->scheduleUpdate();
     this->scheduleCollectibleSpawning();
@@ -90,8 +92,10 @@ void Game1Scene::initPhysics(const Size& visibleSize) {
 }
 
 void Game1Scene::initBackground() {
-    background = Background::createBackground("assets_game/gameplay/bg_new_art.jpg", 150.0f);
+    background = Background::createBackground("assets_game/gameplay/bg_new_art_dark.png", 150.0f);
     this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
+    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/background_light_layer.png", Constants::ORDER_LAYER_LAYOUT_UI - 1);
+
 }
 
 void Game1Scene::initPools() {
@@ -120,13 +124,10 @@ void Game1Scene::initPlayer(const Size& visibleSize) {
     _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _healthPlayerGame1 = HealthPlayerGame1::createHealth();
     _healthPlayerGame1->initHealthSprites(_playerAttributes->GetHealth());
-    this->addChild(_healthPlayerGame1, Constants::ORDER_LAYER_PLAYER);
+    this->addChild(_healthPlayerGame1, Constants::ORDER_LAYER_LAYOUT_UI);
 
-    auto playerBody = PhysicsBody::createBox(_player->GetSize());
-    setPhysicsBodyChar(playerBody, 0x01);
-    _player->setPhysicsBody(playerBody);
+    _player->createPhysicsBody();
     addChild(_player, Constants::ORDER_LAYER_CHARACTER);
-
 }
 
 void Game1Scene::initUI(const Size& visibleSize) {
@@ -136,8 +137,12 @@ void Game1Scene::initUI(const Size& visibleSize) {
 
     // Calculate the position for the border
     auto loadingPos = customLoadingBar->getLoadingBar()->getPosition();
+    //float loadingBarHeight = SpriteController::calculateScreenRatio(0.0005f);
+    //loadingPos.y -= loadingBarHeight; // Move the border lower
+
     customLoadingBar->setBorderPosition(loadingPos);
     customLoadingBar->setBorderRotation(-90);
+    customLoadingBar->setBorderScale(SpriteController::updateSpriteScale(customLoadingBar->getBorder(), 0.265f));
 
     this->addChild(customLoadingBar, Constants::ORDER_LAYER_UI);
     _loadingBar = customLoadingBar->getLoadingBar();
@@ -182,7 +187,9 @@ void Game1Scene::initEvents() {
             break;
         }
         };
+}
 
+void Game1Scene::setupContactListener() {
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game1Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -238,47 +245,68 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
 }
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
-    if (_playerAttributes->IsDead()) return true;
+    if (_playerAttributes->IsDead() || _invincible) return true;
 
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
 
-    auto handlePlayerDamage = [this]() {
-        if (_shield) {
-            deactivateShield();
-        }
-        else if (_canTakeDamage) {
-            _playerAttributes->TakeDamage(1);
-            _player->playDamageEffect();
-            _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
-            this->checkGameOver();
-        }
+    auto nodeA = bodyA->getNode();
+    auto nodeB = bodyB->getNode();
+
+    if (!nodeA || !nodeB) return true;
+
+    // Check if player is involved in the collision
+    bool isPlayerInvolved = (nodeA == _player || nodeB == _player);
+    if (!isPlayerInvolved) return true;
+
+    // Determine the other node involved in the collision
+    auto otherNode = (nodeA == _player) ? nodeB : nodeA;
+
+    // Handle collision based on the other node's collision bitmask
+    switch (otherNode->getPhysicsBody()->getCollisionBitmask()) {
+    case 0x02: // Enemy collision bitmask
+        handlePlayerDamage();
+        break;
+    case 0x03: // Collectible item collision bitmask
+        handleCollectibleCollision(otherNode);
+        break;
+    default:
+        break;
+    }
+
+    return true;
+}
+
+
+void Game1Scene::handlePlayerDamage() {
+    if (_shield) {
+        CCLOG("Shield is active, deactivating shield.");
+        deactivateShield();
+    }
+    else if (_canTakeDamage && !_invincible) {
+        CCLOG("Player takes damage.");
+        _playerAttributes->TakeDamage(1);
+        _player->playDamageEffect();
+        _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
+        this->checkGameOver();
         _canTakeDamage = false;
         this->scheduleOnce([this](float) { _canTakeDamage = true; }, 1.0f, "damage_delay_key");
-        };
-
-    if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x02) ||
-        (bodyA->getCollisionBitmask() == 0x02 && bodyB->getCollisionBitmask() == 0x01)) {
-        handlePlayerDamage();
     }
+}
 
-    if ((bodyA->getCollisionBitmask() == 0x01 && bodyB->getCollisionBitmask() == 0x03) ||
-        (bodyA->getCollisionBitmask() == 0x03 && bodyB->getCollisionBitmask() == 0x01)) {
-        auto collectible = static_cast<CollectibleItem*>(bodyA->getNode() == _player ? bodyB->getNode() : bodyA->getNode());
-        if (collectible) {
-            // Check the type of collectible item and apply the corresponding effect
-            if (auto healthItem = dynamic_cast<HealthItem*>(collectible)) {
-                healthItem->applyEffect(); // Apply the effect of the collectible item
-                _player->playHealthIncreaseEffect();
-                _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth()); // Update health sprites
-            }
-            else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
-                ammoItem->applyEffect(); // Apply the effect of the collectible item
-                activateShield();
-            }
+void Game1Scene::handleCollectibleCollision(Node* collectibleNode) {
+    auto collectible = dynamic_cast<CollectibleItem*>(collectibleNode);
+    if (collectible) {
+        if (auto healthItem = dynamic_cast<HealthItem*>(collectible)) {
+            healthItem->applyEffect();
+            _player->playHealthIncreaseEffect();
+            _healthPlayerGame1->updateHealthSprites(_playerAttributes->GetHealth());
+        }
+        else if (auto ammoItem = dynamic_cast<AmmoItem*>(collectible)) {
+            ammoItem->applyEffect();
+            activateShield();
         }
     }
-    return true;
 }
 
 void Game1Scene::activateShield() {
@@ -301,30 +329,40 @@ void Game1Scene::activateShield() {
     }
 }
 
+
 void Game1Scene::deactivateShield() {
     if (_shield) {
         _shield->deactivate();
         _shield->removeFromParent();
         _shield = nullptr;
-        this->unschedule("deactivate_shield_key");
+        _invincible = true;
+        this->scheduleOnce([this](float) { _invincible = false; }, 0.3f, "invincibility_delay_key");
     }
 }
 
 void Game1Scene::checkGameOver() {
-    if (_playerAttributes->IsDead()) {
-        _cursor->setVisible(false); 
-        GameController::getInstance()->GameOver(
-            [this]() {
-                Director::getInstance()->end();
-            },
-            []() -> Scene* {
-                return Game1Scene::createScene();
-            },
-            Constants::pathSoundTrackGame1 // Add the soundtrack path here
-        );
+    if (_playerAttributes->IsDead() && !_isGameOver) {
         _isGameOver = true;
+        _player->removePhysicsBody();
+        _player->fadeOutAndDisable();
+        this->runAction(Sequence::create(
+            DelayTime::create(2.0f),
+            CallFunc::create([this]() {
+                GameController::getInstance()->GameOver(
+                    [this]() {
+                        Director::getInstance()->end();
+                    },
+                    []() -> Scene* {
+                        return Game1Scene::createScene();
+                    },
+                    Constants::pathSoundTrackGame1 // Add the soundtrack path here
+                );
+                }),
+            nullptr
+        ));
     }
 }
+
 
 void Game1Scene::updateLoadingBar(float dt) {
     if (_isGameOver) return;
@@ -518,10 +556,7 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
             auto tree = FallingTreePool::getInstance()->getEnemy();
             if (tree) {
                 tree->spawn(spawnPosition);
-                auto size = tree->GetSize();
-                auto treeBody = PhysicsBody::createCircle(size.width / 2);
-                setPhysicsBodyChar(treeBody, 0x02);
-                tree->setPhysicsBody(treeBody);
+                tree->createPhysicsBody();
                 this->addChild(tree, Constants::ORDER_LAYER_CHARACTER - 1);
             }
         }

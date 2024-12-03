@@ -4,6 +4,7 @@
 #include "Manager/PlayerMovementManager.h"
 #include "Controller/GameController.h"
 #include "Game3/Enemy/EnemyPlaneBoss.h"
+#include "utils/PhysicsShapeCache.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -32,13 +33,12 @@ bool PlayerGame3::init()
     setupTurret();
     setupEventListeners();
     setupManagers();
-
     // Schedule update method
     this->scheduleUpdate();
 
     // Initialize shooting variables
     isMouseDown = false;
-    shootDelay = 0.5f;
+    shootDelay = 0.15f;
     timeSinceLastShot = 0.0f;
     
     return true;
@@ -106,6 +106,7 @@ void PlayerGame3::initAnimation()
 
     auto animateCharac = Animate::create(createAnimation("tank_", 8, 0.07f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
+    createPhysicsBody();
 }
 
 void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -294,4 +295,28 @@ bool PlayerGame3::updateDistanceToMouse(const Vec2& position) {
         }
     }
     return false;
+}
+
+Size PlayerGame3::GetSize() {
+    return SpriteController::GetContentSizeSprite(modelCharac);
+}
+
+void PlayerGame3::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    auto originalSize = modelCharac->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/PlayerGame3.plist", "PlayerGame3", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "PlayerGame3", originalSize, 0.9f);
+    if (physicsBody) {
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+
+        this->setPhysicsBody(physicsBody);
+    }
 }
