@@ -9,7 +9,10 @@ public:
     virtual bool init() override;
     void initAnimation() override;
     void returnToPool();
+    void createPhysicsBody();
     ~FallingTree();
+private:
+    cocos2d::SpriteBatchNode* spriteBatchNode;
 };
 
 #endif // __FALLING_TREE_H__

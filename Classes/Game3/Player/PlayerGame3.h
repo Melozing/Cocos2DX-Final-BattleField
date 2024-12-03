@@ -19,8 +19,10 @@ public:
     void onMouseDown(cocos2d::Event* event);
     void onMouseUp(cocos2d::Event* event);
     void update(float delta) override;
+    void createPhysicsBody();
 
 private:
+    cocos2d::Size GetSize();
     void initAnimation();
     void shootBullet();
     void updateTurretRotation();

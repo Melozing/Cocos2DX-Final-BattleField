@@ -23,7 +23,7 @@ const float Constants::PADDING_VERTICAL_UI_EXITBUTTON = 0.02f;
 const float Constants::PADDING_HORIZONTAL_UI_PANEL = 0.04f;
 const float Constants::PADDING_HORIZONTAL_UI_EXITBUTTON = 0.02f;
 //ITEM
-const float Constants::ITEM_SCALE_FACTOR = 0.16f;
+const float Constants::ITEM_SCALE_FACTOR = 0.25f;
 const float Constants::ITEM_EFFECT_DURATION = 0.3f;
 const float Constants::ITEM_SIZE_RATIO = 0.07f;
 //EFFECT_GAME1
@@ -38,7 +38,7 @@ const std::string Constants::ENEMY_FALLING_ROCK_AND_BOOM_NAME = "FallingRock";
 const std::string Constants::ENEMY_RANDOM_BOOM_NAME = "RandomBoom";
 const float Constants::FLYING_BULLET_SPEED = 3.0f;
 const float Constants::FALLINGROCK_START_Y = 0.05f;
-const float Constants::FALLINGROCK_PADDING = 0.006f;
+const float Constants::FALLINGROCK_PADDING = 0.03f;
 const float Constants::FANBULLET_OFFSET = 0.04f;
 const float Constants::FALLINGROCK_ITEMS_OFFSET = 0.05f;
 const float Constants::FALLINGROCK_ITEMS_SPEED = 255.0f;
@@ -48,10 +48,10 @@ const float Constants::DISTANCE_ENEMY_FALLING = 0.05f;
 //PlayerGame1
 const float Constants::PLAYER_RESTRICTEDWIDTH = 0.285f;
 const float Constants::PLAYER_RESTRICTEDHEIGHT = 0.15f;
-const float Constants::PLAYER_MOVESPEED = 300.0f;
+const float Constants::PLAYER_MOVESPEED = 200.0f;
 const int Constants::PLAYER_HEALTH = 3;
 
-const float Constants::PLAYER_HEALTH_PADDING_X = 0.08f;
+const float Constants::PLAYER_HEALTH_PADDING_X = 0.008f;
 const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 // SHIELD GAME 1
 const float Constants::SHIELD_DURATION = 0.3f;
@@ -103,7 +103,7 @@ const float Constants::EnemyPlaneBulletGame3Speed = 200.0f;
 const float Constants::EnemyPlaneBoomGame3Speed = 300.0f;
 const float Constants::SpeedEnemyPlane_BOSS = 100.0f;
 const float Constants::HealthEnemyPlaneBoss = 100.0f;
-const float Constants::BulletDamageGame3 = 10.0f;
+const float Constants::BulletDamageGame3 = 1.0f;
 
 //VictoryPanel
 const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victory/victory.mp3";

@@ -9,7 +9,6 @@
 #include "Game3/enemy/EnemyPlaneBossPool.h"
 #include "Game3/enemy/EnemyPlaneBoss.h"
 #include "Game3/enemy/BoomForEnemyPlanePool.h"
-
 #include "Game3/Items/ItemPoolGane3.h"
 
 #include "Scene/LoadingScene.h"
@@ -52,7 +51,6 @@ bool Game3Scene::init() {
     initSpawning();
     setupContactListener();
     initHealthBar();
-    initBossHealthBar();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
@@ -113,7 +111,7 @@ void Game3Scene::initBossHealthBar() {
     bossHealthBar->setPercent(100);
     bossHealthBar->setLoadingBarScale(SpriteController::updateSpriteScale(bossHealthBar->getLoadingBar(), 0.133f));
     bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.17f));
-
+    bossHealthBar->setVisible(true);
     this->addChild(bossHealthBar, Constants::ORDER_LAYER_UI);
 }
 
@@ -181,6 +179,7 @@ void Game3Scene::initSpawning() {
                     if (enemyBoos) {
                         enemyBoos->spawnEnemy(this);
                         this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
+                        initBossHealthBar();
                     }
                 }
                 }, spawnTime, "spawn_enemy_key_" + std::to_string(i) + "_" + std::to_string(j));
@@ -220,12 +219,14 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
     auto nodeB = contact.getShapeB()->getBody()->getNode();
 
     if (nodeA && nodeB) {
+        auto player = dynamic_cast<PlayerGame3*>(nodeA);
         auto bulletPlayer = dynamic_cast<BulletPlayerGame3*>(nodeA);
         auto cityCollisionArea = dynamic_cast<CityCollisionArea*>(nodeA);
 
         auto enemy = dynamic_cast<EnemyPlaneBase*>(nodeB);
         auto boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeB);
         auto bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeB);
+        auto item = dynamic_cast<ItemBaseGame3*>(nodeB); 
 
         if (bulletPlayer && enemy) {
             handleBulletEnemyCollision(bulletPlayer, enemy);
@@ -239,13 +240,23 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
         else if (bulletForEnemyPlane && cityCollisionArea) {
             handleBulletForEnemyCityCollision(bulletForEnemyPlane);
         }
+        else if (item && cityCollisionArea) { 
+            item->stopMovement();
+            item->returnItemToPoolAfterDelay(7.0f); // Return item to pool after 7 seconds
+        }
+        else if (player && item) {
+            item->stopMovement();
+            item->applyPickupEffect();
+        }
         else {
+            player = dynamic_cast<PlayerGame3*>(nodeB);
             bulletPlayer = dynamic_cast<BulletPlayerGame3*>(nodeB);
             cityCollisionArea = dynamic_cast<CityCollisionArea*>(nodeB);
 
             enemy = dynamic_cast<EnemyPlaneBase*>(nodeA);
             boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeA);
             bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeA);
+            item = dynamic_cast<ItemBaseGame3*>(nodeA);
 
             if (bulletPlayer && enemy) {
                 handleBulletEnemyCollision(bulletPlayer, enemy);
@@ -258,6 +269,14 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             }
             else if (bulletForEnemyPlane && cityCollisionArea) {
                 handleBulletForEnemyCityCollision(bulletForEnemyPlane);
+            }
+            else if (item && cityCollisionArea) {
+                item->stopMovement();
+                item->returnItemToPoolAfterDelay(7.0f); // Return item to pool after 7 seconds
+            } 
+            else if (player && item) {
+                item->stopMovement();
+                item->applyPickupEffect();
             }
         }
     }
@@ -272,10 +291,12 @@ void Game3Scene::handleBulletBoomCollision(BulletPlayerGame3* bullet, BoomForEne
 void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlaneBase* enemy) {
     if (auto enemyBullet = dynamic_cast<EnemyPlaneBullet*>(enemy)) {
         enemyBullet->explode();
+        enemyBullet->dropRandomItem();
         bullet->returnPool();
     }
     else if (auto enemyBoom = dynamic_cast<EnemyPlaneBoom*>(enemy)) {
         enemyBoom->explode();
+        enemyBoom->dropRandomItem();
         bullet->returnPool();
     }
     else if (enemyBoos = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
@@ -332,6 +353,11 @@ void Game3Scene::handleBossDamage(float damage) {
 
 void Game3Scene::updateBossHealthBar(float healthPercent) {
     if (bossHealthBar) {
+        if (healthPercent <= 0)
+        {
+            bossHealthBar->setVisible(false);
+            return;
+        }
         bossHealthBar->setPercent(healthPercent);
     }
 }

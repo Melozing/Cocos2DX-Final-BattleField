@@ -12,6 +12,12 @@ bool CollectibleItem::init() {
 }
 
 void CollectibleItem::spawn(const Vec2& startPosition) {
+    auto fadeIn = FadeIn::create(0.5f);
+    this->setOpacity(255);
+    this->initAnimation();
+    this->initPhysicsBody();
+    _currentSprite->runAction(fadeIn);
+    this->setVisible(true);
     // Define target position off-screen at the bottom
     Vec2 endPosition = Vec2(startPosition.x, -SpriteController::calculateScreenRatio(Constants::FALLINGROCK_ITEMS_OFFSET));
 
@@ -68,4 +74,10 @@ void CollectibleItem::returnToPool() {
 Size CollectibleItem::getScaledSize() const {
     Size originalSize = _currentSprite->getContentSize();
     return Size(originalSize.width * _spriteScale, originalSize.height * _spriteScale);
+}
+
+void CollectibleItem::initAnimation() {
+}
+
+void CollectibleItem::initPhysicsBody() {
 }

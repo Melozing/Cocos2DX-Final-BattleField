@@ -1,5 +1,3 @@
-
-
 #pragma once
 #include "Game3/Items/ItemBaseGame3.h"
 

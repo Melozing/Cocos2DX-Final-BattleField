@@ -52,6 +52,7 @@ private:
     HealthPlayerGame1* _healthPlayerGame1;
     bool _canTakeDamage;
     bool _isGameOver;
+    bool _invincible;
 
     // Background
     Background* background;
@@ -92,6 +93,9 @@ private:
     // Collision handling
     void setPhysicsBodyChar(cocos2d::PhysicsBody* physicBody, int num);
     bool onContactBegin(cocos2d::PhysicsContact& contact);
+    void setupContactListener();
+    void handlePlayerDamage();
+    void handleCollectibleCollision(Node* collectibleNode);
 
     // Game over handling
     void checkGameOver();

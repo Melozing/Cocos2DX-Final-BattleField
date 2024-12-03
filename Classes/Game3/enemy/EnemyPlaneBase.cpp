@@ -75,7 +75,9 @@ void EnemyPlaneBase::resetSprite() {
 }
 
 void EnemyPlaneBase::explode() {
+    // Drop a random item
     this->stopAllActions();
+
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
@@ -84,14 +86,11 @@ void EnemyPlaneBase::explode() {
         this->returnToPool();
         });
     this->getParent()->addChild(explosion);
-
-    // Drop a random item
-    dropRandomItem();
 }
 
 void EnemyPlaneBase::dropRandomItem() {
     // Define the drop chance (e.g., 50% chance to drop an item)
-    float dropChance = 0.5f; // 50% chance
+    float dropChance = 1.5f; // 50% chance
 
     // Generate a random number between 0 and 1
     float randomValue = CCRANDOM_0_1();
@@ -115,8 +114,8 @@ void EnemyPlaneBase::dropRandomItem() {
         }
 
         if (item) {
-            item->setPosition(this->getPosition());
             this->getParent()->addChild(item);
+            item->setStartPosition(this->getPosition());
             item->moveDown();
         }
     }

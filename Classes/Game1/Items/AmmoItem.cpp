@@ -18,13 +18,14 @@ AmmoItem* AmmoItem::create() {
 
 bool AmmoItem::init() {
     if (!Node::init()) return false;
-    this->scheduleUpdate();
-    this->initAnimation();
-    this->initPhysicsBody();
+    //this->initAnimation();
+    //this->initPhysicsBody();
     return true;
 }
 
 void AmmoItem::initPhysicsBody() {
+    this->RemovePhysicBody();
+
     // Create and attach a physics body
     auto physicsCache = PhysicsShapeCache::getInstance();
     physicsCache->addShapesWithFile("physicsBody/ItemAmmo.plist");
@@ -32,7 +33,9 @@ void AmmoItem::initPhysicsBody() {
     auto originalSize = _currentSprite->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
-    auto physicsBody = physicsCache->createBody("ItemAmmo", originalSize, scaledSize* 0.5f);
+    auto physicsBody = physicsCache->createBody("ItemAmmo", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "ItemAmmo", originalSize, 0.09f);
+
     if (physicsBody) {
         physicsBody->setCollisionBitmask(0x03);
         physicsBody->setContactTestBitmask(true);
@@ -44,8 +47,10 @@ void AmmoItem::initPhysicsBody() {
 void AmmoItem::initAnimation() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Ammo.plist");
 
-    auto spriteBatchNode = SpriteBatchNode::create("assets_game/items/Ammo.png");
-    this->addChild(spriteBatchNode);
+    if (spriteBatchNode == nullptr) {
+        spriteBatchNode = SpriteBatchNode::create("assets_game/items/Ammo.png");
+        this->addChild(spriteBatchNode);
+    }
 
     _currentSprite = Sprite::createWithSpriteFrameName("Ammo1.png");
     _spriteScale = SpriteController::updateSpriteScale(_currentSprite, Constants::ITEM_SIZE_RATIO);
@@ -57,19 +62,20 @@ void AmmoItem::initAnimation() {
     _currentSprite->runAction(RepeatForever::create(animateCharac));
 }
 
+
 void AmmoItem::applyEffect() {
+    this->stopAllActions();
+    this->RemovePhysicBody();
     PlayerAttributes::getInstance().SetAmmo(PlayerAttributes::getInstance().GetAmmo() + 1);
-    this->setVisible(true);
-    this->setOpacity(255);
-    _scaleFactor = SpriteController::updateSpriteScale(_currentSprite, Constants::ITEM_SCALE_FACTOR);
+
     // Scale up to _scaleFactor times over 0.5 seconds
-    auto scaleUp = ScaleTo::create(Constants::ITEM_EFFECT_DURATION, _scaleFactor);
+    auto scaleUp = ScaleTo::create(Constants::ITEM_EFFECT_DURATION, _spriteScale + Constants::ITEM_SCALE_FACTOR);
 
     // Fade out over 0.5 seconds
     auto fadeOut = FadeOut::create(Constants::ITEM_EFFECT_DURATION);
 
     // Run the scale and fade actions simultaneously
-    auto scaleAndFade = Spawn::create(scaleUp, fadeOut, nullptr);
+    auto scaleAndFade = Spawn::create(fadeOut, scaleUp, nullptr);
 
     // Call playEffectAndRemove after scale and fade actions are complete
     auto callPlayEffectAndRemove = CallFunc::create([this]() {
@@ -107,11 +113,8 @@ void AmmoItem::returnToPool() {
 }
 
 void AmmoItem::reset() {
-    // Reset the state of the AmmoItem
-    auto fadeIn = FadeIn::create(0.5f);
-    this->setOpacity(255);
-    this->setVisible(true);
-    this->initAnimation();
-    this->initPhysicsBody();
-    _currentSprite->runAction(fadeIn);
+    if (_currentSprite) {
+        _currentSprite->setScale(_spriteScale);
+    }
+    this->setVisible(false);
 }

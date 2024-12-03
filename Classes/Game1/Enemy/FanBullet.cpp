@@ -47,7 +47,7 @@ void FanBullet::initAnimation() {
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.05f));
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(createAnimation("flying_bullet", 4, 0.07f));
+    auto animateCharac = Animate::create(createAnimation("flying_bullet", 3, 0.07f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
     this->createPhysicsBody();
 }
@@ -74,18 +74,15 @@ void FanBullet::createPhysicsBody() {
     }
 
     auto physicsCache = PhysicsShapeCache::getInstance();
-    physicsCache->addShapesWithFile("physicsBody/EnemyFanBullet.plist");
-
     auto originalSize = modelCharac->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
-    auto physicsBody = physicsCache->createBody("EnemyFanBullet", originalSize, scaledSize * 1.8f);
-    if (physicsBody) {
-        physicsBody->setCollisionBitmask(0x02);
-        physicsBody->setContactTestBitmask(true);
-        physicsBody->setDynamic(false);
-        physicsBody->setGravityEnable(false);
+    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/EnemyFanBullet.plist", "EnemyFanBullet", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "EnemyFanBullet", originalSize, 0.14f);
 
+    if (physicsBody) {
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setCollisionBitmask(0x02);
         this->setPhysicsBody(physicsBody);
     }
 }
