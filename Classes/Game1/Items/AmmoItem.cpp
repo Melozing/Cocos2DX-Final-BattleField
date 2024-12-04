@@ -45,8 +45,6 @@ void AmmoItem::initPhysicsBody() {
 }
 
 void AmmoItem::initAnimation() {
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Ammo.plist");
-
     if (spriteBatchNode == nullptr) {
         spriteBatchNode = SpriteBatchNode::create("assets_game/items/Ammo.png");
         this->addChild(spriteBatchNode);

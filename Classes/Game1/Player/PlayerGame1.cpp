@@ -103,8 +103,6 @@ PlayerGame1* PlayerGame1::createPlayer()
 
 void PlayerGame1::initAnimation()
 {
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/Canon.plist");
-
     auto spriteBatchNode = SpriteBatchNode::create("assets_game/player/Canon.png");
     this->addChild(spriteBatchNode);
 

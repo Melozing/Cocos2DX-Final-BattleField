@@ -76,6 +76,8 @@ private:
 
     //Sound 
     void initSound();
+
+    void preloadAssets();
 };
 
 #endif // __GAME3SCENE_SCENE_H__

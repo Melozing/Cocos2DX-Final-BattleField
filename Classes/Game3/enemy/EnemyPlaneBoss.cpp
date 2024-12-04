@@ -24,8 +24,6 @@ bool EnemyPlaneBoss::init() {
         return false;
     }
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBoss.plist");
-
     initAnimation();
 
     // Initialize health

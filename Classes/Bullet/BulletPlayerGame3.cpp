@@ -29,9 +29,6 @@ bool BulletPlayerGame3::init()
         return false;
     }
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/BulletPlayer3Game.plist");
-
     initAnimation();
 
     this->setSpeed(Constants::BulletGame3Speed);
@@ -122,7 +119,6 @@ void BulletPlayerGame3::hideModelCharac() {
 
 void BulletPlayerGame3::startMovement()
 {
-    this->initAnimation();
     // Calculate the target position based on direction and speed
     Vec2 targetPosition = this->getPosition() + _direction * _speed * 5; // Adjust the multiplier as needed
 
@@ -158,7 +154,6 @@ void BulletPlayerGame3::returnPool() {
 }
 
 void BulletPlayerGame3::explode() {
-    this->stopAllActions();
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }

@@ -19,7 +19,7 @@ bool FallingTree::init() {
     if (!FallingObject::init()) {
         return false;
     }
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/FallingTree.plist");
+    initAnimation();
     return true;
 }
 

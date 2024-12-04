@@ -24,8 +24,6 @@ bool HealthItem::init() {
 }
 
 void HealthItem::initAnimation() {
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Health.plist");
-
     if (spriteBatchNode == nullptr) {
         spriteBatchNode = SpriteBatchNode::create("assets_game/items/Health.png");
         this->addChild(spriteBatchNode);

@@ -11,11 +11,6 @@ bool RandomBoom::init() {
         return false;
     }
 
-    // Load sprite frames
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/warning_rocket.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/rocket.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-
     // Create sprite batch nodes
     _spriteBatchNodeWarning = SpriteBatchNode::create("assets_game/enemies/warning_rocket.png");
     _spriteBatchNodeMissile = SpriteBatchNode::create("assets_game/enemies/rocket.png");
@@ -185,14 +180,5 @@ void RandomBoom::onMissileHitTarget() {
 }
 
 RandomBoom::~RandomBoom() {
-    // Check if the sprite frames are still being used before removing them from cache
-    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/enemies/warning_rocket.plist")) {
-        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/warning_rocket.plist");
-    }
-    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/enemies/rocket.plist")) {
-        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/rocket.plist");
-    }
-    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/fx/explosions.plist")) {
-        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/fx/explosions.plist");
-    }
+
 }

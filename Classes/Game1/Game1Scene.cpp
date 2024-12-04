@@ -50,7 +50,8 @@ bool Game1Scene::init() {
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
-
+    
+    preloadAssets();
     initPhysics(visibleSize);
     initBackground();
     initPools();
@@ -65,6 +66,22 @@ bool Game1Scene::init() {
     this->scheduleUpdate();
     this->scheduleCollectibleSpawning();
     return true;
+}
+
+void Game1Scene::preloadAssets() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/falling_rock.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/FallingTree.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet_left.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/warning_rocket.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/rocket.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Ammo.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Health.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/Canon.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/shield.plist");
 }
 
 void Game1Scene::initCursor() {
@@ -200,20 +217,14 @@ void Game1Scene::initSound() {
         CCLOG("Error: Music file does not exist!");
         return;
     }
-    Constants::currentSoundTrackPath = Constants::pathSoundTrackGame1;
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
 
-    this->scheduleOnce([this](float) {
-        musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
-        this->scheduleOnce([this](float) { this->unschedule("collectible_item_spawn_key"); }, musicDuration - 10.5f, "stop_collectible_spawning_key");
-        }, 0.1f, "get_music_duration_key");
-    //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
-
-    this->schedule([this](float dt) {
-        updateLoadingBar(dt);
-        }, "loading_bar_update_key");
+    float duration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
+    CCLOG("Music duration: %f", duration);
 }
+
+
 
 void Game1Scene::initSpawning() {
     enemySpawnMap["FlyingBullet"] = [this](const cocos2d::Size& size) { SpawnFlyingBullet(size, (rand() % 2 == 0)); };
@@ -246,7 +257,7 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     if (_playerAttributes->IsDead() || _invincible) return true;
-
+    return true;
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
 
@@ -653,6 +664,7 @@ bool Game1Scene::isPositionOccupied(const Vec2& position) {
 }
 
 void Game1Scene::spawnEffect(const cocos2d::Size& size) {
+    return;
     auto visibleSize = Director::getInstance()->getVisibleSize();
     float padding = SpriteController::calculateScreenRatio(Constants::EFFECT_EXPLOSION_PADDING_SCREEN); // Padding from the edges
     float playerPadding = SpriteController::calculateScreenRatio(Constants::EFFECT_EXPLOSION_PADDING_PLAYER_AREA); // Padding from the player's movement area

@@ -22,7 +22,7 @@ bool FallingRock::init() {
 
     // Randomly select either ROCK or LANDMINE
     _spriteType = (rand() % 2 == 0) ? SpriteType::ROCK : SpriteType::LANDMINE;
-
+    initAnimation();
     return true;
 }
 
@@ -39,7 +39,6 @@ void FallingRock::initAnimation() {
 
     // Depending on the sprite type, set appropriate properties
     if (_spriteType == SpriteType::ROCK) {
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/falling_rock.plist");
         spriteFrameName = "falling_rock1.png";
         _animationDelay = 0.07f; // Animation delay for rock
 
@@ -54,12 +53,10 @@ void FallingRock::initAnimation() {
         _spriteBatchNodeRock->addChild(_currentSprite);
     }
     else {
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
         spriteFrameName = "landmine1.png";
         _animationDelay = 0.15f; // Animation delay for landmine
 
         _spriteBatchNodeLandmine = SpriteBatchNode::create("assets_game/enemies/landmine.png");
-
 
         if (_spriteBatchNodeLandmine->getParent() == nullptr) {
             this->addChild(_spriteBatchNodeLandmine);
@@ -73,14 +70,19 @@ void FallingRock::initAnimation() {
     _currentSprite->setScale(_spriteScale);
 
     // Create animation with the customized delay for rock or landmine
-    auto animateCharac = Animate::create(createAnimation((_spriteType == SpriteType::ROCK) ? "falling_rock" : "landmine", 4, _animationDelay));
+    std::string animationName = (_spriteType == SpriteType::ROCK) ? "falling_rock" : "landmine";
+    auto animateCharac = Animate::create(SpriteController::getCachedAnimation(animationName));
+    if (!animateCharac) {
+        animateCharac = Animate::create(SpriteController::createAnimation(animationName, 4, _animationDelay));
+        SpriteController::cacheAnimation(animationName, 4, _animationDelay);
+    }
     _currentSprite->runAction(RepeatForever::create(animateCharac));
 }
+
 
 void FallingRock::spawn(const Vec2& startPosition) {
     this->setPosition(startPosition);
     this->setVisible(true);
-    initAnimation();
     // Define target position off-screen at the bottom
     Vec2 endPosition = Vec2(startPosition.x, -SpriteController::calculateScreenRatio(Constants::FALLINGROCK_ITEMS_OFFSET));
 
@@ -102,7 +104,6 @@ void FallingRock::spawn(const Vec2& startPosition) {
 
 void FallingRock::returnToPool() {
     this->setVisible(false);
-    this->stopAllActions();
     this->removeFromParentAndCleanup(false);
     FallingRockPool::getInstance()->returnEnemy(this);
 }

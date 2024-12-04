@@ -1,5 +1,6 @@
 #include "SoundController.h"
 #include "audio/include/AudioEngine.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 using namespace cocos2d::experimental;
@@ -53,6 +54,7 @@ bool SoundController::isMusicPlaying(const std::string& filePath) {
 
 float SoundController::getMusicDuration(const std::string& filePath) {
     auto it = playingMusic.find(filePath);
+    CCLOG("Duration of the sound: %f seconds", AudioEngine::getDuration(it->second));
     if (it != playingMusic.end()) {
         return AudioEngine::getDuration(it->second);
     }
@@ -128,5 +130,4 @@ float SoundController::getSoundEffectDuration(const std::string& filePath) {
 
     return duration;
 }
-
 

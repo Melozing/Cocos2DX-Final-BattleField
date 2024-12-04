@@ -136,6 +136,9 @@ private:
 
     // Cursor
     void initCursor();
+
+    //Preload 
+    void preloadAssets();
 };
 
 #endif // __GAME1SCENE_SCENE_H__
