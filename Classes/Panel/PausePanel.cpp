@@ -3,6 +3,7 @@
 #include "Button/ExitButton.h"
 #include "Scene/LoadingScene.h"
 #include "Constants/Constants.h"
+#include "Controller/SoundController.h"
 #include "ui/CocosGUI.h"
 
 USING_NS_CC;
@@ -37,8 +38,8 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     exitButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     exitButton->setPosition(Vec2(boardSprite->getContentSize().width - exitButton->getContentSize().width / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON),
         boardSprite->getContentSize().height - exitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
-    exitButton->addClickEventListener([resumeCallback](Ref* sender) {
-        resumeCallback();
+    exitButton->addClickEventListener([this, resumeCallback](Ref* sender) {
+        playSoundAndExecuteCallback(resumeCallback);
         });
     boardSprite->addChild(exitButton);
 
@@ -47,8 +48,8 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     resumeButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     resumeButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 - resumeButton->getContentSize().width - SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL) / 2,
         resumeButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
-    resumeButton->addClickEventListener([resumeCallback](Ref* sender) {
-        resumeCallback();
+    resumeButton->addClickEventListener([this, resumeCallback](Ref* sender) {
+        playSoundAndExecuteCallback(resumeCallback);
         });
     boardSprite->addChild(resumeButton);
 
@@ -57,8 +58,8 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     retryButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     retryButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 + retryButton->getContentSize().width + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL) / 2,
         retryButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
-    retryButton->addClickEventListener([retryAction](Ref* sender) {
-        retryAction();
+    retryButton->addClickEventListener([this, retryAction](Ref* sender) {
+        playSoundAndExecuteCallback(retryAction);
         });
     boardSprite->addChild(retryButton);
 
@@ -67,8 +68,8 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     backButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     backButton->setPosition(Vec2(boardSprite->getContentSize().width / 2,
         backButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
-    backButton->addClickEventListener([backAction](Ref* sender) {
-        backAction();
+    backButton->addClickEventListener([this, backAction](Ref* sender) {
+        playSoundAndExecuteCallback(backAction);
         });
     boardSprite->addChild(backButton);
 
@@ -77,10 +78,17 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     exitButton2->setAnchorPoint(Vec2(0.5f, 0.5f));
     exitButton2->setPosition(Vec2(boardSprite->getContentSize().width / 2,
         boardSprite->getContentSize().height - exitButton2->getContentSize().height / 2 - SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
-    exitButton2->addClickEventListener([exitAction](Ref* sender) {
-        exitAction();
+    exitButton2->addClickEventListener([this, exitAction](Ref* sender) {
+        playSoundAndExecuteCallback(exitAction);
         });
     boardSprite->addChild(exitButton2);
 
     return true;
+}
+
+void PausePanel::playSoundAndExecuteCallback(const std::function<void()>& callback) {
+    SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
+    if (callback) {
+        callback();
+    }
 }

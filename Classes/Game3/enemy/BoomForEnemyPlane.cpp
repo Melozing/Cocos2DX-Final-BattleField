@@ -2,6 +2,8 @@
 #include "BoomForEnemyPlanePool.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
+#include "Constants/Constants.h"
 #include "FX/Explodable.h"
 #include "cocos2d.h"
 
@@ -107,7 +109,7 @@ void BoomForEnemyPlane::explode() {
     }
 
     modelCharac->setVisible(false);
-
+    SoundController::getInstance()->playSoundEffect(Constants::CityDamagedSFX);
     // Create explosion effect
     auto explosion = Explosion::create(this->getPosition(), [this]() {
         this->returnToPool();

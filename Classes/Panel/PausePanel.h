@@ -10,6 +10,8 @@ public:
     static PausePanel* createPanel(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction);
     virtual bool init(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction);
     virtual bool init() override;
+private:
+    void playSoundAndExecuteCallback(const std::function<void()>& callback);
 };
 
 #endif // __PAUSE_PANEL_H__

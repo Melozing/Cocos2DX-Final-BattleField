@@ -1,6 +1,8 @@
 #include "BulletForEnemyPlane.h"
 #include "BulletForEnemyPlanePool.h"
 #include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
+#include "Constants/Constants.h"
 #include "FX/Explodable.h"
 #include "cocos2d.h"
 
@@ -98,7 +100,7 @@ void BulletForEnemyPlane::explode() {
 
     // Hide the model character
     modelCharac->setVisible(false);
-
+    SoundController::getInstance()->playSoundEffect(Constants::EnemyCrepExplodeSFX);
     // Create explosion effect
     auto explosion = Explosion::create(this->getPosition(), [this]() {
         this->returnToPool();

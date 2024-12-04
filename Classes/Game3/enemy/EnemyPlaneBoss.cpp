@@ -2,8 +2,10 @@
 #include "EnemyPlaneBossPool.h"
 #include "Game3/enemy/BoomForEnemyPlanePool.h"
 #include "Constants/Constants.h"
+#include "Controller/SoundController.h"
+#include "Controller/SpriteController.h"
 #include "utils/PhysicsShapeCache.h"
-#include <Controller/SpriteController.h>
+#include "cocos2d.h"
 
 USING_NS_CC;
 
@@ -27,14 +29,14 @@ bool EnemyPlaneBoss::init() {
     initAnimation();
 
     // Initialize health
-    health = Constants::HealthEnemyPlaneBoss;
+    health = 0;
 
     // Initialize visibleSize and origin
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
 
     // Initialize phase
-    currentPhase = Phase::PHASE_1;
+    currentPhase = Phase::StartPHASE;
     return true;
 }
 
@@ -57,7 +59,7 @@ void EnemyPlaneBoss::initAnimation() {
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
+void EnemyPlaneBoss::spawnEnemy() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
@@ -83,10 +85,41 @@ void EnemyPlaneBoss::spawnEnemy(cocos2d::Node* parent) {
 
     // Run the spawn action and then start moving left and right
     this->runAction(Sequence::create(spawnAction, CallFunc::create([this]() {
-        this->createPhysicsBody();
-        this->moveLeftRight();
-        this->executePhaseSkills();
+        // Dispatch event to show the boss health bar
+        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SHOW_BOSS_HEALTH_BAR");
+        this->graduallyIncreaseHealth();
         }), nullptr));
+}
+
+void EnemyPlaneBoss::graduallyIncreaseHealth() {
+    this->health = 0;
+    float targetHealth = Constants::HealthEnemyPlaneBoss;
+    SoundController::getInstance()->playSoundEffect(Constants::BossHealthSFX);
+
+    // Logic to gradually increase health to targetHealth
+    // For example, using a schedule to increment health over time
+    this->schedule([this, targetHealth](float dt) {
+        if (this->health < targetHealth) {
+            this->health += 1.0f; // Increment health
+            if (this->health > targetHealth) {
+                this->health = targetHealth;
+            }
+
+            // Play sound effect
+
+            // Dispatch custom event to update health bar
+            auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+            EventCustom event("UPDATE_BOSS_HEALTH_BAR");
+            event.setUserData(&this->health);
+            eventDispatcher->dispatchEvent(&event);
+        }
+        else {
+            this->unschedule("graduallyIncreaseHealth");
+            this->createPhysicsBody();
+            this->moveLeftRight();
+            this->executePhaseSkills();
+        }
+        }, 0.02f, "graduallyIncreaseHealth"); // Adjust the interval as needed
 }
 
 void EnemyPlaneBoss::moveLeftRight() {
@@ -116,7 +149,6 @@ void EnemyPlaneBoss::takeDamage(float damage) {
     health -= damage;
     if (health <= 0) {
         // Update phase before moving up and returning to the pool
-        updatePhase();
         moveUpAndReturnToPool();
     }
 }
@@ -130,24 +162,24 @@ void EnemyPlaneBoss::updatePhase() {
         currentPhase = Phase::PHASE_3;
     }
     else {
-        // If already in PHASE_3, reset to PHASE_1 for the next cycle
         currentPhase = Phase::PHASE_1;
+        SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
+        Constants::currentSoundTrackPath = Constants::pathSoundBossGame3Phase1;
+        SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase1, false);
     }
 
     // Reset health for the new phase
     health = Constants::HealthEnemyPlaneBoss;
-
-    // Execute skills for the new phase
-    executePhaseSkills();
 }
 
 void EnemyPlaneBoss::executePhaseSkills() {
     switch (currentPhase) {
     case Phase::PHASE_1:
         // Execute skills for phase 1
+        this->dropBooms();
         this->schedule([this](float dt) {
             this->dropBooms();
-            }, 5.0f, "drop_booms_key");
+            }, 3.5f, "drop_booms_key");
         break;
     case Phase::PHASE_2:
         // Execute skills for phase 2
@@ -191,6 +223,20 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
+    this->startExplosions();
+    // Unschedule skill spawning
+    this->unschedule("drop_booms_key");
+
+    // Return active weapons to the pool
+    auto boomPool = BoomForEnemyPlanePool::getInstance();
+    for (auto& child : this->getParent()->getChildren()) {
+        auto boom = dynamic_cast<BoomForEnemyPlane*>(child);
+        if (boom && boom->isVisible()) {
+            boom->setVisible(false);
+            boomPool->returnBoom(boom);
+        }
+    }
+
 
     // Create a move action to move the boss to the center of the screen on the X axis
     auto moveToCenterX = MoveTo::create(1.0f, Vec2(origin.x + visibleSize.width / 2, this->getPositionY()));
@@ -199,16 +245,22 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
     auto moveToTop = MoveTo::create(3.0f, Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height + this->GetSize().height * 2));
 
     // Create a scale action to scale the boss down to a smaller size
-    auto scaleDown = ScaleTo::create(1.5f, 0.1f);
+    auto scaleDown = ScaleTo::create(3.0f, 0.1f);
 
     // Create a spawn action to run both move and scale actions simultaneously
     auto moveAndScale = Spawn::create(scaleDown, moveToTop, nullptr);
 
     // Create a sequence to move to center X, then run the move and scale actions, then return to pool
-    auto sequence = Sequence::create(moveToCenterX, moveAndScale, CallFunc::create([this]() {
-        this->isExploding = false; // Stop explosions
-        this->removeFromParentAndCleanup(false);
-        EnemyPlaneBossPool::getInstance()->returnEnemy(this);
+    auto sequence = Sequence::create(moveToCenterX, moveAndScale, 
+        CallFunc::create([this]() {
+            // Dispatch event to hide the boss health bar
+            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("HIDE_BOSS_HEALTH_BAR");
+            })
+        ,
+        CallFunc::create([this]() {
+            this->isExploding = false; // Stop explosions
+            this->removeFromParentAndCleanup(false);
+            EnemyPlaneBossPool::getInstance()->returnEnemy(this);
         }), nullptr);
 
     // Run the sequence action
@@ -216,7 +268,6 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
 
     // Start explosions
     this->isExploding = true;
-    this->startExplosions();
 }
 
 void EnemyPlaneBoss::startExplosions() {

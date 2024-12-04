@@ -3,6 +3,7 @@
 #include "Constants/Constants.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
 
 USING_NS_CC;
 
@@ -144,8 +145,8 @@ void BulletPlayerGame3::removeWhenOutOfScreen()
 
     Vec2 position = this->getPosition();
 
-    if (position.x < origin.x || position.x > origin.x + visibleSize.width ||
-        position.y < origin.y || position.y > origin.y + visibleSize.height)
+    if (position.x < origin.x || position.x > origin.x + visibleSize.width /2 ||
+        position.y < origin.y || position.y > origin.y + visibleSize.height /2)
     {
         this->returnPool();
     }
@@ -161,7 +162,7 @@ void BulletPlayerGame3::explode() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
-    
+    SoundController::getInstance()->playSoundEffect(Constants::EnemyCrepExplodeSFX);
     auto explosion = Explosion::create(this->getPosition(), [this]() {
         });
     if (this->getParent() != nullptr) {

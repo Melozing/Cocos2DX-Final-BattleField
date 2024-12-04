@@ -101,3 +101,32 @@ void SoundController::update(float dt) {
         currentEventIndex++;
     }
 }
+
+int SoundController::playSoundEffect(const std::string& filePath, bool loop) {
+    return AudioEngine::play2d(filePath, loop);
+}
+
+float SoundController::getSoundEffectDuration(const std::string& filePath) {
+    // Preload the sound effect to ensure it is loaded
+    AudioEngine::preload(filePath, [filePath](bool isSuccess) {
+        if (!isSuccess) {
+            CCLOG("Failed to preload sound effect: %s", filePath.c_str());
+        }
+        });
+
+    // Wait for the preload to complete
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Play the sound effect to get a valid audio ID
+    int audioId = AudioEngine::play2d(filePath, false);
+
+    // Get the duration of the sound effect
+    float duration = AudioEngine::getDuration(audioId);
+
+    // Stop the sound effect immediately after getting the duration
+    AudioEngine::stop(audioId);
+
+    return duration;
+}
+
+

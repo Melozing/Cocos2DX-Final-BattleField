@@ -90,6 +90,9 @@ void GameController::Victory(const std::function<void()>& exitAction, const std:
 
 void GameController::pauseGame(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc, const std::string& soundtrackPath) {
     if (!paused) {
+        paused = true;
+        pauseMusic();
+
         auto director = Director::getInstance();
         auto runningScene = director->getRunningScene();
         SoundController::getInstance()->pauseMusic(soundtrackPath);
@@ -166,6 +169,7 @@ void GameController::resumeGame() {
         auto director = Director::getInstance();
         director->resume();
         paused = false;
+        resumeMusic();
 
         // Simulate Enter key press event
         EventKeyboard event(EventKeyboard::KeyCode::KEY_ENTER, true);
@@ -210,4 +214,16 @@ void GameController::resetGameState() {
 void GameController::toggleCursorVisibility(bool visible) {
     auto director = Director::getInstance();
     director->getOpenGLView()->setCursorVisible(visible);
+}
+
+void GameController::pauseMusic() {
+    if (!currentSoundtrackPath.empty()) {
+        SoundController::getInstance()->pauseMusic(currentSoundtrackPath);
+    }
+}
+
+void GameController::resumeMusic() {
+    if (!currentSoundtrackPath.empty()) {
+        SoundController::getInstance()->resumeMusic(currentSoundtrackPath);
+    }
 }

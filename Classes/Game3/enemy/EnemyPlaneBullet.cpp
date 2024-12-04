@@ -56,7 +56,7 @@ void EnemyPlaneBullet::initAnimation() {
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime) {
+void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill) {
     auto enemy = EnemyPlaneBulletPool::getInstance()->getEnemy();
     if (enemy) {
         enemy->createPhysicsBody();
@@ -80,10 +80,12 @@ void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime) {
             enemy->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBulletGame3Speed);
         }
 
-        // Schedule to show warning sign and spawn bullets
-        enemy->scheduleOnce([enemy](float) {
-            enemy->showWarningSign();
-            }, skillTime, "show_warning_sign_key");
+        if (spawnWithSkill) {
+            // Schedule to show warning sign and spawn bullets
+            enemy->scheduleOnce([enemy](float) {
+                enemy->showWarningSign();
+                }, skillTime, "show_warning_sign_key");
+        }
     }
 }
 
