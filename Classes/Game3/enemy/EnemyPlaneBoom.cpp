@@ -47,7 +47,7 @@ void EnemyPlaneBoom::initAnimation() {
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime) {
+void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill) {
     auto enemy = EnemyPlaneBoomPool::getInstance()->getEnemy();
     if (enemy) {
         enemy->setVisible(true);
@@ -74,7 +74,7 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime) {
         enemy->createPhysicsBody();
 
         // Schedule to spawn boom at the specified skill time
-        enemy->schedule([enemy, spawnFromLeft](float dt) {
+        enemy->scheduleOnce([enemy, spawnFromLeft](float dt) {
             enemy->spawnBoom(spawnFromLeft);
             }, skillTime, "spawn_boom_key");
     }

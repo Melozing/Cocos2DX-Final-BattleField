@@ -1,6 +1,7 @@
 #include "BaseScene.h"
 #include "Controller/GameController.h"
 #include "Controller/SceneController.h"
+#include "Controller/SoundController.h"
 #include "Constants/Constants.h"
 
 USING_NS_CC;
@@ -22,7 +23,8 @@ bool BaseScene::init() {
                 auto exitAction = []() {
                     Director::getInstance()->end();
                     };
-                std::string soundtrackPath = Constants::pathSoundTrackGame1;
+                std::string soundtrackPath = Constants::currentSoundTrackPath;
+                SoundController::getInstance()->playSoundEffect(Constants::ClickStartGameSFX);
                 GameController::getInstance()->pauseGame(exitAction, _sceneCreationFunc, soundtrackPath);
             }
         }
@@ -32,6 +34,7 @@ bool BaseScene::init() {
                 {
                     _cursor->setVisible(true);
                 }
+                SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
                 GameController::getInstance()->resumeGame();
             }
         }

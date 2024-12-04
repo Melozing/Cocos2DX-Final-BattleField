@@ -4,6 +4,12 @@
 
 class Constants {
 public:
+    static std::string currentSoundTrackPath;
+    const static std::string MainMenuTrackPath;
+    const static std::string ClickStartGameSFX;
+    const static std::string ButtonClickSFX;
+    const static std::string OpenPanel;
+
     // Constants for enemy scale
     static const float FLYING_BULLET_SPEED;
     static const float FALLINGROCK_START_Y;
@@ -91,9 +97,18 @@ public:
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
 	static const float HealthEnemyPlaneBoss;
 	static const float BulletDamageGame3;
-	
+    //game3 SFX
+    static const std::string BossHealthSFX;
+    static const std::string PlayerShootSFX;
+    static const std::string EnemyCrepExplodeSFX;
+    static const std::string CityDamagedSFX;
+
+    static const std::string pathSoundTrackGame3;
+    static const std::string pathSoundBossGame3Phase1;
+
 	//VictoryPanel
 	static const std::string VICTORY_SOUNDTRACK_PATH;
+
     //UI
     static const int ORDER_LAYER_CURSOR;
     static const int ORDER_LAYER_UI;

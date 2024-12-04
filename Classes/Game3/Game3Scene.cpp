@@ -13,6 +13,7 @@
 
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
 #include "Manager/BackgroundManager.h"
@@ -27,7 +28,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game3Scene::create();
     scene->addChild(layer);
@@ -51,10 +52,23 @@ bool Game3Scene::init() {
     initSpawning();
     setupContactListener();
     initHealthBar();
+    initSound();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
     this->addChild(cityCollisionArea);
+
+    // Register event listeners
+    auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+    eventDispatcher->addCustomEventListener("SHOW_BOSS_HEALTH_BAR", [this](EventCustom* event) {
+        this->showBossHealthBar();
+        });
+    eventDispatcher->addCustomEventListener("HIDE_BOSS_HEALTH_BAR", [this](EventCustom* event) {
+        this->hideBossHealthBar();
+        });
+    eventDispatcher->addCustomEventListener("UPDATE_BOSS_HEALTH_BAR", [this](EventCustom* event) {
+        this->updateBossHealthBar(( enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
+        });
 
     return true;
 }
@@ -108,10 +122,10 @@ void Game3Scene::initBossHealthBar() {
     bossHealthBar->setBorderPosition(loadingPos);
 
     bossHealthBar->setBorderRotation(-90);
-    bossHealthBar->setPercent(100);
+    bossHealthBar->setPercent(0);
     bossHealthBar->setLoadingBarScale(SpriteController::updateSpriteScale(bossHealthBar->getLoadingBar(), 0.133f));
     bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.17f));
-    bossHealthBar->setVisible(true);
+    bossHealthBar->setVisible(false);
     this->addChild(bossHealthBar, Constants::ORDER_LAYER_UI);
 }
 
@@ -125,15 +139,28 @@ void Game3Scene::initPools() {
     UpgradeBulletItemPool::getInstance()->initPool(10);
     IncreaseBulletCountItemPool::getInstance()->initPool(10);
     HealthRecoveryItemPool::getInstance()->initPool(10);
+}
 
+void Game3Scene::initSound() {
+    if (!FileUtils::getInstance()->isFileExist(Constants::pathSoundTrackGame3)) {
+        CCLOG("Error: Music file does not exist!");
+        return;
+    }
+    
+    SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame3);
+    SoundController::getInstance()->preloadMusic(Constants::pathSoundBossGame3Phase1);
+    
+    SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
+    Constants::currentSoundTrackPath = Constants::pathSoundTrackGame3;
+    SoundController::getInstance()->playMusic(Constants::currentSoundTrackPath, false);
 }
 
 void Game3Scene::initSpawning() {
+    // Read JSON file
     std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game3.json");
-
     FILE* fp = fopen(filePath.c_str(), "rb");
     if (!fp) {
-        CCLOG("Failed to open spawn schedule file.");
+        CCLOG("Failed to open JSON file");
         return;
     }
 
@@ -143,46 +170,48 @@ void Game3Scene::initSpawning() {
     document.ParseStream(is);
     fclose(fp);
 
-    if (!document.IsObject()) {
-        CCLOG("Failed to parse JSON");
+    if (!document.IsObject() || !document.HasMember("spawnEvents") || !document["spawnEvents"].IsArray()) {
+        CCLOG("Invalid JSON format");
         return;
     }
 
-    const rapidjson::Value& spawnEvents = document["spawnEvents"];
-    for (rapidjson::SizeType i = 0; i < spawnEvents.Size(); ++i) {
-        const rapidjson::Value& event = spawnEvents[i];
-        const rapidjson::Value& spawnTimes = event["spawnTimes"];
-        const rapidjson::Value& skillTimes = event["skillTimes"];
+    const auto& spawnEvents = document["spawnEvents"];
+    for (const auto& event : spawnEvents.GetArray()) {
         std::string enemyType = event["enemyType"].GetString();
+        const auto& spawnTimes = event["spawnTimes"].GetArray();
+        const auto& skillTimes = event["skillTimes"].GetArray();
+        const auto& spawnSkills = event["spawnSkills"].GetArray();
 
-        for (rapidjson::SizeType j = 0; j < spawnTimes.Size(); ++j) {
-            float spawnTime = spawnTimes[j].GetFloat();
-            float skillTime = skillTimes[j].GetFloat();
+        for (size_t i = 0; i < spawnTimes.Size(); ++i) {
+            float spawnTime = spawnTimes[i].GetFloat();
+            float skillTime = skillTimes[i].GetFloat();
+            bool spawnWithSkill = spawnSkills[i].GetBool();
 
-            this->scheduleOnce([this, enemyType, skillTime](float) {
+            this->scheduleOnce([this, enemyType, skillTime, spawnWithSkill](float) {
                 if (enemyType == "EnemyPlaneBullet") {
                     auto enemy = EnemyPlaneBulletPool::getInstance()->getEnemy();
                     if (enemy) {
                         this->addChild(enemy);
-                        enemy->spawnEnemy(this, skillTime);
+                        enemy->spawnEnemy(this, skillTime, spawnWithSkill);
                     }
                 }
                 else if (enemyType == "EnemyPlaneBoom") {
                     auto enemy = EnemyPlaneBoomPool::getInstance()->getEnemy();
                     if (enemy) {
                         this->addChild(enemy);
-                        enemy->spawnEnemy(this, skillTime);
+                        enemy->spawnEnemy(this, skillTime, spawnWithSkill);
                     }
                 }
                 else if (enemyType == "EnemyPlaneBoss") {
                     enemyBoos = EnemyPlaneBossPool::getInstance()->getEnemy();
                     if (enemyBoos) {
-                        enemyBoos->spawnEnemy(this);
-                        this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
+                        enemyBoos->updatePhase();
+                        enemyBoos->spawnEnemy();
                         initBossHealthBar();
+                        this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
                     }
                 }
-                }, spawnTime, "spawn_enemy_key_" + std::to_string(i) + "_" + std::to_string(j));
+                }, spawnTime, "spawn_enemy_key_" + enemyType + std::to_string(i));
         }
     }
 }
@@ -327,7 +356,6 @@ void Game3Scene::handleBoomCityCollision(BoomForEnemyPlane* boom) {
 }
 
 void Game3Scene::checkHealthBar() {
-    return;
     if (healthBar->getPercent() <= 0) {
         this->stopAllActions();
         GameController::getInstance()->GameOver(
@@ -353,11 +381,18 @@ void Game3Scene::handleBossDamage(float damage) {
 
 void Game3Scene::updateBossHealthBar(float healthPercent) {
     if (bossHealthBar) {
-        if (healthPercent <= 0)
-        {
-            bossHealthBar->setVisible(false);
-            return;
-        }
         bossHealthBar->setPercent(healthPercent);
+    }
+}
+
+void Game3Scene::showBossHealthBar() {
+    if (bossHealthBar) {
+        bossHealthBar->setVisible(true);
+    }
+}
+
+void Game3Scene::hideBossHealthBar() {
+    if (bossHealthBar) {
+        bossHealthBar->setVisible(false);
     }
 }

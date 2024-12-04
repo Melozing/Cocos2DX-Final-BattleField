@@ -71,6 +71,11 @@ private:
     void initBossHealthBar();
     void updateBossHealthBar(float healthPercent);
     void handleBossDamage(float damage);
+    void showBossHealthBar();
+    void hideBossHealthBar();
+
+    //Sound 
+    void initSound();
 };
 
 #endif // __GAME3SCENE_SCENE_H__

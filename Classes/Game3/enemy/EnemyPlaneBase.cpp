@@ -5,6 +5,8 @@
 #include "EnemyPlaneBulletPool.h"
 #include "Game3/Items/ItemBaseGame3.h"
 #include "Game3/Items/ItemPoolGane3.h"
+#include "Controller/SoundController.h"
+#include "Constants/Constants.h"
 
 USING_NS_CC;
 
@@ -82,6 +84,7 @@ void EnemyPlaneBase::explode() {
         this->removeComponent(this->getPhysicsBody());
     }
     this->setVisible(false);
+    SoundController::getInstance()->playSoundEffect(Constants::EnemyCrepExplodeSFX);
     auto explosion = Explosion::create(this->getPosition(), [this]() {
         this->returnToPool();
         });
@@ -98,18 +101,15 @@ void EnemyPlaneBase::dropRandomItem() {
     // Check if the random value is less than the drop chance
     if (randomValue < dropChance) {
         // Proceed to drop an item
-        int randomItem = random(0, 2); // Assuming 3 types of items
+        int randomItem = random(0, 1); // Assuming 3 types of items
         ItemBaseGame3* item = nullptr;
 
         switch (randomItem) {
         case 0:
-            item = UpgradeBulletItemPool::getInstance()->getItem();
+            item = HealthRecoveryItemPool::getInstance()->getItem();
             break;
         case 1:
             item = IncreaseBulletCountItemPool::getInstance()->getItem();
-            break;
-        case 2:
-            item = HealthRecoveryItemPool::getInstance()->getItem();
             break;
         }
 

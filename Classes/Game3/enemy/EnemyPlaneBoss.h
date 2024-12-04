@@ -11,21 +11,23 @@ public:
 
     virtual bool init() override;
     void initAnimation();
-    void spawnEnemy(cocos2d::Node* parent);
+    void spawnEnemy();
     void reset();
     Size GetSize();
     void moveLeftRight();
     float getHealth() const;
+    void updatePhase();
 
 private:
     void createPhysicsBody();
     void moveUpAndReturnToPool();
     void startExplosions();
-    void updatePhase();
     void executePhaseSkills();
     void dropBooms();
+    void graduallyIncreaseHealth();
 
     enum class Phase {
+        StartPHASE,
         PHASE_1,
         PHASE_2,
         PHASE_3

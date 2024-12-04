@@ -10,7 +10,7 @@ public:
     void reset();
     virtual bool init() override;
     Size GetSize();
-    static void spawnEnemy(cocos2d::Node* parent, float skillTime);
+    static void spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill);
     void initAnimation();
     void createPhysicsBody();
     void spawnBullets();

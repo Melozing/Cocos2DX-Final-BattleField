@@ -13,8 +13,8 @@
 #include "Enemy/FallingRockPool.h"
 #include "Enemy/FallingTreePool.h"
 #include "Enemy/RandomBoomPool.h"
-#include "Enemy/FanBulletPool.h" 
-#include "Enemy/SpawnEvent.h" 
+#include "Enemy/FanBulletPool.h"
+#include "Enemy/SpawnEvent.h"
 #include "Game1/Effect/EffectObjectPool.h"
 #include "Game1/Effect/EffectObject.h"
 #include "Game1/Player/HealthPlayerGame1.h"
@@ -119,7 +119,7 @@ private:
     float _lastEffectYPosition = -1.0f;
     float elapsedTime;
 
-	//init functions
+    // Initialization functions
     void initPhysics(const Size& visibleSize);
     void initBackground();
     void initPools();
@@ -129,12 +129,12 @@ private:
     void initSound();
     void initSpawning();
 
-    //Shield 
-    ShieldSkill* _shield; 
-    void activateShield(); 
+    // Shield
+    ShieldSkill* _shield;
+    void activateShield();
     void deactivateShield();
 
-    //Cursor
+    // Cursor
     void initCursor();
 };
 

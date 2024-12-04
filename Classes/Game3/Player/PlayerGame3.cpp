@@ -1,5 +1,6 @@
 ﻿#include "PlayerGame3.h"
 #include "Constants/Constants.h"
+#include "Controller/SoundController.h"
 #include "utils/MathFunction.h"
 #include "Manager/PlayerMovementManager.h"
 #include "Controller/GameController.h"
@@ -193,7 +194,9 @@ void PlayerGame3::shootBullet()
         if (bullet->getParent() == nullptr) {
             this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER + 5);
         }
-
+        SoundController::getInstance()->setMusicVolume(Constants::PlayerShootSFX, 0.2f);
+        SoundController::getInstance()->playSoundEffect(Constants::PlayerShootSFX);
+        SoundController::getInstance()->setMusicVolume(Constants::PlayerShootSFX, 0.2f);
         timeSinceLastShot = 0.0f;
     }
     else {

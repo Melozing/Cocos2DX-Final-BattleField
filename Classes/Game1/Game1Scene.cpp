@@ -26,7 +26,7 @@ using namespace cocos2d::experimental;
 
 cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
     layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
@@ -200,7 +200,7 @@ void Game1Scene::initSound() {
         CCLOG("Error: Music file does not exist!");
         return;
     }
-
+    Constants::currentSoundTrackPath = Constants::pathSoundTrackGame1;
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
 
@@ -208,7 +208,7 @@ void Game1Scene::initSound() {
         musicDuration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
         this->scheduleOnce([this](float) { this->unschedule("collectible_item_spawn_key"); }, musicDuration - 10.5f, "stop_collectible_spawning_key");
         }, 0.1f, "get_music_duration_key");
-    SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
+    //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
 
     this->schedule([this](float dt) {
         updateLoadingBar(dt);
