@@ -13,103 +13,61 @@
 #include "ui/CocosGUI.h"
 USING_NS_CC;
 
-const uint32_t PLAYER_BITMASK = 0x0001;
-const uint32_t TILE_BITMASK = 0x0002;
-
 cocos2d::Scene* Game2Scene::createScene() {
     auto scene = Scene::createWithPhysics();
     scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
-
     auto layer = Game2Scene::create();
     scene->addChild(layer);
-
     return scene;
 }
 
 bool Game2Scene::init() {
     if (!BaseScene::init()) {
-        CCLOG("Failed to initialize BaseScene");
         return false;
     }
 
     this->setSceneCreationFunc([]() -> cocos2d::Scene* {
         return Game2Scene::createScene();
         });
-
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    _isGameOver = false;
-    PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
-    _playerAttributes = &PlayerAttributes::getInstance();
-
-
-    // Load the background image
     BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/game2.png", Constants::ORDER_LAYER_BACKGROUND);
 
-    // Create the player at the center of the screen
     _player = PlayerGame2::createPlayerGame2();
     if (!_player) {
-        CCLOG("Failed to create PlayerGame2");
         return false;
     }
 
     _player->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     _player->setName("PlayerGame2");
     this->addChild(_player);
-
-    // Setup keyboard event listeners
     setupKeyboardEventListeners();
-
-    // Initialize and setup cursor
     _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
-    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f)); // Adjust scale as needed
+    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
     this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR);
 
     this->schedule([this](float delta) {
         spawnEnemies();
         }, 5.0f, "spawn_enemy_key");
-
-    CCLOG("Game2Scene initialized successfully");
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    initHealthBar();
-
     this->scheduleUpdate();
+
+    /*_healthBar = HealthBar::create("Resources/assets_game/textures/healthbar/backgroundFrame.png",
+                                   "Resources/assets_game/textures/healthbar/avatarFrame.png",
+                                   "Resources/assets_game/textures/healthbar/healthBar.png");
+    _healthBar->setPositionCustom(Vec2(50, Director::getInstance()->getVisibleSize().height - 50));
+    this->addChild(_healthBar);*/
+
 
     return true;
 }
 
-void Game2Scene::initHealthBar() {
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    _healthBar = CustomLoadingBar::create("assets_game/UXUI/Loading/health_bar_g3_progress.png", "assets_game/UXUI/Loading/health_bar_g3_border.png", 0.25f);
-    _healthBar->setLoadingBarRotation(-90);
-    _healthBar->setLoadingBarPosition(Vec2(_healthBar->getLoadingBar()->getContentSize().height + SpriteController::calculateScreenRatio(0.03f) / 2, visibleSize.height / 2));
-
-    // Adjust the border position to be lower than the loading bar
-    auto loadingPos = _healthBar->getLoadingBar()->getPosition();
-    float loadingBarHeight = SpriteController::calculateScreenRatio(0.01f);
-    loadingPos.y -= loadingBarHeight; // Move the border lower
-    _healthBar->setBorderPosition(loadingPos);
-
-    _healthBar->setBorderRotation(-90);
-    _healthBar->setPercent(100);
-    _healthBar->setLoadingBarScale(SpriteController::updateSpriteScale(_healthBar->getLoadingBar(), 0.133f));
-    _healthBar->setBorderScale(SpriteController::updateSpriteScale(_healthBar->getBorder(), 0.155f));
-
-    this->addChild(_healthBar, Constants::ORDER_LAYER_UI);
-}
-
-
-void Game2Scene::updateHealthBar() {
-    float healthPercent = (static_cast<float>(_playerAttributes->GetHealth()) / Constants::Player_Health2) * 100.0f;
-    _healthBar->setPercent(healthPercent);
-}
 
 void Game2Scene::checkGameOver() {
-    if (_playerAttributes->GetHealth() <= 0) {
+   /* if (_playerAttributes->GetHealth() <= 0) {
         _isGameOver = true;
         auto gameOverLabel = Label::createWithTTF("Game Over", "fonts/Marker Felt.ttf", 48);
         gameOverLabel->setPosition(Director::getInstance()->getVisibleSize() / 2);
@@ -122,31 +80,23 @@ void Game2Scene::checkGameOver() {
             []() -> Scene* {
                 return Game2Scene::createScene();
             },
-            Constants::pathSoundTrackGame1 // Add the soundtrack path here
+            Constants::pathSoundTrackGame1 
         );
-    }
+    }*/
 }
 
 void Game2Scene::resetGameState() {
-    // Unschedule existing tasks
     this->unscheduleAllCallbacks();
-
-    // Reset game state
     _isGameOver = false;
     PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
     _playerAttributes = &PlayerAttributes::getInstance();
-
-    this->scheduleUpdate(); 
+    this->scheduleUpdate();
 }
 
 void Game2Scene::setupCursor() {
     if (_cursor) {
-        CCLOG("Changing cursor sprite...");
         _cursor->changeSprite("assets_game/player/tam.png");
-    }
-    else {
-        CCLOG("Cursor is not initialized");
-    }
+    }  
 }
 
 void Game2Scene::setupKeyboardEventListeners() {
@@ -156,13 +106,11 @@ void Game2Scene::setupKeyboardEventListeners() {
             _player->onKeyPressed(keyCode, event);
         }
         };
-
     eventListener->onKeyReleased = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         if (_player) {
             _player->onKeyReleased(keyCode, event);
         }
         };
-
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 }
 
@@ -178,10 +126,6 @@ void Game2Scene::update(float delta) {
 
         _player->setPosition(pos);
     }
-    // Update health bar
-    updateHealthBar();
-
-    // Check for game over
     checkGameOver();
 }
 
@@ -218,13 +162,11 @@ void Game2Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& p
     else if (enemyType == "BossEnemy") {
         enemy = BossEnemy::create();
     }*/
-
     if (enemy) {
         enemy->setName("Enemy");
         enemy->setPosition(position);
         this->addChild(enemy);
         enemy->scheduleUpdate();
-        
     }
 }
 
@@ -276,17 +218,14 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         auto bullet = (nodeA->getName() == "Bullet") ? nodeA : nodeB;
         auto enemy = (nodeA->getName() == "Enemy") ? nodeA : nodeB;
 
-        // Apply damage to the enemy
         auto enemyBase = dynamic_cast<EnemyBase*>(enemy);
         auto bulletGame2 = dynamic_cast<BulletGame2*>(bullet);
         if (enemyBase && bulletGame2) {
             enemyBase->takeDamage(bulletGame2->getDamage());
         }
-
-        // Remove the bullet
         bullet->removeFromParent();
     }
-
     return true;
 }
+
 
