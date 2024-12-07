@@ -21,6 +21,8 @@ public:
     bool onContactBegin(cocos2d::PhysicsContact& contact);
     void checkGameOver();
     void resetGameState();
+    void takeDamage(int damage);
+    void heal(int amount);
 private:
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }

@@ -43,7 +43,6 @@ bool Game2Scene::init() {
     PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
     _playerAttributes = &PlayerAttributes::getInstance();
 
-
     // Load the background image
     BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/game2.png", Constants::ORDER_LAYER_BACKGROUND);
 
@@ -75,6 +74,7 @@ bool Game2Scene::init() {
     contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
+    // Initialize health bar
     initHealthBar();
 
     this->scheduleUpdate();
@@ -95,13 +95,12 @@ void Game2Scene::initHealthBar() {
     _healthBar->setBorderPosition(loadingPos);
 
     _healthBar->setBorderRotation(-90);
-    _healthBar->setPercent(100);
+    _healthBar->setPercent(100); // Set to full health
     _healthBar->setLoadingBarScale(SpriteController::updateSpriteScale(_healthBar->getLoadingBar(), 0.133f));
     _healthBar->setBorderScale(SpriteController::updateSpriteScale(_healthBar->getBorder(), 0.155f));
 
     this->addChild(_healthBar, Constants::ORDER_LAYER_UI);
 }
-
 
 void Game2Scene::updateHealthBar() {
     float healthPercent = (static_cast<float>(_playerAttributes->GetHealth()) / Constants::Player_Health2) * 100.0f;
@@ -136,7 +135,7 @@ void Game2Scene::resetGameState() {
     PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
     _playerAttributes = &PlayerAttributes::getInstance();
 
-    this->scheduleUpdate(); 
+    this->scheduleUpdate();
 }
 
 void Game2Scene::setupCursor() {
@@ -224,7 +223,6 @@ void Game2Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& p
         enemy->setPosition(position);
         this->addChild(enemy);
         enemy->scheduleUpdate();
-        
     }
 }
 
@@ -290,3 +288,13 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
     return true;
 }
 
+void Game2Scene::takeDamage(int damage) {
+    _playerAttributes->SetHealth(_playerAttributes->GetHealth() - damage);
+    updateHealthBar();
+    checkGameOver();
+}
+
+void Game2Scene::heal(int amount) {
+    _playerAttributes->SetHealth(std::min(_playerAttributes->GetHealth() + amount, Constants::Player_Health2));
+    updateHealthBar();
+}
