@@ -16,13 +16,18 @@ PlayerGame2::PlayerGame2()
     _isThrowingGrenade(false),
     playerMovement(nullptr),
     bulletPool(30),
-    totalAmmo(initialAmmo),
-    currentMagazine(maxMagazineSize),
+    attributes(new PlayerAttributes(100, 130)),
     isReloading(false),
     reloadTime(2.0f),
-    attributes(new PlayerAttributes(100, 120))
+    currentFireMode(FireMode::SINGLE),
+    burstCooldown(0.0f),
+    isAutoFiring(false)
 {
+    totalAmmo = attributes->GetAmmo();
+    currentMagazine = maxMagazineSize;
+    currentGrenades = maxGrenades;
 }
+
 
 PlayerGame2::~PlayerGame2()
 {
@@ -131,6 +136,16 @@ void PlayerGame2::onMouseDown(Event* event)
         _isMouseDown = true;
         _mousePressDuration = 0.0f;
         _isThrowingGrenade = false;
+
+        if (currentFireMode == FireMode::AUTO) {
+            isAutoFiring = true;
+            this->schedule([this](float) {
+                auto mousePos = Director::getInstance()->convertToGL(_mousePos);
+                Vec2 pos = this->getPosition();
+                Vec2 dirToShoot = mousePos - pos;
+                shootBullet(dirToShoot);
+                }, 0.1f, "auto_fire_key");
+        }
     }
     else if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
     {
@@ -151,17 +166,40 @@ void PlayerGame2::onMouseUp(Event* event)
 
         if (_isThrowingGrenade && e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
         {
-            throwGrenade(dirToShoot, _mousePressDuration);
+            if (currentGrenades > 0) {
+                throwGrenade(dirToShoot, _mousePressDuration);
+                currentGrenades--;
+            }
         }
         else if (!_isThrowingGrenade && e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
         {
-            shootBullet(dirToShoot);
+            switch (currentFireMode) {
+            case FireMode::SINGLE:
+                if (currentMagazine > 0) {
+                    shootBullet(dirToShoot);
+                }
+                else {
+                    reload();
+                }
+                break;
+            case FireMode::AUTO:
+                isAutoFiring = false;
+                this->unschedule("auto_fire_key");
+                break;
+            case FireMode::BURST:
+                if (currentMagazine >= 3) {
+                    fireBurst();
+                }
+                else {
+                    reload();
+                }
+                break;
+            }
         }
 
         _isMouseDown = false;
     }
 }
-
 
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
@@ -175,6 +213,10 @@ void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
     else if (keyCode == EventKeyboard::KeyCode::KEY_R)
     {
         reload();
+    }
+    else if (keyCode == EventKeyboard::KeyCode::KEY_B)
+    {
+        switchFireMode();
     }
 }
 
@@ -191,11 +233,6 @@ void PlayerGame2::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 void PlayerGame2::update(float delta)
 {
-    if (attributes->IsDead())
-    {
-        die();
-    }
-
     playerMovement->update(delta);
     RotateToMouse();
     if (playerMovement->getSpeed() > 0)
@@ -234,18 +271,44 @@ void PlayerGame2::update(float delta)
             updateAmmoDisplay();
         }
     }
-    auto items = this->getParent()->getChildren();
-    for (auto item : items) {
-        if (item->getName() == "HealthItem" && this->getBoundingBox().intersectsRect(item->getBoundingBox())) {
-            pickUpHealth(20); // Example: picking up 20 health
-            item->removeFromParent();
-        }
-        else if (item->getName() == "AmmoItem" && this->getBoundingBox().intersectsRect(item->getBoundingBox())) {
-            pickUpAmmo(10); // Example: picking up 10 ammo
-            item->removeFromParent();
-        }
+
+    if (currentFireMode == FireMode::BURST && burstCooldown > 0.0f) {
+        burstCooldown -= delta;
     }
-    
+}
+
+void PlayerGame2::switchFireMode()
+{
+    switch (currentFireMode) {
+    case FireMode::SINGLE:
+        currentFireMode = FireMode::AUTO;
+        break;
+    case FireMode::AUTO:
+        currentFireMode = FireMode::BURST;
+        break;
+    case FireMode::BURST:
+        currentFireMode = FireMode::SINGLE;
+        break;
+    }
+}
+
+void PlayerGame2::fireBurst()
+{
+    if (burstCooldown > 0.0f) {
+        return;
+    }
+
+    auto mousePos = Director::getInstance()->convertToGL(_mousePos);
+    Vec2 pos = this->getPosition();
+    Vec2 dirToShoot = mousePos - pos;
+
+    for (int i = 0; i < 3; ++i) {
+        this->scheduleOnce([this, dirToShoot](float) {
+            shootBullet(dirToShoot);
+            }, i * 0.1f, "burst_fire_key_" + std::to_string(i));
+    }
+
+    burstCooldown = 1.5f;
 }
 
 void PlayerGame2::RotateToMouse()
@@ -262,7 +325,8 @@ void PlayerGame2::shootBullet(const Vec2& direction)
 {
     if (isReloading || currentMagazine <= 0)
     {
-        return; // Cannot shoot while reloading or if the magazine is empty
+        reload();
+        return;
     }
 
     Vec2 normalizedDirection = direction.getNormalized();
@@ -271,13 +335,9 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     {
         this->getParent()->addChild(bullet);
     }
-
     currentMagazine--;
-    updateAmmoDisplay(); // Update ammo display after shooting
+    updateAmmoDisplay();
 }
-
-
-
 
 void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
 {
@@ -310,17 +370,21 @@ void PlayerGame2::takeDamage(int damage)
 }
 void PlayerGame2::die()
 {
-    this->removeFromParent();
-}
-void PlayerGame2::pickUpHealth(int healthAmount)
-{
-    attributes->IncreaseHealth(healthAmount);
+    //animation cho nay
 }
 
+void PlayerGame2::pickUpHealth(int healthAmount)
+{
+    /*attributes->IncreaseHealth(healthAmount);*/
+}
 void PlayerGame2::pickUpAmmo(int ammoAmount)
 {
-    attributes->SetAmmo(attributes->GetAmmo() + ammoAmount);
-    updateAmmoDisplay();
+   /* attributes->SetAmmo(attributes->GetAmmo() + ammoAmount);
+    updateAmmoDisplay();*/
+}
+void PlayerGame2::pickUpGrenade(int grenadeAmount)
+{
+    currentGrenades = std::min(currentGrenades + grenadeAmount, maxGrenades);
 }
 
 void PlayerGame2::updateAmmoDisplay()

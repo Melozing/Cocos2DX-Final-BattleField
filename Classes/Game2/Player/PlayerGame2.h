@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
@@ -31,9 +31,15 @@ public:
     void die();
     void pickUpHealth(int healthAmount);
     void pickUpAmmo(int ammoAmount);
+    void pickUpGrenade(int grenadeAmount);
 
     const int maxMagazineSize = 30;
     const int initialAmmo = 120;
+    const int maxGrenades = 5; // Giới hạn số lượng lựu đạn
+
+    enum class FireMode { SINGLE, AUTO, BURST };
+    void switchFireMode();
+    void fireBurst();
 
 private:
     cocos2d::Vec2 _mousePos;
@@ -48,10 +54,15 @@ private:
     int currentMagazine;
     bool isReloading;
     float reloadTime;
+    int currentGrenades; // Số lượng lựu đạn hiện tại
     cocos2d::Label* _ammoLabel;
     void updateAmmoDisplay();
 
     PlayerAttributes* attributes;
     void createPhysicsBody();
+
+    FireMode currentFireMode;
+    float burstCooldown;
+    bool isAutoFiring;
 };
 
