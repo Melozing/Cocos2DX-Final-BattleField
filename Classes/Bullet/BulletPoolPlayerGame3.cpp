@@ -22,6 +22,12 @@ void BulletPoolPlayerGame3::initPool(int poolSize) {
 
 BulletPlayerGame3* BulletPoolPlayerGame3::getBullet() {
     if (_availableBullets.empty()) {
+        BulletPlayerGame3* bullet = BulletPlayerGame3::create();
+        if (bullet) {
+            bullet->retain();
+            bullet->setVisible(true);
+            return bullet;
+        }
         return nullptr;
     }
     BulletPlayerGame3* bullet = _availableBullets.front();

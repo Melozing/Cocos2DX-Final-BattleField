@@ -7,211 +7,687 @@
 			<key>Canon1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{2440,933},{483,931}}</string>
+				<string>{{1711,2327},{336,581}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{24,45},{483,931}}</string>
+				<string>{{0,6},{336,581}}</string>
 				<key>sourceSize</key>
-				<string>{540,1024}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon10.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1467,0},{485,932}}</string>
+				<string>{{362,1730},{341,578}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{485,932}}</string>
+				<string>{{0,6},{341,578}}</string>
 				<key>sourceSize</key>
-				<string>{485,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon11.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,933},{490,932}}</string>
+				<string>{{351,3461},{348,577}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{490,932}}</string>
+				<string>{{0,6},{348,577}}</string>
 				<key>sourceSize</key>
-				<string>{490,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon12.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{491,932}}</string>
+				<string>{{0,2883},{355,577}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{491,932}}</string>
+				<string>{{0,6},{355,577}}</string>
 				<key>sourceSize</key>
-				<string>{491,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon13.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1954,933},{485,932}}</string>
+				<string>{{0,1730},{361,576}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{485,932}}</string>
+				<string>{{0,6},{361,576}}</string>
 				<key>sourceSize</key>
-				<string>{485,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon14.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{492,0},{487,932}}</string>
+				<string>{{0,577},{366,576}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{487,932}}</string>
+				<string>{{0,6},{366,576}}</string>
 				<key>sourceSize</key>
-				<string>{487,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon15.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1953,0},{485,932}}</string>
+				<string>{{0,0},{371,576}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{485,932}}</string>
+				<string>{{0,6},{371,576}}</string>
 				<key>sourceSize</key>
-				<string>{485,932}</string>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon16.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1154},{365,575}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{365,575}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon17.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,2307},{358,575}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{358,575}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon18.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,3461},{350,575}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{350,575}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon19.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{356,2883},{342,574}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{342,574}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{2924,932},{483,931}}</string>
+				<string>{{2048,3481},{336,580}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{483,931}}</string>
+				<string>{{0,6},{336,580}}</string>
 				<key>sourceSize</key>
-				<string>{483,931}</string>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon20.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1041,573},{336,574}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,574}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon21.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1037,3450},{336,573}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,573}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon22.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1036,2877},{336,572}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,572}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon23.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{2052,0},{336,573}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,573}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon24.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{709,0},{336,572}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,572}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon25.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1040,1155},{336,571}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,571}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon26.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{704,1727},{336,571}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,571}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon27.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{703,1155},{336,571}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,571}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon28.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1711,2909},{336,570}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,570}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon29.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{700,3453},{336,570}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,570}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{2923,0},{483,931}}</string>
+				<string>{{2048,2900},{336,580}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{483,931}}</string>
+				<string>{{0,6},{336,580}}</string>
 				<key>sourceSize</key>
-				<string>{483,931}</string>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon30.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{699,2882},{336,570}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,570}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon31.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{696,2309},{336,572}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,572}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon32.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{359,2309},{336,573}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,573}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon33.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{372,0},{336,574}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,574}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon34.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{366,1154},{336,575}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,575}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon35.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{367,577},{336,576}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,576}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon36.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1033,2299},{336,577}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,577}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon37.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{704,575},{336,579}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,5},{336,579}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon38.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1370,1727},{336,580}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,5},{336,580}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon39.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1373,2308},{336,580}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,580}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{2439,0},{483,932}}</string>
+				<string>{{2048,2319},{336,580}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{483,932}}</string>
+				<string>{{0,6},{336,580}}</string>
 				<key>sourceSize</key>
-				<string>{483,932}</string>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon40.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1374,2889},{336,581}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,581}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon41.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1374,3471},{336,581}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,581}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon42.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1378,0},{336,581}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,581}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon43.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1378,582},{336,581}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,581}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon44.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1707,1164},{336,581}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,6},{336,581}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon45.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1710,1746},{336,580}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,580}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon46.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1710,1746},{336,580}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,580}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon47.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1710,1746},{336,580}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,580}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon48.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1710,1746},{336,580}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,580}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
+			</dict>
+
+			<key>Canon49.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{1710,1746},{336,580}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,7},{336,580}}</string>
+				<key>sourceSize</key>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon5.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{3407,0},{482,931}}</string>
+				<string>{{2047,1739},{336,579}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{24,37},{482,931}}</string>
+				<string>{{0,6},{336,579}}</string>
 				<key>sourceSize</key>
-				<string>{540,1024}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon6.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{491,933},{489,931}}</string>
+				<string>{{2044,1159},{336,579}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{489,931}}</string>
+				<string>{{0,6},{336,579}}</string>
 				<key>sourceSize</key>
-				<string>{489,931}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon7.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{981,933},{486,932}}</string>
+				<string>{{1715,579},{336,579}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{486,932}}</string>
+				<string>{{0,6},{336,579}}</string>
 				<key>sourceSize</key>
-				<string>{486,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon8.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{980,0},{486,932}}</string>
+				<string>{{1715,0},{336,578}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{486,932}}</string>
+				<string>{{0,6},{336,578}}</string>
 				<key>sourceSize</key>
-				<string>{486,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 			<key>Canon9.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1468,933},{485,932}}</string>
+				<string>{{1711,3480},{336,578}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{485,932}}</string>
+				<string>{{0,6},{336,578}}</string>
 				<key>sourceSize</key>
-				<string>{485,932}</string>
+				<string>{371,587}</string>
 			</dict>
 
 		</dict>
@@ -221,7 +697,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{4096,2048}</string>
+			<string>{4096,4096}</string>
 			<key>textureFileName</key>
 			<string>Canon.png</string>
 			</dict>

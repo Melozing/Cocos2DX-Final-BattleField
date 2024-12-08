@@ -41,7 +41,11 @@ bool PlayerGame3::init()
     isMouseDown = false;
     shootDelay = 0.15f;
     timeSinceLastShot = 0.0f;
-    
+    bulletCount = 3;
+    // Preload shoot sound effect
+    SoundController::getInstance()->preloadSoundEffect(Constants::PlayerShootSFX);
+
+
     return true;
 }
 
@@ -164,7 +168,6 @@ void PlayerGame3::shootBullet()
     if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
 
     Vec2 turretPosition = this->convertToWorldSpace(turretSprite->getPosition());
-    // Update the distance between the player and the mouse position
     if (!updateDistanceToMouse(turretPosition)) {
         return; // Do not shoot if the mouse is too close
     }
@@ -173,36 +176,47 @@ void PlayerGame3::shootBullet()
         return;
     }
 
-    // Calculate the local position of the anchor point (0.5f, 1.0f) in the turret's coordinate system
-    Vec2 localAnchorPoint = Vec2(turretSprite->getContentSize().width * 0.5f, turretSprite->getContentSize().height * 1.0f);
+    localAnchorPoint = Vec2(turretSprite->getContentSize().width * 0.5f, turretSprite->getContentSize().height * 1.0f);
+    turretWorldPos = turretSprite->convertToWorldSpace(localAnchorPoint);
+    direction = _mousePos - turretWorldPos;
 
-    Vec2 turretWorldPos = turretSprite->convertToWorldSpace(localAnchorPoint);
-
-    // Calculate direction from turret to mouse position
-    Vec2 direction = _mousePos - turretWorldPos;
-    direction.normalize();
-
-    // Get bullet from pool and set its properties
-    BulletPlayerGame3* bullet = BulletPoolPlayerGame3::getInstance()->getBullet();
-    if (bullet) {
-        bullet->setVisible(true);
-        //bullet->setPosition(turretWorldPos);
-        bullet->setDirection(direction);
-        bullet->reset();
-        bullet->spawn(turretWorldPos, -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90); // Start the bullet movement
-
-        if (bullet->getParent() == nullptr) {
-            this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER + 5);
+    auto shootSingleBullet = [&](const Vec2& offset) {
+        BulletPlayerGame3* bullet = BulletPoolPlayerGame3::getInstance()->getBullet();
+        if (bullet) {
+            bullet->setVisible(true);
+            bullet->reset();
+            bullet->setDirection(direction + offset);
+            bullet->spawn(turretWorldPos, -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90);
+            if (bullet->getParent() == nullptr) {
+                this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER + 5);
+            }
         }
-        SoundController::getInstance()->setMusicVolume(Constants::PlayerShootSFX, 0.2f);
-        SoundController::getInstance()->playSoundEffect(Constants::PlayerShootSFX);
-        SoundController::getInstance()->setMusicVolume(Constants::PlayerShootSFX, 0.2f);
-        timeSinceLastShot = 0.0f;
+        else {
+            CCLOG("Failed to get bullet from pool");
+        }
+        };
+
+    std::vector<Vec2> offsets;
+    if (bulletCount == 1) {
+        offsets.push_back(Vec2::ZERO);
     }
-    else {
-        CCLOG("Failed to get bullet from pool");
+    else if (bulletCount == 2) {
+        offsets.push_back(Vec2(-60, 60));
+        offsets.push_back(Vec2(60, -60));
     }
+    else if (bulletCount == 3) {
+        offsets.push_back(Vec2(-60, 60));
+        offsets.push_back(Vec2::ZERO);
+        offsets.push_back(Vec2(60, -60));
+    }
+
+    for (const auto& offset : offsets) {
+        shootSingleBullet(offset);
+    }
+
+    timeSinceLastShot = 0.0f;
 }
+
 
 void PlayerGame3::onMouseMove(Event* event)
 {

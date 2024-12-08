@@ -108,11 +108,10 @@ void Game1Scene::initPools() {
     AmmoItemPool::getInstance()->resetPool();
     ShieldSkillItemPool::getInstance()->resetPool();
 
-    FlyingBulletPool::getInstance()->initPool(10);
-    FallingRockPool::getInstance()->initPool(10);
-    RandomBoomPool::getInstance()->initPool(10);
-    FanBulletPool::getInstance()->initPool(30);
-    FallingTreePool::getInstance()->initPool(10);
+    FallingRockPool::getInstance()->initPool(20);
+    RandomBoomPool::getInstance()->initPool(20);
+    FanBulletPool::getInstance()->initPool(50);
+    FallingTreePool::getInstance()->initPool(20);
     HealthItemPool::getInstance()->initPool(10);
     AmmoItemPool::getInstance()->initPool(10);
     ShieldSkillItemPool::getInstance()->initPool(10);
@@ -245,6 +244,7 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
 }
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
+    return false;
     if (_playerAttributes->IsDead() || _invincible) return true;
 
     auto bodyA = contact.getShapeA()->getBody();

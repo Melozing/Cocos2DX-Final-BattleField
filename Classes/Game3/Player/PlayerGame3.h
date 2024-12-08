@@ -43,6 +43,11 @@ private:
     bool isMouseDown;
     float shootDelay;
     float timeSinceLastShot;
+    int bulletCount;
+    cocos2d::Vec2 direction;
+    cocos2d::Vec2 turretWorldPos;
+    cocos2d::Vec2 localAnchorPoint;
+    cocos2d::Vec2 turretPosition;
 };
 
 #endif // __PLAYER_GAME3_H__

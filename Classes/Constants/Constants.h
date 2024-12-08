@@ -97,6 +97,7 @@ public:
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
 	static const float HealthEnemyPlaneBoss;
 	static const float BulletDamageGame3;
+	static const std::string PlayerGame3Name;
     //game3 SFX
     static const std::string BossHealthSFX;
     static const std::string PlayerShootSFX;
