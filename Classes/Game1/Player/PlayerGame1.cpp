@@ -113,7 +113,7 @@ void PlayerGame1::initAnimation()
 
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(createAnimation("Canon", 15, 0.07f));
+    auto animateCharac = Animate::create(createAnimation("Canon", 49, 0.015f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 

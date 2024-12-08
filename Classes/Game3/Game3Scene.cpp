@@ -83,6 +83,7 @@ void Game3Scene::setupPlayer() {
         CCLOG("Failed to create PlayerGame3");
         return;
     }
+    player->setName(Constants::PlayerGame3Name);
     this->addChild(player);
     setupEventListeners(player);
 }
@@ -130,7 +131,7 @@ void Game3Scene::initBossHealthBar() {
 }
 
 void Game3Scene::initPools() {
-    BulletPoolPlayerGame3::getInstance()->initPool(10);
+    BulletPoolPlayerGame3::getInstance()->initPool(50);
     EnemyPlaneBulletPool::getInstance()->initPool(10); // Initialize pool with 10 bullets
     BoomForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 booms
     EnemyPlaneBoomPool::getInstance()->initPool(10); // Initialize pool with 10 booms
