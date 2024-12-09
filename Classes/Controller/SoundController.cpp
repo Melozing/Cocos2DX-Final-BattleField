@@ -1,8 +1,13 @@
 #include "SoundController.h"
 #include "audio/include/AudioEngine.h"
+#include "Constants/Constants.h"
 #include "cocos2d.h"
+#include "SimpleAudioEngine.h"
+
 
 USING_NS_CC;
+using namespace CocosDenshion;
+
 using namespace cocos2d::experimental;
 
 SoundController* SoundController::instance = nullptr;
@@ -19,6 +24,7 @@ void SoundController::preloadMusic(const std::string& filePath) {
 }
 
 int SoundController::playMusic(const std::string& filePath, bool loop) {
+	Constants::currentSoundTrackPath = filePath;
     stopMusic(filePath);
     int audioId = AudioEngine::play2d(filePath, loop);
     playingMusic[filePath] = audioId;
@@ -90,13 +96,10 @@ void SoundController::replayMusic(const std::string& filePath) {
     playMusic(filePath);
 }
 
-int SoundController::playSoundEffect(const std::string& filePath, bool loop) {
+void SoundController::playSoundEffect(const std::string& filePath, bool loop) {
     auto it = preloadedSoundEffects.find(filePath);
     if (it != preloadedSoundEffects.end()) {
-        return AudioEngine::play2d(filePath, loop);
-    }
-    else {
-        return AudioEngine::play2d(filePath, loop);
+        SimpleAudioEngine::getInstance()->playEffect(filePath.c_str(), loop);
     }
 }
 

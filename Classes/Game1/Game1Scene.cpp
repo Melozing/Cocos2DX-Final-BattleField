@@ -214,6 +214,7 @@ void Game1Scene::initSound() {
         CCLOG("Error: Music file does not exist!");
         return;
     }
+
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, false);
 
