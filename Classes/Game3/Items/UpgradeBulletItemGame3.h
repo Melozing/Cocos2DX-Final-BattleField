@@ -6,4 +6,6 @@ public:
     virtual bool init() override;
     virtual void applyEffect() override;
     CREATE_FUNC(UpgradeBulletItemGame3);
+private:
+    void createPhysicsBody();
 };

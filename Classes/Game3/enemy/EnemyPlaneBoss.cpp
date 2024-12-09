@@ -5,6 +5,7 @@
 #include "Controller/SoundController.h"
 #include "Controller/SpriteController.h"
 #include "utils/PhysicsShapeCache.h"
+#include "Game3/Items/ItemPoolGane3.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -270,6 +271,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
 
 void EnemyPlaneBoss::startExplosions() {
     float delayBetweenExplosions = 0.1f; // Adjust the delay between explosions as needed
+    dropUpgradeItem();
 
     this->schedule([this](float dt) {
         if (this->isExploding) {
@@ -301,5 +303,14 @@ void EnemyPlaneBoss::createPhysicsBody() {
         physicsBody->setGravityEnable(false);
 
         this->setPhysicsBody(physicsBody);
+    }
+}
+
+void EnemyPlaneBoss::dropUpgradeItem() {
+    auto upgradeItem = UpgradeBulletItemPool::getInstance()->getItem();
+    if (upgradeItem) {
+        upgradeItem->setStartPosition(this->getPosition());
+        upgradeItem->moveDown();
+        this->getParent()->addChild(upgradeItem);
     }
 }

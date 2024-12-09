@@ -86,7 +86,7 @@ const int Constants::InitialPosX = 100;
 const int Constants::InitialPosY = 100;
 const float Constants::scaleFactor = 2.0f;
 const float Constants::BulletScale = 0.3f;
-const int Constants::BulletDamage2 = 10;
+const int Constants::BulletDamage2 = 30;
 const float Constants::GrenadeSpeed = 300.0f;
 const float Constants::GrenadeThrowDistance = 500.0f;
 //boss game2
@@ -112,7 +112,8 @@ const float Constants::EnemyPlaneBulletGame3Speed = 200.0f;
 const float Constants::EnemyPlaneBoomGame3Speed = 300.0f;
 const float Constants::SpeedEnemyPlane_BOSS = 100.0f;
 const float Constants::HealthEnemyPlaneBoss = 100.0f;
-const float Constants::BulletDamageGame3 = 1.0f;
+const float Constants::BulletDamageGame3 = 60.0f;
+const std::string Constants::PlayerGame3Name = "PlayerGame3Name";
 
 //game3 SFX
 const std::string Constants::BossHealthSFX = "assets_game/sounds/Game3/SFX/BossHealthSFX.mp3";

@@ -30,6 +30,9 @@ public:
     // Event scheduling
     void scheduleSpawnEvents(const std::vector<float>& timestamps, const std::vector<std::function<void()>>& spawnFunctions);
 
+    // Preload sound effects
+    void preloadSoundEffect(const std::string& filePath);
+
 private:
     static SoundController* instance;
 
@@ -38,6 +41,7 @@ private:
     float elapsedTime;
     size_t currentEventIndex;
     std::unordered_map<std::string, int> playingMusic;
+    std::unordered_map<std::string, int> preloadedSoundEffects;
 };
 
 #endif // __SOUND_CONTROLLER_H__

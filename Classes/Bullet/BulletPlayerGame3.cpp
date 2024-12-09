@@ -79,10 +79,6 @@ void BulletPlayerGame3::setDirection(const Vec2& direction)
 {
     _direction = direction;
     _direction.normalize();
-
-    // Set the rotation of the bullet sprite to match the direction
-    float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
-    this->setRotation(-angle + 90);
 }
 
 void BulletPlayerGame3::setSpeed(float speed)

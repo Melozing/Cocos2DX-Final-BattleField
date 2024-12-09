@@ -25,6 +25,7 @@ private:
     void executePhaseSkills();
     void dropBooms();
     void graduallyIncreaseHealth();
+    void dropUpgradeItem();
 
     enum class Phase {
         StartPHASE,

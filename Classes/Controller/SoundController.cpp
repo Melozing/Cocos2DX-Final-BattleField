@@ -91,7 +91,13 @@ void SoundController::replayMusic(const std::string& filePath) {
 }
 
 int SoundController::playSoundEffect(const std::string& filePath, bool loop) {
-    return AudioEngine::play2d(filePath, loop);
+    auto it = preloadedSoundEffects.find(filePath);
+    if (it != preloadedSoundEffects.end()) {
+        return AudioEngine::play2d(filePath, loop);
+    }
+    else {
+        return AudioEngine::play2d(filePath, loop);
+    }
 }
 
 float SoundController::getSoundEffectDuration(const std::string& filePath) {
@@ -116,4 +122,3 @@ float SoundController::getSoundEffectDuration(const std::string& filePath) {
 
     return duration;
 }
-
