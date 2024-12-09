@@ -1,5 +1,5 @@
 #include "FallingTree.h"
-#include "FallingTreePool.h"
+#include "Manager/ObjectPoolGame1.h"
 #include "utils/PhysicsShapeCache.h"
 #include "cocos2d.h"
 
@@ -40,13 +40,9 @@ void FallingTree::initAnimation() {
     this->createPhysicsBody();
 }
 
-FallingTree::~FallingTree() {
-    // Clean up if necessary
-}
-
 void FallingTree::returnToPool() {
     FallingObject::reset();
-    FallingTreePool::getInstance()->returnEnemy(this);
+    FallingTreePool::getInstance()->returnObject(this);
 }
 
 void FallingTree::createPhysicsBody() {

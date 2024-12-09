@@ -1,6 +1,8 @@
 ﻿#include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
 
+#include "Game3/Items/ItemPoolGane3.h"
+
 #include "Game3/enemy/EnemyPlaneBullet.h"
 #include "Game3/enemy/EnemyPlaneBoom.h"
 #include "Game3/enemy/EnemyPlaneBulletPool.h"
@@ -9,7 +11,6 @@
 #include "Game3/enemy/EnemyPlaneBossPool.h"
 #include "Game3/enemy/EnemyPlaneBoss.h"
 #include "Game3/enemy/BoomForEnemyPlanePool.h"
-#include "Game3/Items/ItemPoolGane3.h"
 
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"

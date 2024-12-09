@@ -14,12 +14,6 @@ SoundController* SoundController::getInstance() {
     return instance;
 }
 
-SoundController::SoundController() : elapsedTime(0.0f), currentEventIndex(0) {
-    Director::getInstance()->getScheduler()->schedule([this](float dt) {
-        this->update(dt);
-        }, this, 0.0f, false, "sound_controller_update_key");
-}
-
 void SoundController::preloadMusic(const std::string& filePath) {
     AudioEngine::preload(filePath);
 }
@@ -94,14 +88,6 @@ void SoundController::resumeMusic(const std::string& filePath) {
 void SoundController::replayMusic(const std::string& filePath) {
     stopMusic(filePath);
     playMusic(filePath);
-}
-
-void SoundController::update(float dt) {
-    elapsedTime += dt;
-    while (currentEventIndex < spawnEvents.size() && elapsedTime >= spawnEvents[currentEventIndex].first) {
-        spawnEvents[currentEventIndex].second();
-        currentEventIndex++;
-    }
 }
 
 int SoundController::playSoundEffect(const std::string& filePath, bool loop) {

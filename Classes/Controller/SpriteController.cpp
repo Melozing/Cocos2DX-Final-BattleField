@@ -5,10 +5,8 @@
 
 USING_NS_CC;
 
-std::unordered_map<std::string, Animation*> SpriteController::animationCache;
-std::unordered_map<std::string, SpriteBatchNode*> SpriteController::spriteBatchNodeCache; // Initialize cache for SpriteBatchNode
-
-float SpriteController::updateSpriteScale(Sprite* sprite, float size) {
+float SpriteController::updateSpriteScale(Sprite* sprite, float size)
+{
     float SPRITE_SCALE_RATIO = size;
     Size screenSize = Director::getInstance()->getVisibleSize();
     Size spriteSize = sprite->getContentSize();
@@ -22,27 +20,28 @@ float SpriteController::updateSpriteScale(Sprite* sprite, float size) {
 
 Size SpriteController::GetContentSizeSprite(Sprite* sprite) {
     auto originalSize = sprite->getContentSize();
-    auto scaledSize = Size(originalSize.width * sprite->getScaleX(), originalSize.height * sprite->getScaleY());
+    auto scaledSize = Size(originalSize.width * sprite->getScaleX(),
+        originalSize.height * sprite->getScaleY());
     return scaledSize;
 }
 
-void SpriteController::changeAnimation(const std::string& namePrefix, int numOrder) {
-    animation = getCachedAnimation(namePrefix);
-    if (!animation) {
-        animation = createAnimation(namePrefix, numOrder, 0.035f);
-        cacheAnimation(namePrefix, numOrder, 0.035f);
-    }
+void SpriteController::changeAnimation(const std::string& namePrefix, int numOrder)
+{
+    animation = createAnimation(namePrefix, numOrder, 0.035f);
     auto animate = Animate::create(animation);
-    modelCharac->runAction(RepeatForever::create(animate)); // Use RepeatForever to loop the animation
+    modelCharac->runAction(animate);
 }
 
-Animation* SpriteController::createAnimation(const std::string& prefixName, int frameCount, float delay) {
+Animation* SpriteController::createAnimation(const std::string& prefixName, int frameCount, float delay)
+{
     Vector<SpriteFrame*> animFrames;
 
-    for (int i = 1; i < frameCount; ++i) {
+    for (int i = 1; i < frameCount; ++i)
+    {
         std::string frameName = prefixName + StringUtils::format("%d.png", i);
         auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName);
-        if (frame) {
+        if (frame)
+        {
             animFrames.pushBack(frame);
         }
     }
@@ -50,28 +49,56 @@ Animation* SpriteController::createAnimation(const std::string& prefixName, int 
     return Animation::createWithSpriteFrames(animFrames, delay);
 }
 
-void SpriteController::cacheAnimation(const std::string& prefixName, int frameCount, float delay) {
-    auto animation = createAnimation(prefixName, frameCount, delay);
-    animationCache[prefixName] = animation;
-}
+Animation* SpriteController::createForwardReverseAnimation(const std::string& prefixName, int frameCount, float delay)
+{
+    Vector<SpriteFrame*> animFrames;
 
-Animation* SpriteController::getCachedAnimation(const std::string& prefixName) {
-    auto it = animationCache.find(prefixName);
-    if (it != animationCache.end()) {
-        return it->second;
+    // Add frames from 1 to frameCount
+    for (int i = 1; i <= frameCount; ++i)
+    {
+        std::string frameName = prefixName + StringUtils::format("%d.png", i);
+        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName);
+        if (frame)
+        {
+            animFrames.pushBack(frame);
+        }
     }
-    return nullptr;
-}
 
-void SpriteController::cacheSpriteBatchNode(const std::string& fileName) {
-    auto spriteBatchNode = SpriteBatchNode::create(fileName);
-    spriteBatchNodeCache[fileName] = spriteBatchNode;
-}
-
-SpriteBatchNode* SpriteController::getCachedSpriteBatchNode(const std::string& fileName) {
-    auto it = spriteBatchNodeCache.find(fileName);
-    if (it != spriteBatchNodeCache.end()) {
-        return it->second;
+    // Add frames from frameCount back to 1
+    for (int i = frameCount; i >= 1; --i)
+    {
+        std::string frameName = prefixName + StringUtils::format("%d.png", i);
+        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName);
+        if (frame)
+        {
+            animFrames.pushBack(frame);
+        }
     }
-    return nullptr;
+
+    return Animation::createWithSpriteFrames(animFrames, delay);
+}
+
+float SpriteController::calculateScreenRatio(float ratio) {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+
+    return (visibleSize.width * ratio);
+}
+
+float SpriteController::updateSpriteScale(cocos2d::Node* node, float size) {
+    if (node) {
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        auto contentSize = node->getContentSize();
+
+        // Calculate the target size based on the percentage of the screen size
+        float targetWidth = visibleSize.width * size;
+        float targetHeight = visibleSize.height * size;
+
+        // Calculate the scale factors
+        float scaleX = targetWidth / contentSize.width;
+        float scaleY = targetHeight / contentSize.height;
+
+        // Return the minimum scale factor to maintain aspect ratio
+        return std::min(scaleX, scaleY);
+    }
+    return 1.0f;
 }

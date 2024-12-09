@@ -1,5 +1,5 @@
 #include "FallingRock.h"
-#include "FallingRockPool.h"
+#include "Manager/ObjectPoolGame1.h"
 #include "Controller/SpriteController.h"
 #include "cocos2d.h"
 
@@ -70,12 +70,7 @@ void FallingRock::initAnimation() {
     _currentSprite->setScale(_spriteScale);
 
     // Create animation with the customized delay for rock or landmine
-    std::string animationName = (_spriteType == SpriteType::ROCK) ? "falling_rock" : "landmine";
-    auto animateCharac = Animate::create(SpriteController::getCachedAnimation(animationName));
-    if (!animateCharac) {
-        animateCharac = Animate::create(SpriteController::createAnimation(animationName, 4, _animationDelay));
-        SpriteController::cacheAnimation(animationName, 4, _animationDelay);
-    }
+    auto animateCharac = Animate::create(createAnimation((_spriteType == SpriteType::ROCK) ? "falling_rock" : "landmine", 4, _animationDelay));
     _currentSprite->runAction(RepeatForever::create(animateCharac));
 }
 
@@ -105,5 +100,5 @@ void FallingRock::spawn(const Vec2& startPosition) {
 void FallingRock::returnToPool() {
     this->setVisible(false);
     this->removeFromParentAndCleanup(false);
-    FallingRockPool::getInstance()->returnEnemy(this);
+    FallingRockPool::getInstance()->returnObject(this);
 }

@@ -1,5 +1,5 @@
 #include "RandomBoom.h"
-#include "RandomBoomPool.h"
+#include "Manager/ObjectPoolGame1.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Constants/Constants.h"
 #include "cocos2d.h"
@@ -173,7 +173,7 @@ void RandomBoom::onMissileHitTarget() {
         CallFunc::create([this]() {
             this->stopAllActions();
             this->removeFromParentAndCleanup(false);
-            RandomBoomPool::getInstance()->returnEnemy(this);
+            RandomBoomPool::getInstance()->returnObject(this);
             }),
         nullptr
     ));

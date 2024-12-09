@@ -31,12 +31,7 @@ public:
     void scheduleSpawnEvents(const std::vector<float>& timestamps, const std::vector<std::function<void()>>& spawnFunctions);
 
 private:
-    // Private constructor for singleton pattern
-    SoundController();
     static SoundController* instance;
-
-    // Private methods
-    void update(float dt);
 
     // Private attributes
     std::vector<std::pair<float, std::function<void()>>> spawnEvents;

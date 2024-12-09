@@ -1,20 +1,18 @@
 #include "Game1/Game1Scene.h"
-#include "Enemy/FlyingBulletPool.h"
-#include "Enemy/FallingRockPool.h"
-#include "Enemy/RandomBoomPool.h"
-#include "Enemy/FanBulletPool.h"
-#include "Enemy/EnemyFactory.h"
-#include "Game1/Items/AmmoItemPool.h"
-#include "Game1/Items/HealthItemPool.h"
+#include "Manager/ObjectPoolGame1.h"
+
 #include "Game1/Player/HealthPlayerGame1.h"
+
 #include "Controller/SpriteController.h"
 #include "Controller/SoundController.h"
 #include "Controller/GameController.h"
+#include "Game1/Effect/EffectObjectPool.h"
+
 #include "Manager/PositionManager.h"
 #include "Constants/Constants.h"
 #include "ui/UILoadingBar.h"
-#include "audio/include/AudioEngine.h"
 #include "Manager/BackgroundManager.h"
+
 #include <ctime> 
 #include "json/document.h"
 #include "json/filereadstream.h"
@@ -116,23 +114,22 @@ void Game1Scene::initBackground() {
 }
 
 void Game1Scene::initPools() {
-    FlyingBulletPool::getInstance()->resetPool();
+    //FlyingBulletPool::getInstance()->resetPool();
     FallingRockPool::getInstance()->resetPool();
     RandomBoomPool::getInstance()->resetPool();
     FanBulletPool::getInstance()->resetPool();
     FallingTreePool::getInstance()->resetPool();
     HealthItemPool::getInstance()->resetPool();
     AmmoItemPool::getInstance()->resetPool();
-    ShieldSkillItemPool::getInstance()->resetPool();
+    ShieldSkillPool::getInstance()->resetPool();
 
-    FlyingBulletPool::getInstance()->initPool(10);
     FallingRockPool::getInstance()->initPool(10);
     RandomBoomPool::getInstance()->initPool(10);
-    FanBulletPool::getInstance()->initPool(30);
+    FanBulletPool::getInstance()->initPool(50);
     FallingTreePool::getInstance()->initPool(10);
     HealthItemPool::getInstance()->initPool(10);
     AmmoItemPool::getInstance()->initPool(10);
-    ShieldSkillItemPool::getInstance()->initPool(10);
+    ShieldSkillPool::getInstance()->initPool(10);
     EffectObjectPool::getInstance()->initPool(20, "assets_game/fx/explosions_effect.png", "assets_game/fx/explosions_effect.plist");
 }
 
@@ -218,16 +215,20 @@ void Game1Scene::initSound() {
         return;
     }
     SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame1);
-    SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, true);
+    SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame1, false);
 
-    float duration = SoundController::getInstance()->getMusicDuration(Constants::pathSoundTrackGame1);
-    CCLOG("Music duration: %f", duration);
+    musicDuration = Constants::soundtrackGame1Duration;
+
+    //SoundController::getInstance()->setMusicVolume(Constants::pathSoundTrackGame1, 0.0f);
+
+    this->schedule([this](float dt) {
+        updateLoadingBar(dt);
+        }, "loading_bar_update_key");
 }
 
 
 
 void Game1Scene::initSpawning() {
-    enemySpawnMap["FlyingBullet"] = [this](const cocos2d::Size& size) { SpawnFlyingBullet(size, (rand() % 2 == 0)); };
     enemySpawnMap["FallingRock"] = [this](const cocos2d::Size& size) { SpawnFallingRockAndBomb(size); };
     enemySpawnMap["RandomBoom"] = [this](const cocos2d::Size& size) { SpawnRandomBoom(size); };
     enemySpawnMap["FanBullet"] = [this](const cocos2d::Size& size) { SpawnFanBullet(size); };
@@ -324,7 +325,7 @@ void Game1Scene::activateShield() {
     if (_shield) {
         _shield->removeFromParentAndCleanup(true);
     }
-    _shield = ShieldSkillItemPool::getInstance()->getItem();
+    _shield = ShieldSkillPool::getInstance()->getObject();
     if (_shield) {
         if (_shield->getParent() == nullptr) {
             this->addChild(_shield, Constants::ORDER_LAYER_PLAYER);
@@ -539,7 +540,8 @@ void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
 
     for (int i = 0; i < numBullets; ++i) {
         float angle = baseAngle + startAngle + i * angleIncrement;
-        FanBullet* fanBullet = FanBulletPool::getInstance()->getEnemy();
+        //float angle = baseAngle + startAngle * angleIncrement;
+        FanBullet* fanBullet = FanBulletPool::getInstance()->getObject();
         if (fanBullet) {
             // Spawn the FanBullet
             fanBullet->spawn(spawnPosition, angle);
@@ -554,7 +556,7 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
 
     if (!isPositionOccupied(spawnPosition)) {
         if (rand() % 2 == 0) {
-            auto rock = FallingRockPool::getInstance()->getEnemy();
+            auto rock = FallingRockPool::getInstance()->getObject();
             if (rock) {
                 rock->spawn(spawnPosition);
                 auto size = rock->GetSize();
@@ -564,7 +566,7 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
                 this->addChild(rock, Constants::ORDER_LAYER_CHARACTER - 1);
             }
         } else {
-            auto tree = FallingTreePool::getInstance()->getEnemy();
+            auto tree = FallingTreePool::getInstance()->getObject();
             if (tree) {
                 tree->spawn(spawnPosition);
                 tree->createPhysicsBody();
@@ -574,38 +576,38 @@ void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     }
 }
 
-void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
-    Vec2 spawnPosition = directionLeft ? Vec2(-50, _player->getPosition().y) : Vec2(size.width + 50, _player->getPosition().y);
-
-    auto flyingBullet = FlyingBulletPool::getInstance()->getEnemy();
-    if (flyingBullet) {
-        flyingBullet->reset();
-        flyingBullet->initAnimation(directionLeft);
-        flyingBullet->setPosition(spawnPosition);
-
-        float targetX = directionLeft ? size.width + 50 : -50;
-        auto moveAction = MoveTo::create(Constants::FLYING_BULLET_SPEED, Vec2(targetX, _player->getPosition().y));
-
-        auto sequence = Sequence::create(moveAction, CallFunc::create([flyingBullet, this]() {
-            flyingBullet->removeFromParent();
-            FlyingBulletPool::getInstance()->returnEnemy(flyingBullet);
-            }), nullptr);
-
-        Size reducedSize = Size(flyingBullet->GetSize().width * 0.65, flyingBullet->GetSize().height * 0.65); // Reduce size by 10%
-        auto flyingBulletBody = PhysicsBody::createBox(reducedSize);
-        setPhysicsBodyChar(flyingBulletBody, 0x02);
-        flyingBullet->setPhysicsBody(flyingBulletBody);
-
-        flyingBullet->runAction(sequence);
-        this->addChild(flyingBullet, Constants::ORDER_LAYER_CHARACTER - 1);
-    }
-}
+//void Game1Scene::SpawnFlyingBullet(cocos2d::Size size, bool directionLeft) {
+//    Vec2 spawnPosition = directionLeft ? Vec2(-50, _player->getPosition().y) : Vec2(size.width + 50, _player->getPosition().y);
+//
+//    auto flyingBullet = FlyingBulletPool::getInstance()->getEnemy();
+//    if (flyingBullet) {
+//        flyingBullet->reset();
+//        flyingBullet->initAnimation(directionLeft);
+//        flyingBullet->setPosition(spawnPosition);
+//
+//        float targetX = directionLeft ? size.width + 50 : -50;
+//        auto moveAction = MoveTo::create(Constants::FLYING_BULLET_SPEED, Vec2(targetX, _player->getPosition().y));
+//
+//        auto sequence = Sequence::create(moveAction, CallFunc::create([flyingBullet, this]() {
+//            flyingBullet->removeFromParent();
+//            FlyingBulletPool::getInstance()->returnEnemy(flyingBullet);
+//            }), nullptr);
+//
+//        Size reducedSize = Size(flyingBullet->GetSize().width * 0.65, flyingBullet->GetSize().height * 0.65); // Reduce size by 10%
+//        auto flyingBulletBody = PhysicsBody::createBox(reducedSize);
+//        setPhysicsBodyChar(flyingBulletBody, 0x02);
+//        flyingBullet->setPhysicsBody(flyingBulletBody);
+//
+//        flyingBullet->runAction(sequence);
+//        this->addChild(flyingBullet, Constants::ORDER_LAYER_CHARACTER - 1);
+//    }
+//}
 
 void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 spawnPosition = Vec2(visibleSize.width / 2, visibleSize.height / 2);
 
-    auto randomBoom = RandomBoomPool::getInstance()->getEnemy();
+    auto randomBoom = RandomBoomPool::getInstance()->getObject();
     if (randomBoom) {
         randomBoom->spawn(spawnPosition);
         this->addChild(randomBoom, Constants::ORDER_LAYER_CHARACTER - 1);
@@ -618,10 +620,10 @@ void Game1Scene::SpawnCollectibleItem(const Size& size) {
         // Randomly choose between HealthItem and AmmoItem
         CollectibleItem* item = nullptr;
         if (rand() % 2 == 0) {
-            item = HealthItemPool::getInstance()->getItem();
+            item = HealthItemPool::getInstance()->getObject();
         }
         else {
-            item = AmmoItemPool::getInstance()->getItem();
+            item = AmmoItemPool::getInstance()->getObject();
         }
         if (item) {
             item->spawn(spawnPosition);
@@ -664,7 +666,6 @@ bool Game1Scene::isPositionOccupied(const Vec2& position) {
 }
 
 void Game1Scene::spawnEffect(const cocos2d::Size& size) {
-    return;
     auto visibleSize = Director::getInstance()->getVisibleSize();
     float padding = SpriteController::calculateScreenRatio(Constants::EFFECT_EXPLOSION_PADDING_SCREEN); // Padding from the edges
     float playerPadding = SpriteController::calculateScreenRatio(Constants::EFFECT_EXPLOSION_PADDING_PLAYER_AREA); // Padding from the player's movement area

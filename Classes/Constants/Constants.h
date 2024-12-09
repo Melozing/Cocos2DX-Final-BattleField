@@ -4,6 +4,7 @@
 
 class Constants {
 public:
+    // UI SOUND
     static std::string currentSoundTrackPath;
     const static std::string MainMenuTrackPath;
     const static std::string ClickStartGameSFX;
@@ -29,7 +30,7 @@ public:
 	static const float ITEM_SCALE_FACTOR;
 	static const float ITEM_EFFECT_DURATION;
 	static const float ITEM_SIZE_RATIO;
-	//EFFECT_GAME1
+	// EFFECT_GAME1
     static const std::string EFFECT_EXPLOSION_NAME;
     static const float EFFECT_EXPLOSION_PADDING_SCREEN;
     static const float EFFECT_EXPLOSION_PADDING_PLAYER_AREA;
@@ -45,6 +46,10 @@ public:
     static const float RANDOMBOOM_RESTRICTEDHEIGHT;
     static const float RANDOMBOOM_RESTRICTEDWIDTH;
     static const float DISTANCE_ENEMY_FALLING;
+    // Game1 sound
+    static const std::string pathSoundTrackGame1;
+    static const float soundtrackGame1Duration;
+
     // Screen
     static const cocos2d::Size DESIGN_SIZE;
     static const std::string GAME1_SCENE_NAME;
@@ -54,7 +59,6 @@ public:
     //Game2
     static const int Player_Health2;
     static const float TIME_TO_WIN;
-    static const std::string pathSoundTrackGame1;
     static const float BulletSpeed;
     static const float PlayerSpeed;
     static const float PlayerScale;

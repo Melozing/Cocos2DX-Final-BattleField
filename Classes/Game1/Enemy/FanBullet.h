@@ -12,7 +12,6 @@ public:
     void update(float delta) override;
     void removeWhenOutOfScreen();
     cocos2d::Size GetSize();
-    ~FanBullet();
 
 private:
     bool init() override;

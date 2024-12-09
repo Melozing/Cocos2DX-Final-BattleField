@@ -1567,10 +1567,5 @@
 
   { "spawnTime": 141.10001, "enemyType": "FanBullet" },
   { "spawnTime": 141.10002, "enemyType": "FanBullet" },
-  { "spawnTime": 141.10003, "enemyType": "FanBullet" },
-
-  { "spawnTime": 300.2, "enemyType": "Effect" },
-  { "spawnTime": 300.2, "enemyType": "Effect" },
-
-  { "spawnTime": 300.2, "enemyType": "FanBullet" }
+  { "spawnTime": 141.10003, "enemyType": "FanBullet" }
 ]

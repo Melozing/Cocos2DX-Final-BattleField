@@ -1,7 +1,7 @@
 #include "HealthItem.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/SpriteController.h"
-#include "HealthItemPool.h"
+#include "Manager/ObjectPoolGame1.h"
 #include "utils/PhysicsShapeCache.h"
 
 USING_NS_CC;
@@ -107,7 +107,7 @@ void HealthItem::playEffectAndRemove() {
 void HealthItem::returnToPool() {
     this->stopAllActions();
     this->removeFromParentAndCleanup(false);
-    HealthItemPool::getInstance()->returnItem(this);
+    HealthItemPool::getInstance()->returnObject(this);
 }
 
 void HealthItem::reset() {

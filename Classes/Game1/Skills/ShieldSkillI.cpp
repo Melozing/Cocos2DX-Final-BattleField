@@ -1,5 +1,5 @@
 #include "Game1/Skills/ShieldSkill.h"
-#include "ShieldSkillItemPool.h"
+#include "Manager/ObjectPoolGame1.h"
 
 USING_NS_CC;
 
@@ -61,7 +61,7 @@ void ShieldSkill::deactivate() {
     if (_isActive) {
         _isActive = false;
         this->removeFromParentAndCleanup(false);
-        ShieldSkillItemPool::getInstance()->returnItem(this);
+        ShieldSkillPool::getInstance()->returnObject(this);
     }
 }
 
