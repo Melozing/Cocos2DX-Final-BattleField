@@ -103,8 +103,6 @@ void PlayerGame3::setupManagers()
 
 void PlayerGame3::initAnimation()
 {
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
-
     modelCharac = Sprite::createWithSpriteFrameName("tank_1.png");
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, Constants::PlayerScale3));
     this->addChild(modelCharac, Constants::ORDER_LAYER_PLAYER);

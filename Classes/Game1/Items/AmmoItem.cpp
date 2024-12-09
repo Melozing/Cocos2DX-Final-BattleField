@@ -1,7 +1,7 @@
 #include "AmmoItem.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 #include "Controller/SpriteController.h"
-#include "AmmoItemPool.h"
+#include "Manager/ObjectPoolGame1.h"
 #include "utils/PhysicsShapeCache.h"
 
 USING_NS_CC;
@@ -45,8 +45,6 @@ void AmmoItem::initPhysicsBody() {
 }
 
 void AmmoItem::initAnimation() {
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Ammo.plist");
-
     if (spriteBatchNode == nullptr) {
         spriteBatchNode = SpriteBatchNode::create("assets_game/items/Ammo.png");
         this->addChild(spriteBatchNode);
@@ -109,7 +107,7 @@ Size AmmoItem::getScaledSize() const {
 void AmmoItem::returnToPool() {
     this->stopAllActions();
     this->removeFromParentAndCleanup(false);
-    AmmoItemPool::getInstance()->returnItem(this);
+    AmmoItemPool::getInstance()->returnObject(this);
 }
 
 void AmmoItem::reset() {

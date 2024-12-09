@@ -23,8 +23,6 @@ bool BulletForEnemyPlane::init() {
         return false;
     }
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-
     modelCharac = Sprite::create("assets_game/enemies/BulletPlane.png");
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.03f));
     this->addChild(modelCharac);

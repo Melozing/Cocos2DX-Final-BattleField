@@ -1,7 +1,7 @@
 #include "FanBullet.h"
 #include "Controller/SpriteController.h"
-#include "FanBulletPool.h"
 #include "Constants/Constants.h"
+#include "Manager/ObjectPoolGame1.h"
 #include "utils/PhysicsShapeCache.h"
 #include "cocos2d.h"
 
@@ -21,6 +21,7 @@ void FanBullet::reset() {
     this->setRotation(0);
     this->setVisible(false);
     _direction = Vec2::ZERO; // Reset direction
+    this->stopAllActions(); // Stop all actions when resetting
 }
 
 
@@ -29,26 +30,27 @@ bool FanBullet::init() {
         return false;
     }
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet.plist");
-
     this->scheduleUpdate(); // Schedule the update method
     return true;
 }
 
 void FanBullet::initAnimation() {
-    std::string spriteFrameName = "flying_bullet1.png";
-    spriteBatchNode = SpriteBatchNode::create("assets_game/enemies/flying_bullet.png");
-
-    if (spriteBatchNode->getParent() == nullptr) {
-        this->addChild(spriteBatchNode);
+    if (!spriteBatchNode) {
+        spriteBatchNode = SpriteBatchNode::create("assets_game/enemies/flying_bullet.png");
+        if (spriteBatchNode->getParent() == nullptr) {
+            this->addChild(spriteBatchNode);
+        }
     }
 
-    modelCharac = Sprite::createWithSpriteFrameName(spriteFrameName);
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.05f));
-    spriteBatchNode->addChild(modelCharac);
+    if (!modelCharac) {
+        std::string spriteFrameName = "flying_bullet1.png";
+        modelCharac = Sprite::createWithSpriteFrameName(spriteFrameName);
+        modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.05f));
+        spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(createAnimation("flying_bullet", 3, 0.07f));
-    modelCharac->runAction(RepeatForever::create(animateCharac));
+        auto animateCharac = Animate::create(createAnimation("flying_bullet", 3, 0.07f));
+        modelCharac->runAction(RepeatForever::create(animateCharac));
+    }
     this->createPhysicsBody();
 }
 
@@ -70,7 +72,7 @@ void FanBullet::spawn(const cocos2d::Vec2& startPosition, float angle) {
 
 void FanBullet::createPhysicsBody() {
     if (this->getPhysicsBody() != nullptr) {
-        this->removeComponent(this->getPhysicsBody());
+        return; // Avoid recreating the physics body if it already exists
     }
 
     auto physicsCache = PhysicsShapeCache::getInstance();
@@ -105,17 +107,10 @@ void FanBullet::removeWhenOutOfScreen() {
         currentPosition.y > origin.y + visibleSize.height + this->getContentSize().height + offset) {
         this->stopAllActions();
         this->removeFromParentAndCleanup(false);
-        if (this->getPhysicsBody() != nullptr) {
-            this->removeComponent(this->getPhysicsBody());
-        }
-        FanBulletPool::getInstance()->returnEnemy(this); // Return to pool
+        FanBulletPool::getInstance()->returnObject(this); // Return to pool
     }
 }
 
 cocos2d::Size FanBullet::GetSize() {
     return GetContentSizeSprite(modelCharac);
-}
-
-FanBullet::~FanBullet() {
-    SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/flying_bullet.plist");
 }

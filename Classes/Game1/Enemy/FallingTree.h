@@ -10,7 +10,6 @@ public:
     void initAnimation() override;
     void returnToPool();
     void createPhysicsBody();
-    ~FallingTree();
 private:
     cocos2d::SpriteBatchNode* spriteBatchNode;
 };

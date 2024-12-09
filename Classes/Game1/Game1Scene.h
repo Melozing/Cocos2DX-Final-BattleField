@@ -4,26 +4,13 @@
 #include "Background/Background.h"
 #include "Game1/Items/CollectibleItem.h"
 #include "Game1/Player/PlayerGame1.h"
-#include "Enemy/FlyingBullet.h"
-#include "Enemy/FallingRock.h"
-#include "Enemy/FallingTree.h"
-#include "Enemy/RandomBoom.h"
-#include "Enemy/FanBullet.h"
-#include "Enemy/FlyingBulletPool.h"
-#include "Enemy/FallingRockPool.h"
-#include "Enemy/FallingTreePool.h"
-#include "Enemy/RandomBoomPool.h"
-#include "Enemy/FanBulletPool.h"
+
 #include "Enemy/SpawnEvent.h"
-#include "Game1/Effect/EffectObjectPool.h"
 #include "Game1/Effect/EffectObject.h"
 #include "Game1/Player/HealthPlayerGame1.h"
 #include "Items/AmmoItem.h"
 #include "Items/HealthItem.h"
-#include "Items/AmmoItemPool.h"
-#include "Items/HealthItemPool.h"
 #include "Skills/ShieldSkill.h"
-#include "Skills/ShieldSkillItemPool.h"
 #include "LoadingBar/CustomLoadingBar.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
@@ -58,17 +45,10 @@ private:
     Background* background;
 
     // Enemy management
-    std::vector<FlyingBullet*> _flyingBullets;
-    std::vector<FallingRock*> _fallingRocks;
-    std::vector<RandomBoom*> _randomBooms;
-    std::vector<CollectibleItem*> _collectibleItems;
     std::vector<Vec2> usedPositions;
-    std::vector<cocos2d::Node*> _enemyPool;
-    std::vector<FanBullet*> _fanBullets;
     std::vector<int> previousSpawnEdges;
 
     // Music and sound
-    SoundController* _soundController;
     float musicDuration;
 
     // UI elements
@@ -78,7 +58,6 @@ private:
 
     // Enemy spawning
     void SpawnFallingRockAndBomb(cocos2d::Size size);
-    void SpawnFlyingBullet(cocos2d::Size size, bool directionLeft);
     void SpawnRandomBoom(cocos2d::Size size);
     void SpawnFanBullet(cocos2d::Size size);
     bool isPositionOccupied(const Vec2& position);
@@ -102,10 +81,6 @@ private:
 
     // UI updates
     void updateLoadingBar(float dt);
-
-    // New methods for exitAction and createSceneFunc
-    std::function<void()> exitAction;
-    std::function<cocos2d::Scene* ()> createSceneFunc;
 
     // JSON-based spawn schedule
     std::vector<SpawnEvent> spawnSchedule;
@@ -136,6 +111,9 @@ private:
 
     // Cursor
     void initCursor();
+
+    //Preload 
+    void preloadAssets();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

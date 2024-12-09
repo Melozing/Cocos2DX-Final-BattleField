@@ -1,6 +1,8 @@
 ﻿#include "Game3/Game3Scene.h"
 #include "Game3/Player/PlayerGame3.h"
 
+#include "Game3/Items/ItemPoolGane3.h"
+
 #include "Game3/enemy/EnemyPlaneBullet.h"
 #include "Game3/enemy/EnemyPlaneBoom.h"
 #include "Game3/enemy/EnemyPlaneBulletPool.h"
@@ -9,7 +11,6 @@
 #include "Game3/enemy/EnemyPlaneBossPool.h"
 #include "Game3/enemy/EnemyPlaneBoss.h"
 #include "Game3/enemy/BoomForEnemyPlanePool.h"
-#include "Game3/Items/ItemPoolGane3.h"
 
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
@@ -28,7 +29,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game3Scene::create();
     scene->addChild(layer);
@@ -44,6 +45,8 @@ bool Game3Scene::init() {
     this->setSceneCreationFunc([]() -> cocos2d::Scene* {
         return Game3Scene::createScene();
         });
+
+    preloadAssets();
 
     setupBackground();
     setupPlayer();
@@ -71,6 +74,19 @@ bool Game3Scene::init() {
         });
 
     return true;
+}
+
+void Game3Scene::preloadAssets() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/BulletPlayer3Game.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/enemy_plane_boom.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBoss.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBullet.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
 }
 
 void Game3Scene::setupBackground() {

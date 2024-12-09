@@ -24,8 +24,6 @@ bool BoomForEnemyPlane::init() {
         return false;
     }
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-
     modelCharac = Sprite::create("assets_game/enemies/Boom.png");
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.07f));
     this->addChild(modelCharac);

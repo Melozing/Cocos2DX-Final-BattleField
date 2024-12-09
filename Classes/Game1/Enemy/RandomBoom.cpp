@@ -1,5 +1,5 @@
 #include "RandomBoom.h"
-#include "RandomBoomPool.h"
+#include "Manager/ObjectPoolGame1.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Constants/Constants.h"
 #include "cocos2d.h"
@@ -10,11 +10,6 @@ bool RandomBoom::init() {
     if (!Node::init()) {
         return false;
     }
-
-    // Load sprite frames
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/warning_rocket.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/rocket.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
 
     // Create sprite batch nodes
     _spriteBatchNodeWarning = SpriteBatchNode::create("assets_game/enemies/warning_rocket.png");
@@ -178,21 +173,12 @@ void RandomBoom::onMissileHitTarget() {
         CallFunc::create([this]() {
             this->stopAllActions();
             this->removeFromParentAndCleanup(false);
-            RandomBoomPool::getInstance()->returnEnemy(this);
+            RandomBoomPool::getInstance()->returnObject(this);
             }),
         nullptr
     ));
 }
 
 RandomBoom::~RandomBoom() {
-    // Check if the sprite frames are still being used before removing them from cache
-    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/enemies/warning_rocket.plist")) {
-        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/warning_rocket.plist");
-    }
-    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/enemies/rocket.plist")) {
-        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/enemies/rocket.plist");
-    }
-    if (SpriteFrameCache::getInstance()->isSpriteFramesWithFileLoaded("assets_game/fx/explosions.plist")) {
-        SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("assets_game/fx/explosions.plist");
-    }
+
 }

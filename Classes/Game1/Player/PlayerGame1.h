@@ -7,7 +7,6 @@
 #include "Controller/GameController.h"
 #include "Manager/PlayerMovementManager.h"
 #include "Game1/Skills/ShieldSkill.h"
-#include "Game1/Skills/ShieldSkillItemPool.h"
 
 class PlayerGame1 : public cocos2d::Sprite, public SpriteController
 {

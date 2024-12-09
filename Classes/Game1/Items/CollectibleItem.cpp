@@ -54,17 +54,6 @@ void CollectibleItem::removeWhenOutOfScreen() {
 }
 
 void CollectibleItem::playEffectAndRemove() {
-    //this->setVisible(true);
-    //this->setOpacity(255);
-
-    //// Scale up to _scaleFactor times over 0.5 seconds
-    //auto scaleUp = ScaleTo::create(0.5f, _scaleFactor);
-
-    //// Fade out over 0.5 seconds
-    //auto fadeOut = FadeOut::create(0.5f);
-
-    //// Run the scale and fade actions simultaneously, then return to pool
-    //_currentSprite->runAction(Sequence::create(Spawn::create(scaleUp, fadeOut, nullptr), nullptr));
 }
 
 void CollectibleItem::returnToPool() {

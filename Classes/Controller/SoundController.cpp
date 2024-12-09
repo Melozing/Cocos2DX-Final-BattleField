@@ -1,5 +1,6 @@
 #include "SoundController.h"
 #include "audio/include/AudioEngine.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 using namespace cocos2d::experimental;
@@ -11,12 +12,6 @@ SoundController* SoundController::getInstance() {
         instance = new SoundController();
     }
     return instance;
-}
-
-SoundController::SoundController() : elapsedTime(0.0f), currentEventIndex(0) {
-    Director::getInstance()->getScheduler()->schedule([this](float dt) {
-        this->update(dt);
-        }, this, 0.0f, false, "sound_controller_update_key");
 }
 
 void SoundController::preloadMusic(const std::string& filePath) {
@@ -53,6 +48,7 @@ bool SoundController::isMusicPlaying(const std::string& filePath) {
 
 float SoundController::getMusicDuration(const std::string& filePath) {
     auto it = playingMusic.find(filePath);
+    CCLOG("Duration of the sound: %f seconds", AudioEngine::getDuration(it->second));
     if (it != playingMusic.end()) {
         return AudioEngine::getDuration(it->second);
     }
@@ -94,14 +90,6 @@ void SoundController::replayMusic(const std::string& filePath) {
     playMusic(filePath);
 }
 
-void SoundController::update(float dt) {
-    elapsedTime += dt;
-    while (currentEventIndex < spawnEvents.size() && elapsedTime >= spawnEvents[currentEventIndex].first) {
-        spawnEvents[currentEventIndex].second();
-        currentEventIndex++;
-    }
-}
-
 int SoundController::playSoundEffect(const std::string& filePath, bool loop) {
     auto it = preloadedSoundEffects.find(filePath);
     if (it != preloadedSoundEffects.end()) {
@@ -133,19 +121,4 @@ float SoundController::getSoundEffectDuration(const std::string& filePath) {
     AudioEngine::stop(audioId);
 
     return duration;
-}
-
-void SoundController::preloadSoundEffect(const std::string& filePath) {
-    if (preloadedSoundEffects.find(filePath) == preloadedSoundEffects.end()) {
-        AudioEngine::preload(filePath, [this, filePath](bool isSuccess) {
-            if (isSuccess) {
-                int audioId = AudioEngine::play2d(filePath, false);
-                AudioEngine::stop(audioId);
-                preloadedSoundEffects[filePath] = audioId;
-            }
-            else {
-                CCLOG("Failed to preload sound effect: %s", filePath.c_str());
-            }
-            });
-    }
 }

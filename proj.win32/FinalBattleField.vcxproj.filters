@@ -243,15 +243,6 @@
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FlyingBulletPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FallingRockPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\RandomBoomPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
     </ClCompile>
@@ -260,12 +251,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp">
       <Filter>src\Gameplay\Items\Game1\Health</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Items\HealthItemPool.cpp">
-      <Filter>src\Gameplay\Items\Game1\Health</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Items\AmmoItemPool.cpp">
-      <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp">
       <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
@@ -312,9 +297,6 @@
     <ClCompile Include="..\Classes\Game1\Enemy\FanBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FanBulletPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree</Filter>
     </ClCompile>
@@ -333,22 +315,13 @@
     <ClCompile Include="..\Classes\Game1\Effect\EffectObject.cpp">
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp">
-      <Filter>src\Gameplay\Effect\Game1</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Manager\SpriteFrameCacheManager.cpp">
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp">
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Enemy\FallingTreePool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillI.cpp">
-      <Filter>src\Gameplay\Skill\Game1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillItemPool.cpp">
       <Filter>src\Gameplay\Skill\Game1</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp">
@@ -447,11 +420,11 @@
     <ClCompile Include="..\Classes\Game3\Items\ItemPoolGane3.cpp">
       <Filter>src\Gameplay\Items\Game3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Player\HealthBarManager.cpp">
-      <Filter>src\Gameplay\PlayerHealth</Filter>
+    <ClCompile Include="..\Classes\Manager\ObjectPoolGame1.cpp">
+      <Filter>src\Manager\Game1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
-      <Filter>src\Gameplay\Items\Game2</Filter>
+    <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -524,15 +497,6 @@
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FlyingBulletPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FallingRockPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingRock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\RandomBoomPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\RandomBoom</Filter>
     </ClInclude>
@@ -541,12 +505,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\HealthItem.h">
       <Filter>src\Gameplay\Items\Game1\Health</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Items\HealthItemPool.h">
-      <Filter>src\Gameplay\Items\Game1\Health</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Items\AmmoItemPool.h">
-      <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Items\AmmoItem.h">
       <Filter>src\Gameplay\Items\Game1\Ammo</Filter>
@@ -593,9 +551,6 @@
     <ClInclude Include="..\Classes\Game1\Enemy\FanBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FanBulletPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FanBullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\SpawnEvent.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1</Filter>
     </ClInclude>
@@ -617,22 +572,13 @@
     <ClInclude Include="..\Classes\Game1\Effect\EffectObject.h">
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h">
-      <Filter>src\Gameplay\Effect\Game1</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Manager\SpriteFrameCacheManager.h">
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\SpriteBatchNodeManager.h">
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Enemy\FallingTreePool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\FallingTree</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game1\Skills\ShieldSkill.h">
-      <Filter>src\Gameplay\Skill\Game1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game1\Skills\ShieldSkillItemPool.h">
       <Filter>src\Gameplay\Skill\Game1</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyUtils.h">
@@ -731,11 +677,11 @@
     <ClInclude Include="..\Classes\Game3\Items\ItemPoolGane3.h">
       <Filter>src\Gameplay\Items\Game3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Player\HealthBarManager.h">
-      <Filter>src\Gameplay\PlayerHealth</Filter>
+    <ClInclude Include="..\Classes\Manager\ObjectPoolGame1.h">
+      <Filter>src\Manager\Game1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
-      <Filter>src\Gameplay\Items\Game2</Filter>
+    <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h">
+      <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

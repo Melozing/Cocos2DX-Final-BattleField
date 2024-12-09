@@ -34,12 +34,7 @@ public:
     void preloadSoundEffect(const std::string& filePath);
 
 private:
-    // Private constructor for singleton pattern
-    SoundController();
     static SoundController* instance;
-
-    // Private methods
-    void update(float dt);
 
     // Private attributes
     std::vector<std::pair<float, std::function<void()>>> spawnEvents;
