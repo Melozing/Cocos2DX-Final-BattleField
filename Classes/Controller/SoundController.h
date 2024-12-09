@@ -24,14 +24,11 @@ public:
     void replayMusic(const std::string& filePath);
 
     // Sound effects control
-    int playSoundEffect(const std::string& filePath, bool loop = false);
+    void playSoundEffect(const std::string& filePath, bool loop = false);
     float getSoundEffectDuration(const std::string& filePath);
 
     // Event scheduling
     void scheduleSpawnEvents(const std::vector<float>& timestamps, const std::vector<std::function<void()>>& spawnFunctions);
-
-    // Preload sound effects
-    void preloadSoundEffect(const std::string& filePath);
 
 private:
     static SoundController* instance;

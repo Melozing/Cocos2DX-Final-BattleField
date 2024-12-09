@@ -43,8 +43,6 @@ bool PlayerGame3::init()
     timeSinceLastShot = 0.0f;
     bulletCount = 3;
     // Preload shoot sound effect
-    SoundController::getInstance()->preloadSoundEffect(Constants::PlayerShootSFX);
-
 
     return true;
 }
