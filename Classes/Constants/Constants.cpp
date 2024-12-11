@@ -86,7 +86,9 @@ const int Constants::InitialPosX = 100;
 const int Constants::InitialPosY = 100;
 const float Constants::scaleFactor = 2.0f;
 const float Constants::BulletScale = 0.3f;
-const int Constants::BulletDamage2 = 30;
+
+//game2 Dame and Health
+const int Constants::BulletDamage2 = 50;
 const float Constants::GrenadeSpeed = 300.0f;
 const float Constants::GrenadeThrowDistance = 500.0f;
 //boss game2
