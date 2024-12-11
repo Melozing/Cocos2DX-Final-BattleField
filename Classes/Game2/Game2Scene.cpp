@@ -9,6 +9,7 @@
 #include "Game2/Enemy/Enemyh/InvEnemy.h"
 #include "Game2/Enemy/Enemyh/SuicideBomberEnemy.h"
 #include "Game2/Enemy/Enemyh/BossEnemy.h"
+#include "Game2/Enemy/Enemyh/RifleEnemy.h"
 #include "Controller/GameController.h"
 #include "Game2/Items/ItemsSpawn.h"
 #include "ui/CocosGUI.h"
@@ -155,7 +156,8 @@ void Game2Scene::spawnEnemies() {
     for (const auto& point : spawnPoints) {
         float x = point.x * (visibleSize.width / 1920.0f);
         float y = point.y * (visibleSize.height / 1080.0f);
-        spawnEnemy("MeleeEnemy", Vec2(x + origin.x, y + origin.y));
+        //spawnEnemy("MeleeEnemy", Vec2(x + origin.x, y + origin.y));
+        spawnEnemy("RifleEnemy", Vec2(x + origin.x, y + origin.y));
     }
 }
 
@@ -165,10 +167,10 @@ void Game2Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& p
     if (enemyType == "MeleeEnemy") {
         enemy = MeleeEnemy::create();
     }
-    /*else if (enemyType == "SniperEnemy") {
-        enemy = SniperEnemy::create();
+    else if (enemyType == "RifleEnemy") {
+        enemy = RifleEnemy::create();
     }
-    else if (enemyType == "InvEnemy") {
+    /*else if (enemyType == "InvEnemy") {
         enemy = InvEnemy::create();
     }
     else if (enemyType == "SuicideBomberEnemy") {

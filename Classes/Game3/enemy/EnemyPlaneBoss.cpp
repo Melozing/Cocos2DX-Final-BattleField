@@ -1,16 +1,16 @@
 ﻿#include "EnemyPlaneBoss.h"
-#include "EnemyPlaneBossPool.h"
-#include "Game3/enemy/BoomForEnemyPlanePool.h"
+#include "Manager/ObjectPoolGame3.h"
 #include "Constants/Constants.h"
 #include "Controller/SoundController.h"
 #include "Controller/SpriteController.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Game3/Items/ItemPoolGane3.h"
+#include "FX/Explodable.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
 
-EnemyPlaneBoss* EnemyPlaneBoss::createEnemyPlaneBoss() {
+EnemyPlaneBoss* EnemyPlaneBoss::create() {
     EnemyPlaneBoss* enemy = new (std::nothrow) EnemyPlaneBoss();
     if (enemy && enemy->init()) {
         enemy->autorelease();
@@ -204,7 +204,7 @@ void EnemyPlaneBoss::dropBooms() {
     };
 
     for (const auto& pos : positions) {
-        auto boom = boomPool->getBoom();
+        auto boom = boomPool->getObject();
         if (boom) {
             boom->setPosition(pos);
             if (boom->getParent() == nullptr) {
@@ -232,7 +232,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
         auto boom = dynamic_cast<BoomForEnemyPlane*>(child);
         if (boom && boom->isVisible()) {
             boom->setVisible(false);
-            boomPool->returnBoom(boom);
+            boomPool->returnObject(boom);
         }
     }
 
@@ -259,7 +259,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
         CallFunc::create([this]() {
             this->isExploding = false; // Stop explosions
             this->removeFromParentAndCleanup(false);
-            EnemyPlaneBossPool::getInstance()->returnEnemy(this);
+            EnemyPlaneBossPool::getInstance()->returnObject(this);
         }), nullptr);
 
     // Run the sequence action

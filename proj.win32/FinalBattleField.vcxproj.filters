@@ -243,9 +243,6 @@
     <ClCompile Include="..\Classes\Bullet\BulletPlayerGame3.cpp">
       <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Bullet\BulletPoolPlayerGame3.cpp">
-      <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FlyingBullet</Filter>
     </ClCompile>
@@ -369,22 +366,10 @@
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoss.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBossPool.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlane.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Enemy\FallingObject.cpp">
@@ -394,9 +379,6 @@
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlane.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\LoadingBar\CustomLoadingBar.cpp">
@@ -503,9 +485,6 @@
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Bullet\BulletPlayerGame3.h">
-      <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Bullet\BulletPoolPlayerGame3.h">
       <Filter>src\Gameplay\Player\PlayerGame3\BulletPlayerGame3</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h">
@@ -634,22 +613,10 @@
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoss.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBossPool.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlane.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoom\BoomForEnemyPlane</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Enemy\FallingObject.h">
@@ -659,9 +626,6 @@
       <Filter>src\Gameplay\Player\PlayerGame3</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlane.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet\BulletForEnemyPlane</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LoadingBar\CustomLoadingBar.h">

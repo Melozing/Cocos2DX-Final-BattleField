@@ -2,15 +2,7 @@
 #include "Game3/Player/PlayerGame3.h"
 
 #include "Game3/Items/ItemPoolGane3.h"
-
-#include "Game3/enemy/EnemyPlaneBullet.h"
-#include "Game3/enemy/EnemyPlaneBoom.h"
-#include "Game3/enemy/EnemyPlaneBulletPool.h"
-#include "Game3/enemy/BulletForEnemyPlanePool.h"
-#include "Game3/enemy/EnemyPlaneBoomPool.h"
-#include "Game3/enemy/EnemyPlaneBossPool.h"
-#include "Game3/enemy/EnemyPlaneBoss.h"
-#include "Game3/enemy/BoomForEnemyPlanePool.h"
+#include "Manager/ObjectPoolGame3.h"
 
 #include "Scene/LoadingScene.h"
 #include "Controller/SpriteController.h"
@@ -18,7 +10,6 @@
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
 #include "Manager/BackgroundManager.h"
-#include "Game2/Cursor/Cursor.h"
 #include "ui/CocosGUI.h"
 
 #include "json/document.h"
@@ -72,7 +63,6 @@ bool Game3Scene::init() {
     eventDispatcher->addCustomEventListener("UPDATE_BOSS_HEALTH_BAR", [this](EventCustom* event) {
         this->updateBossHealthBar(( enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
         });
-
     return true;
 }
 
@@ -206,21 +196,21 @@ void Game3Scene::initSpawning() {
 
             this->scheduleOnce([this, enemyType, skillTime, spawnWithSkill](float) {
                 if (enemyType == "EnemyPlaneBullet") {
-                    auto enemy = EnemyPlaneBulletPool::getInstance()->getEnemy();
+                    auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
                     if (enemy) {
                         this->addChild(enemy);
                         enemy->spawnEnemy(this, skillTime, spawnWithSkill);
                     }
                 }
                 else if (enemyType == "EnemyPlaneBoom") {
-                    auto enemy = EnemyPlaneBoomPool::getInstance()->getEnemy();
+                    auto enemy = EnemyPlaneBoomPool::getInstance()->getObject();
                     if (enemy) {
                         this->addChild(enemy);
                         enemy->spawnEnemy(this, skillTime, spawnWithSkill);
                     }
                 }
                 else if (enemyType == "EnemyPlaneBoss") {
-                    enemyBoos = EnemyPlaneBossPool::getInstance()->getEnemy();
+                    enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
                     if (enemyBoos) {
                         enemyBoos->updatePhase();
                         enemyBoos->spawnEnemy();
