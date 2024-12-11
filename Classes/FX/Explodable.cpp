@@ -16,7 +16,7 @@ Explosion* Explosion::create(const Vec2& position, std::function<void()> callbac
 }
 
 bool Explosion::init(const Vec2& position, std::function<void()> callback, float scale) {
-    if (!Node::init()) {
+    if (!Sprite::init()) {
         return false;
     }
 
@@ -48,4 +48,10 @@ bool Explosion::init(const Vec2& position, std::function<void()> callback, float
     ));
 
     return true;
+}
+
+void Explosion::reset() {
+    this->stopAllActions();
+    this->setVisible(false);
+    this->removeAllChildrenWithCleanup(true);
 }

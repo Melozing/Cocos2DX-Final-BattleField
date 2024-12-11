@@ -2,9 +2,8 @@
 
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
-#include "FX/Explodable.h"
 
-class BulletPlayerGame3 : public SpriteController, public Explosion
+class BulletPlayerGame3 :public cocos2d::Sprite, public SpriteController
 {
 public:
     static BulletPlayerGame3* create();
@@ -14,12 +13,12 @@ public:
     void setSpeed(float speed);
     Size GetSize();
     void reset();
-    void spawn(const cocos2d::Vec2& startPosition, float angle);
-    void startMovement();
+    void spawn();
     void removeWhenOutOfScreen();
     void returnPool();
     void explode();
     void hideModelCharac();
+    void update(float delta) override;
 
 private:
     cocos2d::Vec2 _direction;

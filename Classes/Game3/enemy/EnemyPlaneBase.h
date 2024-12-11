@@ -3,17 +3,18 @@
 
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
-#include "FX/Explodable.h"
 
-class EnemyPlaneBase : public SpriteController, public Explosion {
+class EnemyPlaneBase : public cocos2d::Sprite, public SpriteController {
 public:
     virtual bool init() override;
+    static EnemyPlaneBase* create();
 
     void moveFromLeftToRight(const cocos2d::Size& visibleSize, float speed);
     void moveFromRightToLeft(const cocos2d::Size& visibleSize, float speed);
     void returnToPool();
     void resetSprite();
     void explode();
+    void reset();
     void dropRandomItem();
     void update(float delta);
 protected:

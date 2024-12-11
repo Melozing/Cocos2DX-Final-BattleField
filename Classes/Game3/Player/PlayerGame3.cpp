@@ -3,6 +3,7 @@
 #include "Controller/SoundController.h"
 #include "utils/MathFunction.h"
 #include "Manager/PlayerMovementManager.h"
+#include "Manager/ObjectPoolGame3.h"
 #include "Controller/GameController.h"
 #include "Game3/Enemy/EnemyPlaneBoss.h"
 #include "utils/PhysicsShapeCache.h"
@@ -16,7 +17,6 @@ PlayerGame3* PlayerGame3::createPlayerGame3()
     if (player && player->init())
     {
         player->autorelease();
-        player->initAnimation();
         return player;
     }
     CC_SAFE_DELETE(player);
@@ -34,6 +34,7 @@ bool PlayerGame3::init()
     setupTurret();
     setupEventListeners();
     setupManagers();
+    initAnimation();
     // Schedule update method
     this->scheduleUpdate();
 
@@ -117,11 +118,6 @@ void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
     {
         playerMovement->onKeyPressed(keyCode);
     }
-    if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
-    {
-        isMouseDown = true;
-        shootBullet();
-    }
 }
 
 void PlayerGame3::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
@@ -140,14 +136,7 @@ void PlayerGame3::onMouseDown(Event* event)
         return;
     }
 
-    EventMouse* e = (EventMouse*)event;
-    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
-    {
-        isMouseDown = true;
-        if (timeSinceLastShot >= shootDelay) {
-            shootBullet();
-        }
-    }
+    isMouseDown = true;
 }
 
 void PlayerGame3::onMouseUp(Event* event)
@@ -159,8 +148,7 @@ void PlayerGame3::onMouseUp(Event* event)
     }
 }
 
-void PlayerGame3::shootBullet()
-{
+void PlayerGame3::shootBullet(const Vec2& target) {
     if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
 
     Vec2 turretPosition = this->convertToWorldSpace(turretSprite->getPosition());
@@ -168,51 +156,32 @@ void PlayerGame3::shootBullet()
         return; // Do not shoot if the mouse is too close
     }
 
-    if (timeSinceLastShot < shootDelay) {
-        return;
-    }
+    if (timeSinceLastShot < shootDelay) return;
 
-    localAnchorPoint = Vec2(turretSprite->getContentSize().width * 0.5f, turretSprite->getContentSize().height * 1.0f);
-    turretWorldPos = turretSprite->convertToWorldSpace(localAnchorPoint);
-    direction = _mousePos - turretWorldPos;
-
-    auto shootSingleBullet = [&](const Vec2& offset) {
-        BulletPlayerGame3* bullet = BulletPoolPlayerGame3::getInstance()->getBullet();
-        if (bullet) {
-            bullet->setVisible(true);
-            bullet->reset();
-            bullet->setDirection(direction + offset);
-            bullet->spawn(turretWorldPos, -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90);
-            if (bullet->getParent() == nullptr) {
-                this->getParent()->addChild(bullet, Constants::ORDER_LAYER_CHARACTER + 5);
-            }
-        }
-        else {
-            CCLOG("Failed to get bullet from pool");
-        }
-        };
-
-    std::vector<Vec2> offsets;
-    if (bulletCount == 1) {
-        offsets.push_back(Vec2::ZERO);
+    direction = target - this->getPosition();
+    direction.normalize();
+    if (direction.y < 0) {
+        direction.y = 0;
     }
-    else if (bulletCount == 2) {
-        offsets.push_back(Vec2(-60, 60));
-        offsets.push_back(Vec2(60, -60));
-    }
-    else if (bulletCount == 3) {
-        offsets.push_back(Vec2(-60, 60));
-        offsets.push_back(Vec2::ZERO);
-        offsets.push_back(Vec2(60, -60));
-    }
+    std::vector<float> angles = { -15.0f, 0.0f, 15.0f };
 
-    for (const auto& offset : offsets) {
-        shootSingleBullet(offset);
+    for (float angleOffset : angles)
+    {
+        float angleInRadians = CC_DEGREES_TO_RADIANS(angleOffset);
+        Vec2 BulletTestDirection = Vec2(
+            direction.x * cos(angleInRadians) - direction.y * sin(angleInRadians),
+            direction.x * sin(angleInRadians) + direction.y * cos(angleInRadians)
+        );
+
+        auto BulletTest = BulletPoolPlayerGame3::getInstance()->getObject();
+        BulletTest->setPosition(turretPosition);
+        BulletTest->setDirection(BulletTestDirection);
+        BulletTest->spawn();
+        this->getParent()->addChild(BulletTest);
     }
 
     timeSinceLastShot = 0.0f;
 }
-
 
 void PlayerGame3::onMouseMove(Event* event)
 {
@@ -250,17 +219,12 @@ void PlayerGame3::update(float delta)
 
     updateTurretRotation();
 
-    if (isMouseDown)
+    timeSinceLastShot += delta;
+
+    if (isMouseDown && timeSinceLastShot >= shootDelay)
     {
-        timeSinceLastShot += delta;
-        if (timeSinceLastShot >= shootDelay)
-        {
-            shootBullet();
-        }
-    }
-    else
-    {
-        timeSinceLastShot += delta;
+        shootBullet(_mousePos);
+        timeSinceLastShot = 0.0f;
     }
 }
 
@@ -279,6 +243,16 @@ void PlayerGame3::updateTurretRotation() {
 
         // Calculate the angle in degrees
         float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
+
+        CCLOG("Direction: (%f, %f)", direction.x, direction.y);
+        CCLOG("Angle: %f", angle);
+        // Limit the rotation angle to prevent the turret from pointing downwards
+        if (angle < 0.0f) {
+            return;
+        }
+        else if (angle > 180.0f) {
+            return;
+        }
 
         // Set the turret's rotation (adjusting for the initial orientation)
         turretSprite->setRotation(-angle + 90);

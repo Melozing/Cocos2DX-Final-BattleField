@@ -1,12 +1,11 @@
 ﻿#include "EnemyPlaneBullet.h"
-#include "EnemyPlaneBulletPool.h"
-#include "BulletForEnemyPlanePool.h"
+#include "Manager/ObjectPoolGame3.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Constants/Constants.h"
 
 USING_NS_CC;
 
-EnemyPlaneBullet* EnemyPlaneBullet::createEnemyBullet() {
+EnemyPlaneBullet* EnemyPlaneBullet::create() {
     EnemyPlaneBullet* enemy = new (std::nothrow) EnemyPlaneBullet();
     if (enemy && enemy->init()) {
         enemy->autorelease();
@@ -30,7 +29,7 @@ bool EnemyPlaneBullet::init() {
     warningSign->setScale(SpriteController::updateSpriteScale(modelCharac, 0.02f));
     warningSign->setVisible(false);
     this->addChild(warningSign);
-
+    reset();
     return true;
 }
 
@@ -54,7 +53,7 @@ void EnemyPlaneBullet::initAnimation() {
 }
 
 void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill) {
-    auto enemy = EnemyPlaneBulletPool::getInstance()->getEnemy();
+    auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
     if (enemy) {
         enemy->createPhysicsBody();
         enemy->resetSprite();
@@ -112,7 +111,7 @@ void EnemyPlaneBullet::spawnBullets() {
 
     for (int i = 0; i < 3; ++i) {
         this->scheduleOnce([this, i, movingFromLeft](float) {
-            auto bullet = BulletForEnemyPlanePool::getInstance()->getBullet();
+            auto bullet = BulletForEnemyPlanePool::getInstance()->getObject();
             if (bullet) {
                 bullet->setPosition(this->getPosition());
                 if (bullet->getParent() == nullptr) {
@@ -124,16 +123,6 @@ void EnemyPlaneBullet::spawnBullets() {
             }
             }, i * 0.3f, "spawn_bullet_key_" + std::to_string(i));
     }
-}
-
-void EnemyPlaneBullet::reset() {
-    this->setRotation(0);
-    if (this->getPhysicsBody() != nullptr) {
-        this->removeComponent(this->getPhysicsBody());
-    }
-    this->setVisible(false);
-    this->setPosition(Vec2::ZERO);
-    this->stopAllActions();
 }
 
 void EnemyPlaneBullet::createPhysicsBody() {

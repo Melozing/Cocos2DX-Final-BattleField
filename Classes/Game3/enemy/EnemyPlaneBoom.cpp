@@ -1,11 +1,10 @@
 ﻿#include "EnemyPlaneBoom.h"
-#include "EnemyPlaneBoomPool.h"
+#include "Manager/ObjectPoolGame3.h"
 #include "Constants/Constants.h"
-#include "BoomForEnemyPlanePool.h"
 
 USING_NS_CC;
 
-EnemyPlaneBoom* EnemyPlaneBoom::createEnemyPlaneBoom() {
+EnemyPlaneBoom* EnemyPlaneBoom::create() {
     EnemyPlaneBoom* enemy = new (std::nothrow) EnemyPlaneBoom();
     if (enemy && enemy->init()) {
         enemy->autorelease();
@@ -21,7 +20,7 @@ bool EnemyPlaneBoom::init() {
     }
 
     initAnimation();
-
+    reset();
     return true;
 }
 
@@ -45,7 +44,7 @@ void EnemyPlaneBoom::initAnimation() {
 }
 
 void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill) {
-    auto enemy = EnemyPlaneBoomPool::getInstance()->getEnemy();
+    auto enemy = EnemyPlaneBoomPool::getInstance()->getObject();
     if (enemy) {
         enemy->setVisible(true);
         enemy->resetSprite();
@@ -78,7 +77,7 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spa
 }
 
 void EnemyPlaneBoom::spawnBoom(bool spawnFromLeft) {
-    auto boom = BoomForEnemyPlanePool::getInstance()->getBoom();
+    auto boom = BoomForEnemyPlanePool::getInstance()->getObject();
     if (boom) {
         boom->setPosition(this->getPosition());
         if (boom->getParent() == nullptr) {
@@ -87,16 +86,6 @@ void EnemyPlaneBoom::spawnBoom(bool spawnFromLeft) {
         boom->setVisible(true);
         boom->moveDown(spawnFromLeft);
     }
-}
-
-void EnemyPlaneBoom::reset() {
-    // Reset the state of the EnemyPlaneBoom
-    this->stopAllActions();
-    this->setVisible(false);
-    if (this->getPhysicsBody() != nullptr) {
-        this->removeComponent(this->getPhysicsBody());
-    }
-    this->setPosition(Vec2::ZERO);
 }
 
 void EnemyPlaneBoom::createPhysicsBody() {

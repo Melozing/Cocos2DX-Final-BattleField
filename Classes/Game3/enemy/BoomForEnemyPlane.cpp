@@ -1,5 +1,5 @@
 #include "BoomForEnemyPlane.h"
-#include "BoomForEnemyPlanePool.h"
+#include "Manager/ObjectPoolGame3.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Controller/SpriteController.h"
 #include "Controller/SoundController.h"
@@ -9,7 +9,7 @@
 
 USING_NS_CC;
 
-BoomForEnemyPlane* BoomForEnemyPlane::createBoom() {
+BoomForEnemyPlane* BoomForEnemyPlane::create() {
     BoomForEnemyPlane* boom = new (std::nothrow) BoomForEnemyPlane();
     if (boom && boom->init()) {
         boom->autorelease();
@@ -119,5 +119,5 @@ void BoomForEnemyPlane::returnToPool() {
     this->stopAllActions();
     this->removeFromParent();
     this->setVisible(false);
-    BoomForEnemyPlanePool::getInstance()->returnBoom(this);
+    BoomForEnemyPlanePool::getInstance()->returnObject(this);
 }
