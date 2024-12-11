@@ -1,5 +1,5 @@
 #include "BulletForEnemyPlane.h"
-#include "BulletForEnemyPlanePool.h"
+#include "Manager/ObjectPoolGame3.h"
 #include "Controller/SpriteController.h"
 #include "Controller/SoundController.h"
 #include "Constants/Constants.h"
@@ -8,7 +8,7 @@
 
 USING_NS_CC;
 
-BulletForEnemyPlane* BulletForEnemyPlane::createBullet() {
+BulletForEnemyPlane* BulletForEnemyPlane::create() {
     BulletForEnemyPlane* bullet = new (std::nothrow) BulletForEnemyPlane();
     if (bullet && bullet->init()) {
         bullet->autorelease();
@@ -112,5 +112,5 @@ void BulletForEnemyPlane::returnToPool() {
     this->stopAllActions();
     this->removeFromParent();
     this->setVisible(false);
-    BulletForEnemyPlanePool::getInstance()->returnBullet(this);
+    BulletForEnemyPlanePool::getInstance()->returnObject(this);
 }

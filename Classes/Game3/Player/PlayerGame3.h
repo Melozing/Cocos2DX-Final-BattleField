@@ -5,7 +5,6 @@
 #include "Manager/PlayerMovementManager.h"
 #include "Controller/SpriteController.h"
 #include "Bullet/BulletPlayerGame3.h"
-#include "Bullet/BulletPoolPlayerGame3.h"
 
 class PlayerGame3 : public cocos2d::Sprite, public SpriteController
 {
@@ -24,7 +23,7 @@ public:
 private:
     cocos2d::Size GetSize();
     void initAnimation();
-    void shootBullet();
+    void shootBullet(const cocos2d::Vec2& target);
     void updateTurretRotation();
     bool updateDistanceToMouse(const Vec2& position);
     float calculateDistanceToMouse(const Vec2& position);

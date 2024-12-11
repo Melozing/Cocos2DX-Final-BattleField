@@ -7,8 +7,7 @@
 
 class EnemyPlaneBoom : public EnemyPlaneBase {
 public:
-    static EnemyPlaneBoom* createEnemyPlaneBoom();
-    void reset();
+    static EnemyPlaneBoom* create();
     virtual bool init() override;
     Size GetSize();
     static void spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill);

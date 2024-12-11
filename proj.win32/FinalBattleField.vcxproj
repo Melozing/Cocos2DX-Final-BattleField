@@ -152,7 +152,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Bullet\BulletPlayerGame3.cpp" />
-    <ClCompile Include="..\Classes\Bullet\BulletPoolPlayerGame3.cpp" />
     <ClCompile Include="..\Classes\Button\BaseButton.cpp" />
     <ClCompile Include="..\Classes\Button\ExitButton.cpp" />
     <ClCompile Include="..\Classes\Button\ReplayButton.cpp" />
@@ -193,16 +192,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game2\Player\HealthBarManager.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlane.cpp" />
-    <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlane.cpp" />
-    <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBase.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp" />
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoss.cpp" />
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBossPool.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp" />
-    <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.cpp" />
     <ClCompile Include="..\Classes\Game3\Game3Scene.cpp" />
     <ClCompile Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.cpp" />
     <ClCompile Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.cpp" />
@@ -219,6 +213,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\LoadingBar\CustomLoadingBar.cpp" />
     <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp" />
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame1.cpp" />
+    <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp" />
     <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp" />
     <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp" />
     <ClCompile Include="..\Classes\Manager\PositionManager.cpp" />
@@ -241,7 +236,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Bullet\BulletPlayerGame3.h" />
-    <ClInclude Include="..\Classes\Bullet\BulletPoolPlayerGame3.h" />
     <ClInclude Include="..\Classes\Button\BaseButton.h" />
     <ClInclude Include="..\Classes\Button\ExitButton.h" />
     <ClInclude Include="..\Classes\Button\ReplayButton.h" />
@@ -283,16 +277,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game2\Player\HealthBarManager.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h" />
     <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlane.h" />
-    <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlanePool.h" />
     <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlane.h" />
-    <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlanePool.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBase.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h" />
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoomPool.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoss.h" />
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBossPool.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h" />
-    <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBulletPool.h" />
     <ClInclude Include="..\Classes\Game3\Game3Scene.h" />
     <ClInclude Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.h" />
     <ClInclude Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.h" />
@@ -309,6 +298,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\LoadingBar\CustomLoadingBar.h" />
     <ClInclude Include="..\Classes\Manager\BackgroundManager.h" />
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame1.h" />
+    <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h" />
     <ClInclude Include="..\Classes\Manager\PhysicsManager.h" />
     <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h" />
     <ClInclude Include="..\Classes\Manager\PositionManager.h" />

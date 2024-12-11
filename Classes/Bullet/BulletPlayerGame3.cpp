@@ -1,37 +1,34 @@
+#include "Manager/ObjectPoolGame3.h"
 #include "Bullet/BulletPlayerGame3.h"
-#include "BulletPoolPlayerGame3.h"
 #include "Constants/Constants.h"
 #include "utils/PhysicsShapeCache.h"
 #include "Controller/SpriteController.h"
 #include "Controller/SoundController.h"
+#include "FX/Explodable.h"
 
 USING_NS_CC;
 
 BulletPlayerGame3* BulletPlayerGame3::create()
 {
     BulletPlayerGame3* bullet = new (std::nothrow) BulletPlayerGame3();
-
-    if (bullet && bullet->init())
-    {
+    if (bullet && bullet->init()) {
         bullet->autorelease();
         return bullet;
     }
-    else
-    {
-        delete bullet;
-        return nullptr;
-    }
+    CC_SAFE_DELETE(bullet);
+    return nullptr;
 }
 
 bool BulletPlayerGame3::init()
 {
-    if (!Node::init()) {
+    if (!Sprite::init()) {
         return false;
     }
 
     initAnimation();
 
     this->setSpeed(Constants::BulletGame3Speed);
+
     return true;
 }
 
@@ -79,7 +76,24 @@ void BulletPlayerGame3::setDirection(const Vec2& direction)
 {
     _direction = direction;
     _direction.normalize();
+    this->createPhysicsBody();
+
+    // Calculate the angle in degrees between the direction vector and the upward vector (0, 1)
+    float angle = -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90;
+
+    // Set the rotation of the bullet sprite
+    this->setRotation(angle);
+
+    // Move the bullet in the direction using MoveBy
+    float distance = 1000.0f; // Distance the bullet will travel
+    Vec2 targetPosition = this->getPosition() + _direction * distance;
+    float duration = distance / _speed; // Calculate duration based on speed
+
+    auto moveAction = MoveTo::create(duration, targetPosition);
+    this->runAction(Sequence::create(moveAction, nullptr));
+
 }
+
 
 void BulletPlayerGame3::setSpeed(float speed)
 {
@@ -88,7 +102,7 @@ void BulletPlayerGame3::setSpeed(float speed)
 
 void BulletPlayerGame3::reset()
 {
-    this->setVisible(true);
+    this->setRotation(0);
     if (modelCharac) {
         modelCharac->setVisible(true);
     }
@@ -96,38 +110,19 @@ void BulletPlayerGame3::reset()
         explosionSprite->setVisible(false);
     }
     this->stopAllActions();
+    this->unscheduleUpdate(); // Stop the update when resetting
+    this->setVisible(true);
 }
 
-void BulletPlayerGame3::spawn(const Vec2& startPosition, float angle)
+void BulletPlayerGame3::spawn()
 {
-    this->setRotation(0);
-    this->createPhysicsBody();
-    this->setPosition(startPosition);
-    this->setRotation(angle);
-    this->startMovement();
+    this->scheduleUpdate(); // Schedule the update method
 }
 
 void BulletPlayerGame3::hideModelCharac() {
     if (modelCharac) {
         modelCharac->setVisible(false);
     }
-}
-
-void BulletPlayerGame3::startMovement()
-{
-    // Calculate the target position based on direction and speed
-    Vec2 targetPosition = this->getPosition() + _direction * _speed * 5; // Adjust the multiplier as needed
-
-    // Create a MoveTo action
-    auto moveAction = MoveTo::create(3.0f, targetPosition); // Adjust the duration as needed
-
-    // Create a callback to remove the bullet when the action is done
-    auto removeCallback = CallFunc::create([this]() {
-        this->returnPool();
-        });
-
-    // Run the actions in sequence
-    this->runAction(Sequence::create(moveAction, removeCallback, nullptr));
 }
 
 void BulletPlayerGame3::removeWhenOutOfScreen()
@@ -137,8 +132,8 @@ void BulletPlayerGame3::removeWhenOutOfScreen()
 
     Vec2 position = this->getPosition();
 
-    if (position.x < origin.x || position.x > origin.x + visibleSize.width /2 ||
-        position.y < origin.y || position.y > origin.y + visibleSize.height /2)
+    if (position.x < origin.x || position.x > origin.x + visibleSize.width ||
+        position.y < origin.y || position.y > origin.y + visibleSize.height)
     {
         this->returnPool();
     }
@@ -146,7 +141,8 @@ void BulletPlayerGame3::removeWhenOutOfScreen()
 
 void BulletPlayerGame3::returnPool() {
     this->removeFromParentAndCleanup(false);
-    BulletPoolPlayerGame3::getInstance()->returnBullet(this);
+    BulletPoolPlayerGame3::getInstance()->returnObject(this);
+    this->unscheduleUpdate(); // Stop the update when returning to the pool
 }
 
 void BulletPlayerGame3::explode() {
@@ -160,4 +156,10 @@ void BulletPlayerGame3::explode() {
         this->getParent()->addChild(explosion);
     }
     this->returnPool();
+}
+
+void BulletPlayerGame3::update(float delta)
+{
+    this->setPosition(this->getPosition() + _direction * _speed * delta);
+    this->removeWhenOutOfScreen();
 }

@@ -6,7 +6,7 @@
 
 class EnemyPlaneBoss : public EnemyPlaneBase {
 public:
-    static EnemyPlaneBoss* createEnemyPlaneBoss();
+    static EnemyPlaneBoss* create();
     void takeDamage(float damage);
 
     virtual bool init() override;
