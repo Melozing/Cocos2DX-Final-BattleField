@@ -182,6 +182,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\BossEnemy.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\InvEnemy.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MeleeEnemy.cpp" />
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\RifleEnemy.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SniperEnemy.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp" />
@@ -266,6 +267,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\BossEnemy.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\InvEnemy.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MeleeEnemy.h" />
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\RifleEnemy.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SniperEnemy.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyUtils.h" />
