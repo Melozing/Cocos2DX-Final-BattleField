@@ -2,6 +2,7 @@
 #include "Manager/PhysicsManager.h"
 #include "Constants/Constants.h"
 #include "Manager/BackgroundManager.h"
+#include "Game2/Player/Petard.h"
 
 #include "Game2/Enemy/Enemyh/MeleeEnemy.h"
 #include "Game2/Enemy/Enemyh/SniperEnemy.h"
@@ -32,7 +33,22 @@ bool Game2Scene::init() {
         });
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/game2.png", Constants::ORDER_LAYER_BACKGROUND);
+    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/bg_game_2.1.png", Constants::ORDER_LAYER_BACKGROUND);
+
+    // Petard
+    auto petard = Petard::create();
+    if (petard)
+    {
+        petard->createPhysicsBody();
+        this->addChild(petard);
+        CCLOG("Petard added to scene");
+    }
+    else
+    {
+        CCLOG("Failed to add Petard to scene");
+    }
+
+    
 
     _player = PlayerGame2::createPlayerGame2();
     if (!_player) {
@@ -66,24 +82,23 @@ bool Game2Scene::init() {
     return true;
 }
 
-
 void Game2Scene::checkGameOver() {
-   /* if (_playerAttributes->GetHealth() <= 0) {
-        _isGameOver = true;
-        auto gameOverLabel = Label::createWithTTF("Game Over", "fonts/Marker Felt.ttf", 48);
-        gameOverLabel->setPosition(Director::getInstance()->getVisibleSize() / 2);
-        this->addChild(gameOverLabel);
+    /* if (_playerAttributes->GetHealth() <= 0) {
+         _isGameOver = true;
+         auto gameOverLabel = Label::createWithTTF("Game Over", "fonts/Marker Felt.ttf", 48);
+         gameOverLabel->setPosition(Director::getInstance()->getVisibleSize() / 2);
+         this->addChild(gameOverLabel);
 
-        GameController::getInstance()->GameOver(
-            [this]() {
-                Director::getInstance()->end();
-            },
-            []() -> Scene* {
-                return Game2Scene::createScene();
-            },
-            Constants::pathSoundTrackGame1 
-        );
-    }*/
+         GameController::getInstance()->GameOver(
+             [this]() {
+                 Director::getInstance()->end();
+             },
+             []() -> Scene* {
+                 return Game2Scene::createScene();
+             },
+             Constants::pathSoundTrackGame1
+         );
+     }*/
 }
 
 void Game2Scene::resetGameState() {
@@ -97,7 +112,7 @@ void Game2Scene::resetGameState() {
 void Game2Scene::setupCursor() {
     if (_cursor) {
         _cursor->changeSprite("assets_game/player/tam.png");
-    }  
+    }
 }
 
 void Game2Scene::setupKeyboardEventListeners() {
@@ -229,5 +244,3 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
     }
     return true;
 }
-
-
