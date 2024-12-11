@@ -172,6 +172,15 @@
     <Filter Include="src\Gameplay\Items\Game2">
       <UniqueIdentifier>{b2ccccaa-96be-4f86-83b2-4b0139cb97cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2\Petard">
+      <UniqueIdentifier>{8f261ca5-0719-4633-9423-263b5c2b5a4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2\PlayerGame2">
+      <UniqueIdentifier>{a12b4d92-f665-4e47-bc3f-0a4e2cedc275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard">
+      <UniqueIdentifier>{579e9b8e-9355-40f5-9bb2-c7c8077dbad1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -227,9 +236,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp">
       <Filter>src\Gameplay\Player\PlayerGame1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
-      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
@@ -426,6 +432,17 @@
     <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp">
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
+    <ClCompile Include="..\Classes\Game2\Player\HealthBarManager.cpp" />
+    <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="Petard.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2\Petard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\Bullet_Petard.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -481,9 +498,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h">
       <Filter>src\Gameplay\Player\PlayerGame1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
-      <Filter>src\Gameplay\Player\PlayerGame2</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h">
       <Filter>src\Gameplay\Player\PlayerGame2</Filter>
@@ -682,6 +696,17 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h">
       <Filter>src\Gameplay\Effect\Game1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
+    <ClInclude Include="..\Classes\Game2\Player\HealthBarManager.h" />
+    <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
+      <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\Petard.h">
+      <Filter>src\Gameplay\Player\PlayerGame2\Petard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\Bullet_Petard.h">
+      <Filter>src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
