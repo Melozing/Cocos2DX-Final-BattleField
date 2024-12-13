@@ -39,7 +39,11 @@ bool EnemyPlaneBoss::init() {
     return true;
 }
 
-float EnemyPlaneBoss::getHealth() const {
+float EnemyPlaneBoss::getHealth() {
+    if (!health)
+    {
+        health = 100;
+    }
     return health;
 }
 
@@ -103,8 +107,6 @@ void EnemyPlaneBoss::graduallyIncreaseHealth() {
             if (this->health > targetHealth) {
                 this->health = targetHealth;
             }
-
-            // Play sound effect
 
             // Dispatch custom event to update health bar
             auto eventDispatcher = Director::getInstance()->getEventDispatcher();

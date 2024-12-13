@@ -202,8 +202,7 @@ void GameController::replayGame(const std::string& soundtrackPath) {
 }
 
 void GameController::resetGameState() {
-    auto director = Director::getInstance();
-    director->resume();
+    Director::getInstance()->resume();
     gameTime = 0.0f;
     gameOver = false;
     paused = false;

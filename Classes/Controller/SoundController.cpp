@@ -97,10 +97,7 @@ void SoundController::replayMusic(const std::string& filePath) {
 }
 
 void SoundController::playSoundEffect(const std::string& filePath, bool loop) {
-    auto it = preloadedSoundEffects.find(filePath);
-    if (it != preloadedSoundEffects.end()) {
-        SimpleAudioEngine::getInstance()->playEffect(filePath.c_str(), loop);
-    }
+    SimpleAudioEngine::getInstance()->playEffect(filePath.c_str(), loop);
 }
 
 float SoundController::getSoundEffectDuration(const std::string& filePath) {

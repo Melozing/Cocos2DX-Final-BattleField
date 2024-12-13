@@ -14,7 +14,7 @@
     },
     {
       "enemyType": "EnemyPlaneBoss",
-      "spawnTimes": [ 110.0 ],
+      "spawnTimes": [ 10.0 ],
       "skillTimes": [ 5.0 ],
       "spawnSkills": [ false, true ]
     }

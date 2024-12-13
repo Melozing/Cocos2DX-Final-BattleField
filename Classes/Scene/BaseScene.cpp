@@ -15,6 +15,7 @@ bool BaseScene::init() {
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
         if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
+            if (GameController::getInstance()->isPaused()) return;
             if (!GameController::getInstance()->isGameOver()) {
                 if (_cursor)
                 {

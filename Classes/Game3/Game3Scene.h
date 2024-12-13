@@ -11,6 +11,7 @@
 #include "Game3/enemy/EnemyPlaneBoss.h" // Include EnemyPlaneBoss
 #include "LoadingBar/CustomLoadingBar.h"
 #include <Game2/Cursor/Cursor.h>
+#include "UIGame/Badge.h"
 
 class Game3Scene : public BaseScene {
 public:
@@ -23,7 +24,10 @@ public:
     // Macro to create the Game3Scene object
     CREATE_FUNC(Game3Scene);
 
+    void updateBulletLabel(cocos2d::Ref* sender);
+
 private:
+    ~Game3Scene();
     // Physics world
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
@@ -76,8 +80,12 @@ private:
 
     //Sound 
     void initSound();
-
     void preloadAssets();
+
+    //bulletBadge
+    Badge* bulletBadge;
+    void initBulletBadge();
+    void blinkRedBadge(Ref* sender);
 };
 
 #endif // __GAME3SCENE_SCENE_H__

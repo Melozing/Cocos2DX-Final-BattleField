@@ -42,8 +42,10 @@ bool PlayerGame3::init()
     isMouseDown = false;
     shootDelay = 0.15f;
     timeSinceLastShot = 0.0f;
-    bulletCount = 3;
+    bulletCount = 1;
+
     // Preload shoot sound effect
+    Constants::QuantityBulletPlayerGame3 = 10;
 
     return true;
 }
@@ -157,16 +159,32 @@ void PlayerGame3::shootBullet(const Vec2& target) {
     }
 
     if (timeSinceLastShot < shootDelay) return;
+    if (Constants::QuantityBulletPlayerGame3 < 1) {
+        cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(Constants::UPDATE_BULLET_LABEL, &Constants::QuantityBulletPlayerGame3);
+        // Send notification to blink red
+        __NotificationCenter::getInstance()->postNotification("BlinkRedBadge", nullptr);
+        return;
+    }
+        
 
     direction = target - this->getPosition();
     direction.normalize();
     if (direction.y < 0) {
         direction.y = 0;
     }
-    std::vector<float> angles = { -15.0f, 0.0f, 15.0f };
 
-    for (float angleOffset : angles)
-    {
+    std::vector<float> angles;
+    if (bulletCount == 1) {
+        angles = { 0.0f };
+    }
+    else if (bulletCount == 2) {
+        angles = { -7.5f, 7.5f };
+    }
+    else if (bulletCount == 3) {
+        angles = { -15.0f, 0.0f, 15.0f };
+    }
+
+    for (float angleOffset : angles) {
         float angleInRadians = CC_DEGREES_TO_RADIANS(angleOffset);
         Vec2 BulletTestDirection = Vec2(
             direction.x * cos(angleInRadians) - direction.y * sin(angleInRadians),
@@ -178,9 +196,19 @@ void PlayerGame3::shootBullet(const Vec2& target) {
         BulletTest->setDirection(BulletTestDirection);
         BulletTest->spawn();
         this->getParent()->addChild(BulletTest);
+        Constants::QuantityBulletPlayerGame3 --;
     }
 
     timeSinceLastShot = 0.0f;
+
+    // Send notification about bullet count change
+    __NotificationCenter::getInstance()->postNotification("BulletCountChanged", nullptr);
+}
+
+void PlayerGame3::increaseBulletCount() {
+    if (bulletCount < 3) {
+        bulletCount++;
+    }
 }
 
 void PlayerGame3::onMouseMove(Event* event)
@@ -244,8 +272,6 @@ void PlayerGame3::updateTurretRotation() {
         // Calculate the angle in degrees
         float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
 
-        CCLOG("Direction: (%f, %f)", direction.x, direction.y);
-        CCLOG("Angle: %f", angle);
         // Limit the rotation angle to prevent the turret from pointing downwards
         if (angle < 0.0f) {
             return;

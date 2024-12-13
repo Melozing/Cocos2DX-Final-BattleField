@@ -175,6 +175,9 @@
     <Filter Include="src\Manager\Game3">
       <UniqueIdentifier>{a7fc57a2-6d66-4785-8fb2-1135b97ba3a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UXUI\Badge">
+      <UniqueIdentifier>{3b650970-4079-4688-bde8-1e862425da92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -415,6 +418,10 @@
     <ClCompile Include="..\Classes\Game2\Player\HealthBarManager.cpp" />
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp">
       <Filter>src\Manager\Game3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\RifleEnemy.cpp" />
+    <ClCompile Include="..\Classes\UIGame\Badge.cpp">
+      <Filter>src\UXUI\Badge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -659,6 +666,10 @@
     <ClInclude Include="..\Classes\Game2\Player\HealthBarManager.h" />
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h">
       <Filter>src\Manager\Game3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\RifleEnemy.h" />
+    <ClInclude Include="..\Classes\UIGame\Badge.h">
+      <Filter>src\UXUI\Badge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

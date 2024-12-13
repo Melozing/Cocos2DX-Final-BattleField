@@ -101,7 +101,9 @@ public:
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
 	static const float HealthEnemyPlaneBoss;
 	static const float BulletDamageGame3;
+	static int QuantityBulletPlayerGame3;
 	static const std::string PlayerGame3Name;
+	static const std::string UPDATE_BULLET_LABEL;
     //game3 SFX
     static const std::string BossHealthSFX;
     static const std::string PlayerShootSFX;
@@ -127,6 +129,7 @@ public:
     static const float PADDING_VERTICAL_UI_EXITBUTTON;
     static const float PADDING_HORIZONTAL_UI_PANEL;
     static const float PADDING_HORIZONTAL_UI_EXITBUTTON;
+    static const std::string FONT_GAME;
 };
 
 #endif // __CONSTANTS_H__
