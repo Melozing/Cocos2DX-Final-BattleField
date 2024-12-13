@@ -77,7 +77,8 @@ public:
     static const int BulletDamage2;
     static const float GrenadeSpeed;
     static const float GrenadeThrowDistance;
-
+	//Petard game 2
+	static const float PetardHealth;
     //bossgame2
     static const float BossScale;
     static const float BossSpeed;
