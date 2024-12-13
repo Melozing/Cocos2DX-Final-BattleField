@@ -43,13 +43,15 @@ bool Game2Scene::init() {
     {
         petard->createPhysicsBody();
         this->addChild(petard);
+        petard->setupInitialPosition();
+        CCLOG("Petard added to scene");
     }
     else
     {
         CCLOG("Failed to add Petard to scene");
     }
 
-    
+    //Loading bar health Petard
 
     _player = PlayerGame2::createPlayerGame2();
     if (!_player) {

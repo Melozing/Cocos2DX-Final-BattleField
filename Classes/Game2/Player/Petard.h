@@ -13,7 +13,9 @@ public:
     void setupInitialPosition();
     void shootBullet(float dt);
     void createPhysicsBody();
+    void addHealthBar();
 private:
+	float health;
     cocos2d::Size GetSize();
     cocos2d::Sprite* modelCharac;
     cocos2d::SpriteBatchNode* spriteBatchNode;
