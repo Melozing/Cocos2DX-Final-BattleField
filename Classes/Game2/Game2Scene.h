@@ -25,7 +25,6 @@ public:
     void resetGameState();
 
 private:
-
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
     bool _isGameOver;
