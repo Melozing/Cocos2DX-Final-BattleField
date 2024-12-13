@@ -47,6 +47,7 @@ bool Game3Scene::init() {
     setupContactListener();
     initHealthBar();
     initSound();
+    initBulletBadge();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
@@ -61,7 +62,10 @@ bool Game3Scene::init() {
         this->hideBossHealthBar();
         });
     eventDispatcher->addCustomEventListener("UPDATE_BOSS_HEALTH_BAR", [this](EventCustom* event) {
-        this->updateBossHealthBar(( enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
+        this->updateBossHealthBar((enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
+        });
+    eventDispatcher->addCustomEventListener("BlinkRedBadge", [this](EventCustom* event) {
+        bulletBadge->blinkRed();
         });
     return true;
 }
@@ -92,6 +96,48 @@ void Game3Scene::setupPlayer() {
     player->setName(Constants::PlayerGame3Name);
     this->addChild(player);
     setupEventListeners(player);
+}
+
+void Game3Scene::initBulletBadge() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    float padding = SpriteController::calculateScreenRatio(0.05f); // Adjust the padding as needed
+    
+    auto spriteBadge = Sprite::create("assets_game/UXUI/Panel/Table_03.png");
+    bulletBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
+    bulletBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.07f)); // Adjust the scale as needed
+    bulletBadge->updateLabel("Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3));
+    bulletBadge->setBadgePosition(Vec2(visibleSize.width - bulletBadge->getContentSize().width / 2 - padding, bulletBadge->getContentSize().height / 2 + padding));
+    this->addChild(bulletBadge);
+
+    // Register to listen for bullet count change notifications
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::updateBulletLabel),
+        "BulletCountChanged",
+        nullptr
+    );
+
+    // Register to listen for bullet count change notifications
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::blinkRedBadge),
+        "BlinkRedBadge",
+        nullptr
+    );
+}
+
+void Game3Scene::updateBulletLabel(Ref* sender) {
+    std::string bulletText = "Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3);
+    bulletBadge->updateLabel(bulletText);
+}
+
+void Game3Scene::blinkRedBadge(Ref* sender) {
+    bulletBadge->blinkRed();
+}
+
+Game3Scene::~Game3Scene() {
+    // Remove observer when the scene is destroyed
+    __NotificationCenter::getInstance()->removeObserver(this, "BulletCountChanged");
 }
 
 void Game3Scene::initHealthBar() {
@@ -263,6 +309,9 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
         auto boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeB);
         auto bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeB);
         auto item = dynamic_cast<ItemBaseGame3*>(nodeB); 
+        auto itemUpgradeBullet = dynamic_cast<UpgradeBulletItemGame3*>(nodeB); 
+        auto IncreaseBullet = dynamic_cast<IncreaseBulletCountItemGame3*>(nodeB);
+        auto HealthRecovery = dynamic_cast<HealthRecoveryItemGame3*>(nodeB);
 
         if (bulletPlayer && enemy) {
             handleBulletEnemyCollision(bulletPlayer, enemy);
@@ -280,9 +329,24 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             item->stopMovement();
             item->returnItemToPoolAfterDelay(7.0f); // Return item to pool after 7 seconds
         }
-        else if (player && item) {
-            item->stopMovement();
-            item->applyPickupEffect();
+        else if (player && IncreaseBullet) {
+            IncreaseBullet->stopMovement();
+            IncreaseBullet->applyPickupEffect();
+            Constants::QuantityBulletPlayerGame3 += 50;
+        }
+        else if (player && itemUpgradeBullet) {
+            itemUpgradeBullet->stopMovement();
+            itemUpgradeBullet->applyPickupEffect();
+            player->increaseBulletCount();
+        }
+        else if (player && HealthRecovery) {
+            HealthRecovery->stopMovement();
+            HealthRecovery->applyPickupEffect();
+            if (healthBar->getPercent() <= 0) return true;
+            // Assuming you have a method to get the current health
+            float currentHealth = healthBar->getPercent();
+            float newHealth = currentHealth + 10; // Decrease health by 10 (example value)
+            updateHealthBar(newHealth);
         }
         else {
             player = dynamic_cast<PlayerGame3*>(nodeB);
@@ -293,7 +357,10 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeA);
             bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeA);
             item = dynamic_cast<ItemBaseGame3*>(nodeA);
-
+            itemUpgradeBullet = dynamic_cast<UpgradeBulletItemGame3*>(nodeA);
+            IncreaseBullet = dynamic_cast<IncreaseBulletCountItemGame3*>(nodeA);
+            HealthRecovery = dynamic_cast<HealthRecoveryItemGame3*>(nodeA);
+            
             if (bulletPlayer && enemy) {
                 handleBulletEnemyCollision(bulletPlayer, enemy);
             }
@@ -309,10 +376,24 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             else if (item && cityCollisionArea) {
                 item->stopMovement();
                 item->returnItemToPoolAfterDelay(7.0f); // Return item to pool after 7 seconds
-            } 
-            else if (player && item) {
-                item->stopMovement();
-                item->applyPickupEffect();
+            }
+            else if (player && itemUpgradeBullet) {
+                itemUpgradeBullet->stopMovement();
+                itemUpgradeBullet->applyPickupEffect();
+                player->increaseBulletCount();
+            }
+            else if (player && IncreaseBullet) {
+                IncreaseBullet->stopMovement();
+                IncreaseBullet->applyPickupEffect();
+            }
+            else if (player && HealthRecovery) {
+                HealthRecovery->stopMovement();
+                HealthRecovery->applyPickupEffect();
+                if (healthBar->getPercent() <= 0) return true;
+                // Assuming you have a method to get the current health
+                float currentHealth = healthBar->getPercent();
+                float newHealth = currentHealth + 10; // Decrease health by 10 (example value)
+                updateHealthBar(newHealth);
             }
         }
     }
@@ -394,12 +475,12 @@ void Game3Scene::updateBossHealthBar(float healthPercent) {
 
 void Game3Scene::showBossHealthBar() {
     if (bossHealthBar) {
-        bossHealthBar->setVisible(true);
+        this->bossHealthBar->setVisible(true);
     }
 }
 
 void Game3Scene::hideBossHealthBar() {
     if (bossHealthBar) {
-        bossHealthBar->setVisible(false);
+        this->bossHealthBar->setVisible(false);
     }
 }

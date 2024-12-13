@@ -15,7 +15,7 @@ public:
     void reset();
     Size GetSize();
     void moveLeftRight();
-    float getHealth() const;
+    float getHealth();
     void updatePhase();
 
 private:
@@ -36,7 +36,7 @@ private:
 
     Phase currentPhase;
     cocos2d::SpriteBatchNode* spriteBatchNode;
-    float health;
+    float health = 0;
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
     bool isExploding;

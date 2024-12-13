@@ -16,6 +16,7 @@ const std::string Constants::GAME1_SCENE_NAME = "Game1Scene";
 const std::string Constants::GAME2_SCENE_NAME = "Game2Scene";
 const std::string Constants::GAME3_SCENE_NAME = "Game3Scene";
 const std::string Constants::MAINMENU_SCENE_NAME = "MainMenu";
+
 //UI
 const int Constants::ORDER_LAYER_CURSOR = 9999;
 const int Constants::ORDER_LAYER_UI = 99;
@@ -30,6 +31,9 @@ const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.05f;
 const float Constants::PADDING_VERTICAL_UI_EXITBUTTON = 0.02f;
 const float Constants::PADDING_HORIZONTAL_UI_PANEL = 0.04f;
 const float Constants::PADDING_HORIZONTAL_UI_EXITBUTTON = 0.02f;
+
+const std::string Constants::FONT_GAME = "fonts/Marker Felt.ttf";
+
 //ITEM
 const float Constants::ITEM_SCALE_FACTOR = 0.25f;
 const float Constants::ITEM_EFFECT_DURATION = 0.3f;
@@ -115,7 +119,9 @@ const float Constants::EnemyPlaneBoomGame3Speed = 150.0f;
 const float Constants::SpeedEnemyPlane_BOSS = 100.0f;
 const float Constants::HealthEnemyPlaneBoss = 100.0f;
 const float Constants::BulletDamageGame3 = 60.0f;
+int Constants::QuantityBulletPlayerGame3 = 10;
 const std::string Constants::PlayerGame3Name = "PlayerGame3Name";
+const std::string Constants::UPDATE_BULLET_LABEL = "UPDATE_BULLET_LABEL";
 
 //game3 SFX
 const std::string Constants::BossHealthSFX = "assets_game/sounds/Game3/SFX/BossHealthSFX.mp3";

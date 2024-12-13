@@ -181,6 +181,9 @@
     <Filter Include="src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard">
       <UniqueIdentifier>{579e9b8e-9355-40f5-9bb2-c7c8077dbad1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UXUI\Badge">
+      <UniqueIdentifier>{3b650970-4079-4688-bde8-1e862425da92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -424,6 +427,10 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Player\Bullet_Petard.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\RifleEnemy.cpp" />
+    <ClCompile Include="..\Classes\UIGame\Badge.cpp">
+      <Filter>src\UXUI\Badge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -671,6 +678,10 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Player\Bullet_Petard.h">
       <Filter>src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\RifleEnemy.h" />
+    <ClInclude Include="..\Classes\UIGame\Badge.h">
+      <Filter>src\UXUI\Badge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
