@@ -41,6 +41,10 @@ public:
     void switchFireMode();
     void fireBurst();
 
+
+	void playShootSound();
+	void playReloadSound();
+	void playGrenadeSound();
 private:
     cocos2d::Vec2 _mousePos;
     bool _isMouseDown;

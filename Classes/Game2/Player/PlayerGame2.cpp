@@ -7,6 +7,9 @@
 #include "Grenade/BulletGame2.h"
 #include "Grenade/PoolBulletGame2.h"
 
+
+#include "Controller/SoundController.h"
+
 USING_NS_CC;
 
 PlayerGame2::PlayerGame2()
@@ -26,6 +29,10 @@ PlayerGame2::PlayerGame2()
     totalAmmo = attributes->GetAmmo();
     currentMagazine = maxMagazineSize;
     currentGrenades = maxGrenades;
+
+    SoundController::getInstance()->preloadMusic("assets_game/sounds/Game2/reload.mp3");
+    SoundController::getInstance()->preloadMusic("assets_game/sounds/Game2/shot.mp3");
+    SoundController::getInstance()->preloadMusic("assets_game/sounds/Game2/nembom.mp3");
 }
 
 
@@ -71,10 +78,10 @@ bool PlayerGame2::init() {
 
     this->scheduleUpdate();
 
-    playerMovement = new PlayerMovement(this, Constants::PlayerSpeed); // Properly initialize PlayerMovement
+    playerMovement = new PlayerMovement(this, Constants::PlayerSpeed);
     
     _ammoLabel = Label::createWithTTF("0/0", "fonts/Marker Felt.ttf", 24);
-    _ammoLabel->setPosition(Vec2(this->getContentSize().width / 2, -100)); // Đặt vị trí của label phía sau lưng người chơi
+    _ammoLabel->setPosition(Vec2(this->getContentSize().width / 2, -100)); 
     this->addChild(_ammoLabel, 1);
 
 
@@ -84,9 +91,6 @@ bool PlayerGame2::init() {
 	_reloadSprite->setScale(0.5f);
     this->addChild(_reloadSprite, 1);
     updateAmmoDisplay();
-
-    
-
     createPhysicsBody();
     return true;
 }
@@ -334,6 +338,7 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     if (bullet)
     {
         this->getParent()->addChild(bullet);
+        playShootSound();
     }
     currentMagazine--;
     updateAmmoDisplay();
@@ -343,6 +348,7 @@ void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
 {
     auto grenade = Grenade::createGrenade(this->getPosition(), direction, duration);
     this->getParent()->addChild(grenade);
+	playGrenadeSound();
 }
 
 void PlayerGame2::reload()
@@ -353,11 +359,13 @@ void PlayerGame2::reload()
     }
 
     isReloading = true;
+    playReloadSound();
     reloadTime = 2.0f; // Start reload time
     _reloadSprite->setVisible(true);
 
     auto rotateAction = RotateBy::create(1.0f, 360.0f);
     _reloadSprite->runAction(RepeatForever::create(rotateAction));
+    playReloadSound();
 }
 
 void PlayerGame2::takeDamage(int damage)
@@ -375,12 +383,12 @@ void PlayerGame2::die()
 
 void PlayerGame2::pickUpHealth(int healthAmount)
 {
-    /*attributes->IncreaseHealth(healthAmount);*/
+    attributes->IncreaseHealth(healthAmount);
 }
 void PlayerGame2::pickUpAmmo(int ammoAmount)
 {
-   /* attributes->SetAmmo(attributes->GetAmmo() + ammoAmount);
-    updateAmmoDisplay();*/
+    attributes->SetAmmo(attributes->GetAmmo() + ammoAmount);
+    updateAmmoDisplay();
 }
 void PlayerGame2::pickUpGrenade(int grenadeAmount)
 {
@@ -393,10 +401,24 @@ void PlayerGame2::updateAmmoDisplay()
 }
 
 void PlayerGame2::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
     auto physicsBody = PhysicsBody::createBox(this->getContentSize());
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setDynamic(false);
+    physicsBody->setDynamic(true);
     physicsBody->setGravityEnable(false);
+    physicsBody->setCategoryBitmask(0x01); // Category bitmask for player
+    physicsBody->setCollisionBitmask(0x04); // Collides with items
+    physicsBody->setContactTestBitmask(0x04); // Test contact with items
     this->addComponent(physicsBody);
 }
+void PlayerGame2::playReloadSound() {
+    SoundController::getInstance()->playSoundEffect("assets_game/sounds/Game2/reload.mp3");
+}
 
+void PlayerGame2::playShootSound() {
+    SoundController::getInstance()->playSoundEffect("assets_game/sounds/Game2/shot.mp3");
+}
+void PlayerGame2::playGrenadeSound() {
+    SoundController::getInstance()->playSoundEffect("assets_game/sounds/Game2/nembom.mp3");
+}

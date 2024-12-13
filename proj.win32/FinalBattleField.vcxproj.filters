@@ -417,7 +417,6 @@
     <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp">
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\HealthBarManager.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
@@ -431,6 +430,10 @@
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\RifleEnemy.cpp" />
     <ClCompile Include="..\Classes\UIGame\Badge.cpp">
       <Filter>src\UXUI\Badge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp" />
+    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
+      <Filter>src\Gameplay\Items\Game2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -668,7 +671,6 @@
     <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h">
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
     <ClInclude Include="..\Classes\Game2\Player\HealthBarManager.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
@@ -682,6 +684,10 @@
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\RifleEnemy.h" />
     <ClInclude Include="..\Classes\UIGame\Badge.h">
       <Filter>src\UXUI\Badge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h" />
+    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
+      <Filter>src\Gameplay\Items\Game2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

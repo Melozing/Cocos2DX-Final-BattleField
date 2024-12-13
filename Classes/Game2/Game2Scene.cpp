@@ -13,6 +13,8 @@
 #include "Controller/GameController.h"
 #include "Game2/Items/ItemsSpawn.h"
 #include "ui/CocosGUI.h"
+
+#include "audio/include/AudioEngine.h"
 USING_NS_CC;
 
 cocos2d::Scene* Game2Scene::createScene() {
@@ -41,7 +43,6 @@ bool Game2Scene::init() {
     {
         petard->createPhysicsBody();
         this->addChild(petard);
-        CCLOG("Petard added to scene");
     }
     else
     {
@@ -59,10 +60,7 @@ bool Game2Scene::init() {
     _player->setName("PlayerGame2");
     this->addChild(_player);
     setupKeyboardEventListeners();
-    _cursor = Cursor::create("assets_game/UXUI/Main_Menu/pointer.png");
-    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
-    this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR);
-
+    setupCursor();
     this->schedule([this](float delta) {
         spawnEnemies();
         }, 5.0f, "spawn_enemy_key");
@@ -71,14 +69,6 @@ bool Game2Scene::init() {
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     this->scheduleUpdate();
-
-    /*_healthBar = HealthBar::create("Resources/assets_game/textures/healthbar/backgroundFrame.png",
-                                   "Resources/assets_game/textures/healthbar/avatarFrame.png",
-                                   "Resources/assets_game/textures/healthbar/healthBar.png");
-    _healthBar->setPositionCustom(Vec2(50, Director::getInstance()->getVisibleSize().height - 50));
-    this->addChild(_healthBar);*/
-
-
     return true;
 }
 
@@ -110,9 +100,9 @@ void Game2Scene::resetGameState() {
 }
 
 void Game2Scene::setupCursor() {
-    if (_cursor) {
-        _cursor->changeSprite("assets_game/player/tam.png");
-    }
+    _cursor = Cursor::create("assets_game/textures/Cursor/Cursor.png");
+    _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
+    this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR);
 }
 
 void Game2Scene::setupKeyboardEventListeners() {
@@ -195,6 +185,27 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         return false;
     }
 
+    // Handle collision between player and items
+    if ((nodeA->getName() == "PlayerGame2" && nodeB->getName() == "ItemsSpawn") ||
+        (nodeB->getName() == "PlayerGame2" && nodeA->getName() == "ItemsSpawn")) {
+        auto item = dynamic_cast<ItemsSpawn*>(nodeA->getName() == "PlayerGame2" ? nodeB : nodeA);
+        if (item) {
+            switch (item->getType()) {
+            case ItemsSpawn::ItemType::AMMO:
+                _player->pickUpAmmo(30);
+                break;
+            case ItemsSpawn::ItemType::HEALTH:
+                _player->pickUpHealth(20);
+                break;
+            case ItemsSpawn::ItemType::GRENADE:
+                _player->pickUpGrenade(1);
+                break;
+            }
+            item->removeFromParent();
+        }
+    }
+
+
     // Handle collision between player and grenade
     if ((nodeA->getName() == "PlayerGame2" && nodeB->getName() == "Grenade") ||
         (nodeB->getName() == "PlayerGame2" && nodeA->getName() == "Grenade")) {
@@ -207,7 +218,7 @@ bool Game2Scene::onContactBegin(PhysicsContact& contact) {
         _player->die();
     }
 
-    // Handle collision between enemy and grenade
+	// Enemy vs Grenade
     if ((nodeA->getName() == "Enemy" && nodeB->getName() == "Grenade") ||
         (nodeB->getName() == "Enemy" && nodeA->getName() == "Grenade")) {
         if (nodeA->getName() == "Grenade") {
