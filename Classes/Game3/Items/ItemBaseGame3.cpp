@@ -39,6 +39,9 @@ void ItemBaseGame3::setPhysicsBodyInfo(const std::string& plistFile, const std::
 }
 
 void ItemBaseGame3::moveDown() {
+    this->resetScale(); // Reset scale before returning to pool
+    this->setOpacity(255);
+    this->setVisible(true);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto moveAction = MoveBy::create(4.0f, Vec2(0, -visibleSize.height));
     auto delayAction = DelayTime::create(0.2f);
@@ -84,6 +87,8 @@ void ItemBaseGame3::applyPickupEffect() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
+    this->stopAllActions();
+    this->setOpacity(255);
 
     // Create scale and fade actions
     auto scaleAction = ScaleTo::create(0.5f, initialScale * 1.5f); // Scale up by 1.5 times the initial scale

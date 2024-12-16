@@ -28,7 +28,7 @@ bool EnemyPlaneBoss::init() {
     initAnimation();
 
     // Initialize health
-    health = 0;
+    Constants::CurrentHealthEnemyPlaneBoss = 0;
 
     // Initialize visibleSize and origin
     visibleSize = Director::getInstance()->getVisibleSize();
@@ -40,11 +40,7 @@ bool EnemyPlaneBoss::init() {
 }
 
 float EnemyPlaneBoss::getHealth() {
-    if (!health)
-    {
-        health = 100;
-    }
-    return health;
+    return Constants::CurrentHealthEnemyPlaneBoss;
 }
 
 void EnemyPlaneBoss::initAnimation() {
@@ -95,23 +91,23 @@ void EnemyPlaneBoss::spawnEnemy() {
 }
 
 void EnemyPlaneBoss::graduallyIncreaseHealth() {
-    this->health = 0;
+    Constants::CurrentHealthEnemyPlaneBoss = 0;
     float targetHealth = Constants::HealthEnemyPlaneBoss;
     SoundController::getInstance()->playSoundEffect(Constants::BossHealthSFX);
 
     // Logic to gradually increase health to targetHealth
     // For example, using a schedule to increment health over time
     this->schedule([this, targetHealth](float dt) {
-        if (this->health < targetHealth) {
-            this->health += 1.0f; // Increment health
-            if (this->health > targetHealth) {
-                this->health = targetHealth;
+        if (Constants::CurrentHealthEnemyPlaneBoss < targetHealth) {
+            Constants::CurrentHealthEnemyPlaneBoss += 1.0f; // Increment health
+            if (Constants::CurrentHealthEnemyPlaneBoss > targetHealth) {
+                Constants::CurrentHealthEnemyPlaneBoss = targetHealth;
             }
 
             // Dispatch custom event to update health bar
             auto eventDispatcher = Director::getInstance()->getEventDispatcher();
             EventCustom event("UPDATE_BOSS_HEALTH_BAR");
-            event.setUserData(&this->health);
+            event.setUserData(&Constants::CurrentHealthEnemyPlaneBoss);
             eventDispatcher->dispatchEvent(&event);
         }
         else {
@@ -139,7 +135,7 @@ void EnemyPlaneBoss::moveLeftRight() {
 void EnemyPlaneBoss::reset() {
     this->stopAllActions();
     this->setVisible(true);
-    health = Constants::HealthEnemyPlaneBoss;
+    Constants::CurrentHealthEnemyPlaneBoss = Constants::HealthEnemyPlaneBoss;
 }
 
 Size EnemyPlaneBoss::GetSize() {
@@ -147,8 +143,8 @@ Size EnemyPlaneBoss::GetSize() {
 }
 
 void EnemyPlaneBoss::takeDamage(float damage) {
-    health -= damage;
-    if (health <= 0) {
+    Constants::CurrentHealthEnemyPlaneBoss -= damage;
+    if (Constants::CurrentHealthEnemyPlaneBoss <= 0) {
         // Update phase before moving up and returning to the pool
         moveUpAndReturnToPool();
     }
@@ -170,7 +166,7 @@ void EnemyPlaneBoss::updatePhase() {
     }
 
     // Reset health for the new phase
-    health = Constants::HealthEnemyPlaneBoss;
+    Constants::CurrentHealthEnemyPlaneBoss = Constants::HealthEnemyPlaneBoss;
 }
 
 void EnemyPlaneBoss::executePhaseSkills() {

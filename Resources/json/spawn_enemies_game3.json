@@ -3,7 +3,7 @@
     {
       "enemyType": "EnemyPlaneBullet",
       "spawnTimes": [ 17.0, 200.0, 300.0 ],
-      "skillTimes": [ 19.0, 300.0, 400.0 ],
+      "skillTimes": [ 3.0, 3.0, 3.0 ],
       "spawnSkills": [ false, false, false ]
     },
     {

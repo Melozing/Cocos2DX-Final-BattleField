@@ -19,8 +19,8 @@ bool BasePanel::init() {
     // Create board sprite
     boardSprite = Sprite::create("assets_game/UXUI/Panel/Board.png");
     boardSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
-    boardSprite->setScale(SpriteController::updateSpriteScale(boardSprite, 0.3f));
-    boardSprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    boardSprite->setScale(SpriteController::updateSpriteScale(boardSprite, 0.525f));
+    boardSprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + SpriteController::calculateScreenRatio(0.03f)));
     this->addChild(boardSprite);
 
     return true;

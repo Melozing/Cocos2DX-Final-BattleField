@@ -258,9 +258,7 @@ void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
 }
 
 bool Game1Scene::onContactBegin(PhysicsContact& contact) {
-    return false;
     if (_playerAttributes->IsDead() || _invincible) return true;
-    return true;
     auto bodyA = contact.getShapeA()->getBody();
     auto bodyB = contact.getShapeB()->getBody();
 

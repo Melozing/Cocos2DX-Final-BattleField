@@ -36,7 +36,6 @@ private:
 
     Phase currentPhase;
     cocos2d::SpriteBatchNode* spriteBatchNode;
-    float health = 0;
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
     bool isExploding;

@@ -100,14 +100,16 @@ public:
     static const float EnemyPlaneBulletGame3Speed; //Speed Enemy Plane 3
 	static const float EnemyPlaneBoomGame3Speed; //Speed Enemy Plane 1
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
-	static const float HealthEnemyPlaneBoss;
+	static float HealthEnemyPlaneBoss;
+	static float CurrentHealthEnemyPlaneBoss;
 	static const float BulletDamageGame3;
 	static int QuantityBulletPlayerGame3;
 	static const std::string PlayerGame3Name;
 	static const std::string UPDATE_BULLET_LABEL;
     //game3 SFX
     static const std::string BossHealthSFX;
-    static const std::string PlayerShootSFX;
+    static const std::string PlayerGame3ShootSFX;
+    static const std::string PlayerOutOfAmmoSFX;
     static const std::string EnemyCrepExplodeSFX;
     static const std::string CityDamagedSFX;
 
@@ -128,9 +130,18 @@ public:
     static const float PADDING_VERTICAL_BUTTONS_MAINMENU;
     static const float PADDING_VERTICAL_UI_PANEL;
     static const float PADDING_VERTICAL_UI_EXITBUTTON;
-    static const float PADDING_HORIZONTAL_UI_PANEL;
-    static const float PADDING_HORIZONTAL_UI_EXITBUTTON;
+    static const float PADDING_VERTICAL_UI_SLIDER;
+    static const float PADDING_VERTICAL_UI_SLIDER_PADDING;
+    static const float PADDING_VERTICAL_UI_SLIDER_SPACING;
+    static const float PADDING_HORIZONTAL_UI_PANEL_BUTTON;
+    static const float PADDING_HORIZONTAL_UI_EXIT_BUTTON;
+    static const float PADDING_HORIZONTAL_UI_SLIDER;
+    static const float PADDING_HORIZONTAL_UI_SLIDER_SPACING;
     static const std::string FONT_GAME;
+
+    //UserDefault UI
+    static const std::string UD_musicVolume;
+    static const std::string UD_effectsVolume;
 };
 
 #endif // __CONSTANTS_H__
