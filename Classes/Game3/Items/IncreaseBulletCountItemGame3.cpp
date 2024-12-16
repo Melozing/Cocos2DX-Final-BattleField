@@ -7,7 +7,7 @@ bool IncreaseBulletCountItemGame3::init() {
     if (!ItemBaseGame3::init()) {
         return false;
     }
-    this->setTexture("assets_game/items/hop_dan.png");
+    this->setTexture("assets_game/items/IncreaseBulletCountItem.png");
     this->setScale(SpriteController::updateSpriteScale(this, 0.07f));
 
     // Set the physics body info
@@ -18,5 +18,4 @@ bool IncreaseBulletCountItemGame3::init() {
 }
 
 void IncreaseBulletCountItemGame3::applyEffect() {
-    // Implement the effect of increasing bullet count
 }

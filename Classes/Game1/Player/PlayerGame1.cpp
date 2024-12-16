@@ -173,10 +173,12 @@ void PlayerGame1::playHealthIncreaseEffect() {
 
 void PlayerGame1::fadeOutAndDisable() {
     modelCharac->runAction(Sequence::create(
-        FadeOut::create(2.0f),
+        CallFunc::create([this]() {
+            this->disableMovement();
+            }),
+        FadeOut::create(1.0f),
         CallFunc::create([this]() {
             this->setVisible(false);
-            this->disableMovement();
             }),
         nullptr
     ));

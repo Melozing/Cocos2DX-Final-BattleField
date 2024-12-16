@@ -7,7 +7,7 @@ bool HealthRecoveryItemGame3::init() {
     if (!ItemBaseGame3::init()) {
         return false;
     }
-    this->setTexture("assets_game/items/non_coi.png");
+    this->setTexture("assets_game/items/HealthRecoveryItem.png");
     this->setScale(SpriteController::updateSpriteScale(this, 0.07f));
 
     // Set the physics body info
@@ -17,5 +17,4 @@ bool HealthRecoveryItemGame3::init() {
 }
 
 void HealthRecoveryItemGame3::applyEffect() {
-    // Implement the effect of recovering health
 }

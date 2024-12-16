@@ -25,6 +25,7 @@ public:
     CREATE_FUNC(Game3Scene);
 
     void updateBulletLabel(cocos2d::Ref* sender);
+    void updateBulletLabel();
 
 private:
     ~Game3Scene();

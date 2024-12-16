@@ -45,7 +45,7 @@ bool PlayerGame3::init()
     bulletCount = 1;
 
     // Preload shoot sound effect
-    Constants::QuantityBulletPlayerGame3 = 10;
+    Constants::QuantityBulletPlayerGame3 = 100;
 
     return true;
 }
@@ -162,6 +162,7 @@ void PlayerGame3::shootBullet(const Vec2& target) {
     if (Constants::QuantityBulletPlayerGame3 < 1) {
         cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(Constants::UPDATE_BULLET_LABEL, &Constants::QuantityBulletPlayerGame3);
         // Send notification to blink red
+        SoundController::getInstance()->playSoundEffect(Constants::PlayerOutOfAmmoSFX);
         __NotificationCenter::getInstance()->postNotification("BlinkRedBadge", nullptr);
         return;
     }
@@ -199,6 +200,7 @@ void PlayerGame3::shootBullet(const Vec2& target) {
         Constants::QuantityBulletPlayerGame3 --;
     }
 
+    SoundController::getInstance()->playSoundEffect(Constants::PlayerGame3ShootSFX);
     timeSinceLastShot = 0.0f;
 
     // Send notification about bullet count change

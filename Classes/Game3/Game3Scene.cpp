@@ -46,6 +46,7 @@ bool Game3Scene::init() {
     initSpawning();
     setupContactListener();
     initHealthBar();
+    initBossHealthBar();
     initSound();
     initBulletBadge();
 
@@ -127,6 +128,11 @@ void Game3Scene::initBulletBadge() {
 }
 
 void Game3Scene::updateBulletLabel(Ref* sender) {
+    std::string bulletText = "Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3);
+    bulletBadge->updateLabel(bulletText);
+}
+
+void Game3Scene::updateBulletLabel() {
     std::string bulletText = "Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3);
     bulletBadge->updateLabel(bulletText);
 }
@@ -378,16 +384,15 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
                 item->returnItemToPoolAfterDelay(7.0f); // Return item to pool after 7 seconds
             }
             else if (player && itemUpgradeBullet) {
-                itemUpgradeBullet->stopMovement();
                 itemUpgradeBullet->applyPickupEffect();
                 player->increaseBulletCount();
             }
             else if (player && IncreaseBullet) {
-                IncreaseBullet->stopMovement();
                 IncreaseBullet->applyPickupEffect();
+                Constants::QuantityBulletPlayerGame3 += 50;
+                updateBulletLabel();
             }
             else if (player && HealthRecovery) {
-                HealthRecovery->stopMovement();
                 HealthRecovery->applyPickupEffect();
                 if (healthBar->getPercent() <= 0) return true;
                 // Assuming you have a method to get the current health

@@ -1,5 +1,7 @@
 #include "AppDelegate.h"
 #include "Scene/MainMenuScene.h"
+#include "Constants/Constants.h"
+#include "Controller/SoundController.h"
 #include "Controller/GameController.h"
 
 // #define USE_AUDIO_ENGINE 1
@@ -58,6 +60,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Initialize GameController and load MainMenuScene
     GameController::getInstance();
     GameController::getInstance()->init();
+
+    SoundController::getInstance()->setEffectsVolume(UserDefault::getInstance()->getFloatForKey(Constants::UD_effectsVolume.c_str()));
+    SoundController::getInstance()->setMusicVolume(UserDefault::getInstance()->getFloatForKey(Constants::UD_musicVolume.c_str()));
 
     auto scene = MainMenu::createScene();
     director->runWithScene(scene);
