@@ -88,6 +88,15 @@ void EnemyPlaneBoom::spawnBoom(bool spawnFromLeft) {
     }
 }
 
+void EnemyPlaneBoom::returnToPool() {
+    this->stopAllActions();
+    this->unschedule("spawn_boom_key");
+    this->setVisible(false);
+    this->removeFromParentAndCleanup(false);
+    this->reset();
+    EnemyPlaneBoomPool::getInstance()->returnObject(this);
+}
+
 void EnemyPlaneBoom::createPhysicsBody() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());

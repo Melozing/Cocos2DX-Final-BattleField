@@ -36,12 +36,12 @@ void BulletPlayerGame3::initAnimation() {
     spriteBatchNode = SpriteBatchNode::create("assets_game/player/BulletPlayer3Game.png");
 
     if (spriteBatchNode->getParent() == nullptr) {
-        this->addChild(spriteBatchNode);
+        this->addChild(spriteBatchNode, Constants::ORDER_LAYER_PLAYER - 1);
     }
 
     modelCharac = Sprite::createWithSpriteFrameName("BulletPlayer3Game1.png");
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.1f)); // Adjust scale as needed
-    spriteBatchNode->addChild(modelCharac);
+    spriteBatchNode->addChild(modelCharac, Constants::ORDER_LAYER_PLAYER - 1);
 
     auto animateCharac = Animate::create(SpriteController::createAnimation("BulletPlayer3Game", 31, 0.005f)); // Adjust frame count and duration as needed
     modelCharac->runAction(RepeatForever::create(animateCharac));
@@ -91,9 +91,7 @@ void BulletPlayerGame3::setDirection(const Vec2& direction)
 
     auto moveAction = MoveTo::create(duration, targetPosition);
     this->runAction(Sequence::create(moveAction, nullptr));
-
 }
-
 
 void BulletPlayerGame3::setSpeed(float speed)
 {

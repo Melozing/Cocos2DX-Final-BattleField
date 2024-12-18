@@ -104,7 +104,7 @@ void EnemyPlaneBase::explode() {
 
 void EnemyPlaneBase::dropRandomItem() {
     // Define the drop chance (e.g., 50% chance to drop an item)
-    float dropChance = 1.5f; // 50% chance
+    float dropChance = 0.2f; // 50% chance
 
     // Generate a random number between 0 and 1
     float randomValue = CCRANDOM_0_1();

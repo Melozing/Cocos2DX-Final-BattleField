@@ -11,7 +11,7 @@ public:
 
     void moveFromLeftToRight(const cocos2d::Size& visibleSize, float speed);
     void moveFromRightToLeft(const cocos2d::Size& visibleSize, float speed);
-    void returnToPool();
+    virtual void returnToPool();
     void resetSprite();
     void explode();
     void reset();

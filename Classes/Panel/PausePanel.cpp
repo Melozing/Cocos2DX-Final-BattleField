@@ -133,10 +133,12 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     musicButton->addClickEventListener([this](Ref* sender) {
         if (musicSlider->getPercent() == 0) {
             musicSlider->setPercent(100);
+            UserDefault::getInstance()->setFloatForKey(Constants::UD_musicVolume.c_str(), 100);
             SoundController::getInstance()->setMusicVolume(1.0f);
         }
         else {
             musicSlider->setPercent(0);
+            UserDefault::getInstance()->setFloatForKey(Constants::UD_musicVolume.c_str(), 0);
             SoundController::getInstance()->setMusicVolume(0);
         }
         updateMusicButtonState();
@@ -151,10 +153,12 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     soundEffectButton->addClickEventListener([this](Ref* sender) {
         if (soundEffectSlider->getPercent() == 0) {
             soundEffectSlider->setPercent(100);
+            UserDefault::getInstance()->setFloatForKey(Constants::UD_effectsVolume.c_str(), 100);
             SoundController::getInstance()->setEffectsVolume(1.0f);
         }
         else {
             soundEffectSlider->setPercent(0);
+            UserDefault::getInstance()->setFloatForKey(Constants::UD_effectsVolume.c_str(), 0);
             SoundController::getInstance()->setEffectsVolume(0);
         }
         updateSoundEffectButtonState();
@@ -163,8 +167,8 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     boardSprite->addChild(soundEffectButton);
 
     // Update button states based on initial slider values
-    updateMusicButtonState();
-    updateSoundEffectButtonState();
+    updateSlidersAndButtons();
+
     this->addTitleLabel("Setting");
 
     return true;
@@ -191,6 +195,17 @@ void PausePanel::updateSoundEffectButtonState() {
         soundEffectButton->loadTextures("assets_game/UXUI/Panel/SoundEffect_BTN_Disabled.png", "assets_game/UXUI/Panel/SoundEffect_BTN_Disabled.png");
     }
     else {
-        soundEffectButton->loadTextures("assets_game/UXUI/Panel/SoundEffect_BTN.png", "assets_game/UXUI/Panel/SoundEffect_BTN_Active.png");
+        soundEffectButton->loadTextures("assets_game/UXUI/Panel/SoundEffect_BTN_Active.png", "assets_game/UXUI/Panel/SoundEffect_BTN_Active.png");
     }
+}
+
+void PausePanel::updateSlidersAndButtons() {
+    float savedMusicVolume = UserDefault::getInstance()->getFloatForKey(Constants::UD_musicVolume.c_str(), 0.5f);
+    float savedEffectsVolume = UserDefault::getInstance()->getFloatForKey(Constants::UD_effectsVolume.c_str(), 0.5f);
+
+    musicSlider->setPercent(savedMusicVolume * 100);
+    soundEffectSlider->setPercent(savedEffectsVolume * 100);
+
+    updateMusicButtonState();
+    updateSoundEffectButtonState();
 }

@@ -14,6 +14,8 @@ public:
     void initAnimation();
     void createPhysicsBody();
     void spawnBoom(bool spawnFromLeft);
+    virtual void returnToPool() override;
+
 private:
     cocos2d::SpriteBatchNode* spriteBatchNode;
     cocos2d::SpriteBatchNode* explosionBatchNode;
