@@ -50,5 +50,7 @@ bool GameOverPanel::init(const std::function<void()>& retryAction, const std::fu
     exitButton->setPosition(Vec2(boardSprite->getContentSize().width - exitButton->getContentSize().width / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_EXIT_BUTTON),
         boardSprite->getContentSize().height - exitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
     boardSprite->addChild(exitButton);
+
+    this->addTitleLabel("Game Over");
     return true;
 }

@@ -169,6 +169,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Enemy\FallingTree.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FanBullet.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\FlyingBullet.cpp" />
+    <ClCompile Include="..\Classes\Game1\Enemy\Landmine.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\RandomBoom.cpp" />
     <ClCompile Include="..\Classes\Game1\Game1Scene.cpp" />
     <ClCompile Include="..\Classes\Game1\Items\AmmoItem.cpp" />
@@ -256,6 +257,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Enemy\FallingTree.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FanBullet.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\FlyingBullet.h" />
+    <ClInclude Include="..\Classes\Game1\Enemy\Landmine.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\RandomBoom.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\SpawnEvent.h" />
     <ClInclude Include="..\Classes\Game1\Game1Scene.h" />

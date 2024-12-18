@@ -80,7 +80,7 @@ bool PlayerGame2::init() {
 
     playerMovement = new PlayerMovement(this, Constants::PlayerSpeed);
     
-    _ammoLabel = Label::createWithTTF("0/0", "fonts/Marker Felt.ttf", 24);
+    _ammoLabel = Label::createWithTTF("0/0", Constants::FONT_GAME, 24);
     _ammoLabel->setPosition(Vec2(this->getContentSize().width / 2, -100)); 
     this->addChild(_ammoLabel, 1);
 

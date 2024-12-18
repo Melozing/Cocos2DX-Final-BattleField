@@ -46,71 +46,13 @@
 
 							<array>
 	
-								<string>{ -194.500,-136.500 }</string>
+								<string>{ 74.500,1.500 }</string>
 	
-								<string>{ -19.000,-171.000 }</string>
+								<string>{ -13.000,17.000 }</string>
 	
-								<string>{ -95.000,-69.000 }</string>
-
-							</array>
-
-							<array>
+								<string>{ -40.000,0.000 }</string>
 	
-								<string>{ 530.500,59.500 }</string>
-	
-								<string>{ 432.000,128.000 }</string>
-	
-								<string>{ -15.000,179.000 }</string>
-	
-								<string>{ -10.500,107.500 }</string>
-	
-								<string>{ 371.000,-161.000 }</string>
-	
-								<string>{ 546.500,-56.500 }</string>
-
-							</array>
-
-							<array>
-	
-								<string>{ -538.000,36.000 }</string>
-	
-								<string>{ -95.000,-69.000 }</string>
-	
-								<string>{ -38.000,95.000 }</string>
-
-							</array>
-
-							<array>
-	
-								<string>{ -95.000,-69.000 }</string>
-	
-								<string>{ -19.000,-171.000 }</string>
-	
-								<string>{ 371.000,-161.000 }</string>
-	
-								<string>{ -10.500,107.500 }</string>
-	
-								<string>{ -38.000,95.000 }</string>
-
-							</array>
-
-							<array>
-	
-								<string>{ -302.000,145.000 }</string>
-	
-								<string>{ -62.000,136.000 }</string>
-	
-								<string>{ -15.000,179.000 }</string>
-
-							</array>
-
-							<array>
-	
-								<string>{ -62.000,136.000 }</string>
-	
-								<string>{ -10.500,107.500 }</string>
-	
-								<string>{ -15.000,179.000 }</string>
+								<string>{ 42.000,-16.000 }</string>
 
 							</array>
 

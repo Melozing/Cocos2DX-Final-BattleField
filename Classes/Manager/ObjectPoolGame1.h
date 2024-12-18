@@ -3,6 +3,7 @@
 #include "Game1/Enemy/FallingTree.h"
 #include "Game1/Enemy/FanBullet.h"
 #include "Game1/Enemy/RandomBoom.h"
+#include "Game1/Enemy/Landmine.h"
 
 #include "Game1/Items/AmmoItem.h"
 #include "Game1/Items/HealthItem.h"
@@ -35,3 +36,4 @@ using RandomBoomPool = ObjectPoolGame1<RandomBoom>;
 using AmmoItemPool = ObjectPoolGame1<AmmoItem>;
 using HealthItemPool = ObjectPoolGame1<HealthItem>;
 using ShieldSkillPool = ObjectPoolGame1<ShieldSkill>;
+using LandminePool = ObjectPoolGame1<Landmine>;

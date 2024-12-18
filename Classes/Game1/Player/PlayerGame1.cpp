@@ -111,7 +111,7 @@ void PlayerGame1::initAnimation()
 
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(createAnimation("Canon", 49, 0.015f));
+    auto animateCharac = Animate::create(createAnimation("Canon", 33, 0.017f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
@@ -194,7 +194,7 @@ void PlayerGame1::createPhysicsBody() {
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/PlayerGame1.plist", "PlayerGame1", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "PlayerGame1", originalSize, 1.25f);
+    physicsCache->resizeBody(physicsBody, "PlayerGame1", originalSize, 1.35f);
 
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);

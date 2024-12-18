@@ -36,7 +36,7 @@ const float Constants::PADDING_HORIZONTAL_UI_EXIT_BUTTON = -0.14f;
 const float Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.15f;
 const float Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING = 0.07f;
 
-const std::string Constants::FONT_GAME = "fonts/Marker Felt.ttf";
+const std::string Constants::FONT_GAME = "fonts/Patriot-Black.otf";
 
 //ITEM
 const float Constants::ITEM_SCALE_FACTOR = 0.25f;

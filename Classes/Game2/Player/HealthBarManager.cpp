@@ -1,4 +1,5 @@
 ﻿#include "Game2/Player/HealthBarManager.h"
+#include "Constants/Constants.h"
 
 USING_NS_CC;
 
@@ -37,7 +38,7 @@ bool HealthBar::init(const std::string& backgroundImage,
     this->addChild(healthBar);
 
     // Text hiển thị máu
-    healthText = Label::createWithTTF("0/0", "fonts/arial.ttf", 20);
+    healthText = Label::createWithTTF("0/0", Constants::FONT_GAME, 20);
     healthText->setPosition(Vec2(healthBar->getPositionX() + healthBar->getContentSize().width / 2, -20));
     this->addChild(healthText);
 

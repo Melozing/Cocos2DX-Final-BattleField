@@ -55,7 +55,7 @@ void FallingTree::createPhysicsBody() {
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/FallingTree.plist", "FallingTree", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "FallingTree", originalSize, 0.123f);
+    physicsCache->resizeBody(physicsBody, "FallingTree", originalSize, 0.08f);
 
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
