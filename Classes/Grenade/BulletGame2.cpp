@@ -23,7 +23,8 @@ BulletGame2* BulletGame2::createBullet(const Vec2& position, const Vec2& directi
         auto physicsBody = PhysicsBody::createCircle(bullet->getContentSize().width / 2);
         physicsBody->setContactTestBitmask(true);
         physicsBody->setGravityEnable(false);
-        physicsBody->setVelocity(direction * speed);
+        physicsBody->setDynamic(false);
+        //physicsBody->setVelocity(direction * speed);
 		physicsBody->setCategoryBitmask(0x01);
 		physicsBody->setCollisionBitmask(0x02);
 		physicsBody->setContactTestBitmask(0x02);

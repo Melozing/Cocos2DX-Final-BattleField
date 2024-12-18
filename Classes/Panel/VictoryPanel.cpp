@@ -51,5 +51,6 @@ bool VictoryPanel::init(const std::function<void()>& retryAction, const std::fun
         boardSprite->getContentSize().height - exitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
     boardSprite->addChild(exitButton);
 
+    this->addTitleLabel("Victory");
     return true;
 }

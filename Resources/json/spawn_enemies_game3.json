@@ -2,19 +2,19 @@
   "spawnEvents": [
     {
       "enemyType": "EnemyPlaneBullet",
-      "spawnTimes": [ 17.0, 200.0, 300.0 ],
-      "skillTimes": [ 3.0, 3.0, 3.0 ],
-      "spawnSkills": [ false, false, false ]
+      "spawnTimes": [ 17.0, 19.0, 21.0, 23.0, 25.0, 27.0 ],
+      "skillTimes": [ 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 ],
+      "spawnSkills": [ false, false, false, false, false, false ]
     },
     {
       "enemyType": "EnemyPlaneBoom",
       "spawnTimes": [ 9.5, 17.0 ],
-      "skillTimes": [ 10.0, 18.0 ],
+      "skillTimes": [ 2.0, 2.0 ],
       "spawnSkills": [ false, true ]
     },
     {
       "enemyType": "EnemyPlaneBoss",
-      "spawnTimes": [ 10.0 ],
+      "spawnTimes": [ 110.0 ],
       "skillTimes": [ 5.0 ],
       "spawnSkills": [ false, true ]
     }

@@ -51,3 +51,4 @@ template class ObjectPoolGame1<RandomBoom>;
 template class ObjectPoolGame1<HealthItem>;
 template class ObjectPoolGame1<AmmoItem>;
 template class ObjectPoolGame1<ShieldSkill>;
+template class ObjectPoolGame1<Landmine>;

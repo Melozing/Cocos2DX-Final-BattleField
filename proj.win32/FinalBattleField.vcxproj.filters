@@ -184,6 +184,9 @@
     <Filter Include="src\UXUI\Badge">
       <UniqueIdentifier>{3b650970-4079-4688-bde8-1e862425da92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine">
+      <UniqueIdentifier>{52fdfca3-2644-45c0-84fb-ec780f57bd16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -417,6 +420,7 @@
     <ClCompile Include="..\Classes\Game1\Effect\EffectObjectPool.cpp">
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\HealthBarManager.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
@@ -432,8 +436,8 @@
       <Filter>src\UXUI\Badge</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp" />
-    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
-      <Filter>src\Gameplay\Items\Game2</Filter>
+    <ClCompile Include="..\Classes\Game1\Enemy\Landmine.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -671,6 +675,7 @@
     <ClInclude Include="..\Classes\Game1\Effect\EffectObjectPool.h">
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
     <ClInclude Include="..\Classes\Game2\Player\HealthBarManager.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
@@ -686,8 +691,8 @@
       <Filter>src\UXUI\Badge</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h" />
-    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
-      <Filter>src\Gameplay\Items\Game2</Filter>
+    <ClInclude Include="..\Classes\Game1\Enemy\Landmine.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

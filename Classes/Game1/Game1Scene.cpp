@@ -67,6 +67,9 @@ bool Game1Scene::init() {
 }
 
 void Game1Scene::preloadAssets() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/pre_explosion.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/ExplosionLandmine.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/falling_rock.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
@@ -107,10 +110,9 @@ void Game1Scene::initPhysics(const Size& visibleSize) {
 }
 
 void Game1Scene::initBackground() {
-    background = Background::createBackground("assets_game/gameplay/bg_new_art_dark.png", 150.0f);
+    background = Background::createBackground("assets_game/gameplay/BG_loop_new.png", 150.0f);
     this->addChild(background, Constants::ORDER_LAYER_BACKGROUND);
-    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/background_light_layer.png", Constants::ORDER_LAYER_LAYOUT_UI - 1);
-
+    //BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/background_light_layer.png", Constants::ORDER_LAYER_LAYOUT_UI - 1);
 }
 
 void Game1Scene::initPools() {
@@ -151,8 +153,6 @@ void Game1Scene::initUI(const Size& visibleSize) {
 
     // Calculate the position for the border
     auto loadingPos = customLoadingBar->getLoadingBar()->getPosition();
-    //float loadingBarHeight = SpriteController::calculateScreenRatio(0.0005f);
-    //loadingPos.y -= loadingBarHeight; // Move the border lower
 
     customLoadingBar->setBorderPosition(loadingPos);
     customLoadingBar->setBorderRotation(-90);
@@ -274,16 +274,15 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
     // Determine the other node involved in the collision
     auto otherNode = (nodeA == _player) ? nodeB : nodeA;
 
-    // Handle collision based on the other node's collision bitmask
-    switch (otherNode->getPhysicsBody()->getCollisionBitmask()) {
-    case 0x02: // Enemy collision bitmask
+    if (auto landmine = dynamic_cast<Landmine*>(otherNode)) {
+        landmine->triggerPreExplosion();
+    }
+    else if (otherNode->getPhysicsBody()->getCollisionBitmask() == 0x02) { // Explosion collision bitmask
         handlePlayerDamage();
-        break;
-    case 0x03: // Collectible item collision bitmask
+        otherNode->removeComponent(otherNode->getPhysicsBody());
+    }
+    else if (otherNode->getPhysicsBody()->getCollisionBitmask() == 0x03) { // Collectible item collision bitmask
         handleCollectibleCollision(otherNode);
-        break;
-    default:
-        break;
     }
 
     return true;
@@ -553,26 +552,41 @@ void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
 
 void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     Vec2 spawnPosition = getRandomSpawnPosition(size);
+    int randomEnemy = rand() % 3;
 
-    if (!isPositionOccupied(spawnPosition)) {
-        if (rand() % 2 == 0) {
-            auto rock = FallingRockPool::getInstance()->getObject();
-            if (rock) {
-                rock->spawn(spawnPosition);
-                auto size = rock->GetSize();
-                auto rockBody = PhysicsBody::createCircle(size.width / 2);
-                setPhysicsBodyChar(rockBody, 0x02);
-                rock->setPhysicsBody(rockBody);
-                this->addChild(rock, Constants::ORDER_LAYER_CHARACTER - 1);
-            }
-        } else {
-            auto tree = FallingTreePool::getInstance()->getObject();
-            if (tree) {
-                tree->spawn(spawnPosition);
-                tree->createPhysicsBody();
-                this->addChild(tree, Constants::ORDER_LAYER_CHARACTER - 1);
-            }
+    switch (randomEnemy) {
+    case 0: {
+        // Spawn FallingRock
+        auto fallingRock = FallingRockPool::getInstance()->getObject();
+        if (fallingRock) {
+            fallingRock->spawn(spawnPosition);
+            fallingRock->createPhysicsBody();
+            this->addChild(fallingRock);
         }
+        break;
+    }
+    case 1: {
+        // Spawn FallingTree
+        auto fallingTree = FallingTreePool::getInstance()->getObject();
+        if (fallingTree) {
+            fallingTree->spawn(spawnPosition);
+            fallingTree->createPhysicsBody();
+            this->addChild(fallingTree);
+        }
+        break;
+    }
+    case 2: {
+        // Spawn Landmine
+        auto landmine = LandminePool::getInstance()->getObject();
+        if (landmine) {
+            landmine->spawn(spawnPosition);
+            landmine->createPhysicsBody();
+            this->addChild(landmine);
+        }
+        break;
+    }
+    default:
+        break;
     }
 }
 
@@ -699,12 +713,12 @@ void Game1Scene::spawnEffect(const cocos2d::Size& size) {
     // spawnPositionLeft1
     auto effectLeft1 = EffectObjectPool::getInstance()->getEffectObject();
     effectLeft1->setPosition(spawnPositionLeft1);
-    effectLeft1->playAnimation(Constants::EFFECT_EXPLOSION_NAME, 9, 0.07f);
+    effectLeft1->playAnimation(Constants::EFFECT_EXPLOSION_NAME, 6, 0.1f);
     this->addChild(effectLeft1, Constants::ORDER_LAYER_CHARACTER);
 
     // spawnPositionRight1
     auto effectRight1 = EffectObjectPool::getInstance()->getEffectObject();
     effectRight1->setPosition(spawnPositionRight1);
-    effectRight1->playAnimation(Constants::EFFECT_EXPLOSION_NAME, 9, 0.07f);
+    effectRight1->playAnimation(Constants::EFFECT_EXPLOSION_NAME, 6, 0.1f);
     this->addChild(effectRight1, Constants::ORDER_LAYER_CHARACTER);
 }

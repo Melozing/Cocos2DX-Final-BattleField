@@ -165,6 +165,7 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     // Update button states based on initial slider values
     updateMusicButtonState();
     updateSoundEffectButtonState();
+    this->addTitleLabel("Setting");
 
     return true;
 }

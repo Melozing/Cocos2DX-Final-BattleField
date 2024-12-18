@@ -93,13 +93,15 @@ void EnemyPlaneBoss::spawnEnemy() {
 void EnemyPlaneBoss::graduallyIncreaseHealth() {
     Constants::CurrentHealthEnemyPlaneBoss = 0;
     float targetHealth = Constants::HealthEnemyPlaneBoss;
+    float duration = 1.65f; // Desired duration to fill the health bar (in seconds)
+    float increment = targetHealth / (duration / 0.02f); // Calculate increment based on duration
+
     SoundController::getInstance()->playSoundEffect(Constants::BossHealthSFX);
 
     // Logic to gradually increase health to targetHealth
-    // For example, using a schedule to increment health over time
-    this->schedule([this, targetHealth](float dt) {
+    this->schedule([this, targetHealth, increment](float dt) {
         if (Constants::CurrentHealthEnemyPlaneBoss < targetHealth) {
-            Constants::CurrentHealthEnemyPlaneBoss += 1.0f; // Increment health
+            Constants::CurrentHealthEnemyPlaneBoss += increment; // Increment health
             if (Constants::CurrentHealthEnemyPlaneBoss > targetHealth) {
                 Constants::CurrentHealthEnemyPlaneBoss = targetHealth;
             }
@@ -118,6 +120,7 @@ void EnemyPlaneBoss::graduallyIncreaseHealth() {
         }
         }, 0.02f, "graduallyIncreaseHealth"); // Adjust the interval as needed
 }
+
 
 void EnemyPlaneBoss::moveLeftRight() {
     // Define the left and right positions
