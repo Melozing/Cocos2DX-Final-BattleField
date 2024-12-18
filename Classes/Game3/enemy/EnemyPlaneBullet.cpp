@@ -146,3 +146,13 @@ void EnemyPlaneBullet::createPhysicsBody() {
         this->setPhysicsBody(physicsBody);
     }
 }
+
+void EnemyPlaneBullet::returnToPool() {
+    this->stopAllActions();
+    this->unschedule("show_warning_sign_key");
+    this->unschedule("spawn_bullets_key");
+    this->setVisible(false);
+    this->removeFromParentAndCleanup(false);
+    this->reset();
+    EnemyPlaneBulletPool::getInstance()->returnObject(this);
+}

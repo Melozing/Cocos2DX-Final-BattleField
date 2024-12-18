@@ -192,11 +192,11 @@ void PlayerGame3::shootBullet(const Vec2& target) {
             direction.x * sin(angleInRadians) + direction.y * cos(angleInRadians)
         );
 
-        auto BulletTest = BulletPoolPlayerGame3::getInstance()->getObject();
-        BulletTest->setPosition(turretPosition);
-        BulletTest->setDirection(BulletTestDirection);
-        BulletTest->spawn();
-        this->getParent()->addChild(BulletTest);
+        auto BulletPlayerGame3 = BulletPoolPlayerGame3::getInstance()->getObject();
+        BulletPlayerGame3->setPosition(turretPosition);
+        BulletPlayerGame3->setDirection(BulletTestDirection);
+        BulletPlayerGame3->spawn();
+        this->getParent()->addChild(BulletPlayerGame3, Constants::ORDER_LAYER_PLAYER - 99);
         Constants::QuantityBulletPlayerGame3 --;
     }
 

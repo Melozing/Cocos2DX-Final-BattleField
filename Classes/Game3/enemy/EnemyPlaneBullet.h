@@ -13,6 +13,7 @@ public:
     void initAnimation();
     void createPhysicsBody();
     void spawnBullets();
+    virtual void returnToPool() override;
 private:
     cocos2d::SpriteBatchNode* spriteBatchNode;
     cocos2d::SpriteBatchNode* explosionBatchNode;
@@ -21,6 +22,5 @@ private:
     void showWarningSign();
     void hideWarningSign();
 };
-
 
 #endif

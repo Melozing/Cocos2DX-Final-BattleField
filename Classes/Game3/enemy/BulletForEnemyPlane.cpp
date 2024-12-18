@@ -88,6 +88,11 @@ void BulletForEnemyPlane::moveDown(float angle) {
 }
 
 void BulletForEnemyPlane::explode() {
+    // Check if the bullet is still part of the scene
+    if (!this->getParent()) {
+        return;
+    }
+
     // Stop all actions to prevent further movement
     this->stopAllActions();
 
@@ -99,18 +104,19 @@ void BulletForEnemyPlane::explode() {
     // Hide the model character
     modelCharac->setVisible(false);
     SoundController::getInstance()->playSoundEffect(Constants::EnemyCrepExplodeSFX);
+
     // Create explosion effect
     auto explosion = Explosion::create(this->getPosition(), [this]() {
         this->returnToPool();
-        }); // Adjust the scale as needed
+        });
     this->getParent()->addChild(explosion);
-
 }
-
 
 void BulletForEnemyPlane::returnToPool() {
     this->stopAllActions();
-    this->removeFromParent();
+    this->unscheduleAllCallbacks();
     this->setVisible(false);
+    this->removeFromParentAndCleanup(false);
+    this->reset();
     BulletForEnemyPlanePool::getInstance()->returnObject(this);
 }

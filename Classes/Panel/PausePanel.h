@@ -10,6 +10,7 @@ public:
     static PausePanel* createPanel(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction);
     virtual bool init(const std::function<void()>& resumeCallback, const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction);
     virtual bool init() override;
+    void updateSlidersAndButtons();
 
 private:
     void playSoundAndExecuteCallback(const std::function<void()>& callback);

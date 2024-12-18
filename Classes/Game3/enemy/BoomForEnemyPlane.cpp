@@ -50,7 +50,7 @@ void BoomForEnemyPlane::createPhysicsBody() {
     auto originalSize = modelCharac->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
-    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/BombForEnemyPlane3.plist", "BombForEnemyPlane3", originalSize, scaledSize);
+    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/BombForEnemyPlane.plist", "BombForEnemyPlane", originalSize, scaledSize);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);

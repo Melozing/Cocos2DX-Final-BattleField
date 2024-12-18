@@ -120,6 +120,7 @@ void GameController::pauseGame(const std::function<void()>& exitAction, const st
 
             if (pausePanel) {
                 pausePanel->setName("PausePanel");
+                pausePanel->updateSlidersAndButtons();
                 showPausePanel(pausePanel, retryAction, soundtrackPath);
             }
             else {
