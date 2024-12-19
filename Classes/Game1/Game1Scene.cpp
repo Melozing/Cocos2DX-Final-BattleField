@@ -62,7 +62,6 @@ bool Game1Scene::init() {
     setupContactListener();
 
     this->scheduleUpdate();
-    this->scheduleCollectibleSpawning();
     return true;
 }
 
@@ -234,6 +233,7 @@ void Game1Scene::initSpawning() {
     enemySpawnMap["RandomBoom"] = [this](const cocos2d::Size& size) { SpawnRandomBoom(size); };
     enemySpawnMap["FanBullet"] = [this](const cocos2d::Size& size) { SpawnFanBullet(size); };
     enemySpawnMap["Effect"] = [this](const cocos2d::Size& size) { spawnEffect(size); };
+    enemySpawnMap["CollectibleItem"] = [this](const cocos2d::Size& size) { SpawnCollectibleItem(size); }; 
 
     initializeSpawnSchedule();
 
@@ -393,6 +393,9 @@ void Game1Scene::updateLoadingBar(float dt) {
                     return Game1Scene::createScene();
                 },
                 Constants::pathSoundTrackGame1
+                ,
+                []() {  GameController::getInstance()->changeScene(Constants::GAME2_SCENE_NAME);
+                }
             );
             _cursor->setVisible(false);
             _isGameOver = true;
@@ -436,7 +439,6 @@ void Game1Scene::resetGameState() {
 
     // Reschedule tasks
     this->scheduleUpdate();
-    this->scheduleCollectibleSpawning();
 }
 
 // Function to initialize the spawn schedule from JSON
@@ -651,14 +653,6 @@ void Game1Scene::SpawnCollectibleItem(const Size& size) {
 
 void Game1Scene::trackUsedPosition(const Vec2& position) {
     usedPositions.push_back(position);
-}
-
-// Schedule the spawning of collectible items
-void Game1Scene::scheduleCollectibleSpawning() {
-    this->schedule([this](float dt) {
-        Size visibleSize = Director::getInstance()->getVisibleSize();
-        this->SpawnCollectibleItem(visibleSize); // Call the function to spawn items
-        }, 5.3f, "collectible_item_spawn_key"); // Adjust the interval as needed
 }
 
 bool Game1Scene::isPositionOccupied(const Vec2& position) {

@@ -2,6 +2,7 @@
 #include "Controller/SoundController.h"
 #include "Controller/SpriteController.h"
 #include "Controller/SceneController.h"
+#include "Scene/LoadingScene.h"
 #include "Panel/GameOverPanel.h"
 #include "Panel/PausePanel.h"
 #include "Panel/VictoryPanel.h"
@@ -61,9 +62,8 @@ void GameController::GameOver(const std::function<void()>& exitAction, const std
     }
 }
 
-void GameController::Victory(const std::function<void()>& exitAction, const std::function<Scene* ()>& createSceneFunc, const std::string& soundtrackPath) {
-    if (gameOver) return;
-
+void GameController::Victory(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath, const std::function<void()>& nextSceneAction) {
+    auto& playerAttributes = PlayerAttributes::getInstance();
     auto director = Director::getInstance();
     auto runningScene = director->getRunningScene();
     SoundController::getInstance()->stopMusic(soundtrackPath);
@@ -83,8 +83,8 @@ void GameController::Victory(const std::function<void()>& exitAction, const std:
             director->replaceScene(TransitionFade::create(1.0, MainMenu::create()));
             };
 
-        auto victoryPanel = VictoryPanel::createPanel(retryAction, exitAction, backAction);
-        showEndGamePanel(victoryPanel, retryAction, soundtrackPath);
+        auto panel = VictoryPanel::createPanel(retryAction, exitAction, backAction, nextSceneAction);
+        showEndGamePanel(panel, retryAction, soundtrackPath);
     }
 }
 
@@ -226,4 +226,11 @@ void GameController::resumeMusic() {
     if (!currentSoundtrackPath.empty()) {
         SoundController::getInstance()->resumeMusic(currentSoundtrackPath);
     }
+}
+
+void GameController::changeScene(const std::string& sceneName) {
+    this->resetGameState();
+    auto director = Director::getInstance();
+    auto newScene = LoadingScene::createScene(sceneName);
+    director->replaceScene(TransitionFade::create(1.0, newScene));
 }
