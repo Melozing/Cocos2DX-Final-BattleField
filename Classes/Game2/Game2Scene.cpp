@@ -6,9 +6,7 @@
 
 #include "Game2/Enemy/Enemyh/MeleeEnemy.h"
 #include "Game2/Enemy/Enemyh/SniperEnemy.h"
-#include "Game2/Enemy/Enemyh/InvEnemy.h"
 #include "Game2/Enemy/Enemyh/SuicideBomberEnemy.h"
-#include "Game2/Enemy/Enemyh/BossEnemy.h"
 #include "Game2/Enemy/Enemyh/RifleEnemy.h"
 #include "Controller/GameController.h"
 #include "Game2/Items/ItemsSpawn.h"
@@ -35,7 +33,7 @@ bool Game2Scene::init() {
         });
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/bg_game_2.1.png", Constants::ORDER_LAYER_BACKGROUND);
+    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/bg_game_2.png", Constants::ORDER_LAYER_BACKGROUND);
 
     // Petard
     auto petard = Petard::create();
@@ -73,6 +71,14 @@ bool Game2Scene::init() {
     this->scheduleUpdate();
     return true;
 }
+
+void Game2Scene::preloadAssets() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/effects/explosion.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/walkriffle.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/sniper-enemy.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
+};
 
 void Game2Scene::checkGameOver() {
     /* if (_playerAttributes->GetHealth() <= 0) {

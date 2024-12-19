@@ -52,7 +52,7 @@ void EnemyPlaneBullet::initAnimation() {
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill) {
+void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill, const std::string& direction, const std::string& position) {
     auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
     if (enemy) {
         enemy->createPhysicsBody();
@@ -61,18 +61,28 @@ void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool s
         parent->addChild(enemy);
         auto visibleSize = Director::getInstance()->getVisibleSize();
 
-        // Define the range to spawn lower on the screen with a narrower range
-        float lowerBuffer = visibleSize.height / 5; // Lower on the screen
-        float randomY = random(visibleSize.height * 0.5f, visibleSize.height * 0.5f + lowerBuffer);
+        // Define fixed y-coordinates for spawning
+        float lowY = visibleSize.height * 0.4f;
+        float midY = visibleSize.height * 0.5f;
+        float highY = visibleSize.height * 0.6f;
 
-        bool spawnFromLeft = random(0, 1) == 0;
+        float fixedY;
+        if (position == "low") {
+            fixedY = lowY;
+        }
+        else if (position == "mid") {
+            fixedY = midY;
+        }
+        else {
+            fixedY = highY;
+        }
 
-        if (spawnFromLeft) {
-            enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, randomY));
+        if (direction == "Right") {
+            enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, fixedY));
             enemy->moveFromLeftToRight(visibleSize, Constants::EnemyPlaneBulletGame3Speed);
         }
         else {
-            enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, randomY));
+            enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, fixedY));
             enemy->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBulletGame3Speed);
         }
 
@@ -84,6 +94,7 @@ void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool s
         }
     }
 }
+
 
 void EnemyPlaneBullet::showWarningSign() {
     warningSign->setVisible(true);

@@ -138,9 +138,11 @@ void BulletPlayerGame3::removeWhenOutOfScreen()
 }
 
 void BulletPlayerGame3::returnPool() {
-    this->removeFromParentAndCleanup(false);
-    BulletPoolPlayerGame3::getInstance()->returnObject(this);
     this->unscheduleUpdate(); // Stop the update when returning to the pool
+    if (this->getParent() != nullptr) {
+        this->removeFromParent();
+    }
+    BulletPoolPlayerGame3::getInstance()->returnObject(this);
 }
 
 void BulletPlayerGame3::explode() {

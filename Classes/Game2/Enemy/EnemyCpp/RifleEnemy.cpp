@@ -38,7 +38,7 @@ bool RifleEnemy::init()
     {
         return false;
     }
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/sniper-enemy.plist");
+
     auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("idlegun0.png");
     if (!spriteFrame)
     {

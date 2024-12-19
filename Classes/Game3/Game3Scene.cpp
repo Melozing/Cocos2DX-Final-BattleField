@@ -229,51 +229,44 @@ void Game3Scene::initSpawning() {
     document.ParseStream(is);
     fclose(fp);
 
-    if (!document.IsObject() || !document.HasMember("spawnEvents") || !document["spawnEvents"].IsArray()) {
-        CCLOG("Invalid JSON format");
-        return;
-    }
-
     const auto& spawnEvents = document["spawnEvents"];
     for (const auto& event : spawnEvents.GetArray()) {
         std::string enemyType = event["enemyType"].GetString();
-        const auto& spawnTimes = event["spawnTimes"].GetArray();
-        const auto& skillTimes = event["skillTimes"].GetArray();
-        const auto& spawnSkills = event["spawnSkills"].GetArray();
+        float spawnTime = event["spawnTime"].GetFloat();
+        float skillTime = event["skillTime"].GetFloat();
+        bool spawnSkill = event["spawnSkill"].GetBool();
+        std::string direction = event["direction"].GetString();
+        std::string position = event["position"].GetString();
 
-        for (size_t i = 0; i < spawnTimes.Size(); ++i) {
-            float spawnTime = spawnTimes[i].GetFloat();
-            float skillTime = skillTimes[i].GetFloat();
-            bool spawnWithSkill = spawnSkills[i].GetBool();
-
-            this->scheduleOnce([this, enemyType, skillTime, spawnWithSkill](float) {
-                if (enemyType == "EnemyPlaneBullet") {
-                    auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
-                    if (enemy) {
-                        this->addChild(enemy);
-                        enemy->spawnEnemy(this, skillTime, spawnWithSkill);
-                    }
+        this->scheduleOnce([=](float) {
+            if (enemyType == "EnemyPlaneBullet") {
+                EnemyPlaneBullet::spawnEnemy(this, skillTime, spawnSkill, direction, position);
+                auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
+                if (enemy) {
+                    this->addChild(enemy);
+                    enemy->spawnEnemy(this, skillTime, spawnSkill, direction, position);
                 }
-                else if (enemyType == "EnemyPlaneBoom") {
-                    auto enemy = EnemyPlaneBoomPool::getInstance()->getObject();
-                    if (enemy) {
-                        this->addChild(enemy);
-                        enemy->spawnEnemy(this, skillTime, spawnWithSkill);
-                    }
+            }
+            else if (enemyType == "EnemyPlaneBoom") {
+                auto enemy = EnemyPlaneBoomPool::getInstance()->getObject();
+                if (enemy) {
+                    this->addChild(enemy);
+                    enemy->spawnEnemy(this, skillTime, spawnSkill, direction, position);
                 }
-                else if (enemyType == "EnemyPlaneBoss") {
-                    enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
-                    if (enemyBoos) {
-                        enemyBoos->updatePhase();
-                        enemyBoos->spawnEnemy();
-                        initBossHealthBar();
-                        this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
-                    }
+            }
+            else if (enemyType == "EnemyPlaneBoss") {
+                enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
+                if (enemyBoos) {
+                    enemyBoos->updatePhase();
+                    enemyBoos->spawnEnemy();
+                    initBossHealthBar();
+                    this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
                 }
-                }, spawnTime, "spawn_enemy_key_" + enemyType + std::to_string(i));
-        }
+            }
+            }, spawnTime, "spawn_enemy_key_" + std::to_string(spawnTime));
     }
 }
+
 
 void Game3Scene::setupCursor() {
     _cursor = Cursor::create("assets_game/player/bullseye_white.png");

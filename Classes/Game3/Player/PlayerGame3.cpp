@@ -193,6 +193,9 @@ void PlayerGame3::shootBullet(const Vec2& target) {
         );
 
         auto BulletPlayerGame3 = BulletPoolPlayerGame3::getInstance()->getObject();
+        if (BulletPlayerGame3->getParent() != nullptr) {
+            BulletPlayerGame3->removeFromParent();
+        }
         BulletPlayerGame3->setPosition(turretPosition);
         BulletPlayerGame3->setDirection(BulletTestDirection);
         BulletPlayerGame3->spawn();

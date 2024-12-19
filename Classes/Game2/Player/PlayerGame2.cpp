@@ -97,8 +97,6 @@ bool PlayerGame2::init() {
 
 void PlayerGame2::initAnimation()
 {
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/walkriffle.plist");
-
     auto spriteBatchNode = SpriteBatchNode::create("assets_game/player/walkriffle.png");
     this->addChild(spriteBatchNode);
 

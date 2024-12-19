@@ -30,9 +30,6 @@ bool MeleeEnemy::init()
         return false;
     }
 
-    // Load the sprite frames
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
-
     // Initialize the sprite with the idle frame
     auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("IdleKnife0.png");
     if (!spriteFrame)

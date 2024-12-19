@@ -7,8 +7,8 @@
 
 class VictoryPanel : public BasePanel {
 public:
-    static VictoryPanel* createPanel(const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction);
-    virtual bool init(const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction);
+    static VictoryPanel* createPanel(const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction, const std::function<void()>& nextSceneAction);
+    virtual bool init(const std::function<void()>& retryAction, const std::function<void()>& exitAction, const std::function<void()>& backAction, const std::function<void()>& nextSceneAction);
 };
 
 #endif // __VICTORY_PANEL_H__

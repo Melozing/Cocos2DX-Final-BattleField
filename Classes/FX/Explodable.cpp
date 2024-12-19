@@ -22,8 +22,6 @@ bool Explosion::init(const Vec2& position, std::function<void()> callback, float
 
     this->callback = callback;
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-
     auto explosionBatchNode = SpriteBatchNode::create("assets_game/fx/explosions.png");
     this->addChild(explosionBatchNode);
 

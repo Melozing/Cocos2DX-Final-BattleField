@@ -80,7 +80,7 @@ const float Constants::SHIELD_TIME_OF_EXISTENCE = 5.0f;
 
 //game1
 const std::string Constants::pathSoundTrackGame1 = "assets_game/sounds/Game1/bg_music_game1.mp3";
-const float Constants::soundtrackGame1Duration = 150.0f;
+const float Constants::soundtrackGame1Duration = 152.0f;
 
 //game2
 const int Constants::Player_Health2 = 100;
