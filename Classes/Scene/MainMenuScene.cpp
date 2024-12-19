@@ -5,7 +5,7 @@
 #include "Controller/GameController.h"
 #include "Controller/SoundController.h"
 #include "Manager/BackgroundManager.h"
-
+#include "UIGame/CollectionWindow.h"
 USING_NS_CC;
 
 Scene* MainMenu::createScene() {
@@ -94,6 +94,18 @@ bool MainMenu::init() {
     if (_cursor) {
         this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR); // Add cursor to the scene with z-order 1
     }
+
+
+    auto collectionButton = ui::Button::create("assets_game/UXUI/Collection/Info.png");
+    collectionButton->setScale(SpriteController::updateSpriteScale(collectionButton, 0.08f));
+    collectionButton->setPosition(Vec2(visibleSize.width - collectionButton->getContentSize().width / 2 - 10, collectionButton->getContentSize().height / 2 + 10)); // Position at the bottom right
+    collectionButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        if (type == ui::Widget::TouchEventType::ENDED) {
+            auto collectionWindow = CollectionWindow::create();
+            this->addChild(collectionWindow,10); // Add collection window to the scene with a higher z-order
+        }
+        });
+    this->addChild(collectionButton);
 
     return true; // Initialization succeeded
 }
