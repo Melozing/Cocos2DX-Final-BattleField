@@ -6,6 +6,8 @@
 #include "Game3/enemy/EnemyPlaneBoom.h"
 #include "Game3/enemy/EnemyPlaneBoss.h"
 #include "Game3/enemy/EnemyPlaneBullet.h"
+#include "Game3/enemy/MissileForEnemyPlane.h"
+#include "Game3/enemy/FinisherMissiles.h"
 
 template <typename T>
 class ObjectPoolGame3 {
@@ -32,3 +34,5 @@ using EnemyPlaneBossPool = ObjectPoolGame3<EnemyPlaneBoss>;
 using BulletPoolPlayerGame3 = ObjectPoolGame3<BulletPlayerGame3>;
 using BoomForEnemyPlanePool = ObjectPoolGame3<BoomForEnemyPlane>;
 using BulletForEnemyPlanePool = ObjectPoolGame3<BulletForEnemyPlane>;
+using MissileForEnemyPlanePool = ObjectPoolGame3<MissileForEnemyPlane>;
+using FinisherMissilesPool = ObjectPoolGame3<FinisherMissiles>;

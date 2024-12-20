@@ -196,6 +196,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoom.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBoss.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp" />
+    <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp" />
+    <ClCompile Include="..\Classes\Game3\enemy\MissileForEnemyPlane.cpp" />
     <ClCompile Include="..\Classes\Game3\Game3Scene.cpp" />
     <ClCompile Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.cpp" />
     <ClCompile Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.cpp" />
@@ -280,6 +282,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoom.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBoss.h" />
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h" />
+    <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h" />
+    <ClInclude Include="..\Classes\Game3\enemy\MissileForEnemyPlane.h" />
     <ClInclude Include="..\Classes\Game3\Game3Scene.h" />
     <ClInclude Include="..\Classes\Game3\Items\HealthRecoveryItemGame3.h" />
     <ClInclude Include="..\Classes\Game3\Items\IncreaseBulletCountItemGame3.h" />

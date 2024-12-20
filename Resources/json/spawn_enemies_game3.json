@@ -47,14 +47,6 @@
       "spawnSkill": true,
       "direction": "Left",
       "position": "hight"
-    },
-    {
-      "enemyType": "EnemyPlaneBoss",
-      "spawnTime": 40.0,
-      "skillTime": 3.0,
-      "spawnSkill": false,
-      "direction": "Right",
-      "position": "high"
     }
   ]
 }

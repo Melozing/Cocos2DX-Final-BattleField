@@ -1,0 +1,14 @@
+{
+  "bossSpawnEvents": [
+    {
+      "enemyType": "EnemyPlaneBoss",
+      "spawnTime": 1.0,
+      "timeToUltimate": 5.0
+    },
+    {
+      "enemyType": "EnemyPlaneBoss",
+      "spawnTime": 20.0,
+      "timeToUltimate": 7.0
+    }
+  ]
+}

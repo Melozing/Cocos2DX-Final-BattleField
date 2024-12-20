@@ -431,6 +431,12 @@
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp">
       <Filter>src\Manager\Game3</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\MissileForEnemyPlane.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -671,6 +677,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h">
       <Filter>src\Manager\Game3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\MissileForEnemyPlane.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
