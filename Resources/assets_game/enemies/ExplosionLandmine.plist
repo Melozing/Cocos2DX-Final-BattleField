@@ -7,71 +7,71 @@
 			<key>ExplosionLandmine1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1695,3026},{1138,981}}</string>
+				<string>{{257,459},{171,147}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1138,981}}</string>
+				<string>{{0,0},{171,147}}</string>
 				<key>sourceSize</key>
-				<string>{1138,981}</string>
+				<string>{171,147}</string>
 			</dict>
 
 			<key>ExplosionLandmine2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1728,0},{1201,1089}}</string>
+				<string>{{261,0},{180,163}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1201,1089}}</string>
+				<string>{{0,0},{180,163}}</string>
 				<key>sourceSize</key>
-				<string>{1201,1089}</string>
+				<string>{180,163}</string>
 			</dict>
 
 			<key>ExplosionLandmine3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1695,1665},{1388,1360}}</string>
+				<string>{{257,253},{208,205}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1388,1360}}</string>
+				<string>{{0,0},{208,205}}</string>
 				<key>sourceSize</key>
-				<string>{1388,1360}</string>
+				<string>{208,205}</string>
 			</dict>
 
 			<key>ExplosionLandmine4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{1727,1664}}</string>
+				<string>{{0,0},{260,252}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1727,1664}}</string>
+				<string>{{0,0},{260,252}}</string>
 				<key>sourceSize</key>
-				<string>{1727,1664}</string>
+				<string>{260,252}</string>
 			</dict>
 
 			<key>ExplosionLandmine5.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1665},{1694,1638}}</string>
+				<string>{{0,253},{256,247}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1694,1638}}</string>
+				<string>{{0,0},{256,247}}</string>
 				<key>sourceSize</key>
-				<string>{1694,1638}</string>
+				<string>{256,247}</string>
 			</dict>
 
 		</dict>
@@ -81,7 +81,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{3084,4008}</string>
+			<string>{466,607}</string>
 			<key>textureFileName</key>
 			<string>ExplosionLandmine.png</string>
 			</dict>

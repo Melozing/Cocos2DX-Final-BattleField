@@ -42,9 +42,6 @@ bool SniperEnemyGame2::init()
         return false;
     }
 
-    // Load the sprite frames
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/sniper-enemy.plist");
-
     // Initialize the sprite with the idle frame
     auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("idlegun0.png");
     if (!spriteFrame)

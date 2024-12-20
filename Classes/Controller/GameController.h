@@ -13,7 +13,7 @@ public:
 
     // Game state management
     void GameOver(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
-    void Victory(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
+    void Victory(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath, const std::function<void()>& nextSceneAction);
     bool isGameOver() const;
     void pauseGame(const std::function<void()>& exitAction, const std::function<cocos2d::Scene* ()>& createSceneFunc, const std::string& soundtrackPath);
     void resumeGame();
@@ -21,6 +21,7 @@ public:
     void replayGame(const std::string& soundtrackPath);
     void init();
     void toggleCursorVisibility(bool visible);
+    void changeScene(const std::string& sceneName);
 
     // Music control
     void pauseMusic();

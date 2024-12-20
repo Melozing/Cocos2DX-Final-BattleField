@@ -99,7 +99,9 @@ void EnemyPlaneBase::explode() {
     auto explosion = Explosion::create(this->getPosition(), [this]() {
         this->returnToPool();
         });
-    this->getParent()->addChild(explosion);
+    if (this->getParent() != nullptr) {
+        this->getParent()->addChild(explosion);
+    }
 }
 
 void EnemyPlaneBase::dropRandomItem() {
@@ -125,7 +127,9 @@ void EnemyPlaneBase::dropRandomItem() {
         }
 
         if (item) {
-            this->getParent()->addChild(item);
+            if (this->getParent() != nullptr) {
+                this->getParent()->addChild(item);
+            }
             item->setStartPosition(this->getPosition());
             item->moveDown();
         }

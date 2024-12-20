@@ -7,8 +7,6 @@
 #include "Game2/Player/PlayerGame2.h"
 #include "LoadingBar/CustomLoadingBar.h"
 
-//#include "Game2/Player/HealthBarManager.h"
-
 class Game2Scene : public BaseScene
 {
 public:
@@ -32,7 +30,7 @@ private:
     PlayerGame2* _player;
     Cursor* _cursor;
     void spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position);
-
+    void preloadAssets();
 };
 
 #endif // __GAME2_SCENE_H__

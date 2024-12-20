@@ -65,7 +65,6 @@ private:
     void resetSchedules();
 
     // Collectible spawning
-    void scheduleCollectibleSpawning();
     void SpawnCollectibleItem(const Size& size);
     Vec2 getRandomSpawnPosition(const Size& size);
 

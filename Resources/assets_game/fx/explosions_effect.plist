@@ -7,85 +7,85 @@
 			<key>explosions_effect1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{2604,0},{589,818}}</string>
+				<string>{{654,514},{148,205}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{589,818}}</string>
+				<string>{{0,0},{148,205}}</string>
 				<key>sourceSize</key>
-				<string>{589,818}</string>
+				<string>{148,205}</string>
 			</dict>
 
 			<key>explosions_effect2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1585,0},{1018,1160}}</string>
+				<string>{{397,514},{256,292}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1018,1160}}</string>
+				<string>{{0,0},{256,292}}</string>
 				<key>sourceSize</key>
-				<string>{1018,1160}</string>
+				<string>{256,292}</string>
 			</dict>
 
 			<key>explosions_effect3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1580,1438},{1235,1322}}</string>
+				<string>{{397,0},{310,331}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1235,1322}}</string>
+				<string>{{0,0},{310,331}}</string>
 				<key>sourceSize</key>
-				<string>{1235,1322}</string>
+				<string>{310,331}</string>
 			</dict>
 
 			<key>explosions_effect4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{1584,1437}}</string>
+				<string>{{0,0},{396,360}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1584,1437}}</string>
+				<string>{{0,0},{396,360}}</string>
 				<key>sourceSize</key>
-				<string>{1584,1437}</string>
+				<string>{396,360}</string>
 			</dict>
 
 			<key>explosions_effect5.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1438},{1579,1111}}</string>
+				<string>{{0,361},{396,278}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1579,1111}}</string>
+				<string>{{0,0},{396,278}}</string>
 				<key>sourceSize</key>
-				<string>{1579,1111}</string>
+				<string>{396,278}</string>
 			</dict>
 
 			<key>explosions_effect6.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,2550},{1100,718}}</string>
+				<string>{{397,332},{276,181}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{1100,718}}</string>
+				<string>{{0,0},{276,181}}</string>
 				<key>sourceSize</key>
-				<string>{1100,718}</string>
+				<string>{276,181}</string>
 			</dict>
 
 		</dict>
@@ -95,7 +95,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{3194,3269}</string>
+			<string>{803,807}</string>
 			<key>textureFileName</key>
 			<string>explosions_effect.png</string>
 			</dict>

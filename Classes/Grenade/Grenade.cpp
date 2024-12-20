@@ -27,7 +27,6 @@ bool Grenade::init(const Vec2& startPosition, const Vec2& direction, float throw
     this->setPosition(startPosition);
     _direction = direction.getNormalized();
     _throwDuration = throwDuration;
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/effects/explosion.plist");
 
     float throwDistance = calculateThrowDistance(_throwDuration);
 

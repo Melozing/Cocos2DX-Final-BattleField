@@ -19,8 +19,6 @@ bool EnemyBase::init() {
         return false;
     }
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
-
     createPhysicsBody();
     this->scheduleUpdate();
     return true;

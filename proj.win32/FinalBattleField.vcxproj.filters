@@ -189,6 +189,11 @@
     </Filter>
     <Filter Include="src\UXUI\CollectionWindow">
       <UniqueIdentifier>{6d51841b-4405-4cfb-a89c-0ce1b15c8ab7}</UniqueIdentifier>
+    <Filter Include="src\Manager\Game3">
+      <UniqueIdentifier>{d51ed658-70f0-4d6a-bde6-c2697b1676de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Manager\Game2">
+      <UniqueIdentifier>{00dadb7b-65a0-47ac-9662-3fa710aaf872}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -288,12 +293,6 @@
     <ClCompile Include="..\Classes\Button\BaseButton.cpp">
       <Filter>src\UXUI\Buttons</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\utils\Pool.cpp">
-      <Filter>src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\utils\tilemap.cpp">
-      <Filter>src\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
@@ -339,12 +338,6 @@
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\BossEnemy.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\InvEnemy.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MeleeEnemy.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
     </ClCompile>
@@ -353,9 +346,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game4\Game4Scene.cpp">
-      <Filter>src\Scene\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Panel\BasePanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
@@ -424,7 +414,6 @@
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
-    <ClCompile Include="..\Classes\Game2\Player\HealthBarManager.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
     </ClCompile>
@@ -438,12 +427,13 @@
     <ClCompile Include="..\Classes\UIGame\Badge.cpp">
       <Filter>src\UXUI\Badge</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp" />
     <ClCompile Include="..\Classes\Game1\Enemy\Landmine.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\UIGame\CollectionWindow.cpp">
       <Filter>src\UXUI\CollectionWindow</Filter>
+    <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp">
+      <Filter>src\Manager\Game3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -543,12 +533,6 @@
     <ClInclude Include="..\Classes\Button\BaseButton.h">
       <Filter>src\UXUI\Buttons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\utils\Pool.h">
-      <Filter>src\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\utils\tilemap.h">
-      <Filter>src\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
@@ -605,15 +589,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\BossEnemy.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\InvEnemy.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game4\Game4Scene.h">
-      <Filter>src\Scene\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Panel\BasePanel.h">
       <Filter>src\UXUI\Panel</Filter>
@@ -682,7 +657,6 @@
       <Filter>src\Gameplay\Effect\Game1</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
-    <ClInclude Include="..\Classes\Game2\Player\HealthBarManager.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
     </ClInclude>
@@ -696,12 +670,13 @@
     <ClInclude Include="..\Classes\UIGame\Badge.h">
       <Filter>src\UXUI\Badge</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h" />
     <ClInclude Include="..\Classes\Game1\Enemy\Landmine.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\UIGame\CollectionWindow.h">
       <Filter>src\UXUI\CollectionWindow</Filter>
+    <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h">
+      <Filter>src\Manager\Game3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
