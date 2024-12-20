@@ -17,6 +17,7 @@ public:
     void moveLeftRight();
     float getHealth();
     void updatePhase();
+    void executeUltimateSkill(float timeToUltimate);
 
 private:
     void createPhysicsBody();
@@ -26,6 +27,9 @@ private:
     void dropBooms();
     void graduallyIncreaseHealth();
     void dropUpgradeItem();
+    void launchMissiles();
+    void launchFinisherMissiles();
+    void showWarning();
 
     enum class Phase {
         StartPHASE,
@@ -39,6 +43,8 @@ private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
     bool isExploding;
+    cocos2d::SpriteBatchNode* _spriteBatchNodeWarning;
+    cocos2d::Sprite* _warningSprite;
 };
 
 #endif // ENEMYPLANE_BOSS_H

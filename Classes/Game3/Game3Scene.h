@@ -7,6 +7,7 @@
 #include "Scene/BaseScene.h"
 #include "Game3/enemy/EnemyPlaneBase.h"
 #include "Game3/enemy/BoomForEnemyPlane.h"
+#include "Game3/enemy/MissileForEnemyPlane.h"
 #include "Game3/enemy/BulletForEnemyPlane.h"
 #include "Game3/enemy/EnemyPlaneBoss.h" // Include EnemyPlaneBoss
 #include "LoadingBar/CustomLoadingBar.h"
@@ -26,6 +27,14 @@ public:
 
     void updateBulletLabel(cocos2d::Ref* sender);
     void updateBulletLabel();
+    CityCollisionArea* getCityCollisionArea() const;
+
+    // Method to handle the boss's ultimate skill
+    void handleBossUltimateSkill(float timeToUltimate);
+
+    // Methods to show and hide the UltimateSkillBadge
+    void showUltimateSkillBadge(Ref* sender);
+    void hideUltimateSkillBadge(Ref* sender);
 
 private:
     ~Game3Scene();
@@ -52,6 +61,7 @@ private:
     void setupBackground();
     void setupPlayer();
     void initSpawning();
+    void initBossSpawning();
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);
     void initPools();
@@ -63,8 +73,10 @@ private:
     // Collision handling methods
     void handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlaneBase* enemy);
     void handleBulletBoomCollision(BulletPlayerGame3* bullet, BoomForEnemyPlane* boom);
+    void handleBulletMissileCollision(BulletPlayerGame3* bullet, MissileForEnemyPlane* missileEnemy);
     void handleBoomCityCollision(BoomForEnemyPlane* boom);
     void handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy);
+    void handleMissileEnemyCityCollision(MissileForEnemyPlane* missileEnemy);
 
     // Health bar methods
     void initHealthBar();
@@ -76,8 +88,8 @@ private:
     void initBossHealthBar();
     void updateBossHealthBar(float healthPercent);
     void handleBossDamage(float damage);
-    void showBossHealthBar();
-    void hideBossHealthBar();
+    void showBossHealthBar(Ref* sender);
+    void hideBossHealthBar(Ref* sender);
 
     //Sound 
     void initSound();
@@ -87,6 +99,12 @@ private:
     Badge* bulletBadge;
     void initBulletBadge();
     void blinkRedBadge(Ref* sender);
+
+    // Badge for displaying the countdown
+    Badge* ultimateSkillBadge;
+    void initUltimateSkillBadge();
+    void updateUltimateSkillCountdown(float dt);
+    float ultimateSkillTimeRemaining;
 };
 
 #endif // __GAME3SCENE_SCENE_H__
