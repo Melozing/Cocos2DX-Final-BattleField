@@ -101,7 +101,7 @@ bool MainMenu::init() {
     collectionButton->setPosition(Vec2(visibleSize.width - collectionButton->getContentSize().width / 2 - 10, collectionButton->getContentSize().height / 2 + 10)); // Position at the bottom right
     collectionButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
-            auto collectionWindow = CollectionWindow::create();
+            auto collectionWindow = LibraryWindow::create();
             this->addChild(collectionWindow,10); // Add collection window to the scene with a higher z-order
         }
         });

@@ -1,23 +1,36 @@
-#ifndef __COLLECTION_WINDOW_H__
-#define __COLLECTION_WINDOW_H__
+#ifndef __LIBRARY_WINDOW_H__
+#define __LIBRARY_WINDOW_H__
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include <vector>
+#include <string>
+#include "json/document.h"
 
-class CollectionWindow : public cocos2d::Layer {
-public:
-    static CollectionWindow* create();
-    virtual bool init();
-
-private:
-    void createMainWindow();
-    void createLayer1();
-    void createLayer2();
-    void closeWindow(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
-    void onItemClicked(cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type);
-
-    cocos2d::ui::ScrollView* scrollView;
-    cocos2d::Label* itemInfoLabel;
+struct ItemData {
+    int id;
+    std::string imagePath;
+    std::string name;
+    std::string description;
 };
 
-#endif // __COLLECTION_WINDOW_H__
+class LibraryWindow : public cocos2d::Layer {
+public:
+    virtual bool init();
+    CREATE_FUNC(LibraryWindow);
+
+private:
+    cocos2d::Sprite* mainBg;
+    cocos2d::ui::ScrollView* scrollView;
+    cocos2d::Label* itemInfoLabel;
+    cocos2d::ui::ScrollView* infoScrollView;
+    std::vector<ItemData> items;
+    void createBackground();
+    void createItemSection();
+    void createInfoSection();
+    void createExitButton();
+    void loadItemsFromJson();
+    void updateItemInfo(const ItemData& item);
+};
+
+#endif // __LIBRARY_WINDOW_H__
