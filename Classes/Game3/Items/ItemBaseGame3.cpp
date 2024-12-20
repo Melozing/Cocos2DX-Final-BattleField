@@ -61,13 +61,13 @@ void ItemBaseGame3::returnItemToPoolAfterDelay(float delay) {
     // Create a blink action
     auto blinkAction = Blink::create(delay, static_cast<int>(delay * 2)); // Blink twice per second
 
-    // Create a delay action
-    auto delayAction = DelayTime::create(delay);
-
     // Create a return action
     auto returnAction = CallFunc::create([this]() {
+        if (this->getPhysicsBody() != nullptr) {
+            this->removeComponent(this->getPhysicsBody());
+        }
         this->resetScale(); // Reset scale before returning to pool
-        this->setOpacity(255);
+        this->setOpacity(0);
         if (auto upgradeItem = dynamic_cast<UpgradeBulletItemGame3*>(this)) {
             UpgradeBulletItemPool::getInstance()->returnItem(upgradeItem);
         }
@@ -79,7 +79,7 @@ void ItemBaseGame3::returnItemToPoolAfterDelay(float delay) {
         }
         });
 
-    auto sequence = Sequence::create(blinkAction, delayAction, returnAction, nullptr);
+    auto sequence = Sequence::create(blinkAction, returnAction, nullptr);
     this->runAction(sequence);
 }
 

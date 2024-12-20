@@ -433,11 +433,11 @@
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp">
       <Filter>src\Manager\Game3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp">
-      <Filter>src\Gameplay\Items\Game2</Filter>
+    <ClCompile Include="..\Classes\Game3\enemy\MissileForEnemyPlane.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\UIGame\LibraryWindow.cpp">
-      <Filter>src\UXUI\Library</Filter>
+    <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -679,11 +679,11 @@
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h">
       <Filter>src\Manager\Game3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h">
-      <Filter>src\Gameplay\Items\Game2</Filter>
+    <ClInclude Include="..\Classes\Game3\enemy\MissileForEnemyPlane.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\UIGame\LibraryWindow.h">
-      <Filter>src\UXUI\Library</Filter>
+    <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

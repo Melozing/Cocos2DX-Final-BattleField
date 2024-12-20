@@ -51,5 +51,7 @@ template class ObjectPoolGame3<EnemyPlaneBoss>;
 template class ObjectPoolGame3<BulletPlayerGame3>;
 template class ObjectPoolGame3<BulletForEnemyPlane>;
 template class ObjectPoolGame3<BoomForEnemyPlane>;
+template class ObjectPoolGame3<MissileForEnemyPlane>;
+template class ObjectPoolGame3<FinisherMissiles>;
 
 

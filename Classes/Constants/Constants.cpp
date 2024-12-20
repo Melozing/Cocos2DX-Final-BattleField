@@ -124,6 +124,9 @@ const uint32_t Constants::enemy2_bitmask = 0x0002;
 //game3
 const float Constants::GroundY = 70.0f;
 const float Constants::DISTANCE_FROM_PLAYER_TO_POINTER = 0.07f;
+const float Constants::DurationGraduallyHealthBoss = 1.65f;
+const float Constants::moveToUpperRegion = 2.0f;
+const float Constants::scaleToOriginalSize = 4.0f;
 const float Constants::BackgroundSpeed = 50.0f;
 const float Constants::PlayerScale3 = 0.08f; 
 const float Constants::PLAYER_SPEED_GAME3 = 250.0f;
@@ -133,8 +136,12 @@ const float Constants::EnemyPlaneBoomGame3Speed = 150.0f;
 const float Constants::SpeedEnemyPlane_BOSS = 100.0f;
 float Constants::HealthEnemyPlaneBoss = 1000.0f;
 float Constants::CurrentHealthEnemyPlaneBoss = 0.0f;
+float Constants::CURRENT_PERCENT_BOSS_HEALTHBAR = 0.0f;
+float Constants::TimeToUltimate = 0.0f;
 const float Constants::BulletDamageGame3 = 60.0f;
 int Constants::QuantityBulletPlayerGame3 = 100;
+int Constants::DamageBulletForCity = 5;
+int Constants::DamageBoomForCity = 7;
 const std::string Constants::PlayerGame3Name = "PlayerGame3Name";
 const std::string Constants::UPDATE_BULLET_LABEL = "UPDATE_BULLET_LABEL";
 

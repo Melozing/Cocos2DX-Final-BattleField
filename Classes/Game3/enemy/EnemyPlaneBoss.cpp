@@ -58,7 +58,7 @@ void EnemyPlaneBoss::initAnimation() {
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void EnemyPlaneBoss::spawnEnemy() {
+void EnemyPlaneBoss::spawnEnemy(float timeToUltimate) {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
@@ -74,18 +74,19 @@ void EnemyPlaneBoss::spawnEnemy() {
     this->setScale(0.1f);
 
     // Create a move action to move the enemy to the upper region of the screen
-    auto moveToUpperRegion = MoveTo::create(2.0f, Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height * 0.8f)); // Adjust duration and target position as needed
+    auto moveToUpperRegion = MoveTo::create(Constants::moveToUpperRegion, Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height * 0.8f)); // Adjust duration and target position as needed
 
     // Create a scale action to scale the enemy to its original size
-    auto scaleToOriginalSize = ScaleTo::create(4.0f, 1.0f); // Adjust duration as needed
+    auto scaleToOriginalSize = ScaleTo::create(Constants::scaleToOriginalSize, 1.0f); // Adjust duration as needed
 
     // Create a spawn action to run both move and scale actions simultaneously
     auto spawnAction = Spawn::create(moveToUpperRegion, scaleToOriginalSize, nullptr);
 
     // Run the spawn action and then start moving left and right
-    this->runAction(Sequence::create(spawnAction, CallFunc::create([this]() {
+    this->runAction(Sequence::create(spawnAction, CallFunc::create([this, timeToUltimate]() {
         // Dispatch event to show the boss health bar
-        Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("SHOW_BOSS_HEALTH_BAR");
+        __NotificationCenter::getInstance()->postNotification("SHOW_BOSS_HEALTH_BAR");
+        Constants::TimeToUltimate = timeToUltimate;
         this->graduallyIncreaseHealth();
         }), nullptr));
 }
@@ -93,7 +94,7 @@ void EnemyPlaneBoss::spawnEnemy() {
 void EnemyPlaneBoss::graduallyIncreaseHealth() {
     Constants::CurrentHealthEnemyPlaneBoss = 0;
     float targetHealth = Constants::HealthEnemyPlaneBoss;
-    float duration = 1.65f; // Desired duration to fill the health bar (in seconds)
+    float duration = Constants::DurationGraduallyHealthBoss; // Desired duration to fill the health bar (in seconds)
     float increment = targetHealth / (duration / 0.02f); // Calculate increment based on duration
 
     SoundController::getInstance()->playSoundEffect(Constants::BossHealthSFX);
@@ -105,18 +106,19 @@ void EnemyPlaneBoss::graduallyIncreaseHealth() {
             if (Constants::CurrentHealthEnemyPlaneBoss > targetHealth) {
                 Constants::CurrentHealthEnemyPlaneBoss = targetHealth;
             }
-
-            // Dispatch custom event to update health bar
-            auto eventDispatcher = Director::getInstance()->getEventDispatcher();
-            EventCustom event("UPDATE_BOSS_HEALTH_BAR");
-            event.setUserData(&Constants::CurrentHealthEnemyPlaneBoss);
-            eventDispatcher->dispatchEvent(&event);
+            __NotificationCenter::getInstance()->postNotification("UPDATE_BOSS_HEALTH_BAR");
         }
         else {
+            __NotificationCenter::getInstance()->postNotification("SHOW_ULTIMATE_SKILL_BADGE");
+            
+            __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
+            
+            __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
             this->unschedule("graduallyIncreaseHealth");
             this->createPhysicsBody();
             this->moveLeftRight();
             this->executePhaseSkills();
+            this->executeUltimateSkill(Constants::TimeToUltimate);
         }
         }, 0.02f, "graduallyIncreaseHealth"); // Adjust the interval as needed
 }
@@ -149,7 +151,12 @@ void EnemyPlaneBoss::takeDamage(float damage) {
     Constants::CurrentHealthEnemyPlaneBoss -= damage;
     if (Constants::CurrentHealthEnemyPlaneBoss <= 0) {
         // Update phase before moving up and returning to the pool
-        moveUpAndReturnToPool();
+        if (currentPhase == Phase::PHASE_1) {
+            moveUpAndReturnToPool();
+        }
+        else if (currentPhase == Phase::PHASE_2) {
+            CCLOG("HEHE");
+        }
     }
 }
 
@@ -183,12 +190,20 @@ void EnemyPlaneBoss::executePhaseSkills() {
         break;
     case Phase::PHASE_2:
         // Execute skills for phase 2
+        this->launchMissiles();
+        this->schedule([this](float dt) {
+            this->launchMissiles();
+            }, 5.0f, "launch_missiles_key");
         break;
     case Phase::PHASE_3:
         // Execute skills for phase 3 with increased power and frequency
+        this->schedule([this](float dt) {
+            this->launchMissiles();
+            }, 3.0f, "launch_missiles_key");
         break;
     }
 }
+
 
 void EnemyPlaneBoss::dropBooms() {
     auto boomPool = BoomForEnemyPlanePool::getInstance();
@@ -208,9 +223,10 @@ void EnemyPlaneBoss::dropBooms() {
         auto boom = boomPool->getObject();
         if (boom) {
             boom->setPosition(pos);
-            if (boom->getParent() == nullptr) {
-                this->getParent()->addChild(boom);
+            if (boom->getParent() != nullptr) {
+                boom->removeFromParent();
             }
+            this->getParent()->addChild(boom);
             boom->setVisible(true);
             boom->moveDown(pos.x < this->getPositionX());
         }
@@ -218,6 +234,7 @@ void EnemyPlaneBoss::dropBooms() {
 }
 
 void EnemyPlaneBoss::moveUpAndReturnToPool() {
+    this->unschedule("UltimateSkillSchedule");
     // Stop all actions to prevent further movement
     this->stopAllActions();
     if (this->getPhysicsBody() != nullptr) {
@@ -226,6 +243,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
     this->startExplosions();
     // Unschedule skill spawning
     this->unschedule("drop_booms_key");
+    this->unschedule("launch_missiles_key");
 
     // Return active weapons to the pool
     auto boomPool = BoomForEnemyPlanePool::getInstance();
@@ -236,7 +254,6 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
             boomPool->returnObject(boom);
         }
     }
-
 
     // Create a move action to move the boss to the center of the screen on the X axis
     auto moveToCenterX = MoveTo::create(1.0f, Vec2(origin.x + visibleSize.width / 2, this->getPositionY()));
@@ -254,12 +271,13 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
     auto sequence = Sequence::create(moveToCenterX, moveAndScale, 
         CallFunc::create([this]() {
             // Dispatch event to hide the boss health bar
-            Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("HIDE_BOSS_HEALTH_BAR");
+                __NotificationCenter::getInstance()->postNotification("HIDE_BOSS_HEALTH_BAR");
+                __NotificationCenter::getInstance()->postNotification("HIDE_ULTIMATE_SKILL_BADGE");
             })
         ,
         CallFunc::create([this]() {
             this->isExploding = false; // Stop explosions
-            this->removeFromParentAndCleanup(false);
+            //this->removeFromParentAndCleanup(false);
             EnemyPlaneBossPool::getInstance()->returnObject(this);
         }), nullptr);
 
@@ -313,5 +331,122 @@ void EnemyPlaneBoss::dropUpgradeItem() {
         upgradeItem->setStartPosition(this->getPosition());
         upgradeItem->moveDown();
         this->getParent()->addChild(upgradeItem);
+    }
+}
+
+void EnemyPlaneBoss::launchMissiles() {
+    auto missilePool = MissileForEnemyPlanePool::getInstance();
+
+    // Calculate positions using the Ratio method
+    float offsetX = SpriteController::calculateScreenRatio(0.15f); // Increase the ratio for wider X distance
+    float offsetY = SpriteController::calculateScreenRatio(0.07f); // Decrease the ratio for lower Y position
+
+    Vec2 positions[4] = {
+        Vec2(this->getPositionX() - 1.5 * offsetX, this->getPositionY() - offsetY), // Left far
+        Vec2(this->getPositionX() - offsetX, this->getPositionY() - offsetY), // Left near
+        Vec2(this->getPositionX() + offsetX, this->getPositionY() - offsetY), // Right near
+        Vec2(this->getPositionX() + 1.5 * offsetX, this->getPositionY() - offsetY) // Right far
+    };
+
+    for (const auto& pos : positions) {
+        auto missile = missilePool->getObject();
+        if (missile) {
+            missile->setPosition(pos);
+            if (missile->getParent() != nullptr) {
+                missile->removeFromParent();
+            }
+            this->getParent()->addChild(missile,Constants::ORDER_LAYER_PLAYER + 1);
+            missile->setVisible(true);
+            missile->moveDown(pos.x < this->getPositionX());
+        }
+    }
+}
+
+void EnemyPlaneBoss::showWarning() {
+    if (!_spriteBatchNodeWarning) {
+        _spriteBatchNodeWarning = SpriteBatchNode::create("assets_game/enemies/warning_rocket.png");
+        this->addChild(_spriteBatchNodeWarning);
+    }
+
+    if (!_warningSprite) {
+        _warningSprite = Sprite::createWithSpriteFrameName("warning_rocket1.png");
+        _warningSprite->setScale(SpriteController::updateSpriteScale(_warningSprite, 0.1f));
+        _spriteBatchNodeWarning->addChild(_warningSprite);
+    }
+
+    // Set the warning sprite's position relative to the EnemyPlaneBoss
+    _warningSprite->setPosition(Vec2(0, this->getContentSize().height * 0.5f));
+    _warningSprite->setVisible(true);
+
+    auto warningAnimation = SpriteController::createAnimation("warning_rocket", 50, 0.01f);
+    if (warningAnimation) {
+        auto animateWarning = Animate::create(warningAnimation);
+        _warningSprite->runAction(RepeatForever::create(animateWarning));
+    }
+}
+
+void EnemyPlaneBoss::executeUltimateSkill(float timeToUltimate) {
+    this->schedule([this](float dt) {
+        if (this->getPhysicsBody() != nullptr) {
+            this->removeComponent(this->getPhysicsBody());
+        }
+        this->unschedule("drop_booms_key");
+        this->unschedule("launch_missiles_key");
+        this->stopAllActions();
+
+        // Move to the center and remove physics body
+        auto moveToCenterX = MoveTo::create(1.0f, Vec2(origin.x + visibleSize.width / 2, this->getPositionY()));
+
+        // Show warning sprite
+        auto showWarningSprite = CallFunc::create([this]() {
+            this->showWarning();
+            });
+
+        // Launch finisher missiles
+        auto launchFinisher = CallFunc::create([this]() {
+            this->launchFinisherMissiles();
+            _warningSprite->setVisible(false); // Hide the warning sprite after launching missiles
+            });
+
+        // Create a sequence of actions
+        auto sequence = Sequence::create(moveToCenterX, showWarningSprite, DelayTime::create(0.5f), launchFinisher, nullptr);
+        this->runAction(sequence);
+    }, timeToUltimate, "UltimateSkillSchedule");
+}
+
+
+void EnemyPlaneBoss::launchFinisherMissiles() {
+    this->unschedule("UltimateSkillSchedule");
+
+    auto missilePool = FinisherMissilesPool::getInstance();
+
+    // Calculate positions using the Ratio method
+    float offsetX = SpriteController::calculateScreenRatio(0.15f); // Increase the ratio for wider X distance
+    float offsetY = SpriteController::calculateScreenRatio(0.07f); // Decrease the ratio for lower Y position
+
+    Vec2 positions[4] = {
+        Vec2(this->getPositionX() - 1.5 * offsetX, this->getPositionY() - offsetY), // Left far
+        Vec2(this->getPositionX() - offsetX, this->getPositionY() - offsetY), // Left near
+        Vec2(this->getPositionX() + offsetX, this->getPositionY() - offsetY), // Right near
+        Vec2(this->getPositionX() + 1.5 * offsetX, this->getPositionY() - offsetY) // Right far
+    };
+
+    float durationSkill = 0.3f; // Adjust the delay between each launch as needed
+
+    for (int i = 0; i < 6; i++) {
+        this->scheduleOnce([this, missilePool, positions](float dt) {
+        for (const auto& pos : positions) {
+                auto missile = missilePool->getObject();
+                if (missile) {
+                    missile->setPosition(pos);
+                    if (missile->getParent() != nullptr) {
+                        missile->removeFromParent();
+                    }
+                    this->getParent()->addChild(missile);
+                    missile->setVisible(true);
+                    missile->moveDown(pos.x > this->getPositionX());
+                }
+        }
+            }, i* durationSkill, "launchFinisherMissilesKey" + std::to_string(i));
     }
 }

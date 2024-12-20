@@ -40,8 +40,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if (!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         // Create a window with 16:9 aspect ratio (Full HD)
-        //glview = GLViewImpl::createWithFullScreen("FinalBattleField");
-        glview = GLViewImpl::createWithRect("FinalBattleField", Rect(100, 100, 1280, 720));
+        glview = GLViewImpl::createWithFullScreen("FinalBattleField");
+        //glview = GLViewImpl::createWithRect("FinalBattleField", Rect(100, 100, 1280, 720));
 #else
         glview = GLViewImpl::create("FinalBattleField");
 #endif

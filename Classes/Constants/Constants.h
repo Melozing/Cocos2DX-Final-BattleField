@@ -92,18 +92,25 @@ public:
     static const uint32_t enemy2_bitmask;
     //game3
     static const float GroundY;
+    static const float DurationGraduallyHealthBoss;
+    static const float moveToUpperRegion;
+    static const float scaleToOriginalSize;
     static const float BackgroundSpeed ;
     static const float DISTANCE_FROM_PLAYER_TO_POINTER;
     static const float PlayerScale3;
     static const float PLAYER_SPEED_GAME3;
+    static float CURRENT_PERCENT_BOSS_HEALTHBAR;
     static const float BulletGame3Speed;
     static const float EnemyPlaneBulletGame3Speed; //Speed Enemy Plane 3
 	static const float EnemyPlaneBoomGame3Speed; //Speed Enemy Plane 1
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
 	static float HealthEnemyPlaneBoss;
 	static float CurrentHealthEnemyPlaneBoss;
+	static float TimeToUltimate;
 	static const float BulletDamageGame3;
 	static int QuantityBulletPlayerGame3;
+	static int DamageBulletForCity;
+	static int DamageBoomForCity;
 	static const std::string PlayerGame3Name;
 	static const std::string UPDATE_BULLET_LABEL;
     //game3 SFX
