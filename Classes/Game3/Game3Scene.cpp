@@ -326,37 +326,47 @@ void Game3Scene::initSpawning() {
 }
 
 void Game3Scene::initBossSpawning() {
-    // Đọc file JSON
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename("spawn_boss_game3.json");
-    std::string fileContent = FileUtils::getInstance()->getStringFromFile(filePath);
-
-    rapidjson::Document document;
-    document.Parse(fileContent.c_str());
-
-    if (document.HasParseError()) {
-        CCLOG("Error parsing JSON file: %s", document.GetParseError());
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_boss_game3.json.json");
+    FILE* fp = fopen(filePath.c_str(), "rb");
+    if (!fp) {
+        CCLOG("Failed to open JSON file");
         return;
     }
 
-    const rapidjson::Value& bossSpawnEvents = document["bossSpawnEvents"];
-    for (rapidjson::SizeType i = 0; i < bossSpawnEvents.Size(); i++) {
-        const rapidjson::Value& event = bossSpawnEvents[i];
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document document;
+    document.ParseStream(is);
+    fclose(fp);
+
+    if (!document.IsObject() || !document.HasMember("bossSpawnEvents") || !document["bossSpawnEvents"].IsArray()) {
+        CCLOG("Invalid JSON format for boss spawn events");
+        return;
+    }
+
+    const auto& bossSpawnEvents = document["bossSpawnEvents"];
+    for (const auto& event : bossSpawnEvents.GetArray()) {
+        if (!event.IsObject()) {
+            CCLOG("Invalid boss spawn event format");
+            continue;
+        }
+
         std::string enemyType = event["enemyType"].GetString();
         float spawnTime = event["spawnTime"].GetFloat();
         float timeToUltimate = event["timeToUltimate"].GetFloat();
 
         // Lên lịch sinh ra boss
-        this->scheduleOnce([this, enemyType, timeToUltimate](float dt) {
+        this->scheduleOnce([=](float) {
             if (enemyType == "EnemyPlaneBoss") {
-                auto boss = EnemyPlaneBoss::create();
-                if (boss) {
+                enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
+                if (enemyBoos) {
                     enemyBoos->updatePhase();
                     enemyBoos->spawnEnemy(timeToUltimate);
                     initBossHealthBar();
                     this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
                 }
             }
-            }, spawnTime, "spawn_boss_" + std::to_string(i));
+            }, spawnTime, "spawn_boss_key_" + std::to_string(spawnTime));
     }
 }
 
