@@ -58,7 +58,7 @@ void EnemyPlaneBoss::initAnimation() {
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
-void EnemyPlaneBoss::spawnEnemy() {
+void EnemyPlaneBoss::spawnEnemy(float timeToUltimate) {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
@@ -83,10 +83,11 @@ void EnemyPlaneBoss::spawnEnemy() {
     auto spawnAction = Spawn::create(moveToUpperRegion, scaleToOriginalSize, nullptr);
 
     // Run the spawn action and then start moving left and right
-    this->runAction(Sequence::create(spawnAction, CallFunc::create([this]() {
+    this->runAction(Sequence::create(spawnAction, CallFunc::create([this, timeToUltimate]() {
         // Dispatch event to show the boss health bar
         __NotificationCenter::getInstance()->postNotification("SHOW_BOSS_HEALTH_BAR");
         __NotificationCenter::getInstance()->postNotification("SHOW_ULTIMATE_SKILL_BADGE");
+        Constants::TimeToUltimate = timeToUltimate;
         this->graduallyIncreaseHealth();
         }), nullptr));
 }
@@ -118,6 +119,8 @@ void EnemyPlaneBoss::graduallyIncreaseHealth() {
             this->createPhysicsBody();
             this->moveLeftRight();
             this->executePhaseSkills();
+            this->executeUltimateSkill(Constants::TimeToUltimate);
+            __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
         }
         }, 0.02f, "graduallyIncreaseHealth"); // Adjust the interval as needed
 }
@@ -415,6 +418,8 @@ void EnemyPlaneBoss::executeUltimateSkill(float timeToUltimate) {
 
 
 void EnemyPlaneBoss::launchFinisherMissiles() {
+    this->unschedule("UltimateSkillSchedule");
+
     auto missilePool = FinisherMissilesPool::getInstance();
 
     // Calculate positions using the Ratio method
@@ -428,9 +433,9 @@ void EnemyPlaneBoss::launchFinisherMissiles() {
         Vec2(this->getPositionX() + 1.5 * offsetX, this->getPositionY() - offsetY) // Right far
     };
 
-    float durationSkill = 0.5f; // Adjust the delay between each launch as needed
+    float durationSkill = 0.3f; // Adjust the delay between each launch as needed
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {
         this->scheduleOnce([this, missilePool, positions](float dt) {
         for (const auto& pos : positions) {
                 auto missile = missilePool->getObject();
@@ -445,6 +450,5 @@ void EnemyPlaneBoss::launchFinisherMissiles() {
                 }
         }
             }, i* durationSkill, "launchFinisherMissilesKey" + std::to_string(i));
-
     }
 }

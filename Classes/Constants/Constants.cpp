@@ -137,6 +137,7 @@ const float Constants::SpeedEnemyPlane_BOSS = 100.0f;
 float Constants::HealthEnemyPlaneBoss = 1000.0f;
 float Constants::CurrentHealthEnemyPlaneBoss = 0.0f;
 float Constants::CURRENT_PERCENT_BOSS_HEALTHBAR = 0.0f;
+float Constants::TimeToUltimate = 0.0f;
 const float Constants::BulletDamageGame3 = 60.0f;
 int Constants::QuantityBulletPlayerGame3 = 100;
 int Constants::DamageBulletForCity = 5;

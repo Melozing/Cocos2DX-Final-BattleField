@@ -30,7 +30,7 @@ public:
     CityCollisionArea* getCityCollisionArea() const;
 
     // Method to handle the boss's ultimate skill
-    void handleBossUltimateSkill(float timeToUltimate);
+    void handleBossUltimateSkill(Ref* sender);
 
     // Methods to show and hide the UltimateSkillBadge
     void showUltimateSkillBadge(Ref* sender);

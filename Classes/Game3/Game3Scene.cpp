@@ -146,8 +146,8 @@ void Game3Scene::updateUltimateSkillCountdown(float dt) {
     }
 }
 
-void Game3Scene::handleBossUltimateSkill(float timeToUltimate) {
-    ultimateSkillTimeRemaining = timeToUltimate;
+void Game3Scene::handleBossUltimateSkill(Ref* sender) {
+    ultimateSkillTimeRemaining = Constants::TimeToUltimate;
     this->schedule([this](float dt) {
         this->updateUltimateSkillCountdown(dt);
         }, 1.0f, "UltimateSkillCountdown");
@@ -240,6 +240,12 @@ void Game3Scene::initBossHealthBar() {
         this,
         callfuncO_selector(Game3Scene::hideUltimateSkillBadge),
         "HIDE_ULTIMATE_SKILL_BADGE",
+        nullptr
+    );
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::handleBossUltimateSkill),
+        "HANDLE_ULTIMATE_SKILL_BADGE",
         nullptr
     );
 }
@@ -352,10 +358,8 @@ void Game3Scene::initBossSpawning() {
                 enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
                 if (enemyBoos) {
                     enemyBoos->updatePhase();
-                    enemyBoos->spawnEnemy();
-                    handleBossUltimateSkill(timeToUltimate + Constants::DurationGraduallyHealthBoss + Constants::moveToUpperRegion + 1);
+                    enemyBoos->spawnEnemy(timeToUltimate);
                     initBossHealthBar();
-                    enemyBoos->executeUltimateSkill(timeToUltimate);
                     this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
                 }
             }

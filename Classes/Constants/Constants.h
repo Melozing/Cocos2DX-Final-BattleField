@@ -106,6 +106,7 @@ public:
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1
 	static float HealthEnemyPlaneBoss;
 	static float CurrentHealthEnemyPlaneBoss;
+	static float TimeToUltimate;
 	static const float BulletDamageGame3;
 	static int QuantityBulletPlayerGame3;
 	static int DamageBulletForCity;

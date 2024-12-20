@@ -11,7 +11,7 @@ public:
 
     virtual bool init() override;
     void initAnimation();
-    void spawnEnemy();
+    void spawnEnemy(float timeToUltimate);
     void reset();
     Size GetSize();
     void moveLeftRight();
