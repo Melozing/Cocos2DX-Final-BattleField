@@ -187,8 +187,6 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine">
       <UniqueIdentifier>{52fdfca3-2644-45c0-84fb-ec780f57bd16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\UXUI\CollectionWindow">
-      <UniqueIdentifier>{6d51841b-4405-4cfb-a89c-0ce1b15c8ab7}</UniqueIdentifier>
     <Filter Include="src\Manager\Game3">
       <UniqueIdentifier>{d51ed658-70f0-4d6a-bde6-c2697b1676de}</UniqueIdentifier>
     </Filter>
@@ -430,8 +428,6 @@
     <ClCompile Include="..\Classes\Game1\Enemy\Landmine.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\UIGame\CollectionWindow.cpp">
-      <Filter>src\UXUI\CollectionWindow</Filter>
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp">
       <Filter>src\Manager\Game3</Filter>
     </ClCompile>
@@ -679,8 +675,6 @@
     <ClInclude Include="..\Classes\Game1\Enemy\Landmine.h">
       <Filter>src\Gameplay\Enemy\EnemyGame1\FallingObject\Landmine</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\UIGame\CollectionWindow.h">
-      <Filter>src\UXUI\CollectionWindow</Filter>
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h">
       <Filter>src\Manager\Game3</Filter>
     </ClInclude>
