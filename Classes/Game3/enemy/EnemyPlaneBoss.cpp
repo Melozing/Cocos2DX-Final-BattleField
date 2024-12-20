@@ -86,7 +86,6 @@ void EnemyPlaneBoss::spawnEnemy(float timeToUltimate) {
     this->runAction(Sequence::create(spawnAction, CallFunc::create([this, timeToUltimate]() {
         // Dispatch event to show the boss health bar
         __NotificationCenter::getInstance()->postNotification("SHOW_BOSS_HEALTH_BAR");
-        __NotificationCenter::getInstance()->postNotification("SHOW_ULTIMATE_SKILL_BADGE");
         Constants::TimeToUltimate = timeToUltimate;
         this->graduallyIncreaseHealth();
         }), nullptr));
@@ -107,20 +106,19 @@ void EnemyPlaneBoss::graduallyIncreaseHealth() {
             if (Constants::CurrentHealthEnemyPlaneBoss > targetHealth) {
                 Constants::CurrentHealthEnemyPlaneBoss = targetHealth;
             }
-
-            // Dispatch custom event to update health bar
-            auto eventDispatcher = Director::getInstance()->getEventDispatcher();
-            EventCustom event("UPDATE_BOSS_HEALTH_BAR");
-            event.setUserData(&Constants::CurrentHealthEnemyPlaneBoss);
-            eventDispatcher->dispatchEvent(&event);
+            __NotificationCenter::getInstance()->postNotification("UPDATE_BOSS_HEALTH_BAR");
         }
         else {
+            __NotificationCenter::getInstance()->postNotification("SHOW_ULTIMATE_SKILL_BADGE");
+            
+            __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
+            
+            __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
             this->unschedule("graduallyIncreaseHealth");
             this->createPhysicsBody();
             this->moveLeftRight();
             this->executePhaseSkills();
             this->executeUltimateSkill(Constants::TimeToUltimate);
-            __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
         }
         }, 0.02f, "graduallyIncreaseHealth"); // Adjust the interval as needed
 }
@@ -245,6 +243,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
     this->startExplosions();
     // Unschedule skill spawning
     this->unschedule("drop_booms_key");
+    this->unschedule("launch_missiles_key");
 
     // Return active weapons to the pool
     auto boomPool = BoomForEnemyPlanePool::getInstance();
@@ -255,7 +254,6 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
             boomPool->returnObject(boom);
         }
     }
-
 
     // Create a move action to move the boss to the center of the screen on the X axis
     auto moveToCenterX = MoveTo::create(1.0f, Vec2(origin.x + visibleSize.width / 2, this->getPositionY()));
@@ -279,7 +277,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
         ,
         CallFunc::create([this]() {
             this->isExploding = false; // Stop explosions
-            this->removeFromParentAndCleanup(false);
+            //this->removeFromParentAndCleanup(false);
             EnemyPlaneBossPool::getInstance()->returnObject(this);
         }), nullptr);
 

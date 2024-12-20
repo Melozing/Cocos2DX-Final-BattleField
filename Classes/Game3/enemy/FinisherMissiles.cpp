@@ -126,7 +126,7 @@ void FinisherMissiles::explode() {
     // Create explosion effect
     auto explosion = Explosion::create(this->getPosition(), [this]() {
         this->returnToPool();
-        }); // Adjust the scale as needed
+        });
     this->getParent()->addChild(explosion);
 }
 

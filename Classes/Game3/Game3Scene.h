@@ -9,6 +9,7 @@
 #include "Game3/enemy/BoomForEnemyPlane.h"
 #include "Game3/enemy/MissileForEnemyPlane.h"
 #include "Game3/enemy/BulletForEnemyPlane.h"
+#include "Game3/enemy/FinisherMissiles.h"
 #include "Game3/enemy/EnemyPlaneBoss.h" // Include EnemyPlaneBoss
 #include "LoadingBar/CustomLoadingBar.h"
 #include <Game2/Cursor/Cursor.h>
@@ -77,6 +78,7 @@ private:
     void handleBoomCityCollision(BoomForEnemyPlane* boom);
     void handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy);
     void handleMissileEnemyCityCollision(MissileForEnemyPlane* missileEnemy);
+    void handleFinisherMissilesCityCollision(FinisherMissiles* FinisherMissilesBoss);
 
     // Health bar methods
     void initHealthBar();
@@ -86,7 +88,7 @@ private:
     //Boss bar methods 
     CustomLoadingBar* bossHealthBar;
     void initBossHealthBar();
-    void updateBossHealthBar(float healthPercent);
+    void updateBossHealthBar(Ref* sender);
     void handleBossDamage(float damage);
     void showBossHealthBar(Ref* sender);
     void hideBossHealthBar(Ref* sender);
@@ -105,6 +107,7 @@ private:
     void initUltimateSkillBadge();
     void updateUltimateSkillCountdown(float dt);
     float ultimateSkillTimeRemaining;
+    bool finisherMissilesHandled = false;
 };
 
 #endif // __GAME3SCENE_SCENE_H__
