@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "imagePath": "assets_game/items/IncreaseBulletCountItem.png",
+        "name": "Increase Bullet Count",
+        "description": "Increases the number of bullets you can carry."
+    },
+    {
+        "id": 2,
+        "imagePath": "assets_game/items/hop_dan.png",
+        "name": "Health Potion",
+        "description": "Restores health."
+    }
+]
