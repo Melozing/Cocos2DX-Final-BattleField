@@ -9,6 +9,7 @@
 #include "Controller/SoundController.h"
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
+
 #include "Manager/BackgroundManager.h"
 #include "ui/CocosGUI.h"
 
@@ -20,7 +21,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Game3Scene::create();
     scene->addChild(layer);
@@ -28,10 +29,9 @@ cocos2d::Scene* Game3Scene::createScene() {
     return scene;
 }
 
+
 bool Game3Scene::init() {
-    if (!BaseScene::init()) {
-        return false;
-    }
+    if (!BaseScene::init()) return false;
 
     this->setSceneCreationFunc([]() -> cocos2d::Scene* {
         return Game3Scene::createScene();
@@ -44,30 +44,18 @@ bool Game3Scene::init() {
     initPools();
     setupCursor();
     initSpawning();
+    initBossSpawning();
     setupContactListener();
     initHealthBar();
     initBossHealthBar();
     initSound();
     initBulletBadge();
+    initUltimateSkillBadge();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
     this->addChild(cityCollisionArea);
 
-    // Register event listeners
-    auto eventDispatcher = Director::getInstance()->getEventDispatcher();
-    eventDispatcher->addCustomEventListener("SHOW_BOSS_HEALTH_BAR", [this](EventCustom* event) {
-        this->showBossHealthBar();
-        });
-    eventDispatcher->addCustomEventListener("HIDE_BOSS_HEALTH_BAR", [this](EventCustom* event) {
-        this->hideBossHealthBar();
-        });
-    eventDispatcher->addCustomEventListener("UPDATE_BOSS_HEALTH_BAR", [this](EventCustom* event) {
-        this->updateBossHealthBar((enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
-        });
-    eventDispatcher->addCustomEventListener("BlinkRedBadge", [this](EventCustom* event) {
-        bulletBadge->blinkRed();
-        });
     return true;
 }
 
@@ -82,6 +70,8 @@ void Game3Scene::preloadAssets() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBullet.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/rocket.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/warning_rocket.plist");
 }
 
 void Game3Scene::setupBackground() {
@@ -118,13 +108,61 @@ void Game3Scene::initBulletBadge() {
         nullptr
     );
 
-    // Register to listen for bullet count change notifications
     __NotificationCenter::getInstance()->addObserver(
         this,
         callfuncO_selector(Game3Scene::blinkRedBadge),
         "BlinkRedBadge",
         nullptr
     );
+}
+
+void Game3Scene::initUltimateSkillBadge() {
+    ultimateSkillBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
+    auto spriteBadge = Sprite::create("assets_game/UXUI/Panel/Table_03.png");
+    ultimateSkillBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
+    ultimateSkillBadge->setBadgePosition(Vec2(50, Director::getInstance()->getVisibleSize().height - 50));
+    ultimateSkillBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.07f)); // Adjust the scale as needed
+    std::string timeText = std::to_string(static_cast<int>(ultimateSkillTimeRemaining));
+    ultimateSkillBadge->updateLabel(timeText);
+    this->addChild(ultimateSkillBadge);
+    ultimateSkillBadge->setVisible(false);
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::hideUltimateSkillBadge),
+        "HIDE_ULTIMATE_SKILL_BADGE",
+        nullptr
+    );
+
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::showUltimateSkillBadge),
+        "SHOW_ULTIMATE_SKILL_BADGE",
+        nullptr
+    );
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::handleBossUltimateSkill),
+        "HANDLE_ULTIMATE_SKILL_BADGE",
+        nullptr
+    );
+}
+
+void Game3Scene::updateUltimateSkillCountdown(float dt) {
+    ultimateSkillTimeRemaining -= dt;
+    if (ultimateSkillTimeRemaining < 0) {
+        this->unschedule("UltimateSkillCountdown");
+    }
+    else {
+        std::string timeText = std::to_string(static_cast<int>(ultimateSkillTimeRemaining));
+        ultimateSkillBadge->updateLabel(timeText);
+    }
+}
+
+void Game3Scene::handleBossUltimateSkill(Ref* sender) {
+    ultimateSkillTimeRemaining = Constants::TimeToUltimate;
+    this->schedule([this](float dt) {
+        this->updateUltimateSkillCountdown(1);
+        }, 1.0f, "UltimateSkillCountdown");
 }
 
 void Game3Scene::updateBulletLabel(Ref* sender) {
@@ -143,7 +181,14 @@ void Game3Scene::blinkRedBadge(Ref* sender) {
 
 Game3Scene::~Game3Scene() {
     // Remove observer when the scene is destroyed
+    __NotificationCenter::getInstance()->removeObserver(this, "HANDLE_ULTIMATE_SKILL_BADGE");
+    __NotificationCenter::getInstance()->removeObserver(this, "SHOW_ULTIMATE_SKILL_BADGE");
+    __NotificationCenter::getInstance()->removeObserver(this, "HIDE_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "BulletCountChanged");
+    __NotificationCenter::getInstance()->removeObserver(this, "SHOW_BOSS_HEALTH_BAR");
+    __NotificationCenter::getInstance()->removeObserver(this, "HIDE_BOSS_HEALTH_BAR");
+    __NotificationCenter::getInstance()->removeObserver(this, "UPDATE_BOSS_HEALTH_BAR");
+    __NotificationCenter::getInstance()->removeObserver(this, "BlinkRedBadge");
 }
 
 void Game3Scene::initHealthBar() {
@@ -186,6 +231,26 @@ void Game3Scene::initBossHealthBar() {
     bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.17f));
     bossHealthBar->setVisible(false);
     this->addChild(bossHealthBar, Constants::ORDER_LAYER_UI);
+
+    // Register observers
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::showBossHealthBar),
+        "SHOW_BOSS_HEALTH_BAR",
+        nullptr
+    );
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::hideBossHealthBar),
+        "HIDE_BOSS_HEALTH_BAR",
+        nullptr
+    );
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::updateBossHealthBar),
+        "UPDATE_BOSS_HEALTH_BAR",
+        nullptr
+    );
 }
 
 void Game3Scene::initPools() {
@@ -198,6 +263,8 @@ void Game3Scene::initPools() {
     UpgradeBulletItemPool::getInstance()->initPool(10);
     IncreaseBulletCountItemPool::getInstance()->initPool(10);
     HealthRecoveryItemPool::getInstance()->initPool(10);
+    MissileForEnemyPlanePool::getInstance()->initPool(10); // Initialize pool with 10 missiles
+    FinisherMissilesPool::getInstance()->initPool(10); // Initialize pool with 10 missiles
 }
 
 void Game3Scene::initSound() {
@@ -238,7 +305,7 @@ void Game3Scene::initSpawning() {
         std::string direction = event["direction"].GetString();
         std::string position = event["position"].GetString();
 
-        this->scheduleOnce([=](float) {
+        this->scheduleOnce([=, &event](float) {
             if (enemyType == "EnemyPlaneBullet") {
                 EnemyPlaneBullet::spawnEnemy(this, skillTime, spawnSkill, direction, position);
                 auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
@@ -254,16 +321,42 @@ void Game3Scene::initSpawning() {
                     enemy->spawnEnemy(this, skillTime, spawnSkill, direction, position);
                 }
             }
-            else if (enemyType == "EnemyPlaneBoss") {
-                enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
-                if (enemyBoos) {
+            }, spawnTime, "spawn_enemy_key_" + std::to_string(spawnTime));
+    }
+}
+
+void Game3Scene::initBossSpawning() {
+    // Đọc file JSON
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename("spawn_boss_game3.json");
+    std::string fileContent = FileUtils::getInstance()->getStringFromFile(filePath);
+
+    rapidjson::Document document;
+    document.Parse(fileContent.c_str());
+
+    if (document.HasParseError()) {
+        CCLOG("Error parsing JSON file: %s", document.GetParseError());
+        return;
+    }
+
+    const rapidjson::Value& bossSpawnEvents = document["bossSpawnEvents"];
+    for (rapidjson::SizeType i = 0; i < bossSpawnEvents.Size(); i++) {
+        const rapidjson::Value& event = bossSpawnEvents[i];
+        std::string enemyType = event["enemyType"].GetString();
+        float spawnTime = event["spawnTime"].GetFloat();
+        float timeToUltimate = event["timeToUltimate"].GetFloat();
+
+        // Lên lịch sinh ra boss
+        this->scheduleOnce([this, enemyType, timeToUltimate](float dt) {
+            if (enemyType == "EnemyPlaneBoss") {
+                auto boss = EnemyPlaneBoss::create();
+                if (boss) {
                     enemyBoos->updatePhase();
-                    enemyBoos->spawnEnemy();
+                    enemyBoos->spawnEnemy(timeToUltimate);
                     initBossHealthBar();
                     this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
                 }
             }
-            }, spawnTime, "spawn_enemy_key_" + std::to_string(spawnTime));
+            }, spawnTime, "spawn_boss_" + std::to_string(i));
     }
 }
 
@@ -307,13 +400,18 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
         auto enemy = dynamic_cast<EnemyPlaneBase*>(nodeB);
         auto boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeB);
         auto bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeB);
+        auto missileEnemy = dynamic_cast<MissileForEnemyPlane*>(nodeB);
         auto item = dynamic_cast<ItemBaseGame3*>(nodeB); 
         auto itemUpgradeBullet = dynamic_cast<UpgradeBulletItemGame3*>(nodeB); 
         auto IncreaseBullet = dynamic_cast<IncreaseBulletCountItemGame3*>(nodeB);
         auto HealthRecovery = dynamic_cast<HealthRecoveryItemGame3*>(nodeB);
+        auto FinisherMissilesBoss = dynamic_cast<FinisherMissiles*>(nodeB);
 
         if (bulletPlayer && enemy) {
             handleBulletEnemyCollision(bulletPlayer, enemy);
+        }
+        else if (bulletPlayer && missileEnemy) {
+            handleBulletMissileCollision(bulletPlayer, missileEnemy);
         }
         else if (bulletPlayer && boomForEnemyPlane) {
             handleBulletBoomCollision(bulletPlayer, boomForEnemyPlane);
@@ -323,6 +421,12 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
         }
         else if (bulletForEnemyPlane && cityCollisionArea) {
             handleBulletForEnemyCityCollision(bulletForEnemyPlane);
+        }
+        else if (missileEnemy && cityCollisionArea) {
+            handleMissileEnemyCityCollision(missileEnemy);
+        }
+        else if (FinisherMissilesBoss && cityCollisionArea) {
+            handleFinisherMissilesCityCollision(FinisherMissilesBoss);
         }
         else if (item && cityCollisionArea) { 
             item->stopMovement();
@@ -355,22 +459,33 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             enemy = dynamic_cast<EnemyPlaneBase*>(nodeA);
             boomForEnemyPlane = dynamic_cast<BoomForEnemyPlane*>(nodeA);
             bulletForEnemyPlane = dynamic_cast<BulletForEnemyPlane*>(nodeA);
+            missileEnemy = dynamic_cast<MissileForEnemyPlane*>(nodeA);
             item = dynamic_cast<ItemBaseGame3*>(nodeA);
             itemUpgradeBullet = dynamic_cast<UpgradeBulletItemGame3*>(nodeA);
             IncreaseBullet = dynamic_cast<IncreaseBulletCountItemGame3*>(nodeA);
             HealthRecovery = dynamic_cast<HealthRecoveryItemGame3*>(nodeA);
-            
+            FinisherMissilesBoss = dynamic_cast<FinisherMissiles*>(nodeA);
+
             if (bulletPlayer && enemy) {
                 handleBulletEnemyCollision(bulletPlayer, enemy);
             }
             else if (bulletPlayer && boomForEnemyPlane) {
                 handleBulletBoomCollision(bulletPlayer, boomForEnemyPlane);
             }
+            else if (bulletPlayer && missileEnemy) {
+                handleBulletMissileCollision(bulletPlayer, missileEnemy);
+            }
             else if (boomForEnemyPlane && cityCollisionArea) {
                 handleBoomCityCollision(boomForEnemyPlane);
             }
             else if (bulletForEnemyPlane && cityCollisionArea) {
                 handleBulletForEnemyCityCollision(bulletForEnemyPlane);
+            }
+            else if (missileEnemy && cityCollisionArea) {
+                handleMissileEnemyCityCollision(missileEnemy);
+            }
+            else if (FinisherMissilesBoss && cityCollisionArea) {
+                handleFinisherMissilesCityCollision(FinisherMissilesBoss);
             }
             else if (item && cityCollisionArea) {
                 item->stopMovement();
@@ -403,6 +518,11 @@ void Game3Scene::handleBulletBoomCollision(BulletPlayerGame3* bullet, BoomForEne
     boom->explode();
 }
 
+void Game3Scene::handleBulletMissileCollision(BulletPlayerGame3* bullet, MissileForEnemyPlane* missileEnemy) {
+    bullet->returnPool();
+    missileEnemy->explode();
+}
+
 void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlaneBase* enemy) {
     if (auto enemyBullet = dynamic_cast<EnemyPlaneBullet*>(enemy)) {
         enemyBullet->explode();
@@ -423,21 +543,30 @@ void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlan
 
 void Game3Scene::handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy) {
     bulletForEnemy->explode();
+    return;
+    if (healthBar->getPercent() <= 0) return;
+    // Assuming you have a method to get the current health
+    float currentHealth = healthBar->getPercent();
+    float newHealth = currentHealth - Constants::DamageBulletForCity; // Decrease health by 10 (example value)
+    updateHealthBar(newHealth);
+}
+
+void Game3Scene::handleMissileEnemyCityCollision(MissileForEnemyPlane* missileEnemy) {
+    missileEnemy->explode();
 
     if (healthBar->getPercent() <= 0) return;
     // Assuming you have a method to get the current health
     float currentHealth = healthBar->getPercent();
-    float newHealth = currentHealth - 5; // Decrease health by 10 (example value)
+    float newHealth = currentHealth - Constants::DamageBoomForCity; // Decrease health by 10 (example value)
     updateHealthBar(newHealth);
 }
-
 
 void Game3Scene::handleBoomCityCollision(BoomForEnemyPlane* boom) {
     boom->explode();
 
     if (healthBar->getPercent() <= 0) return;
     float currentHealth = healthBar->getPercent();
-    float newHealth = currentHealth - 10; // Decrease health by 10 (example value)
+    float newHealth = currentHealth - Constants::DamageBoomForCity; // Decrease health by 10 (example value)
     updateHealthBar(newHealth);
 }
 
@@ -447,7 +576,7 @@ void Game3Scene::checkHealthBar() {
         GameController::getInstance()->GameOver(
             []() { Director::getInstance()->end(); }, // Exit action
             []() -> Scene* { return Game3Scene::createScene(); }, // Create scene function
-            Constants::pathSoundTrackGame1 // Soundtrack path
+            Constants::pathSoundBossGame3Phase1 // Soundtrack path
         );
     }
 }
@@ -460,25 +589,69 @@ void Game3Scene::updateHealthBar(float health) {
 void Game3Scene::handleBossDamage(float damage) {
     if (enemyBoos) {
         enemyBoos->takeDamage(damage);
-        float healthPercent = (enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100;
-        updateBossHealthBar(healthPercent);
+        this->updateBossHealthBar(nullptr);
     }
 }
 
-void Game3Scene::updateBossHealthBar(float healthPercent) {
+void Game3Scene::updateBossHealthBar(Ref* sender) {
     if (bossHealthBar) {
-        bossHealthBar->setPercent(healthPercent);
+        this->bossHealthBar->setPercent((enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
     }
 }
 
-void Game3Scene::showBossHealthBar() {
+void Game3Scene::showBossHealthBar(Ref* sender) {
     if (bossHealthBar) {
-        this->bossHealthBar->setVisible(true);
+        bossHealthBar->setVisible(true);
     }
 }
 
-void Game3Scene::hideBossHealthBar() {
+void Game3Scene::hideBossHealthBar(Ref* sender) {
     if (bossHealthBar) {
-        this->bossHealthBar->setVisible(false);
+        bossHealthBar->setVisible(false);
+    }
+}
+
+CityCollisionArea* Game3Scene::getCityCollisionArea() const {
+    return cityCollisionArea;
+}
+
+void Game3Scene::showUltimateSkillBadge(Ref* sender) {
+    if (ultimateSkillBadge) {
+        ultimateSkillBadge->setVisible(true);
+    }
+}
+
+void Game3Scene::hideUltimateSkillBadge(Ref* sender) {
+    if (ultimateSkillBadge) {
+        ultimateSkillBadge->setVisible(false);
+    }
+}
+
+void Game3Scene::handleFinisherMissilesCityCollision(FinisherMissiles*  FinisherMissilesBoss) {
+    // Set health of player and health bar to 0
+    FinisherMissilesBoss->explode();
+    if (!finisherMissilesHandled) {
+        this->healthBar->setPercent(0);
+
+        finisherMissilesHandled = true;
+        // Trigger explosion effect in CityCollisionArea
+        cityCollisionArea->startExplosions();
+
+        // Schedule GameOver event after a delay
+        this->runAction(Sequence::create(
+            DelayTime::create(5.0f), // Adjust delay as needed
+            CallFunc::create([this]() {
+                GameController::getInstance()->GameOver(
+                    [this]() {
+                        Director::getInstance()->end();
+                    },
+                    []() -> Scene* {
+                        return Game3Scene::createScene();
+                    },
+                    Constants::pathSoundBossGame3Phase1 // Add the soundtrack path here
+                );
+                }),
+            nullptr
+        ));
     }
 }

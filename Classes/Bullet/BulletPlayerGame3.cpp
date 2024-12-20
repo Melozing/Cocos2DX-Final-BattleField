@@ -74,9 +74,9 @@ Size BulletPlayerGame3::GetSize() {
 
 void BulletPlayerGame3::setDirection(const Vec2& direction)
 {
+    this->createPhysicsBody();
     _direction = direction;
     _direction.normalize();
-    this->createPhysicsBody();
 
     // Calculate the angle in degrees between the direction vector and the upward vector (0, 1)
     float angle = -CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x)) + 90;
@@ -90,6 +90,7 @@ void BulletPlayerGame3::setDirection(const Vec2& direction)
     float duration = distance / _speed; // Calculate duration based on speed
 
     auto moveAction = MoveTo::create(duration, targetPosition);
+
     this->runAction(Sequence::create(moveAction, nullptr));
 }
 
@@ -139,6 +140,7 @@ void BulletPlayerGame3::removeWhenOutOfScreen()
 
 void BulletPlayerGame3::returnPool() {
     this->unscheduleUpdate(); // Stop the update when returning to the pool
+    this->reset();
     if (this->getParent() != nullptr) {
         this->removeFromParent();
     }
