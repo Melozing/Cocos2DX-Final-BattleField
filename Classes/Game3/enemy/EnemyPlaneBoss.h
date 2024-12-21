@@ -4,6 +4,13 @@
 #include "cocos2d.h"
 #include "EnemyPlaneBase.h"
 
+enum class Phase {
+    StartPHASE,
+    PHASE_1,
+    PHASE_2,
+    PHASE_3
+};
+
 class EnemyPlaneBoss : public EnemyPlaneBase {
 public:
     static EnemyPlaneBoss* create();
@@ -18,6 +25,7 @@ public:
     float getHealth();
     void updatePhase();
     void executeUltimateSkill(float timeToUltimate);
+    Phase getCurrentPhase(); 
 
 private:
     void createPhysicsBody();
@@ -30,13 +38,6 @@ private:
     void launchMissiles();
     void launchFinisherMissiles();
     void showWarning();
-
-    enum class Phase {
-        StartPHASE,
-        PHASE_1,
-        PHASE_2,
-        PHASE_3
-    };
 
     Phase currentPhase;
     cocos2d::SpriteBatchNode* spriteBatchNode;

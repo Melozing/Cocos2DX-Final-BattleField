@@ -21,8 +21,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
-
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game3Scene::create();
     scene->addChild(layer);
 
@@ -363,6 +362,9 @@ void Game3Scene::initBossSpawning() {
                     enemyBoos->updatePhase();
                     enemyBoos->spawnEnemy(timeToUltimate);
                     initBossHealthBar();
+                    if (enemyBoos->getParent() != nullptr) {
+                        enemyBoos->removeFromParent();
+                    }
                     this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
                 }
             }
@@ -599,6 +601,25 @@ void Game3Scene::updateHealthBar(float health) {
 void Game3Scene::handleBossDamage(float damage) {
     if (enemyBoos) {
         enemyBoos->takeDamage(damage);
+        if (enemyBoos->getHealth() < 1) {
+            auto currentPhase = enemyBoos->getCurrentPhase();
+            std::string phaseString;
+
+            switch (currentPhase) {
+            case Phase::PHASE_1:
+                phaseString = "PHASE_1";
+                break;
+            case Phase::PHASE_2:
+                phaseString = "PHASE_2";
+                break;
+            default:
+                phaseString = "Unknown Phase";
+                break;
+            }
+            CCLOG("Current Phase: %s", phaseString.c_str());
+        }
+        
+
         this->updateBossHealthBar(nullptr);
     }
 }

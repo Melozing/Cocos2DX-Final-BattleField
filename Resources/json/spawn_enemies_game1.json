@@ -29,7 +29,7 @@
   { "spawnTime": 15.8, "enemyType": "RandomBoom" },
   { "spawnTime": 16.0, "enemyType": "RandomBoom" },
   { "spawnTime": 16.2, "enemyType": "RandomBoom" },
-  { "spawnTime": 16.2, "enemyType": "CollectibleItem" },
+  { "spawnTime": 19.2, "enemyType": "CollectibleItem" },
 
   { "spawnTime": 18.8, "enemyType": "Effect" },
   { "spawnTime": 18.8, "enemyType": "FallingRock" },
@@ -45,7 +45,7 @@
   { "spawnTime": 19.0, "enemyType": "RandomBoom" },
   { "spawnTime": 19.2, "enemyType": "RandomBoom" },
   { "spawnTime": 19.4, "enemyType": "RandomBoom" },
-  { "spawnTime": 20.2, "enemyType": "CollectibleItem" },
+  { "spawnTime": 22.2, "enemyType": "CollectibleItem" },
 
   { "spawnTime": 21.45, "enemyType": "Effect" },
   { "spawnTime": 21.45, "enemyType": "FallingRock" },
@@ -171,7 +171,7 @@
   { "spawnTime": 37.95, "enemyType": "Effect" },
 
   { "spawnTime": 37.95, "enemyType": "Effect" },
-  { "spawnTime": 38.2, "enemyType": "CollectibleItem" },
+  { "spawnTime": 38.5, "enemyType": "CollectibleItem" },
 
   { "spawnTime": 38.11, "enemyType": "Effect" },
   { "spawnTime": 38.31, "enemyType": "Effect" },
@@ -231,7 +231,7 @@
   { "spawnTime": 44.93, "enemyType": "Effect" },
   { "spawnTime": 45.23, "enemyType": "Effect" },
 
-  { "spawnTime": 42.75, "enemyType": "CollectibleItem" },
+  { "spawnTime": 43.75, "enemyType": "CollectibleItem" },
   { "spawnTime": 42.75, "enemyType": "RandomBoom" },
   { "spawnTime": 43.51, "enemyType": "RandomBoom" },
   { "spawnTime": 43.91, "enemyType": "RandomBoom" },
@@ -353,7 +353,8 @@
   { "spawnTime": 60.83, "enemyType": "Effect" },
   { "spawnTime": 60.93, "enemyType": "Effect" },
 
-  { "spawnTime": 58.2, "enemyType": "CollectibleItem" },
+  { "spawnTime": 59.6, "enemyType": "CollectibleItem" },
+
   { "spawnTime": 58.83, "enemyType": "RandomBoom" },
   { "spawnTime": 59.53, "enemyType": "RandomBoom" },
   { "spawnTime": 59.64, "enemyType": "RandomBoom" },
@@ -685,7 +686,7 @@
   { "spawnTime": 88.28, "enemyType": "Effect" },
   { "spawnTime": 88.28, "enemyType": "FallingRock" },
 
-  { "spawnTime": 89.2, "enemyType": "CollectibleItem" },
+  { "spawnTime": 89.5, "enemyType": "CollectibleItem" },
 
   { "spawnTime": 88.28, "enemyType": "Effect" },
   { "spawnTime": 88.68, "enemyType": "Effect" },
@@ -1086,7 +1087,7 @@
   { "spawnTime": 115.03, "enemyType": "RandomBoom" },
   { "spawnTime": 115.45, "enemyType": "RandomBoom" },
 
-  { "spawnTime": 115.2, "enemyType": "CollectibleItem" },
+  { "spawnTime": 117.2, "enemyType": "CollectibleItem" },
   { "spawnTime": 120.2, "enemyType": "CollectibleItem" },
 
   { "spawnTime": 115.45001, "enemyType": "Effect" },

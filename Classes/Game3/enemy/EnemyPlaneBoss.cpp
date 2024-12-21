@@ -183,9 +183,9 @@ void EnemyPlaneBoss::executePhaseSkills() {
     switch (currentPhase) {
     case Phase::PHASE_1:
         // Execute skills for phase 1
-        this->dropBooms();
+        this->launchMissiles();
         this->schedule([this](float dt) {
-            this->dropBooms();
+            this->launchMissiles();
             }, 3.5f, "drop_booms_key");
         break;
     case Phase::PHASE_2:
@@ -449,4 +449,8 @@ void EnemyPlaneBoss::launchFinisherMissiles() {
         }
             }, i* durationSkill, "launchFinisherMissilesKey" + std::to_string(i));
     }
+}
+
+Phase EnemyPlaneBoss::getCurrentPhase() {
+    return currentPhase;
 }
