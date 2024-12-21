@@ -27,7 +27,6 @@ public:
     CREATE_FUNC(Game3Scene);
 
     void updateBulletLabel(cocos2d::Ref* sender);
-    void updateBulletLabel();
     CityCollisionArea* getCityCollisionArea() const;
 
     // Method to handle the boss's ultimate skill
@@ -44,7 +43,7 @@ private:
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
 
     // Boss 
-    EnemyPlaneBoss* enemyBoos;
+    EnemyPlaneBoss* enemyBoss;
 
     // Cursor
     Cursor* _cursor;
@@ -61,8 +60,8 @@ private:
     // Setup methods
     void setupBackground();
     void setupPlayer();
-    void initSpawning();
-    void initBossSpawning();
+    void initSpawning(const std::string& jsonFilePath);
+    void initBossSpawning(const std::string& jsonFilePath);
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);
     void initPools();

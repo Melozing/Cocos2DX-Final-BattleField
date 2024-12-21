@@ -113,6 +113,8 @@ public:
 	static int DamageBoomForCity;
 	static const std::string PlayerGame3Name;
 	static const std::string UPDATE_BULLET_LABEL;
+	static const std::string JSON_GAME3_PHASE_1_PATH;
+	static const std::string JSON_GAME3_BOSS_PHASE_1_PATH;
     //game3 SFX
     static const std::string BossHealthSFX;
     static const std::string PlayerGame3ShootSFX;

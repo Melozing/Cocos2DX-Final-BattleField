@@ -11,6 +11,7 @@
 #include "Controller/GameController.h"
 
 #include "Manager/BackgroundManager.h"
+#include "Scene/SceneFinishGame.h"
 #include "ui/CocosGUI.h"
 
 #include "json/document.h"
@@ -42,8 +43,8 @@ bool Game3Scene::init() {
     setupPlayer();
     initPools();
     setupCursor();
-    initSpawning();
-    initBossSpawning();
+    initSpawning(Constants::JSON_GAME3_PHASE_1_PATH);
+    initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_1_PATH);
     setupContactListener();
     initHealthBar();
     initBossHealthBar();
@@ -169,11 +170,6 @@ void Game3Scene::updateBulletLabel(Ref* sender) {
     bulletBadge->updateLabel(bulletText);
 }
 
-void Game3Scene::updateBulletLabel() {
-    std::string bulletText = "Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3);
-    bulletBadge->updateLabel(bulletText);
-}
-
 void Game3Scene::blinkRedBadge(Ref* sender) {
     bulletBadge->blinkRed();
 }
@@ -280,9 +276,9 @@ void Game3Scene::initSound() {
     SoundController::getInstance()->playMusic(Constants::currentSoundTrackPath, false);
 }
 
-void Game3Scene::initSpawning() {
+void Game3Scene::initSpawning(const std::string& jsonFilePath) {
     // Read JSON file
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game3.json");
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
     FILE* fp = fopen(filePath.c_str(), "rb");
     if (!fp) {
         CCLOG("Failed to open JSON file");
@@ -324,8 +320,8 @@ void Game3Scene::initSpawning() {
     }
 }
 
-void Game3Scene::initBossSpawning() {
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_boss_game3.json.json");
+void Game3Scene::initBossSpawning(const std::string& jsonFilePath) {
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
     FILE* fp = fopen(filePath.c_str(), "rb");
     if (!fp) {
         CCLOG("Failed to open JSON file");
@@ -357,15 +353,15 @@ void Game3Scene::initBossSpawning() {
         // Lên lịch sinh ra boss
         this->scheduleOnce([=](float) {
             if (enemyType == "EnemyPlaneBoss") {
-                enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
-                if (enemyBoos) {
-                    enemyBoos->updatePhase();
-                    enemyBoos->spawnEnemy(timeToUltimate);
+                enemyBoss = EnemyPlaneBossPool::getInstance()->getObject();
+                if (enemyBoss) {
+                    enemyBoss->updatePhase();
+                    enemyBoss->spawnEnemy(timeToUltimate);
                     initBossHealthBar();
-                    if (enemyBoos->getParent() != nullptr) {
-                        enemyBoos->removeFromParent();
+                    if (enemyBoss->getParent() != nullptr) {
+                        enemyBoss->removeFromParent();
                     }
-                    this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
+                    this->addChild(enemyBoss, Constants::ORDER_LAYER_CHARACTER);
                 }
             }
             }, spawnTime, "spawn_boss_key_" + std::to_string(spawnTime));
@@ -510,7 +506,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             else if (player && IncreaseBullet) {
                 IncreaseBullet->applyPickupEffect();
                 Constants::QuantityBulletPlayerGame3 += 50;
-                updateBulletLabel();
+                updateBulletLabel(nullptr);
             }
             else if (player && HealthRecovery) {
                 HealthRecovery->applyPickupEffect();
@@ -546,7 +542,7 @@ void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlan
         enemyBoom->dropRandomItem();
         bullet->returnPool();
     }
-    else if (enemyBoos = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
+    else if (enemyBoss = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
         this->handleBossDamage(Constants::BulletDamageGame3);
         bullet->hideModelCharac();
         bullet->explode();
@@ -599,34 +595,30 @@ void Game3Scene::updateHealthBar(float health) {
 }
 
 void Game3Scene::handleBossDamage(float damage) {
-    if (enemyBoos) {
-        enemyBoos->takeDamage(damage);
-        if (enemyBoos->getHealth() < 1) {
-            auto currentPhase = enemyBoos->getCurrentPhase();
-            std::string phaseString;
-
-            switch (currentPhase) {
-            case Phase::PHASE_1:
-                phaseString = "PHASE_1";
-                break;
-            case Phase::PHASE_2:
-                phaseString = "PHASE_2";
-                break;
-            default:
-                phaseString = "Unknown Phase";
-                break;
+    if (enemyBoss) {
+        enemyBoss->takeDamage(damage);
+        if (enemyBoss->getHealth() < 1) {
+            if (enemyBoss->getCurrentPhase() == Phase::PHASE_1) {
+                // Transition to Phase 2
+                initSpawning("path/to/phase2.json");
+                initBossSpawning("path/to/phase2.json");
+                enemyBoss->updatePhase();
             }
-            CCLOG("Current Phase: %s", phaseString.c_str());
+            else if (enemyBoss->getCurrentPhase() == Phase::PHASE_2) {
+                // Finish the game and transition to SceneFinishGame
+                this->scheduleOnce([](float) {
+                    auto scene = SceneFinishGame::createScene();
+                    Director::getInstance()->replaceScene(TransitionFade::create(2.0f, scene));
+                    }, 2.0f, "finish_game_key");
+            }
         }
-        
-
         this->updateBossHealthBar(nullptr);
     }
 }
 
 void Game3Scene::updateBossHealthBar(Ref* sender) {
     if (bossHealthBar) {
-        this->bossHealthBar->setPercent((enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
+        this->bossHealthBar->setPercent((enemyBoss->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
     }
 }
 

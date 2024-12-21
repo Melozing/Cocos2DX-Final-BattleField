@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "Scene/MainMenuScene.h"
+#include "Scene/SceneFinishGame.h"
 #include "Constants/Constants.h"
 #include "Controller/SoundController.h"
 #include "Controller/GameController.h"
@@ -64,7 +65,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     SoundController::getInstance()->setEffectsVolume(UserDefault::getInstance()->getFloatForKey(Constants::UD_effectsVolume.c_str()));
     SoundController::getInstance()->setMusicVolume(UserDefault::getInstance()->getFloatForKey(Constants::UD_musicVolume.c_str()));
 
-    auto scene = MainMenu::createScene();
+    auto scene = SceneFinishGame::createScene();
     director->runWithScene(scene);
 
     return true;

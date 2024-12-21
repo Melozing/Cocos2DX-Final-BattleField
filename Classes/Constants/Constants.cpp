@@ -144,6 +144,8 @@ int Constants::DamageBulletForCity = 5;
 int Constants::DamageBoomForCity = 7;
 const std::string Constants::PlayerGame3Name = "PlayerGame3Name";
 const std::string Constants::UPDATE_BULLET_LABEL = "UPDATE_BULLET_LABEL";
+const std::string Constants::JSON_GAME3_PHASE_1_PATH = "json/spawn_enemies_game3.json";
+const std::string Constants::JSON_GAME3_BOSS_PHASE_1_PATH = "json/spawn_boss_game3.json.json";
 
 //game3 SFX
 const std::string Constants::BossHealthSFX = "assets_game/sounds/Game3/SFX/BossHealthSFX.mp3";

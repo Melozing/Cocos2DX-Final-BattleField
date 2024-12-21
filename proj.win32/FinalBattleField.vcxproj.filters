@@ -439,6 +439,11 @@
     <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
+    <ClCompile Include="..\Classes\UIGame\LibraryWindow.cpp" />
+    <ClCompile Include="..\Classes\Scene\SceneFinishGame.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -684,6 +689,11 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
+    <ClInclude Include="..\Classes\UIGame\LibraryWindow.h" />
+    <ClInclude Include="..\Classes\Scene\SceneFinishGame.h">
+      <Filter>src\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
