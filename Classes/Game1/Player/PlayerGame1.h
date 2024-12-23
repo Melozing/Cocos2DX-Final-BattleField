@@ -33,6 +33,8 @@ public:
     void disableMovement();
     void fadeOutAndDisable();
     void createPhysicsBody();
+    void moveToCenterAndExit();
+
 private:
     int _health = 3;
     float minX, maxX, minY, maxY;

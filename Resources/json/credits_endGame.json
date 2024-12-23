@@ -1,6 +1,17 @@
 {
-    "Game Developer": "Mr.A",
-    "Art Director": "Mr.B",
-    "Sound Designer": "Mr.C",
-    "Producer": "Mr.D"
+  "Producer/Project Manager": "Quý Mạnh Melozing",
+  "Game Designer": "Quý Mạnh Melozing, Lĩnh Hà, Bá Hoàng",
+  "Game Developer": "Quý Mạnh Melozing, Lĩnh Hà, Bá Hoàng",
+  "Art Director": "Phụng Lê",
+  "UI/UX Designer": "Phụng Lê",
+  "Artist": "Phụng Lê, Hà Văn Huy",
+  "Art Support": "Hà Văn Huy",
+  "Historical Consultant ": "Sĩ Văn / MR. Six",
+  "Tool Specialist  ": "Sĩ Văn / MR. Six",
+  "Art Advisor ": "Sĩ Văn / MR. Six",
+  "Sound Designer": "Quý Mạnh Melozing",
+  "Producer": "Quý Mạnh Melozing",
+  "Animator": "Quý Mạnh Melozing",
+  "QA Tester": "Quý Mạnh Melozing, Lĩnh Hà, Bá Hoàng",
+  "Special Thanks": "MR. Khánh Lê"
 }

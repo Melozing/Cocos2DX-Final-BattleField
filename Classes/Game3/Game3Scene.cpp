@@ -43,6 +43,7 @@ bool Game3Scene::init() {
     setupPlayer();
     initPools();
     setupCursor();
+    initBoss();
     initSpawning(Constants::JSON_GAME3_PHASE_1_PATH);
     initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_1_PATH);
     setupContactListener();
@@ -79,14 +80,14 @@ void Game3Scene::setupBackground() {
 }
 
 void Game3Scene::setupPlayer() {
-    auto player = PlayerGame3::createPlayerGame3();
-    if (!player) {
+    playerGame3 = PlayerGame3::createPlayerGame3();
+    if (!playerGame3) {
         CCLOG("Failed to create PlayerGame3");
         return;
     }
-    player->setName(Constants::PlayerGame3Name);
-    this->addChild(player);
-    setupEventListeners(player);
+    playerGame3->setName(Constants::PlayerGame3Name);
+    this->addChild(playerGame3);
+    setupEventListeners(playerGame3);
 }
 
 void Game3Scene::initBulletBadge() {
@@ -177,13 +178,14 @@ void Game3Scene::blinkRedBadge(Ref* sender) {
 Game3Scene::~Game3Scene() {
     // Remove observer when the scene is destroyed
     __NotificationCenter::getInstance()->removeObserver(this, "HANDLE_ULTIMATE_SKILL_BADGE");
-    __NotificationCenter::getInstance()->removeObserver(this, "SHOW_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "HIDE_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "BulletCountChanged");
+    __NotificationCenter::getInstance()->removeObserver(this, "SHOW_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "SHOW_BOSS_HEALTH_BAR");
     __NotificationCenter::getInstance()->removeObserver(this, "HIDE_BOSS_HEALTH_BAR");
     __NotificationCenter::getInstance()->removeObserver(this, "UPDATE_BOSS_HEALTH_BAR");
     __NotificationCenter::getInstance()->removeObserver(this, "BlinkRedBadge");
+    __NotificationCenter::getInstance()->removeObserver(this, "FINISH_AND_CHANGE_SCENE");
 }
 
 void Game3Scene::initHealthBar() {
@@ -268,12 +270,7 @@ void Game3Scene::initSound() {
         return;
     }
     
-    SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame3);
-    SoundController::getInstance()->preloadMusic(Constants::pathSoundBossGame3Phase1);
-    
-    SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
-    Constants::currentSoundTrackPath = Constants::pathSoundTrackGame3;
-    SoundController::getInstance()->playMusic(Constants::currentSoundTrackPath, false);
+    SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame3, false);
 }
 
 void Game3Scene::initSpawning(const std::string& jsonFilePath) {
@@ -350,24 +347,32 @@ void Game3Scene::initBossSpawning(const std::string& jsonFilePath) {
         float spawnTime = event["spawnTime"].GetFloat();
         float timeToUltimate = event["timeToUltimate"].GetFloat();
 
-        // Lên lịch sinh ra boss
         this->scheduleOnce([=](float) {
             if (enemyType == "EnemyPlaneBoss") {
-                enemyBoss = EnemyPlaneBossPool::getInstance()->getObject();
-                if (enemyBoss) {
-                    enemyBoss->updatePhase();
-                    enemyBoss->spawnEnemy(timeToUltimate);
-                    initBossHealthBar();
-                    if (enemyBoss->getParent() != nullptr) {
-                        enemyBoss->removeFromParent();
-                    }
-                    this->addChild(enemyBoss, Constants::ORDER_LAYER_CHARACTER);
-                }
+                this->spawnOrUpdateBoss(timeToUltimate);
             }
             }, spawnTime, "spawn_boss_key_" + std::to_string(spawnTime));
     }
 }
 
+void Game3Scene::spawnOrUpdateBoss(float timeToUltimate) {
+    CCLOG("CALLED spawnOrUpdateBoss");
+        enemyBoss->updatePhase();
+        enemyBoss->spawnEnemy(timeToUltimate);
+}
+
+void Game3Scene::initBoss() {
+    enemyBoss = EnemyPlaneBoss::create();
+    this->addChild(enemyBoss);
+    enemyBoss->setVisible(false);
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::transitionToNextScene),
+        "FINISH_AND_CHANGE_SCENE",
+        nullptr
+    );
+
+}
 
 void Game3Scene::setupCursor() {
     _cursor = Cursor::create("assets_game/player/bullseye_white.png");
@@ -444,6 +449,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             IncreaseBullet->stopMovement();
             IncreaseBullet->applyPickupEffect();
             Constants::QuantityBulletPlayerGame3 += 50;
+            updateBulletLabel(nullptr);
         }
         else if (player && itemUpgradeBullet) {
             itemUpgradeBullet->stopMovement();
@@ -504,6 +510,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
                 player->increaseBulletCount();
             }
             else if (player && IncreaseBullet) {
+                IncreaseBullet->stopMovement();
                 IncreaseBullet->applyPickupEffect();
                 Constants::QuantityBulletPlayerGame3 += 50;
                 updateBulletLabel(nullptr);
@@ -598,22 +605,27 @@ void Game3Scene::handleBossDamage(float damage) {
     if (enemyBoss) {
         enemyBoss->takeDamage(damage);
         if (enemyBoss->getHealth() < 1) {
+            this->unschedule("UltimateSkillCountdown");
+
             if (enemyBoss->getCurrentPhase() == Phase::PHASE_1) {
                 // Transition to Phase 2
-                initSpawning("path/to/phase2.json");
-                initBossSpawning("path/to/phase2.json");
-                enemyBoss->updatePhase();
+                SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame3Phase2, false);
+                initSpawning(Constants::JSON_GAME3_PHASE_2_PATH);
+                initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_2_PATH);
             }
-            else if (enemyBoss->getCurrentPhase() == Phase::PHASE_2) {
-                // Finish the game and transition to SceneFinishGame
-                this->scheduleOnce([](float) {
-                    auto scene = SceneFinishGame::createScene();
-                    Director::getInstance()->replaceScene(TransitionFade::create(2.0f, scene));
-                    }, 2.0f, "finish_game_key");
+            else
+            {
+                playerGame3->setMovementAndShootingDisabled(true);
             }
         }
+        
         this->updateBossHealthBar(nullptr);
     }
+}
+
+void Game3Scene::transitionToNextScene(Ref* sender) {
+    auto nextScene = SceneFinishGame::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(1.0f, nextScene));
 }
 
 void Game3Scene::updateBossHealthBar(Ref* sender) {
@@ -671,7 +683,7 @@ void Game3Scene::handleFinisherMissilesCityCollision(FinisherMissiles*  Finisher
                     []() -> Scene* {
                         return Game3Scene::createScene();
                     },
-                    Constants::pathSoundBossGame3Phase1 // Add the soundtrack path here
+                    Constants::currentSoundTrackPath // Add the soundtrack path here
                 );
                 }),
             nullptr

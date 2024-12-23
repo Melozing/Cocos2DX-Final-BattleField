@@ -36,6 +36,12 @@ bool EnemyPlaneBoss::init() {
 
     // Initialize phase
     currentPhase = Phase::StartPHASE;
+
+    // Initialize warning sprite
+    _warningSprite = Sprite::createWithSpriteFrameName("warning_rocket1.png"); // Đường dẫn tới hình ảnh cảnh báo
+    _warningSprite->setVisible(false);
+    this->addChild(_warningSprite, Constants::ORDER_LAYER_CHARACTER + 3);
+
     return true;
 }
 
@@ -59,11 +65,7 @@ void EnemyPlaneBoss::initAnimation() {
 }
 
 void EnemyPlaneBoss::spawnEnemy(float timeToUltimate) {
-    if (this->getPhysicsBody() != nullptr) {
-        this->removeComponent(this->getPhysicsBody());
-    }
     this->reset(); // Reset the boss state
-
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
@@ -112,8 +114,6 @@ void EnemyPlaneBoss::graduallyIncreaseHealth() {
             __NotificationCenter::getInstance()->postNotification("SHOW_ULTIMATE_SKILL_BADGE");
             
             __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
-            
-            __NotificationCenter::getInstance()->postNotification("HANDLE_ULTIMATE_SKILL_BADGE");
             this->unschedule("graduallyIncreaseHealth");
             this->createPhysicsBody();
             this->moveLeftRight();
@@ -138,9 +138,13 @@ void EnemyPlaneBoss::moveLeftRight() {
 }
 
 void EnemyPlaneBoss::reset() {
+    this->unschedule("UltimateSkillSchedule");
+    this->unschedule("drop_booms_key");
+    this->unschedule("launch_missiles_key");
     this->stopAllActions();
     this->setVisible(true);
-    Constants::CurrentHealthEnemyPlaneBoss = Constants::HealthEnemyPlaneBoss;
+    this->setScale(1.0f); // Reset scale to the original size
+    Constants::CurrentHealthEnemyPlaneBoss = 0;
 }
 
 Size EnemyPlaneBoss::GetSize() {
@@ -155,37 +159,97 @@ void EnemyPlaneBoss::takeDamage(float damage) {
             moveUpAndReturnToPool();
         }
         else if (currentPhase == Phase::PHASE_2) {
-            CCLOG("HEHE");
+            handleBossFinisher();
         }
     }
+}
+
+void EnemyPlaneBoss::handleBossFinisher() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    this->unschedule("UltimateSkillSchedule");
+    this->unschedule("drop_booms_key");
+    this->unschedule("launch_missiles_key");
+    this->stopAllActions();
+
+    this->startExplosions();
+
+
+    // Return active weapons to the pool
+    auto boomPool = BoomForEnemyPlanePool::getInstance();
+    for (auto& child : this->getParent()->getChildren()) {
+        auto boom = dynamic_cast<BoomForEnemyPlane*>(child);
+        if (boom && boom->isVisible()) {
+            boom->setVisible(false);
+            boomPool->returnObject(boom);
+        }
+    }
+
+    auto missilemPool = MissileForEnemyPlanePool::getInstance();
+    for (auto& child : this->getParent()->getChildren()) {
+        auto missile = dynamic_cast<MissileForEnemyPlane*>(child);
+        if (missile && missile->isVisible()) {
+            missile->setVisible(false);
+            missilemPool->returnObject(missile);
+        }
+    }
+    auto delayTime = DelayTime::create(5.0f);
+
+    // Create a sequence to move to center X, then run the move and scale actions, then return to pool
+    auto sequence = Sequence::create(
+        CallFunc::create([this]() {
+            this->fadeOutAndRemove();
+        })
+        ,
+        CallFunc::create([this]() {
+            // Dispatch event to hide the boss health bar
+            __NotificationCenter::getInstance()->postNotification("HIDE_BOSS_HEALTH_BAR");
+            __NotificationCenter::getInstance()->postNotification("HIDE_ULTIMATE_SKILL_BADGE");
+            })
+        ,
+        delayTime,
+        CallFunc::create([this]() {
+            this->isExploding = false; // Stop explosions
+            //this->removeFromParentAndCleanup(false);
+            EnemyPlaneBossPool::getInstance()->returnObject(this);
+        }), 
+        CallFunc::create([this]() {
+            __NotificationCenter::getInstance()->postNotification("FINISH_AND_CHANGE_SCENE");
+            }),
+        nullptr);
+
+    // Run the sequence action
+    this->runAction(sequence);
+}
+
+void EnemyPlaneBoss::fadeOutAndRemove() {
+    auto fadeOut = FadeOut::create(5.0f); // Adjust duration as needed
+    auto removeSelf = RemoveSelf::create();
+    auto sequence = Sequence::create(fadeOut, removeSelf, nullptr);
+    this->runAction(sequence);
 }
 
 void EnemyPlaneBoss::updatePhase() {
     // Increment the phase
     if (currentPhase == Phase::PHASE_1) {
+        SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase2, false);
         currentPhase = Phase::PHASE_2;
-    }
-    else if (currentPhase == Phase::PHASE_2) {
-        currentPhase = Phase::PHASE_3;
     }
     else {
         currentPhase = Phase::PHASE_1;
-        SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
-        Constants::currentSoundTrackPath = Constants::pathSoundBossGame3Phase1;
         SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase1, false);
     }
-
-    // Reset health for the new phase
-    Constants::CurrentHealthEnemyPlaneBoss = Constants::HealthEnemyPlaneBoss;
 }
 
 void EnemyPlaneBoss::executePhaseSkills() {
     switch (currentPhase) {
     case Phase::PHASE_1:
         // Execute skills for phase 1
-        this->launchMissiles();
+        this->dropBooms();
         this->schedule([this](float dt) {
-            this->launchMissiles();
+            this->dropBooms();
             }, 3.5f, "drop_booms_key");
         break;
     case Phase::PHASE_2:
@@ -235,15 +299,18 @@ void EnemyPlaneBoss::dropBooms() {
 
 void EnemyPlaneBoss::moveUpAndReturnToPool() {
     this->unschedule("UltimateSkillSchedule");
+    this->unschedule("drop_booms_key");
+    this->unschedule("launch_missiles_key");
+
     // Stop all actions to prevent further movement
     this->stopAllActions();
+
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
+   
     this->startExplosions();
-    // Unschedule skill spawning
-    this->unschedule("drop_booms_key");
-    this->unschedule("launch_missiles_key");
+
 
     // Return active weapons to the pool
     auto boomPool = BoomForEnemyPlanePool::getInstance();
@@ -252,6 +319,15 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
         if (boom && boom->isVisible()) {
             boom->setVisible(false);
             boomPool->returnObject(boom);
+        }
+    }
+
+    auto missilemPool = MissileForEnemyPlanePool::getInstance();
+    for (auto& child : this->getParent()->getChildren()) {
+        auto missile = dynamic_cast<MissileForEnemyPlane*>(child);
+        if (missile && missile->isVisible()) {
+            missile->setVisible(false);
+            missilemPool->returnObject(missile);
         }
     }
 
@@ -283,14 +359,20 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
 
     // Run the sequence action
     this->runAction(sequence);
-
-    // Start explosions
-    this->isExploding = true;
 }
 
 void EnemyPlaneBoss::startExplosions() {
+    this->isExploding = true;
+
     float delayBetweenExplosions = 0.1f; // Adjust the delay between explosions as needed
-    dropUpgradeItem();
+   
+    if (currentPhase == Phase::PHASE_1) {
+        dropUpgradeItem();
+    }
+
+    this->schedule([this](float dt) {
+        SoundController::getInstance()->playSoundEffect(Constants::EnemyCrepExplodeSFX);
+        }, 0.9, "sound_explode");
 
     this->schedule([this](float dt) {
         if (this->isExploding) {
@@ -301,6 +383,7 @@ void EnemyPlaneBoss::startExplosions() {
         }
         else {
             this->unschedule("explosion_schedule_key");
+            this->unschedule("sound_explode");
         }
         }, delayBetweenExplosions, "explosion_schedule_key");
 }
@@ -362,27 +445,18 @@ void EnemyPlaneBoss::launchMissiles() {
     }
 }
 
-void EnemyPlaneBoss::showWarning() {
-    if (!_spriteBatchNodeWarning) {
-        _spriteBatchNodeWarning = SpriteBatchNode::create("assets_game/enemies/warning_rocket.png");
-        this->addChild(_spriteBatchNodeWarning);
-    }
-
-    if (!_warningSprite) {
-        _warningSprite = Sprite::createWithSpriteFrameName("warning_rocket1.png");
-        _warningSprite->setScale(SpriteController::updateSpriteScale(_warningSprite, 0.1f));
-        _spriteBatchNodeWarning->addChild(_warningSprite);
-    }
-
-    // Set the warning sprite's position relative to the EnemyPlaneBoss
-    _warningSprite->setPosition(Vec2(0, this->getContentSize().height * 0.5f));
+void EnemyPlaneBoss::showWarningSign() {
     _warningSprite->setVisible(true);
+    _warningSprite->setPosition(modelCharac->getPosition());
 
-    auto warningAnimation = SpriteController::createAnimation("warning_rocket", 50, 0.01f);
-    if (warningAnimation) {
-        auto animateWarning = Animate::create(warningAnimation);
-        _warningSprite->runAction(RepeatForever::create(animateWarning));
-    }
+    // Create blinking effect
+    auto blink = Blink::create(2.0f, 6); // Blink for 2 seconds, 6 times
+    _warningSprite->runAction(blink);
+}
+
+void EnemyPlaneBoss::hideWarningSign() {
+    _warningSprite->setVisible(false);
+    _warningSprite->stopAllActions();
 }
 
 void EnemyPlaneBoss::executeUltimateSkill(float timeToUltimate) {
@@ -399,7 +473,11 @@ void EnemyPlaneBoss::executeUltimateSkill(float timeToUltimate) {
 
         // Show warning sprite
         auto showWarningSprite = CallFunc::create([this]() {
-            this->showWarning();
+            this->showWarningSign();
+            });
+
+        auto hideWarningSprite = CallFunc::create([this]() {
+            this->hideWarningSign();
             });
 
         // Launch finisher missiles
@@ -409,7 +487,7 @@ void EnemyPlaneBoss::executeUltimateSkill(float timeToUltimate) {
             });
 
         // Create a sequence of actions
-        auto sequence = Sequence::create(moveToCenterX, showWarningSprite, DelayTime::create(0.5f), launchFinisher, nullptr);
+        auto sequence = Sequence::create(showWarningSprite, moveToCenterX,  DelayTime::create(0.5f), hideWarningSprite, launchFinisher, nullptr);
         this->runAction(sequence);
     }, timeToUltimate, "UltimateSkillSchedule");
 }

@@ -26,6 +26,7 @@ public:
     void updatePhase();
     void executeUltimateSkill(float timeToUltimate);
     Phase getCurrentPhase(); 
+    void handleBossFinisher();
 
 private:
     void createPhysicsBody();
@@ -37,7 +38,9 @@ private:
     void dropUpgradeItem();
     void launchMissiles();
     void launchFinisherMissiles();
-    void showWarning();
+    void showWarningSign();
+    void hideWarningSign();
+    void fadeOutAndRemove();
 
     Phase currentPhase;
     cocos2d::SpriteBatchNode* spriteBatchNode;

@@ -10,7 +10,7 @@
 #include "Game3/enemy/MissileForEnemyPlane.h"
 #include "Game3/enemy/BulletForEnemyPlane.h"
 #include "Game3/enemy/FinisherMissiles.h"
-#include "Game3/enemy/EnemyPlaneBoss.h" // Include EnemyPlaneBoss
+#include "Game3/enemy/EnemyPlaneBoss.h" 
 #include "LoadingBar/CustomLoadingBar.h"
 #include <Game2/Cursor/Cursor.h>
 #include "UIGame/Badge.h"
@@ -36,14 +36,19 @@ public:
     void showUltimateSkillBadge(Ref* sender);
     void hideUltimateSkillBadge(Ref* sender);
 
+    // Method to spawn or update the boss
+    void spawnOrUpdateBoss(float timeToUltimate);
+
 private:
     ~Game3Scene();
     // Physics world
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
+    void transitionToNextScene(Ref* sender);
 
     // Boss 
-    EnemyPlaneBoss* enemyBoss;
+    EnemyPlaneBoss* enemyBoss = nullptr;
+    void initBoss();
 
     // Cursor
     Cursor* _cursor;
@@ -53,6 +58,7 @@ private:
 
     // Health bar
     CustomLoadingBar* healthBar;
+    PlayerGame3* playerGame3;
 
     // Elapsed time
     float _elapsedTime;

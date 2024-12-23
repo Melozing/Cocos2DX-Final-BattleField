@@ -9,6 +9,8 @@ const std::string Constants::MainMenuTrackPath = "assets_game/sounds/UI/MainMenu
 const std::string Constants::ClickStartGameSFX = "assets_game/sounds/UI/ClickStartGameSFX.mp3";
 const std::string Constants::ButtonClickSFX = "assets_game/sounds/UI/ButtonClickSFX.mp3";
 const std::string Constants::OpenPanel = "assets_game/sounds/UI/OpenPanel.mp3";
+const std::string Constants::SoundRadioEndGame = "assets_game/sounds/UI/ban_tin_chien_thang.mp3";
+const std::string Constants::SoundTrackEndGame = "assets_game/sounds/UI/quoc_ca.mp3";
 
 //SCREEN
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
@@ -37,6 +39,8 @@ const float Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.15f;
 const float Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING = 0.07f;
 
 const std::string Constants::FONT_GAME = "fonts/Patriot-Black.otf";
+const std::string Constants::FONT_ROLE_CREDIT = "fonts/AmericanCaptainPatrius02Fre-PvPd.ttf";
+const std::string Constants::FONT_NAME_CREDIT = "fonts/LostType2023-Regular.otf";
 
 //ITEM
 const float Constants::ITEM_SCALE_FACTOR = 0.25f;
@@ -80,7 +84,7 @@ const float Constants::SHIELD_TIME_OF_EXISTENCE = 5.0f;
 
 //game1
 const std::string Constants::pathSoundTrackGame1 = "assets_game/sounds/Game1/bg_music_game1.mp3";
-const float Constants::soundtrackGame1Duration = 152.0f;
+const float Constants::soundtrackGame1Duration = 151.0f;
 
 //game2
 const int Constants::Player_Health2 = 100;
@@ -145,7 +149,9 @@ int Constants::DamageBoomForCity = 7;
 const std::string Constants::PlayerGame3Name = "PlayerGame3Name";
 const std::string Constants::UPDATE_BULLET_LABEL = "UPDATE_BULLET_LABEL";
 const std::string Constants::JSON_GAME3_PHASE_1_PATH = "json/spawn_enemies_game3.json";
-const std::string Constants::JSON_GAME3_BOSS_PHASE_1_PATH = "json/spawn_boss_game3.json.json";
+const std::string Constants::JSON_GAME3_PHASE_2_PATH = "json/spawn_enemies_phase2_game3.json";
+const std::string Constants::JSON_GAME3_BOSS_PHASE_1_PATH = "json/spawn_boss_game3.json";
+const std::string Constants::JSON_GAME3_BOSS_PHASE_2_PATH = "json/spawn_boss_phase2_game3.json";
 
 //game3 SFX
 const std::string Constants::BossHealthSFX = "assets_game/sounds/Game3/SFX/BossHealthSFX.mp3";
@@ -155,7 +161,9 @@ const std::string Constants::EnemyCrepExplodeSFX = "assets_game/sounds/Game3/SFX
 const std::string Constants::CityDamagedSFX = "assets_game/sounds/Game3/SFX/CityDamagedSFX.mp3";
 
 const std::string Constants::pathSoundTrackGame3 = "assets_game/sounds/Game3/Music/EnemyGame3Phase1.mp3";
+const std::string Constants::pathSoundTrackGame3Phase2 = "assets_game/sounds/Game3/Music/EnemyGame3Phase2.mp3";
 const std::string Constants::pathSoundBossGame3Phase1 = "assets_game/sounds/Game3/Music/BossGame3Phase1.mp3";
+const std::string Constants::pathSoundBossGame3Phase2 = "assets_game/sounds/Game3/Music/BossGame3Phase2.mp3";
 
 //VictoryPanel
 const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victory/victory.mp3";

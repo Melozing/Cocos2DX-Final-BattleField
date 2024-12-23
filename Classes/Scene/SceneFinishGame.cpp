@@ -1,5 +1,8 @@
 #include "SceneFinishGame.h"
+#include "MainMenuScene.h"
 #include "Constants/Constants.h"
+#include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
 #include "ui/CocosGUI.h"
 #include "json/rapidjson.h"
 #include "json/document.h"
@@ -19,7 +22,6 @@ bool SceneFinishGame::init() {
 
     // Load credits from JSON file
     loadCredits("json/credits_endGame.json");
-
     return true;
 }
 
@@ -49,21 +51,43 @@ void SceneFinishGame::createScrollingCredits(const rapidjson::Document& document
     if (!document.IsObject()) return;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    float startY = visibleSize.height;
+    float startY = -visibleSize.height / 10; // Start from below the screen
+    float timeRun = 40.0f;
 
     for (auto& member : document.GetObject()) {
         std::string role = member.name.GetString();
         std::string name = member.value.GetString();
 
-        std::string creditText = role + ": " + name;
-        auto label = Label::createWithTTF(creditText, Constants::FONT_GAME, 24);
-        label->setPosition(Vec2(visibleSize.width / 2, startY));
-        this->addChild(label);
+        // Create label for role
+        auto roleLabel = Label::createWithTTF(role, Constants::FONT_ROLE_CREDIT, 19);
+        roleLabel->setTextColor(Color4B::WHITE);
+        roleLabel->setPosition(Vec2(visibleSize.width / 2, startY));
+        this->addChild(roleLabel);
 
-        // Create a move action to scroll the credits
-        auto moveAction = MoveBy::create(10.0f, Vec2(0, -visibleSize.height - label->getContentSize().height));
-        label->runAction(moveAction);
+        // Create label for name
+        auto nameLabel = Label::createWithTTF(name, Constants::FONT_NAME_CREDIT, 26);
+        nameLabel->setTextColor(Color4B::YELLOW);
+        nameLabel->setPosition(Vec2(visibleSize.width / 2, startY - roleLabel->getContentSize().height - SpriteController::calculateScreenRatio(0.007f)));
+        this->addChild(nameLabel);
 
-        startY += label->getContentSize().height + 20; // Adjust spacing between credits
+        // Create a move action to scroll the credits from bottom to top
+        auto moveActionRole = MoveBy::create(timeRun, Vec2(0, visibleSize.height * 4 + roleLabel->getContentSize().height));
+        roleLabel->runAction(moveActionRole);
+
+        auto moveActionName = MoveBy::create(timeRun, Vec2(0, visibleSize.height * 4 + nameLabel->getContentSize().height - 13));
+        nameLabel->runAction(moveActionName);
+
+        startY -= (roleLabel->getContentSize().height + nameLabel->getContentSize().height + SpriteController::calculateScreenRatio(0.04f)); // Adjust spacing between credits
     }
+
+    auto delay = DelayTime::create(timeRun + 1.5);
+    auto callback = CallFunc::create([]() {
+        auto mainMenuScene = MainMenu::createScene();
+        Director::getInstance()->replaceScene(TransitionFade::create(1.0, mainMenuScene));
+        });
+    auto sequence = Sequence::create(delay, callback, nullptr);
+
+    SoundController::getInstance()->playMusic(Constants::SoundRadioEndGame, false);
+
+    this->runAction(sequence);
 }

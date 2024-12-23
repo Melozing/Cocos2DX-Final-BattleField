@@ -18,7 +18,6 @@ bool MainMenu::init() {
     }
 
     // Set Sound
-    Constants::currentSoundTrackPath = Constants::MainMenuTrackPath;
     SoundController::getInstance()->playMusic(Constants::MainMenuTrackPath, true);
 
     // Set background
