@@ -96,6 +96,7 @@ void GameController::pauseGame(const std::function<void()>& exitAction, const st
         auto director = Director::getInstance();
         auto runningScene = director->getRunningScene();
         SoundController::getInstance()->pauseMusic(soundtrackPath);
+        SoundController::getInstance()->pauseAllSoundEffects();
         currentSoundtrackPath = soundtrackPath;
         toggleCursorVisibility(true);
         if (runningScene) {

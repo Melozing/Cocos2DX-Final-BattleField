@@ -115,13 +115,8 @@ void Landmine::spawn(const Vec2& startPosition) {
     // Move down action
     auto moveDown = MoveTo::create(duration, endPosition);
 
-    // Callback to remove landmine when it moves off-screen
-    auto removeLandmine = CallFunc::create([this]() {
-        this->returnToPool();
-        });
-
     // Run move action and remove when done
-    this->runAction(Sequence::create(moveDown, removeLandmine, nullptr));
+    this->runAction(Sequence::create(moveDown, nullptr));
 }
 
 
@@ -150,8 +145,6 @@ void Landmine::triggerPreExplosion() {
     auto preExplosionAnimation = Animate::create(createAnimation("pre_explosion", 9, _animationDelay));
     auto explosionCallback = CallFunc::create([this]() {
         // Hide pre-explosion sprite
-        _currentSprite->setVisible(false);
-        _preExplosionSprite->setVisible(false);
         this->triggerExplosion();
         });
 
@@ -173,6 +166,7 @@ void Landmine::triggerExplosion() {
     // Change to explosion animation
     if (!_explosionSprite) {
         _explosionSprite = Sprite::createWithSpriteFrameName("ExplosionLandmine1.png");
+        _explosionSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
         _explosionSprite->setScale(SpriteController::updateSpriteScale(_explosionSprite, 0.15f));
         _explosionSprite->setPosition(position);
         _spriteBatchNodeExplosion->addChild(_explosionSprite);
@@ -190,16 +184,15 @@ void Landmine::triggerExplosion() {
     explosionSpriteDump->setScale(SpriteController::updateSpriteScale(explosionSpriteDump, 0.15f));
 
     auto physicsCache = PhysicsShapeCache::getInstance();
-    physicsCache->addShapesWithFile("physicsBody/ExplosionLandmine.plist");
+    physicsCache->addShapesWithFile("physicsBody/RandomBoomExplosionGame1.plist");
 
     auto originalSize = explosionSpriteDump->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
-    auto explosionBody = physicsCache->createBody("ExplosionLandmine", originalSize, scaledSize);
-    physicsCache->resizeBody(explosionBody, "ExplosionLandmine", originalSize, 7.35f);
-
+    explosionBody = physicsCache->createBody("RandomBoomExplosionGame1", originalSize, scaledSize);
+    physicsCache->resizeBody(explosionBody, "RandomBoomExplosionGame1", originalSize, 1.5f);
     if (explosionBody) {
-        explosionBody->setCollisionBitmask(0x02); // Unique bitmask for landmines
+        explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
         explosionBody->setContactTestBitmask(true);
         explosionBody->setDynamic(false);
         explosionBody->setGravityEnable(false);
@@ -210,7 +203,7 @@ void Landmine::triggerExplosion() {
     _explosionSprite->runAction(Sequence::create(
         animate,
         CallFunc::create([this]() {
-            _explosionSprite->setVisible(false); // Hide instead of removing
+            _explosionSprite->setVisible(false);
             if (_explosionSprite->getPhysicsBody()) {
                 _explosionSprite->removeComponent(_explosionSprite->getPhysicsBody()); // Remove PhysicsBody
             }
@@ -223,11 +216,4 @@ void Landmine::triggerExplosion() {
             }),
         nullptr
     ));
-}
-
-void Landmine::returnToPool() {
-    this->reset();
-    this->setVisible(false);
-    this->removeFromParentAndCleanup(false);
-    LandminePool::getInstance()->returnObject(this);
 }

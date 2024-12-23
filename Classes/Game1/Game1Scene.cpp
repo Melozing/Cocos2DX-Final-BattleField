@@ -24,7 +24,7 @@ using namespace cocos2d::experimental;
 
 cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
     layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
@@ -142,6 +142,9 @@ void Game1Scene::initPlayer(const Size& visibleSize) {
     this->addChild(_healthPlayerGame1, Constants::ORDER_LAYER_LAYOUT_UI);
 
     _player->createPhysicsBody();
+    this->scheduleOnce([this](float) {
+        _player->moveToCenterAndExit();
+        }, Constants::soundtrackGame1Duration - 6.0f, "handlePlayerWinKey");
     addChild(_player, Constants::ORDER_LAYER_CHARACTER);
 }
 
@@ -291,6 +294,7 @@ bool Game1Scene::onContactBegin(PhysicsContact& contact) {
 
 void Game1Scene::handlePlayerDamage() {
     if (_shield) {
+        unschedule("deactivate_shield_key");
         CCLOG("Shield is active, deactivating shield.");
         deactivateShield();
     }
@@ -343,6 +347,7 @@ void Game1Scene::activateShield() {
 
 void Game1Scene::deactivateShield() {
     if (_shield) {
+        unschedule("deactivate_shield_key");
         _shield->deactivate();
         _shield->removeFromParent();
         _shield = nullptr;

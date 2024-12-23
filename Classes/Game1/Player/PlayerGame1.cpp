@@ -202,3 +202,15 @@ void PlayerGame1::createPhysicsBody() {
         this->setPhysicsBody(physicsBody);
     }
 }
+
+void PlayerGame1::moveToCenterAndExit() {
+    this->disableMovement();
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto moveToCenter = MoveTo::create(1.0f, Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    auto moveUpAndOut = MoveBy::create(2.0f, Vec2(0, visibleSize.height));
+    auto sequence = Sequence::create(moveToCenter, moveUpAndOut, nullptr);
+    this->runAction(sequence);
+}

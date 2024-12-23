@@ -7,6 +7,8 @@ public:
     // UI SOUND
     static std::string currentSoundTrackPath;
     const static std::string MainMenuTrackPath;
+    static const std::string SoundRadioEndGame;
+    static const std::string SoundTrackEndGame;
     const static std::string ClickStartGameSFX;
     const static std::string ButtonClickSFX;
     const static std::string OpenPanel;
@@ -113,6 +115,10 @@ public:
 	static int DamageBoomForCity;
 	static const std::string PlayerGame3Name;
 	static const std::string UPDATE_BULLET_LABEL;
+	static const std::string JSON_GAME3_PHASE_1_PATH;
+	static const std::string JSON_GAME3_PHASE_2_PATH;
+	static const std::string JSON_GAME3_BOSS_PHASE_1_PATH;
+	static const std::string JSON_GAME3_BOSS_PHASE_2_PATH;
     //game3 SFX
     static const std::string BossHealthSFX;
     static const std::string PlayerGame3ShootSFX;
@@ -121,7 +127,9 @@ public:
     static const std::string CityDamagedSFX;
 
     static const std::string pathSoundTrackGame3;
+    static const std::string pathSoundTrackGame3Phase2;
     static const std::string pathSoundBossGame3Phase1;
+    static const std::string pathSoundBossGame3Phase2;
 
 	//VictoryPanel
 	static const std::string VICTORY_SOUNDTRACK_PATH;
@@ -145,6 +153,8 @@ public:
     static const float PADDING_HORIZONTAL_UI_SLIDER;
     static const float PADDING_HORIZONTAL_UI_SLIDER_SPACING;
     static const std::string FONT_GAME;
+    static const std::string FONT_ROLE_CREDIT;
+    static const std::string FONT_NAME_CREDIT;
 
     //UserDefault UI
     static const std::string UD_musicVolume;

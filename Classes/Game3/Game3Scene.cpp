@@ -11,6 +11,7 @@
 #include "Controller/GameController.h"
 
 #include "Manager/BackgroundManager.h"
+#include "Scene/SceneFinishGame.h"
 #include "ui/CocosGUI.h"
 
 #include "json/document.h"
@@ -21,8 +22,7 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
-
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game3Scene::create();
     scene->addChild(layer);
 
@@ -43,8 +43,9 @@ bool Game3Scene::init() {
     setupPlayer();
     initPools();
     setupCursor();
-    initSpawning();
-    initBossSpawning();
+    initBoss();
+    initSpawning(Constants::JSON_GAME3_PHASE_1_PATH);
+    initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_1_PATH);
     setupContactListener();
     initHealthBar();
     initBossHealthBar();
@@ -79,14 +80,14 @@ void Game3Scene::setupBackground() {
 }
 
 void Game3Scene::setupPlayer() {
-    auto player = PlayerGame3::createPlayerGame3();
-    if (!player) {
+    playerGame3 = PlayerGame3::createPlayerGame3();
+    if (!playerGame3) {
         CCLOG("Failed to create PlayerGame3");
         return;
     }
-    player->setName(Constants::PlayerGame3Name);
-    this->addChild(player);
-    setupEventListeners(player);
+    playerGame3->setName(Constants::PlayerGame3Name);
+    this->addChild(playerGame3);
+    setupEventListeners(playerGame3);
 }
 
 void Game3Scene::initBulletBadge() {
@@ -170,11 +171,6 @@ void Game3Scene::updateBulletLabel(Ref* sender) {
     bulletBadge->updateLabel(bulletText);
 }
 
-void Game3Scene::updateBulletLabel() {
-    std::string bulletText = "Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3);
-    bulletBadge->updateLabel(bulletText);
-}
-
 void Game3Scene::blinkRedBadge(Ref* sender) {
     bulletBadge->blinkRed();
 }
@@ -182,13 +178,14 @@ void Game3Scene::blinkRedBadge(Ref* sender) {
 Game3Scene::~Game3Scene() {
     // Remove observer when the scene is destroyed
     __NotificationCenter::getInstance()->removeObserver(this, "HANDLE_ULTIMATE_SKILL_BADGE");
-    __NotificationCenter::getInstance()->removeObserver(this, "SHOW_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "HIDE_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "BulletCountChanged");
+    __NotificationCenter::getInstance()->removeObserver(this, "SHOW_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "SHOW_BOSS_HEALTH_BAR");
     __NotificationCenter::getInstance()->removeObserver(this, "HIDE_BOSS_HEALTH_BAR");
     __NotificationCenter::getInstance()->removeObserver(this, "UPDATE_BOSS_HEALTH_BAR");
     __NotificationCenter::getInstance()->removeObserver(this, "BlinkRedBadge");
+    __NotificationCenter::getInstance()->removeObserver(this, "FINISH_AND_CHANGE_SCENE");
 }
 
 void Game3Scene::initHealthBar() {
@@ -273,17 +270,12 @@ void Game3Scene::initSound() {
         return;
     }
     
-    SoundController::getInstance()->preloadMusic(Constants::pathSoundTrackGame3);
-    SoundController::getInstance()->preloadMusic(Constants::pathSoundBossGame3Phase1);
-    
-    SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
-    Constants::currentSoundTrackPath = Constants::pathSoundTrackGame3;
-    SoundController::getInstance()->playMusic(Constants::currentSoundTrackPath, false);
+    SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame3, false);
 }
 
-void Game3Scene::initSpawning() {
+void Game3Scene::initSpawning(const std::string& jsonFilePath) {
     // Read JSON file
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game3.json");
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
     FILE* fp = fopen(filePath.c_str(), "rb");
     if (!fp) {
         CCLOG("Failed to open JSON file");
@@ -325,8 +317,8 @@ void Game3Scene::initSpawning() {
     }
 }
 
-void Game3Scene::initBossSpawning() {
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_boss_game3.json.json");
+void Game3Scene::initBossSpawning(const std::string& jsonFilePath) {
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
     FILE* fp = fopen(filePath.c_str(), "rb");
     if (!fp) {
         CCLOG("Failed to open JSON file");
@@ -355,21 +347,32 @@ void Game3Scene::initBossSpawning() {
         float spawnTime = event["spawnTime"].GetFloat();
         float timeToUltimate = event["timeToUltimate"].GetFloat();
 
-        // Lên lịch sinh ra boss
         this->scheduleOnce([=](float) {
             if (enemyType == "EnemyPlaneBoss") {
-                enemyBoos = EnemyPlaneBossPool::getInstance()->getObject();
-                if (enemyBoos) {
-                    enemyBoos->updatePhase();
-                    enemyBoos->spawnEnemy(timeToUltimate);
-                    initBossHealthBar();
-                    this->addChild(enemyBoos, Constants::ORDER_LAYER_CHARACTER);
-                }
+                this->spawnOrUpdateBoss(timeToUltimate);
             }
             }, spawnTime, "spawn_boss_key_" + std::to_string(spawnTime));
     }
 }
 
+void Game3Scene::spawnOrUpdateBoss(float timeToUltimate) {
+    CCLOG("CALLED spawnOrUpdateBoss");
+        enemyBoss->updatePhase();
+        enemyBoss->spawnEnemy(timeToUltimate);
+}
+
+void Game3Scene::initBoss() {
+    enemyBoss = EnemyPlaneBoss::create();
+    this->addChild(enemyBoss);
+    enemyBoss->setVisible(false);
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::transitionToNextScene),
+        "FINISH_AND_CHANGE_SCENE",
+        nullptr
+    );
+
+}
 
 void Game3Scene::setupCursor() {
     _cursor = Cursor::create("assets_game/player/bullseye_white.png");
@@ -446,6 +449,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             IncreaseBullet->stopMovement();
             IncreaseBullet->applyPickupEffect();
             Constants::QuantityBulletPlayerGame3 += 50;
+            updateBulletLabel(nullptr);
         }
         else if (player && itemUpgradeBullet) {
             itemUpgradeBullet->stopMovement();
@@ -506,9 +510,10 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
                 player->increaseBulletCount();
             }
             else if (player && IncreaseBullet) {
+                IncreaseBullet->stopMovement();
                 IncreaseBullet->applyPickupEffect();
                 Constants::QuantityBulletPlayerGame3 += 50;
-                updateBulletLabel();
+                updateBulletLabel(nullptr);
             }
             else if (player && HealthRecovery) {
                 HealthRecovery->applyPickupEffect();
@@ -544,7 +549,7 @@ void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlan
         enemyBoom->dropRandomItem();
         bullet->returnPool();
     }
-    else if (enemyBoos = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
+    else if (enemyBoss = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
         this->handleBossDamage(Constants::BulletDamageGame3);
         bullet->hideModelCharac();
         bullet->explode();
@@ -597,15 +602,35 @@ void Game3Scene::updateHealthBar(float health) {
 }
 
 void Game3Scene::handleBossDamage(float damage) {
-    if (enemyBoos) {
-        enemyBoos->takeDamage(damage);
+    if (enemyBoss) {
+        enemyBoss->takeDamage(damage);
+        if (enemyBoss->getHealth() < 1) {
+            this->unschedule("UltimateSkillCountdown");
+
+            if (enemyBoss->getCurrentPhase() == Phase::PHASE_1) {
+                // Transition to Phase 2
+                SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame3Phase2, false);
+                initSpawning(Constants::JSON_GAME3_PHASE_2_PATH);
+                initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_2_PATH);
+            }
+            else
+            {
+                playerGame3->setMovementAndShootingDisabled(true);
+            }
+        }
+        
         this->updateBossHealthBar(nullptr);
     }
 }
 
+void Game3Scene::transitionToNextScene(Ref* sender) {
+    auto nextScene = SceneFinishGame::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(1.0f, nextScene));
+}
+
 void Game3Scene::updateBossHealthBar(Ref* sender) {
     if (bossHealthBar) {
-        this->bossHealthBar->setPercent((enemyBoos->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
+        this->bossHealthBar->setPercent((enemyBoss->getHealth() / Constants::HealthEnemyPlaneBoss) * 100);
     }
 }
 
@@ -658,7 +683,7 @@ void Game3Scene::handleFinisherMissilesCityCollision(FinisherMissiles*  Finisher
                     []() -> Scene* {
                         return Game3Scene::createScene();
                     },
-                    Constants::pathSoundBossGame3Phase1 // Add the soundtrack path here
+                    Constants::currentSoundTrackPath // Add the soundtrack path here
                 );
                 }),
             nullptr

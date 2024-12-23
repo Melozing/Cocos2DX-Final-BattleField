@@ -10,6 +10,14 @@
     },
     {
       "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 0.50003,
+      "skillTime": 2.0,
+      "spawnSkill": false,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
       "spawnTime": 0.50004,
       "skillTime": 2.0,
       "spawnSkill": false,
