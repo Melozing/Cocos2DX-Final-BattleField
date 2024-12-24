@@ -14,11 +14,23 @@ struct ItemData {
     std::string description;
 };
 
+class ItemWidget : public cocos2d::ui::Widget {
+public:
+    static ItemWidget* create(const ItemData& itemData);
+    bool init(const ItemData& itemData);
+    void updateItem(const ItemData& itemData);
+
+private:
+    cocos2d::Sprite* itemBg;
+    cocos2d::ui::Button* itemButton;
+    cocos2d::Label* itemNameLabel;
+};
+
 class LibraryWindow : public cocos2d::Layer {
 public:
     virtual bool init();
     CREATE_FUNC(LibraryWindow);
-
+    void updateItemInfo(const ItemData& item);
 private:
     cocos2d::Sprite* mainBg;
     cocos2d::ui::ScrollView* scrollView;
@@ -30,7 +42,6 @@ private:
     void createInfoSection();
     void createExitButton();
     void loadItemsFromJson();
-    void updateItemInfo(const ItemData& item);
 };
 
 #endif // __LIBRARY_WINDOW_H__

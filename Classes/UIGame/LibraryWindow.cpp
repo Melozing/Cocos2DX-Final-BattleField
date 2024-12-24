@@ -125,26 +125,54 @@ void LibraryWindow::loadItemsFromJson() {
         int col = i % columns;
 
         float posX = paddingX + col * (itemWidth + paddingX) + itemWidth / 2;
-        float posY = totalHeight - paddingY - row * (itemHeight + paddingY) - itemHeight / 2;
-        auto itemButton = Button::create(items[i].imagePath, items[i].imagePath);
-        if (!itemButton) {
-            CCLOG("Failed to create button with image: %s", items[i].imagePath.c_str());
-            continue;
-        }
-        itemButton->setScale9Enabled(true);
-        itemButton->setContentSize(Size(itemWidth, itemHeight));
-        itemButton->setPosition(Vec2(posX, posY));
-        itemButton->setTag(items[i].id);
-        itemButton->addClickEventListener([=](Ref* sender) {
-            int itemId = static_cast<Button*>(sender)->getTag();
-            for (const auto& item : items) {
-                if (item.id == itemId) {
-                    this->updateItemInfo(item);
-                    break;
-                }
-            }
-            });
-
-        scrollView->addChild(itemButton);
+        float posY = totalHeight - (paddingY + row * (itemHeight + paddingY) + itemHeight / 2); // Điều chỉnh vị trí Y
+        auto itemWidget = ItemWidget::create(items[i]);
+        itemWidget->setPosition(Vec2(posX, posY));
+        scrollView->addChild(itemWidget);
     }
+}
+
+// Implementation of ItemWidget
+ItemWidget* ItemWidget::create(const ItemData& itemData) {
+    ItemWidget* widget = new (std::nothrow) ItemWidget();
+    if (widget && widget->init(itemData)) {
+        widget->autorelease();
+        return widget;
+    }
+    delete widget;
+    return nullptr;
+}
+
+bool ItemWidget::init(const ItemData& itemData) {
+    if (!Widget::init()) {
+        return false;
+    }
+
+    itemBg = Sprite::create("assets_game/UXUI/Collection/item_frame.png");
+    itemBg->setContentSize(Size(100, 100));
+    this->addChild(itemBg);
+
+    itemButton = Button::create(itemData.imagePath, itemData.imagePath);
+    itemButton->setScale9Enabled(true);
+    itemButton->setContentSize(Size(80, 80));
+    itemButton->setPosition(Vec2(itemBg->getContentSize().width / 2, itemBg->getContentSize().height / 2));
+    itemButton->addClickEventListener([=](Ref* sender) {
+        // Handle item click
+        LibraryWindow* libraryWindow = dynamic_cast<LibraryWindow*>(this->getParent()->getParent()->getParent());
+        if (libraryWindow) {
+            libraryWindow->updateItemInfo(itemData);
+        }
+        });
+    itemBg->addChild(itemButton);
+
+    itemNameLabel = Label::createWithSystemFont(itemData.name, "Arial", 14);
+    itemNameLabel->setPosition(Vec2(itemBg->getContentSize().width / 2, -10));
+    itemBg->addChild(itemNameLabel);
+
+    return true;
+}
+
+void ItemWidget::updateItem(const ItemData& itemData) {
+    itemButton->loadTextures(itemData.imagePath, itemData.imagePath);
+    itemNameLabel->setString(itemData.name);
 }
