@@ -70,3 +70,8 @@ void PlayerMovement::updateDirection()
 void PlayerMovement::setEnabled(bool enabled) {
     _enabled = enabled;
 }
+
+Vec2 PlayerMovement::getVelocity() const
+{
+    return _direction * _speed;
+}

@@ -44,7 +44,8 @@ bool Game3Scene::init() {
     initPools();
     setupCursor();
     initBoss();
-    initSpawning(Constants::JSON_GAME3_PHASE_1_PATH);
+    initBulletSpawning(Constants::JSON_GAME3_ENEMYBULLET_PHASE_1_PATH);
+    initBoomSpawning(Constants::JSON_GAME3_ENEMYBOOM_PHASE_1_PATH);
     initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_1_PATH);
     setupContactListener();
     initHealthBar();
@@ -273,7 +274,7 @@ void Game3Scene::initSound() {
     SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame3, false);
 }
 
-void Game3Scene::initSpawning(const std::string& jsonFilePath) {
+void Game3Scene::initBulletSpawning(const std::string& jsonFilePath) {
     // Read JSON file
     std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
     FILE* fp = fopen(filePath.c_str(), "rb");
@@ -299,21 +300,49 @@ void Game3Scene::initSpawning(const std::string& jsonFilePath) {
 
         this->scheduleOnce([=, &event](float) {
             if (enemyType == "EnemyPlaneBullet") {
-                EnemyPlaneBullet::spawnEnemy(this, skillTime, spawnSkill, direction, position);
                 auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
                 if (enemy) {
                     this->addChild(enemy);
                     enemy->spawnEnemy(this, skillTime, spawnSkill, direction, position);
                 }
             }
-            else if (enemyType == "EnemyPlaneBoom") {
+            }, spawnTime, "spawn_enemy_bullet_key_" + std::to_string(spawnTime));
+    }
+}
+
+void Game3Scene::initBoomSpawning(const std::string& jsonFilePath) {
+    // Read JSON file
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
+    FILE* fp = fopen(filePath.c_str(), "rb");
+    if (!fp) {
+        CCLOG("Failed to open JSON file");
+        return;
+    }
+
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document document;
+    document.ParseStream(is);
+    fclose(fp);
+
+    const auto& spawnEvents = document["spawnEvents"];
+    for (const auto& event : spawnEvents.GetArray()) {
+        std::string enemyType = event["enemyType"].GetString();
+        float spawnTime = event["spawnTime"].GetFloat();
+        float skillTime = event["skillTime"].GetFloat();
+        bool spawnSkill = event["spawnSkill"].GetBool();
+        std::string direction = event["direction"].GetString();
+        std::string position = event["position"].GetString();
+
+        this->scheduleOnce([=, &event](float) {
+            if (enemyType == "EnemyPlaneBoom") {
                 auto enemy = EnemyPlaneBoomPool::getInstance()->getObject();
                 if (enemy) {
                     this->addChild(enemy);
                     enemy->spawnEnemy(this, skillTime, spawnSkill, direction, position);
                 }
             }
-            }, spawnTime, "spawn_enemy_key_" + std::to_string(spawnTime));
+            }, spawnTime, "spawn_enemy_boom_key_" + std::to_string(spawnTime));
     }
 }
 
@@ -512,7 +541,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             else if (player && IncreaseBullet) {
                 IncreaseBullet->stopMovement();
                 IncreaseBullet->applyPickupEffect();
-                Constants::QuantityBulletPlayerGame3 += 50;
+                Constants::QuantityBulletPlayerGame3 += 100;
                 updateBulletLabel(nullptr);
             }
             else if (player && HealthRecovery) {
@@ -610,7 +639,8 @@ void Game3Scene::handleBossDamage(float damage) {
             if (enemyBoss->getCurrentPhase() == Phase::PHASE_1) {
                 // Transition to Phase 2
                 SoundController::getInstance()->playMusic(Constants::pathSoundTrackGame3Phase2, false);
-                initSpawning(Constants::JSON_GAME3_PHASE_2_PATH);
+                initBulletSpawning(Constants::JSON_GAME3_ENEMYBULLET_PHASE_2_PATH);
+                initBoomSpawning(Constants::JSON_GAME3_ENEMYBOOM_PHASE_2_PATH);
                 initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_2_PATH);
             }
             else

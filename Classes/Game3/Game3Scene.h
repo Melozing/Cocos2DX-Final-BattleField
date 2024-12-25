@@ -66,7 +66,8 @@ private:
     // Setup methods
     void setupBackground();
     void setupPlayer();
-    void initSpawning(const std::string& jsonFilePath);
+    void initBulletSpawning(const std::string& jsonFilePath);
+    void initBoomSpawning(const std::string& jsonFilePath);
     void initBossSpawning(const std::string& jsonFilePath);
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);

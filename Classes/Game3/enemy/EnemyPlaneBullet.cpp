@@ -159,6 +159,7 @@ void EnemyPlaneBullet::createPhysicsBody() {
 }
 
 void EnemyPlaneBullet::returnToPool() {
+    warningSign->setVisible(false);
     this->stopAllActions();
     this->unschedule("show_warning_sign_key");
     this->unschedule("spawn_bullets_key");
