@@ -2,23 +2,7 @@
   "spawnEvents": [
     {
       "enemyType": "EnemyPlaneBullet",
-      "spawnTime": 0.50003,
-      "skillTime": 2.0,
-      "spawnSkill": false,
-      "direction": "Right",
-      "position": "low"
-    },
-    {
-      "enemyType": "EnemyPlaneBullet",
-      "spawnTime": 0.50003,
-      "skillTime": 2.0,
-      "spawnSkill": false,
-      "direction": "Right",
-      "position": "low"
-    },
-    {
-      "enemyType": "EnemyPlaneBullet",
-      "spawnTime": 0.50004,
+      "spawnTime": 1.000,
       "skillTime": 2.0,
       "spawnSkill": false,
       "direction": "Right",
@@ -26,35 +10,1164 @@
     },
     {
       "enemyType": "EnemyPlaneBullet",
-      "spawnTime": 0.50005,
+      "spawnTime": 1.3,
+      "skillTime": 2.0,
+      "spawnSkill": false,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 1.4,
       "skillTime": 2.0,
       "spawnSkill": false,
       "direction": "Right",
       "position": "hight"
     },
+
     {
       "enemyType": "EnemyPlaneBoom",
       "spawnTime": 1.00001,
-      "skillTime": 2.0,
+      "skillTime": 3.0,
       "spawnSkill": true,
-      "direction": "Left",
+      "direction": "Right",
       "position": "low"
     },
     {
       "enemyType": "EnemyPlaneBoom",
       "spawnTime": 1.00002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 3.0,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 5.0,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 6.0,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 7.0,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 8.0,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 9.4,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 9.4001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 9.00002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 10.0,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 11.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 12.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 13.0,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 13.5,
       "skillTime": 2.0,
       "spawnSkill": true,
       "direction": "Left",
       "position": "mid"
     },
     {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 14.0,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 14.5,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 15.0,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 15.5,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
       "enemyType": "EnemyPlaneBoom",
-      "spawnTime": 1.0003,
+      "spawnTime": 16.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 17.2,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 17.5,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 17.7,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 17.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 17.9,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 18.1,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 18.3,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 18.3,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 18.7,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 19.1,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 19.5,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 19.9,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 20.4,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 21.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 21.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 22.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 22.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 23.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 23.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 23.0,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 24.0,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 24.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 24.0,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 25.0,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 25.01,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 28.01,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 28.001,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 31.01,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 31.001,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 34.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 34.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 34.0002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 34.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 34.001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 34.0001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 35.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 35.302,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 35.3002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 35.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 35.301,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 35.3001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 37.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 37.302,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 37.3002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 37.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 37.301,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 37.3001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 38.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 38.301,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 39.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 39.302,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 40.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 40.3001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 42.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 42.3002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 43.301,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 43.3001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 43.30001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 43.302,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 43.3002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 43.30002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 44.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 44.001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 44.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 44.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 45.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 45.001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 45.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 45.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 46.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 46.001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 46.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 46.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 47.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 47.001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 47.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 47.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 48.01,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 48.001,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 48.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 48.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 52.0,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 53.01,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 54.0,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 55.01,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 56.0,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 57.01,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 58.501,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 58.01,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 58.501,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 57.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 59.501,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 59.01,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 59.501,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 60.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 62.02,
       "skillTime": 2.0,
       "spawnSkill": true,
       "direction": "Left",
       "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 62.502,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 64.01,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 64.501,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 66.01,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 66.001,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 66.0001,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 67.02,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 67.002,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 67.0002,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 68.01,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 68.001,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 68.0001,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 68.00001,
+      "skillTime": 4.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 69.02,
+      "skillTime": 2.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 69.002,
+      "skillTime": 2.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
+    },
+    {
+      "enemyType": "EnemyPlaneBullet",
+      "spawnTime": 69.0002,
+      "skillTime": 1.5,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 69.00002,
+      "skillTime": 4.0,
+      "spawnSkill": true,
+      "direction": "Right",
+      "position": "hight"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 70.02,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "hight"
+    },
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 70.002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "low"
+    },
+
+    {
+      "enemyType": "EnemyPlaneBoom",
+      "spawnTime": 70.0002,
+      "skillTime": 3.0,
+      "spawnSkill": true,
+      "direction": "Left",
+      "position": "mid"
     }
   ]
 }
