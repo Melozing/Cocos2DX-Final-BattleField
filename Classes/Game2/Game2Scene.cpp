@@ -3,7 +3,6 @@
 #include "Constants/Constants.h"
 #include "Manager/BackgroundManager.h"
 #include "Game2/Player/Petard.h"
-
 #include "Game2/Enemy/Enemyh/MeleeEnemy.h"
 #include "Game2/Enemy/Enemyh/SniperEnemy.h"
 #include "Game2/Enemy/Enemyh/SuicideBomberEnemy.h"
@@ -35,6 +34,8 @@ bool Game2Scene::init() {
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
     BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/bg_game_2.png", Constants::ORDER_LAYER_BACKGROUND);
 
+    this->preloadAssets();
+
     // Petard
     auto petard = Petard::create();
     if (petard)
@@ -62,7 +63,7 @@ bool Game2Scene::init() {
     setupKeyboardEventListeners();
     setupCursor();
     this->schedule([this](float delta) {
-        spawnEnemies();
+        //spawnEnemies();
         }, 5.0f, "spawn_enemy_key");
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
@@ -74,7 +75,8 @@ bool Game2Scene::init() {
 
 void Game2Scene::preloadAssets() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/effects/explosion.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/walkriffle.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGame2Hands.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGame2Body.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/sniper-enemy.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
@@ -168,15 +170,6 @@ void Game2Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& p
     else if (enemyType == "RifleEnemy") {
         enemy = RifleEnemy::create();
     }
-    /*else if (enemyType == "InvEnemy") {
-        enemy = InvEnemy::create();
-    }
-    else if (enemyType == "SuicideBomberEnemy") {
-        enemy = SuicideBomberEnemy::create();
-    }
-    else if (enemyType == "BossEnemy") {
-        enemy = BossEnemy::create();
-    }*/
     if (enemy) {
         enemy->setName("Enemy");
         enemy->setPosition(position);

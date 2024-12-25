@@ -62,7 +62,7 @@ public:
     static const int Player_Health2;
     static const float TIME_TO_WIN;
     static const float BulletSpeed;
-    static const float PlayerSpeed;
+    static const float PlayerGame2Speed;
     static const float PlayerScale;
     static const int InitialEnemyPosX;
     static const int InitialEnemyPosY;
@@ -115,8 +115,10 @@ public:
 	static int DamageBoomForCity;
 	static const std::string PlayerGame3Name;
 	static const std::string UPDATE_BULLET_LABEL;
-	static const std::string JSON_GAME3_PHASE_1_PATH;
-	static const std::string JSON_GAME3_PHASE_2_PATH;
+	static const std::string JSON_GAME3_ENEMYBULLET_PHASE_1_PATH;
+	static const std::string JSON_GAME3_ENEMYBOOM_PHASE_1_PATH;
+	static const std::string JSON_GAME3_ENEMYBULLET_PHASE_2_PATH;
+	static const std::string JSON_GAME3_ENEMYBOOM_PHASE_2_PATH;
 	static const std::string JSON_GAME3_BOSS_PHASE_1_PATH;
 	static const std::string JSON_GAME3_BOSS_PHASE_2_PATH;
     //game3 SFX

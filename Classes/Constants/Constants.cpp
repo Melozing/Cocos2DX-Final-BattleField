@@ -89,7 +89,7 @@ const float Constants::soundtrackGame1Duration = 151.0f;
 //game2
 const int Constants::Player_Health2 = 100;
 const float Constants::BulletSpeed = 1500.f;
-const float Constants::PlayerSpeed = 200.0f;
+const float Constants::PlayerGame2Speed = 100.0f;
 const float Constants::PlayerScale = 0.7f;
 const int Constants::InitialEnemyPosX = 300;
 const int Constants::InitialEnemyPosY = 200;
@@ -148,11 +148,12 @@ int Constants::DamageBulletForCity = 5;
 int Constants::DamageBoomForCity = 7;
 const std::string Constants::PlayerGame3Name = "PlayerGame3Name";
 const std::string Constants::UPDATE_BULLET_LABEL = "UPDATE_BULLET_LABEL";
-const std::string Constants::JSON_GAME3_PHASE_1_PATH = "json/spawn_enemies_game3.json";
-const std::string Constants::JSON_GAME3_PHASE_2_PATH = "json/spawn_enemies_phase2_game3.json";
+const std::string Constants::JSON_GAME3_ENEMYBULLET_PHASE_1_PATH = "json/spawn_enemiesBullet_game3.json";
+const std::string Constants::JSON_GAME3_ENEMYBOOM_PHASE_1_PATH = "json/spawn_enemiesBoom_game3.json";
+const std::string Constants::JSON_GAME3_ENEMYBULLET_PHASE_2_PATH = "json/spawn_enemiesBullet_phase2_game3.json";
+const std::string Constants::JSON_GAME3_ENEMYBOOM_PHASE_2_PATH = "json/spawn_enemiesBoom_phase2_game3.json";
 const std::string Constants::JSON_GAME3_BOSS_PHASE_1_PATH = "json/spawn_boss_game3.json";
 const std::string Constants::JSON_GAME3_BOSS_PHASE_2_PATH = "json/spawn_boss_phase2_game3.json";
-
 //game3 SFX
 const std::string Constants::BossHealthSFX = "assets_game/sounds/Game3/SFX/BossHealthSFX.mp3";
 const std::string Constants::PlayerGame3ShootSFX = "assets_game/sounds/Game3/SFX/PlayerShootSFX.mp3";
