@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "Game2/Cursor/Cursor.h"
-
+#include "Library/ItemLibraryWindow.h"
 USING_NS_CC;
 
 class MainMenu : public Scene {
@@ -18,6 +18,11 @@ public:
 private:
     void startLoading(std::string nameScene); // Method to start loading the next scene
     Cursor* _cursor;
+    void toggleItemLibraryWindow();
+
+    cocos2d::ui::Button* collectionButton;
+    ItemLibraryWindow* itemLibraryWindow;
+    cocos2d::LayerColor* overlayLayer;
 };
 
 #endif // __MAIN_MENU_SCENE_H__

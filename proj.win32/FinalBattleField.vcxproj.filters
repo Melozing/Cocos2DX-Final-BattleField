@@ -193,8 +193,8 @@
     <Filter Include="src\Manager\Game2">
       <UniqueIdentifier>{00dadb7b-65a0-47ac-9662-3fa710aaf872}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\UXUI\Library">
-      <UniqueIdentifier>{5a142657-62bc-49f9-ab97-ab83bf40ae57}</UniqueIdentifier>
+    <Filter Include="src\Library">
+      <UniqueIdentifier>{731bb78d-889c-4bc2-bc8d-a3e00ae818aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -438,6 +438,16 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
+    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp">
+      <Filter>src\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Library\UILibrary.cpp">
+      <Filter>src\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp">
+      <Filter>src\Library</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -684,6 +694,16 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
+    <ClInclude Include="..\Classes\Library\ItemLibrary.h">
+      <Filter>src\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Library\UILibrary.h">
+      <Filter>src\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h">
+      <Filter>src\Library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
