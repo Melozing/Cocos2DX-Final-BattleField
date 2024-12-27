@@ -1,231 +1,175 @@
-// SniperEnemyGame2.cpp
-#include "Game2/Enemy/SniperEnemyGame2.h"
+#include "SniperEnemyGame2.h"
 #include "Constants/Constants.h"
-#include "utils/MathFunction.h"
-#include "Game2/Player/PlayerGame2.h"
-#include "Bullet/BulletPlayerGame3.h"
+#include "Manager/ObjectPoolGame2.h"
+#include "utils/PhysicsShapeCache.h"
+#include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
+#include "FX/Explodable.h"
 
 USING_NS_CC;
 
-SniperEnemyGame2::SniperEnemyGame2()
-    : _velocity(Vec2::ZERO),
-    _speed(Constants::EnemySpeed),
-    _isShooting(false),
-    _isDead(false),
-    _shootCooldown(5.0f) // 5 seconds cooldown
-{
-}
-
-SniperEnemyGame2::~SniperEnemyGame2()
-{
-}
-
-SniperEnemyGame2* SniperEnemyGame2::createSniperEnemyGame2()
+SniperEnemyGame2* SniperEnemyGame2::create()
 {
     SniperEnemyGame2* enemy = new (std::nothrow) SniperEnemyGame2();
-    if (enemy && enemy->init())
-    {
+    if (enemy && enemy->init()) {
         enemy->autorelease();
         return enemy;
     }
-    else
-    {
-        delete enemy;
-        return nullptr;
-    }
+    CC_SAFE_DELETE(enemy);
+    return nullptr;
 }
 
 bool SniperEnemyGame2::init()
 {
-    if (!Sprite::init())
-    {
+    if (!EnemyBase::init()) {
         return false;
     }
 
-    // Initialize the sprite with the idle frame
-    auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("idlegun0.png");
-    if (!spriteFrame)
-    {
-        CCLOG("Sprite frame 'IdleSniper0.png' not found in the cache");
-        return false;
-    }
+    initAnimation();
+    createPhysicsBody();
 
-    if (!Sprite::initWithSpriteFrame(spriteFrame))
-    {
-        CCLOG("Failed to initialize sprite with sprite frame");
-        return false;
-    }
-
-    this->setPosition(Vec2(Constants::InitialEnemyPosX, Constants::InitialEnemyPosY));
-    this->setScale(Constants::EnemyScale);
-    this->setAnchorPoint(Vec2(0.5, 0.5));
-
-    // Add PhysicsBody to the enemy
-    auto physicsBody = PhysicsBody::createBox(this->getContentSize());
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setGravityEnable(false); // Disable gravity
-    physicsBody->setDynamic(false);
-    this->setPhysicsBody(physicsBody);
-
-    this->setTag(Constants::EnemyTag); // Set the tag for the enemy
-
-    // Create animations
-    createIdleAnimation();
-    createShootAnimation();
-    createDeathAnimation();
-
-    // Schedule update method
-    this->scheduleUpdate();
-
-    // Set up collision detection
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(SniperEnemyGame2::onContactBegin, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
-
-    //CCLOG("SniperEnemyGame2 initialized successfully");
+    currentState = State::Moving;
+    stateTime = 0.0f;
+    moveDuration = 1.0f; 
+    shootDuration = 1.5f; 
+    hasShotBullet = false;
     return true;
 }
 
-void SniperEnemyGame2::createIdleAnimation()
+void SniperEnemyGame2::initAnimation() {
+    runSprite = Sprite::createWithSpriteFrameName("SniperEnemyRun1.png");
+    runSprite->setScale(SpriteController::updateSpriteScale(runSprite, 0.07f));
+    this->addChild(runSprite);
+
+    auto runAnimate = Animate::create(SpriteController::createAnimation("SniperEnemyRun", 6, 0.07f));
+    runSprite->runAction(RepeatForever::create(runAnimate));
+
+    shootSprite = Sprite::createWithSpriteFrameName("SniperEnemyShoot1.png");
+    shootSprite->setScale(SpriteController::updateSpriteScale(shootSprite, 0.07f));
+    this->addChild(shootSprite);
+
+    auto shootAnimate = Animate::create(SpriteController::createAnimation("SniperEnemyShoot", 4, 0.1f));
+    shootSprite->runAction(RepeatForever::create(shootAnimate));
+
+    shootSprite->setVisible(false);
+}
+
+void SniperEnemyGame2::createPhysicsBody() {
+    if (this->getPhysicsBody() != nullptr) {
+        this->removeComponent(this->getPhysicsBody());
+    }
+
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/SniperEnemyGame2.plist");
+
+    auto originalSize = runSprite->getTexture()->getContentSize();
+    auto scaledSize = runSprite->getContentSize() * runSprite->getScale();
+
+    auto physicsBody = physicsCache->createBody("SniperEnemyGame2", originalSize, scaledSize);
+    if (physicsBody) {
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setCollisionBitmask(0x02);
+        this->setPhysicsBody(physicsBody);
+    }
+}
+
+void SniperEnemyGame2::reset()
 {
-    Vector<SpriteFrame*> animFrames;
-    char str[100] = { 0 };
-    for (int i = 0; i < 8; i++)
-    {
-        sprintf(str, "idlegun%d.png", i);
-        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
-        if (frame)
-        {
-            animFrames.pushBack(frame);
+    currentState = State::Moving;
+    stateTime = 0.0f;
+    runSprite->setVisible(true);
+    shootSprite->setVisible(false);
+    hasShotBullet = false;
+}
+
+void SniperEnemyGame2::setTarget(PlayerGame2* target) {
+    this->targetPlayer = target;
+    this->createPhysicsBody();
+    setInitialDirection();
+}
+
+void SniperEnemyGame2::setInitialDirection() {
+    if (targetPlayer) {
+        Vec2 currentPosition = this->getPosition();
+        Vec2 targetPosition = targetPlayer->getPosition();
+        Vec2 direction = targetPosition - currentPosition;
+
+        flipSpriteBasedOnDirection(direction);
+    }
+}
+
+void SniperEnemyGame2::update(float delta) {
+    stateTime += delta;
+
+    switch (currentState) {
+    case State::Moving:
+        if (stateTime >= moveDuration) {
+            stateTime = 0.0f;
+            currentState = State::Shooting;
+            switchToShootAnimation();
+            hasShotBullet = false;
         }
-    }
+        else {
+            if (targetPlayer) {
+                Vec2 currentPosition = this->getPosition();
+                Vec2 targetPosition = targetPlayer->getPosition();
+                Vec2 direction = targetPosition - currentPosition;
+                direction.normalize();
+                float speed = 100.0f;
+                Vec2 newPosition = currentPosition + direction * speed * delta;
+                this->setPosition(newPosition);
 
-    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _idleAnimation = RepeatForever::create(Animate::create(animation));
-    _idleAnimation->retain();
-}
-
-void SniperEnemyGame2::createShootAnimation()
-{
-    Vector<SpriteFrame*> animFrames;
-    char str[100] = { 0 };
-    for (int i = 0; i < 8; i++)
-    {
-        sprintf(str, "Gunshot%d.png", i);
-        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
-        if (frame)
-        {
-            animFrames.pushBack(frame);
+                flipSpriteBasedOnDirection(direction);
+            }
         }
-    }
-
-    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _shootAnimation = Animate::create(animation);
-    _shootAnimation->retain();
-}
-
-void SniperEnemyGame2::createDeathAnimation()
-{
-    Vector<SpriteFrame*> animFrames;
-    char str[100] = { 0 };
-    for (int i = 0; i < 6; i++)
-    {
-        sprintf(str, "death%d.png", i);
-        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
-        if (frame)
-        {
-            animFrames.pushBack(frame);
+        break;
+    case State::Shooting:
+        if (stateTime >= shootDuration) {
+            stateTime = 0.0f;
+            currentState = State::Moving;
+            switchToRunAnimation();
         }
+        else if (stateTime >= shootDuration / 2 && !hasShotBullet) { 
+            shootBullet();
+            hasShotBullet = true;
+        }
+        break;
     }
-
-    auto animation = Animation::createWithSpriteFrames(animFrames, Constants::AnimationFrameDelay);
-    _deathAnimation = Animate::create(animation);
-    _deathAnimation->retain();
 }
 
-void SniperEnemyGame2::update(float delta)
-{
-    //CCLOG("SniperEnemyGame2 update called");
-    if (_isDead)
-    {
-        return;
-    }
 
-    _shootCooldown -= delta;
-    if (_shootCooldown <= 0)
-    {
-        shootBullet();
-        _shootCooldown = 5.0f; // Reset cooldown
+void SniperEnemyGame2::flipSpriteBasedOnDirection(const Vec2& direction) {
+    if (direction.x < 0) {
+        runSprite->setFlippedX(true);
+        shootSprite->setFlippedX(true);
     }
-
-    updateRotationToPlayer();
+    else {
+        runSprite->setFlippedX(false);
+        shootSprite->setFlippedX(false);
+    }
 }
 
-void SniperEnemyGame2::updateRotationToPlayer()
+void SniperEnemyGame2::switchToShootAnimation()
 {
-    auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
-    if (player)
-    {
-        Vec2 playerPos = player->getPosition();
-        Vec2 pos = this->getPosition();
-        Vec2 dirToPlayer = playerPos - pos;
-        float angle = CC_RADIANS_TO_DEGREES(-dirToPlayer.getAngle());
-        this->setRotation(angle + 90);
-    }
-    else
-    {
-        CCLOG("Player not found");
-    }
+    runSprite->setVisible(false);
+    shootSprite->setVisible(true);
+}
+
+void SniperEnemyGame2::switchToRunAnimation()
+{
+    runSprite->setVisible(true);
+    shootSprite->setVisible(false);
 }
 
 void SniperEnemyGame2::shootBullet()
 {
-    _isShooting = true;
-    this->runAction(Sequence::create(_shootAnimation, CallFunc::create([this]() {
-        auto player = dynamic_cast<PlayerGame2*>(this->getParent()->getChildByName("PlayerGame2"));
-        if (player)
-        {
-            Vec2 playerPos = player->getPosition();
-            Vec2 pos = this->getPosition();
-            Vec2 dirToPlayer = playerPos - pos;
-            dirToPlayer.normalize();
+    bullet = SniperBulletGame2Pool::getInstance()->getObject();
 
-            auto bullet = Sprite::create("assets_game/player/shot.png");
-            bullet->setPosition(pos);
-            bullet->setRotation(this->getRotation()); // Set bullet rotation to match enemy's rotation
-            this->getParent()->addChild(bullet);
+    bullet->setPosition(this->getPosition());
+    bullet->setDirection(targetPlayer->getPosition() - this->getPosition());
+    bullet->spawn();
 
-            auto bulletBody = PhysicsBody::createBox(bullet->getContentSize());
-            bulletBody->setContactTestBitmask(true);
-            bulletBody->setGravityEnable(false);
-            bulletBody->setDynamic(true);
-            bullet->setPhysicsBody(bulletBody);
-
-            bullet->runAction(Sequence::create(MoveBy::create(2.0f, dirToPlayer * 1000), RemoveSelf::create(), nullptr));
-        }
-        _isShooting = false;
-        }), nullptr));
-}
-
-
-void SniperEnemyGame2::die()
-{
-    _isDead = true;
-    this->runAction(Sequence::create(_deathAnimation, CallFunc::create([this]() {
-        this->removeFromParent();
-        }), nullptr));
-}
-
-bool SniperEnemyGame2::onContactBegin(PhysicsContact& contact)
-{
-    auto nodeA = contact.getShapeA()->getBody()->getNode();
-    auto nodeB = contact.getShapeB()->getBody()->getNode();
-
-    if ((nodeA && nodeA->getTag() == Constants::BulletTag) || (nodeB && nodeB->getTag() == Constants::BulletTag))
-    {
-        this->die();
-        return true;
-    }
-
-    return false;
+    this->getParent()->addChild(bullet);
 }

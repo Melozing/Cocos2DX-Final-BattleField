@@ -44,11 +44,8 @@ void EnemyPlaneBoom::initAnimation() {
 }
 
 void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill, const std::string& direction, const std::string& position) {
-    auto enemy = EnemyPlaneBoomPool::getInstance()->getObject();
-    if (enemy) {
-        enemy->setVisible(true);
-        enemy->resetSprite();
-        parent->addChild(enemy);
+        this->setVisible(true);
+        this->resetSprite();
         auto visibleSize = Director::getInstance()->getVisibleSize();
 
         // Define fixed y-coordinates for spawning
@@ -68,22 +65,21 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spa
         }
 
         if (direction == "Right") {
-            enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, fixedY));
-            enemy->moveFromLeftToRight(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
+            this->setPosition(Vec2(-this->getContentSize().width / 2, fixedY));
+            this->moveFromLeftToRight(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
         }
         else {
-            enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, fixedY));
-            enemy->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
+            this->setPosition(Vec2(visibleSize.width + this->getContentSize().width / 2, fixedY));
+            this->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBoomGame3Speed);
         }
 
         // Create physics body when spawning
-        enemy->createPhysicsBody();
+        this->createPhysicsBody();
 
         // Schedule to spawn boom at the specified skill time
-        enemy->scheduleOnce([enemy, spawnFromLeft = (direction == "leftToRight")](float dt) {
-            enemy->spawnBoom(spawnFromLeft);
+        this->scheduleOnce([this, spawnFromLeft = (direction == "leftToRight")](float dt) {
+            this->spawnBoom(spawnFromLeft);
             }, skillTime, "spawn_boom_key");
-    }
 }
 
 

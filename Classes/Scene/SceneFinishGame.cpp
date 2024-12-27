@@ -80,7 +80,7 @@ void SceneFinishGame::createScrollingCredits(const rapidjson::Document& document
         startY -= (roleLabel->getContentSize().height + nameLabel->getContentSize().height + SpriteController::calculateScreenRatio(0.04f)); // Adjust spacing between credits
     }
 
-    auto delay = DelayTime::create(timeRun + 1.5);
+    auto delay = DelayTime::create(timeRun - 7.0f);
     auto callback = CallFunc::create([]() {
         auto mainMenuScene = MainMenu::createScene();
         Director::getInstance()->replaceScene(TransitionFade::create(1.0, mainMenuScene));
