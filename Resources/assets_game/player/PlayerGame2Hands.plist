@@ -4,21 +4,7 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>PlayerGame2Hands.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{54,70},{52,22}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{4,2},{52,22}}</string>
-				<key>sourceSize</key>
-				<string>{57,30}</string>
-			</dict>
-
-			<key>PlayerGame2Hands0.png</key>
+			<key>PlayerGame2Hands1.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,98},{53,21}}</string>
@@ -28,20 +14,6 @@
 				<false/>
 				<key>sourceColorRect</key>
 				<string>{{4,2},{53,21}}</string>
-				<key>sourceSize</key>
-				<string>{57,30}</string>
-			</dict>
-
-			<key>PlayerGame2Hands1.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{54,0},{53,22}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{4,2},{53,22}}</string>
 				<key>sourceSize</key>
 				<string>{57,30}</string>
 			</dict>
@@ -77,7 +49,7 @@
 			<key>PlayerGame2Hands12.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{54,118},{52,22}}</string>
+				<string>{{54,95},{52,22}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -89,6 +61,20 @@
 			</dict>
 
 			<key>PlayerGame2Hands13.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{54,0},{53,22}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{4,2},{53,22}}</string>
+				<key>sourceSize</key>
+				<string>{57,30}</string>
+			</dict>
+
+			<key>PlayerGame2Hands2.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{54,0},{53,22}}</string>
@@ -119,7 +105,7 @@
 			<key>PlayerGame2Hands4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{54,118},{52,22}}</string>
+				<string>{{54,95},{52,22}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -133,7 +119,7 @@
 			<key>PlayerGame2Hands5.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,50},{53,23}}</string>
+				<string>{{0,74},{53,23}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -147,7 +133,7 @@
 			<key>PlayerGame2Hands6.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,74},{53,23}}</string>
+				<string>{{0,50},{53,23}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -175,7 +161,7 @@
 			<key>PlayerGame2Hands8.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{54,93},{52,24}}</string>
+				<string>{{54,70},{52,24}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -207,7 +193,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{108,141}</string>
+			<string>{108,120}</string>
 			<key>textureFileName</key>
 			<string>PlayerGame2Hands.png</string>
 			</dict>

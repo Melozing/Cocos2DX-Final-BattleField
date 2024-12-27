@@ -3,8 +3,6 @@
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
 #include "Manager/PlayerMovementManager.h"
-#include "Grenade/BulletGame2.h"
-#include "Grenade/PoolBulletGame2.h"
 #include "PlayerAttributes/PlayerAttributes.h"
 
 class PlayerGame2 : public cocos2d::Sprite, public SpriteController {
@@ -20,6 +18,7 @@ public:
     // Animation initialization methods
     void initAnimation();
     void startMovementAnimation();
+    Size GetSize();
 
     // Mouse event handling methods
     void onMouseMove(cocos2d::Event* event);
@@ -43,6 +42,7 @@ public:
     void pickUpHealth(int healthAmount);
     void pickUpAmmo(int ammoAmount);
     void pickUpGrenade(int grenadeAmount);
+    void createPhysicsBody();
 
     // Constants
     const int maxMagazineSize = 30;
@@ -69,7 +69,6 @@ private:
     void setMovementAndShootingDisabled(bool disabled); // Method to disable movement and shooting
 
     // Member variables for sprites and animations
-    cocos2d::Sprite* modelCharac;
     cocos2d::Sprite* _reloadSprite;
     cocos2d::Sprite* bodySprite;
     cocos2d::Sprite* handsSprite;
@@ -78,7 +77,6 @@ private:
 
     // Member variables for movement and bullet management
     PlayerMovement* playerMovement;
-    PoolBulletGame2 bulletPool;
     int totalAmmo;
     int currentMagazine;
     bool isReloading;
@@ -91,7 +89,6 @@ private:
 
     // Member variables for player attributes
     PlayerAttributes* attributes;
-    void createPhysicsBody();
 
     // Animation initialization methods
     void initBodyAnimation();

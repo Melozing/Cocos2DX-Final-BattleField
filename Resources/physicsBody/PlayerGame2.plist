@@ -123,6 +123,107 @@
 						</array>
 					</dict>
 
+					<dict>
+						<key>density</key>
+						<real>2</real>
+						<key>friction</key>
+						<real>0</real>
+                        <key>restitution</key>
+                        <real>0</real>
+						<key>filter_categoryBits</key>
+						<integer>1</integer>
+						<key>filter_groupIndex</key>
+						<integer>0</integer>
+						<key>filter_maskBits</key>
+						<integer>65535</integer>
+						<key>fixture_type</key>
+                        <string>POLYGON</string>
+                        <key>isSensor</key>
+
+						<false/>
+
+						<key>polygons</key>
+						<array>
+
+							<array>
+	
+								<string>{ -13.500,5.000 }</string>
+	
+								<string>{ 4.500,7.000 }</string>
+	
+								<string>{ -13.000,11.500 }</string>
+
+							</array>
+
+							<array>
+	
+								<string>{ -15.000,-44.500 }</string>
+	
+								<string>{ 5.500,-47.000 }</string>
+	
+								<string>{ 3.000,-38.500 }</string>
+	
+								<string>{ -11.000,0.500 }</string>
+
+							</array>
+
+							<array>
+	
+								<string>{ 9.000,-45.500 }</string>
+	
+								<string>{ 3.000,-38.500 }</string>
+	
+								<string>{ 5.500,-47.000 }</string>
+
+							</array>
+
+							<array>
+	
+								<string>{ 9.500,45.000 }</string>
+	
+								<string>{ -5.500,48.000 }</string>
+	
+								<string>{ -18.000,42.500 }</string>
+	
+								<string>{ -22.000,33.500 }</string>
+	
+								<string>{ -13.000,11.500 }</string>
+	
+								<string>{ 4.500,7.000 }</string>
+	
+								<string>{ 15.000,15.500 }</string>
+	
+								<string>{ 16.000,33.500 }</string>
+
+							</array>
+
+							<array>
+	
+								<string>{ -21.000,18.500 }</string>
+	
+								<string>{ -13.000,11.500 }</string>
+	
+								<string>{ -22.000,33.500 }</string>
+
+							</array>
+
+							<array>
+	
+								<string>{ 4.500,7.000 }</string>
+	
+								<string>{ -4.500,6.000 }</string>
+	
+								<string>{ -11.000,0.500 }</string>
+	
+								<string>{ 3.000,-38.500 }</string>
+	
+								<string>{ 7.000,-20.500 }</string>
+
+							</array>
+
+						</array>
+					</dict>
+
 				</array>
 			</dict>
 

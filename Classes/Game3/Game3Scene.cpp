@@ -22,7 +22,8 @@ USING_NS_CC;
 
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game3Scene::create();
     scene->addChild(layer);
 
@@ -38,7 +39,6 @@ bool Game3Scene::init() {
         });
 
     preloadAssets();
-
     setupBackground();
     setupPlayer();
     initPools();
@@ -587,7 +587,6 @@ void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlan
 
 void Game3Scene::handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy) {
     bulletForEnemy->explode();
-    return;
     if (healthBar->getPercent() <= 0) return;
     // Assuming you have a method to get the current health
     float currentHealth = healthBar->getPercent();
@@ -597,7 +596,6 @@ void Game3Scene::handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletFo
 
 void Game3Scene::handleMissileEnemyCityCollision(MissileForEnemyPlane* missileEnemy) {
     missileEnemy->explode();
-
     if (healthBar->getPercent() <= 0) return;
     // Assuming you have a method to get the current health
     float currentHealth = healthBar->getPercent();

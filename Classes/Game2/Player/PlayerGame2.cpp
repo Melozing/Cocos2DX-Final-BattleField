@@ -2,12 +2,9 @@
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "cocos2d.h"
-#include "Grenade/Grenade.h"
-#include "Grenade/BulletGame2.h"
-#include "Grenade/PoolBulletGame2.h"
-
-
+#include "utils/PhysicsShapeCache.h"
 #include "Controller/SoundController.h"
+#include "Manager/ObjectPoolGame2.h"
 
 USING_NS_CC;
 
@@ -17,7 +14,6 @@ PlayerGame2::PlayerGame2()
     _mousePressDuration(0.0f),
     _isThrowingGrenade(false),
     playerMovement(nullptr),
-    bulletPool(30),
     attributes(new PlayerAttributes(100, 130)),
     isReloading(false),
     reloadTime(2.0f),
@@ -90,8 +86,7 @@ bool PlayerGame2::init() {
     _reloadSprite->setVisible(false);
 	_reloadSprite->setScale(SpriteController::updateSpriteScale(_reloadSprite,0.05f));
     this->addChild(_reloadSprite, 1);
-    updateAmmoDisplay();
-    createPhysicsBody();
+    this->updateAmmoDisplay();
     return true;
 }
 
@@ -116,6 +111,7 @@ void PlayerGame2::initBodyAnimation()
 
     auto animateBody = Animate::create(createAnimation("PlayerGame2Body", 13, 0.07f));
     bodySprite->runAction(RepeatForever::create(animateBody));
+    this->createPhysicsBody();
 }
 
 void PlayerGame2::initHandsAnimation()
@@ -123,7 +119,7 @@ void PlayerGame2::initHandsAnimation()
     handsSpriteBatchNode = SpriteBatchNode::create("assets_game/player/PlayerGame2Hands.png");
     this->addChild(handsSpriteBatchNode);
 
-    handsSprite = Sprite::createWithSpriteFrameName("PlayerGame2Hands0.png");
+    handsSprite = Sprite::createWithSpriteFrameName("PlayerGame2Hands1.png");
     handsSprite->setAnchorPoint(Vec2(0.5, 0.5));
     handsSprite->setScale(SpriteController::updateSpriteScale(handsSprite, 0.01f));
     handsSprite->setPosition(Vec2(2, 0.5));
@@ -187,7 +183,6 @@ void PlayerGame2::setMovementAndShootingDisabled(bool disabled)
     isMovementAndShootingDisabled = disabled;
 }
 
-
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_W || keyCode == EventKeyboard::KeyCode::KEY_A ||
@@ -233,10 +228,6 @@ void PlayerGame2::update(float delta)
             handsSprite->setFlippedX(false);
         }
     }
-    else
-    {
-        modelCharac->stopActionByTag(1);
-    }
 
     if (isMouseDown) {
         auto mousePos = Director::getInstance()->convertToGL(_mousePos);
@@ -271,7 +262,6 @@ void PlayerGame2::update(float delta)
 
 }
 
-
 void PlayerGame2::RotateToMouse()
 {
     auto mousePos = Director::getInstance()->convertToGL(_mousePos);
@@ -280,6 +270,16 @@ void PlayerGame2::RotateToMouse()
     dirToFace.normalize();
     float angle = MathFunction::GetDirInDegreesPositive(dirToFace);
     handsSprite->setRotation(-angle);
+
+    // Flip body and hands based on the direction
+    if (dirToFace.x < 0) {
+        bodySprite->setFlippedX(true);
+        handsSprite->setFlippedX(true);
+    }
+    else {
+        bodySprite->setFlippedX(false);
+        handsSprite->setFlippedX(false);
+    }
 }
 
 void PlayerGame2::shootBullet(const Vec2& direction)
@@ -295,12 +295,17 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     }
 
     Vec2 normalizedDirection = direction.getNormalized();
-    BulletGame2* bullet = BulletGame2::createBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed, Constants::BulletDamage2);
-    if (bullet)
-    {
+    BulletGame2* bullet = BulletGame2Pool::getInstance()->getObject();
+    if (bullet) {
+        bullet->setPosition(this->getPosition());
+        bullet->setDirection(direction);
+        bullet->setSpeed(Constants::BulletGame3Speed);
         this->getParent()->addChild(bullet);
+        currentMagazine--;
+        updateAmmoDisplay();
         playShootSound();
     }
+
     currentMagazine--;
     updateAmmoDisplay();
     timeSinceLastShot = 0.0f;
@@ -308,10 +313,27 @@ void PlayerGame2::shootBullet(const Vec2& direction)
 
 void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
 {
-    auto grenade = Grenade::createGrenade(this->getPosition(), direction, duration);
-    this->getParent()->addChild(grenade);
-	playGrenadeSound();
+    if (currentGrenades > 0 && !_isThrowingGrenade)
+    {
+        _isThrowingGrenade = true;
+        currentGrenades--;
+
+        auto grenade = GrenadeEnemyPool::getInstance()->getObject();
+        grenade->setup(this->getPosition(), direction, duration);
+        this->getParent()->addChild(grenade);
+
+        grenade->runAction(Sequence::create(
+            DelayTime::create(duration + 2.0f), // Duration of throw + explosion delay
+            CallFunc::create([grenade]() {
+                GrenadeEnemyPool::getInstance()->returnObject(grenade);
+                }),
+            nullptr
+        ));
+
+        this->playGrenadeSound();
+    }
 }
+
 
 void PlayerGame2::reload()
 {
@@ -366,14 +388,27 @@ void PlayerGame2::createPhysicsBody() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
-    auto physicsBody = PhysicsBody::createBox(this->getContentSize());
-    physicsBody->setDynamic(true);
-    physicsBody->setGravityEnable(false);
-    physicsBody->setCategoryBitmask(0x01); // Category bitmask for player
-    physicsBody->setCollisionBitmask(0x04); // Collides with items
-    physicsBody->setContactTestBitmask(0x04); // Test contact with items
-    this->addComponent(physicsBody);
+
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    auto originalSize = bodySprite->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/PlayerGame2.plist", "PlayerGame2", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "PlayerGame2", originalSize, 0.1f);
+
+    if (physicsBody) {
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setCollisionBitmask(0x02);
+        this->setPhysicsBody(physicsBody);
+    }
 }
+
+Size PlayerGame2::GetSize() {
+    return GetContentSizeSprite(bodySprite);
+}
+
 void PlayerGame2::playReloadSound() {
     SoundController::getInstance()->playSoundEffect("assets_game/sounds/Game2/reload.mp3");
 }

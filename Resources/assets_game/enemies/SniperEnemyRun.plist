@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>SniperEnemyRun1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,65},{39,66}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{40,62},{39,66}}</string>
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+
+			<key>SniperEnemyRun2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{40,0},{31,66}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{49,62},{31,66}}</string>
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+
+			<key>SniperEnemyRun3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{72,0},{30,65}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{50,63},{30,65}}</string>
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+
+			<key>SniperEnemyRun4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{39,64}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{41,64},{39,64}}</string>
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+
+			<key>SniperEnemyRun5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{40,67},{29,64}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{50,64},{29,64}}</string>
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+
+			<key>SniperEnemyRun6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{72,66},{29,65}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{49,63},{29,65}}</string>
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{103,132}</string>
+			<key>textureFileName</key>
+			<string>SniperEnemyRun.png</string>
+			</dict>
+		</dict>
+</plist>

@@ -103,6 +103,8 @@ public:
     static const float PLAYER_SPEED_GAME3;
     static float CURRENT_PERCENT_BOSS_HEALTHBAR;
     static const float BulletGame3Speed;
+    static const float BulletPlayerGame2Speed;
+    static const float BulletSniperGame2Speed;
     static const float EnemyPlaneBulletGame3Speed; //Speed Enemy Plane 3
 	static const float EnemyPlaneBoomGame3Speed; //Speed Enemy Plane 1
 	static const float SpeedEnemyPlane_BOSS; //Speed Enemy Plane 1

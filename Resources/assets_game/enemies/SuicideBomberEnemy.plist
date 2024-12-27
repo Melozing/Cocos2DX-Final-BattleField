@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>SuicideBomberEnemy0.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{31,0},{18,30}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{24,18},{18,30}}</string>
+				<key>sourceSize</key>
+				<string>{48,48}</string>
+			</dict>
+
+			<key>SuicideBomberEnemy1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{52,31},{16,30}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{21,18},{16,30}}</string>
+				<key>sourceSize</key>
+				<string>{48,48}</string>
+			</dict>
+
+			<key>SuicideBomberEnemy2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,31},{29,31}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{13,17},{29,31}}</string>
+				<key>sourceSize</key>
+				<string>{48,48}</string>
+			</dict>
+
+			<key>SuicideBomberEnemy3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{30,30}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{12,18},{30,30}}</string>
+				<key>sourceSize</key>
+				<string>{48,48}</string>
+			</dict>
+
+			<key>SuicideBomberEnemy4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{50,0},{17,30}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{20,18},{17,30}}</string>
+				<key>sourceSize</key>
+				<string>{48,48}</string>
+			</dict>
+
+			<key>SuicideBomberEnemy5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{30,31},{21,31}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{21,17},{21,31}}</string>
+				<key>sourceSize</key>
+				<string>{48,48}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{69,63}</string>
+			<key>textureFileName</key>
+			<string>SuicideBomberEnemy.png</string>
+			</dict>
+		</dict>
+</plist>

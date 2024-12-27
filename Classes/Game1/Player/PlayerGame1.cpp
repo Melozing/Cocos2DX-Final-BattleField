@@ -1,5 +1,4 @@
-﻿// PlayerGame1.cpp
-#include "Game1/Player/PlayerGame1.h"
+﻿#include "Game1/Player/PlayerGame1.h"
 #include "Constants/Constants.h"
 #include "cocos2d.h"
 #include "Controller/SpriteController.h"
