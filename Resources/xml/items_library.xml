@@ -1,0 +1,15 @@
+<items>
+    <item>
+        <id>1</id>
+        <imagePath>assets_game/items/IncreaseBulletCountItem.png</imagePath>
+        <name>Increase Bullet Count</name>
+        <description>Increases the number of bullets you can carry.</description>
+    </item>
+    <item>
+        <id>2</id>
+        <imagePath>assets_game/items/hop_dan.png</imagePath>
+        <name>Health Potion</name>
+        <description>Restores health.</description>
+    </item>
+    <!-- Add more items as needed -->
+</items>

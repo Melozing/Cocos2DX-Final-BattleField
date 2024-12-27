@@ -178,8 +178,8 @@
     <Filter Include="src\Manager\Game2">
       <UniqueIdentifier>{00dadb7b-65a0-47ac-9662-3fa710aaf872}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\UXUI\Library">
-      <UniqueIdentifier>{5a142657-62bc-49f9-ab97-ab83bf40ae57}</UniqueIdentifier>
+    <Filter Include="src\Library">
+      <UniqueIdentifier>{731bb78d-889c-4bc2-bc8d-a3e00ae818aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Gameplay\Player\PlayerGame2\Cannon">
       <UniqueIdentifier>{8f261ca5-0719-4633-9423-263b5c2b5a4a}</UniqueIdentifier>
