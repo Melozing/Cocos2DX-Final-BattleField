@@ -9,7 +9,7 @@ public:
     static EnemyPlaneBullet* create();
     virtual bool init() override;
     Size GetSize();
-    static void spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill, const std::string& direction, const std::string& position);
+    void spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill, const std::string& direction, const std::string& position);
     void initAnimation();
     void createPhysicsBody();
     void spawnBullets();

@@ -179,16 +179,19 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp" />
     <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillI.cpp" />
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp" />
+    <ClCompile Include="..\Classes\Game2\Enemy\BunkerGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp" />
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MeleeEnemy.cpp" />
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\RifleEnemy.cpp" />
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SniperEnemy.cpp" />
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp" />
+    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp" />
+    <ClCompile Include="..\Classes\Game2\Enemy\SniperBulletGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp" />
+    <ClCompile Include="..\Classes\Game2\Enemy\SuicideBomberEnemy.cpp" />
     <ClCompile Include="..\Classes\Game2\Game2Scene.cpp" />
-    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
+    <ClCompile Include="..\Classes\Game2\Player\BulletGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\Bullet_Petard.cpp" />
+    <ClCompile Include="..\Classes\Game2\Player\Cannon.cpp" />
+    <ClCompile Include="..\Classes\Game2\Player\Grenade.cpp" />
+    <ClCompile Include="..\Classes\Game2\Player\GroundCannonGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\BoomForEnemyPlane.cpp" />
     <ClCompile Include="..\Classes\Game3\enemy\BulletForEnemyPlane.cpp" />
@@ -206,9 +209,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game3\Items\UpgradeBulletItemGame3.cpp" />
     <ClCompile Include="..\Classes\Game3\Player\CityCollisionArea.cpp" />
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp" />
-    <ClCompile Include="..\Classes\Grenade\BulletGame2.cpp" />
-    <ClCompile Include="..\Classes\Grenade\Grenade.cpp" />
-    <ClCompile Include="..\Classes\Grenade\PoolBulletGame2.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\Library\ItemLibrary.cpp" />
     <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp" />
@@ -216,6 +216,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\LoadingBar\CustomLoadingBar.cpp" />
     <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp" />
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame1.cpp" />
+    <ClCompile Include="..\Classes\Manager\ObjectPoolGame2.cpp" />
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp" />
     <ClCompile Include="..\Classes\Manager\PhysicsManager.cpp" />
     <ClCompile Include="..\Classes\Manager\PlayerMovementManager.cpp" />
@@ -230,11 +231,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Scene\BaseScene.cpp" />
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp" />
+    <ClCompile Include="..\Classes\Scene\SceneFinishGame.cpp" />
     <ClCompile Include="..\Classes\UIGame\Badge.cpp" />
     <ClCompile Include="..\Classes\utils\MathFunction.cpp" />
     <ClCompile Include="..\Classes\utils\PhysicsShapeCache.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Petard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -267,17 +268,19 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h" />
     <ClInclude Include="..\Classes\Game1\Skills\ShieldSkill.h" />
     <ClInclude Include="..\Classes\Game2\Cursor\Cursor.h" />
+    <ClInclude Include="..\Classes\Game2\Enemy\BunkerGame2.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h" />
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MeleeEnemy.h" />
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\RifleEnemy.h" />
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SniperEnemy.h" />
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyUtils.h" />
+    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h" />
+    <ClInclude Include="..\Classes\Game2\Enemy\SniperBulletGame2.h" />
     <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h" />
+    <ClInclude Include="..\Classes\Game2\Enemy\SuicideBomberEnemy.h" />
     <ClInclude Include="..\Classes\Game2\Game2Scene.h" />
-    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
+    <ClInclude Include="..\Classes\Game2\Player\BulletGame2.h" />
     <ClInclude Include="..\Classes\Game2\Player\Bullet_Petard.h" />
-    <ClInclude Include="..\Classes\Game2\Player\Petard.h" />
+    <ClInclude Include="..\Classes\Game2\Player\Cannon.h" />
+    <ClInclude Include="..\Classes\Game2\Player\Grenade.h" />
+    <ClInclude Include="..\Classes\Game2\Player\GroundCannonGame2.h" />
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h" />
     <ClInclude Include="..\Classes\Game3\enemy\BoomForEnemyPlane.h" />
     <ClInclude Include="..\Classes\Game3\enemy\BulletForEnemyPlane.h" />
@@ -295,9 +298,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game3\Items\UpgradeBulletItemGame3.h" />
     <ClInclude Include="..\Classes\Game3\Player\CityCollisionArea.h" />
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h" />
-    <ClInclude Include="..\Classes\Grenade\BulletGame2.h" />
-    <ClInclude Include="..\Classes\Grenade\Grenade.h" />
-    <ClInclude Include="..\Classes\Grenade\PoolBulletGame2.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Library\ItemLibrary.h" />
     <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h" />
@@ -305,6 +305,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\LoadingBar\CustomLoadingBar.h" />
     <ClInclude Include="..\Classes\Manager\BackgroundManager.h" />
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame1.h" />
+    <ClInclude Include="..\Classes\Manager\ObjectPoolGame2.h" />
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h" />
     <ClInclude Include="..\Classes\Manager\PhysicsManager.h" />
     <ClInclude Include="..\Classes\Manager\PlayerMovementManager.h" />
@@ -319,6 +320,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Scene\BaseScene.h" />
     <ClInclude Include="..\Classes\Scene\LoadingScene.h" />
     <ClInclude Include="..\Classes\Scene\MainMenuScene.h" />
+    <ClInclude Include="..\Classes\Scene\SceneFinishGame.h" />
     <ClInclude Include="..\Classes\UIGame\Badge.h" />
     <ClInclude Include="..\Classes\utils\MathFunction.h" />
     <ClInclude Include="..\Classes\utils\PhysicsShapeCache.h" />

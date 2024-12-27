@@ -1,14 +1,10 @@
-﻿// PlayerGame2.cpp
-#include "PlayerGame2.h"
+﻿#include "PlayerGame2.h"
 #include "Constants/Constants.h"
 #include "utils/MathFunction.h"
 #include "cocos2d.h"
-#include "Grenade/Grenade.h"
-#include "Grenade/BulletGame2.h"
-#include "Grenade/PoolBulletGame2.h"
-
-
+#include "utils/PhysicsShapeCache.h"
 #include "Controller/SoundController.h"
+#include "Manager/ObjectPoolGame2.h"
 
 USING_NS_CC;
 
@@ -18,13 +14,14 @@ PlayerGame2::PlayerGame2()
     _mousePressDuration(0.0f),
     _isThrowingGrenade(false),
     playerMovement(nullptr),
-    bulletPool(30),
     attributes(new PlayerAttributes(100, 130)),
     isReloading(false),
     reloadTime(2.0f),
-    currentFireMode(FireMode::SINGLE),
-    burstCooldown(0.0f),
-    isAutoFiring(false)
+    isMouseDown(false),
+    shootDelay(0.7f),
+    timeSinceLastShot(0.0f),
+    bulletCount(1),
+    isMovementAndShootingDisabled(false)
 {
     totalAmmo = attributes->GetAmmo();
     currentMagazine = maxMagazineSize;
@@ -62,7 +59,6 @@ bool PlayerGame2::init() {
     }
 
     this->setPosition(Vec2(Constants::InitialPosX, Constants::InitialPosY));
-    this->setScale(Constants::PlayerScale);
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
     auto mouseListener = EventListenerMouse::create();
@@ -78,47 +74,71 @@ bool PlayerGame2::init() {
 
     this->scheduleUpdate();
 
-    playerMovement = new PlayerMovement(this, Constants::PlayerSpeed);
+    playerMovement = new PlayerMovement(this, Constants::PlayerGame2Speed);
     
-    _ammoLabel = Label::createWithTTF("0/0", Constants::FONT_GAME, 24);
-    _ammoLabel->setPosition(Vec2(this->getContentSize().width / 2, -100)); 
+    _ammoLabel = Label::createWithTTF("0/0", Constants::FONT_GAME, SpriteController::calculateScreenRatio(0.01f));
+    _ammoLabel->setPosition(Vec2(this->getContentSize().width / 2, -SpriteController::calculateScreenRatio(0.04f))); 
     this->addChild(_ammoLabel, 1);
 
 
     _reloadSprite = Sprite::create("assets_game/effects/Reload.png");
-    _reloadSprite->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height + 20));
+    _reloadSprite->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height));
     _reloadSprite->setVisible(false);
-	_reloadSprite->setScale(0.5f);
+	_reloadSprite->setScale(SpriteController::updateSpriteScale(_reloadSprite,0.05f));
     this->addChild(_reloadSprite, 1);
-    updateAmmoDisplay();
-    createPhysicsBody();
+    this->updateAmmoDisplay();
     return true;
 }
 
 void PlayerGame2::initAnimation()
 {
-    auto spriteBatchNode = SpriteBatchNode::create("assets_game/player/walkriffle.png");
-    this->addChild(spriteBatchNode);
+    // Initialize body animation
+    initBodyAnimation();
 
-    modelCharac = Sprite::createWithSpriteFrameName("walkriffle0.png");
-    SpriteController::updateSpriteScale(modelCharac, 0.05f);
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.25f));
+    // Initialize hands animation
+    initHandsAnimation();
+}
 
-    spriteBatchNode->addChild(modelCharac);
+void PlayerGame2::initBodyAnimation()
+{
+    bodySpriteBatchNode = SpriteBatchNode::create("assets_game/player/PlayerGame2Body.png");
+    this->addChild(bodySpriteBatchNode);
 
-    auto animateCharac = Animate::create(createAnimation("walkriffle", 5, 0.07f));
-    modelCharac->runAction(RepeatForever::create(animateCharac));
+    bodySprite = Sprite::createWithSpriteFrameName("PlayerGame2Body0.png");
+    bodySprite->setScale(SpriteController::updateSpriteScale(bodySprite, 0.05f));
+
+    bodySpriteBatchNode->addChild(bodySprite);
+
+    auto animateBody = Animate::create(createAnimation("PlayerGame2Body", 13, 0.07f));
+    bodySprite->runAction(RepeatForever::create(animateBody));
+    this->createPhysicsBody();
+}
+
+void PlayerGame2::initHandsAnimation()
+{
+    handsSpriteBatchNode = SpriteBatchNode::create("assets_game/player/PlayerGame2Hands.png");
+    this->addChild(handsSpriteBatchNode);
+
+    handsSprite = Sprite::createWithSpriteFrameName("PlayerGame2Hands1.png");
+    handsSprite->setAnchorPoint(Vec2(0.5, 0.5));
+    handsSprite->setScale(SpriteController::updateSpriteScale(handsSprite, 0.01f));
+    handsSprite->setPosition(Vec2(2, 0.5));
+
+    handsSpriteBatchNode->addChild(handsSprite);
+
+    auto animateHands = Animate::create(createAnimation("PlayerGame2Hands", 13, 0.07f));
+    handsSprite->runAction(RepeatForever::create(animateHands));
 }
 
 void PlayerGame2::startMovementAnimation()
 {
-    if (!this->getActionByTag(1))
+   /* if (!this->getActionByTag(1))
     {
-        auto animateCharac = Animate::create(createAnimation("walkriffle", 5, 0.07f));
+        auto animateCharac = Animate::create(createAnimation("PlayerGame2Hands", 5, 0.07f));
         auto repeatAnimate = RepeatForever::create(animateCharac);
         repeatAnimate->setTag(1);
         modelCharac->runAction(repeatAnimate);
-    }
+    }*/
 }
 
 void PlayerGame2::onMouseMove(Event* event)
@@ -135,19 +155,7 @@ void PlayerGame2::onMouseDown(Event* event)
     EventMouse* e = (EventMouse*)event;
     if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
     {
-        _isMouseDown = true;
-        _mousePressDuration = 0.0f;
-        _isThrowingGrenade = false;
-
-        if (currentFireMode == FireMode::AUTO) {
-            isAutoFiring = true;
-            this->schedule([this](float) {
-                auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-                Vec2 pos = this->getPosition();
-                Vec2 dirToShoot = mousePos - pos;
-                shootBullet(dirToShoot);
-                }, 0.1f, "auto_fire_key");
-        }
+        isMouseDown = true;
     }
     else if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
     {
@@ -160,47 +168,19 @@ void PlayerGame2::onMouseDown(Event* event)
 void PlayerGame2::onMouseUp(Event* event)
 {
     EventMouse* e = (EventMouse*)event;
-    if (_isMouseDown)
+    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
     {
-        auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-        Vec2 pos = this->getPosition();
-        Vec2 dirToShoot = mousePos - pos;
-
-        if (_isThrowingGrenade && e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
-        {
-            if (currentGrenades > 0) {
-                throwGrenade(dirToShoot, _mousePressDuration);
-                currentGrenades--;
-            }
-        }
-        else if (!_isThrowingGrenade && e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
-        {
-            switch (currentFireMode) {
-            case FireMode::SINGLE:
-                if (currentMagazine > 0) {
-                    shootBullet(dirToShoot);
-                }
-                else {
-                    reload();
-                }
-                break;
-            case FireMode::AUTO:
-                isAutoFiring = false;
-                this->unschedule("auto_fire_key");
-                break;
-            case FireMode::BURST:
-                if (currentMagazine >= 3) {
-                    fireBurst();
-                }
-                else {
-                    reload();
-                }
-                break;
-            }
-        }
-
+        isMouseDown = false;
+    }
+    else if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
+    {
         _isMouseDown = false;
     }
+}
+
+void PlayerGame2::setMovementAndShootingDisabled(bool disabled)
+{
+    isMovementAndShootingDisabled = disabled;
 }
 
 void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -215,10 +195,6 @@ void PlayerGame2::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
     else if (keyCode == EventKeyboard::KeyCode::KEY_R)
     {
         reload();
-    }
-    else if (keyCode == EventKeyboard::KeyCode::KEY_B)
-    {
-        switchFireMode();
     }
 }
 
@@ -235,21 +211,31 @@ void PlayerGame2::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 
 void PlayerGame2::update(float delta)
 {
+    timeSinceLastShot += delta;
+
     playerMovement->update(delta);
     RotateToMouse();
     if (playerMovement->getSpeed() > 0)
     {
         startMovementAnimation();
-    }
-    else
-    {
-        modelCharac->stopActionByTag(1);
+        Vec2 velocity = playerMovement->getVelocity();
+        if (velocity.x < 0) {
+            bodySprite->setFlippedX(true);
+            handsSprite->setFlippedX(true);
+        }
+        else if (velocity.x > 0) {
+            bodySprite->setFlippedX(false);
+            handsSprite->setFlippedX(false);
+        }
     }
 
-    if (_isMouseDown)
-    {
-        _mousePressDuration += delta;
+    if (isMouseDown) {
+        auto mousePos = Director::getInstance()->convertToGL(_mousePos);
+        Vec2 pos = this->getPosition();
+        Vec2 dirToShoot = mousePos - pos;
+        shootBullet(dirToShoot);
     }
+
     if (isReloading)
     {
         reloadTime -= delta;
@@ -274,43 +260,6 @@ void PlayerGame2::update(float delta)
         }
     }
 
-    if (currentFireMode == FireMode::BURST && burstCooldown > 0.0f) {
-        burstCooldown -= delta;
-    }
-}
-
-void PlayerGame2::switchFireMode()
-{
-    switch (currentFireMode) {
-    case FireMode::SINGLE:
-        currentFireMode = FireMode::AUTO;
-        break;
-    case FireMode::AUTO:
-        currentFireMode = FireMode::BURST;
-        break;
-    case FireMode::BURST:
-        currentFireMode = FireMode::SINGLE;
-        break;
-    }
-}
-
-void PlayerGame2::fireBurst()
-{
-    if (burstCooldown > 0.0f) {
-        return;
-    }
-
-    auto mousePos = Director::getInstance()->convertToGL(_mousePos);
-    Vec2 pos = this->getPosition();
-    Vec2 dirToShoot = mousePos - pos;
-
-    for (int i = 0; i < 3; ++i) {
-        this->scheduleOnce([this, dirToShoot](float) {
-            shootBullet(dirToShoot);
-            }, i * 0.1f, "burst_fire_key_" + std::to_string(i));
-    }
-
-    burstCooldown = 1.5f;
 }
 
 void PlayerGame2::RotateToMouse()
@@ -320,11 +269,25 @@ void PlayerGame2::RotateToMouse()
     Vec2 dirToFace = mousePos - pos;
     dirToFace.normalize();
     float angle = MathFunction::GetDirInDegreesPositive(dirToFace);
-    this->setRotation(-angle + 90);
+    handsSprite->setRotation(-angle);
+
+    // Flip body and hands based on the direction
+    if (dirToFace.x < 0) {
+        bodySprite->setFlippedX(true);
+        handsSprite->setFlippedX(true);
+    }
+    else {
+        bodySprite->setFlippedX(false);
+        handsSprite->setFlippedX(false);
+    }
 }
 
 void PlayerGame2::shootBullet(const Vec2& direction)
 {
+    if (isMovementAndShootingDisabled) return;
+
+    if (timeSinceLastShot < shootDelay) return;
+
     if (isReloading || currentMagazine <= 0)
     {
         reload();
@@ -332,22 +295,45 @@ void PlayerGame2::shootBullet(const Vec2& direction)
     }
 
     Vec2 normalizedDirection = direction.getNormalized();
-    BulletGame2* bullet = BulletGame2::createBullet(this->getPosition(), normalizedDirection, Constants::BulletSpeed, Constants::BulletDamage2);
-    if (bullet)
-    {
+    BulletGame2* bullet = BulletGame2Pool::getInstance()->getObject();
+    if (bullet) {
+        bullet->setPosition(this->getPosition());
+        bullet->setDirection(direction);
+        bullet->setSpeed(Constants::BulletGame3Speed);
         this->getParent()->addChild(bullet);
+        currentMagazine--;
+        updateAmmoDisplay();
         playShootSound();
     }
+
     currentMagazine--;
     updateAmmoDisplay();
+    timeSinceLastShot = 0.0f;
 }
 
 void PlayerGame2::throwGrenade(const Vec2& direction, float duration)
 {
-    auto grenade = Grenade::createGrenade(this->getPosition(), direction, duration);
-    this->getParent()->addChild(grenade);
-	playGrenadeSound();
+    if (currentGrenades > 0 && !_isThrowingGrenade)
+    {
+        _isThrowingGrenade = true;
+        currentGrenades--;
+
+        auto grenade = GrenadeEnemyPool::getInstance()->getObject();
+        grenade->setup(this->getPosition(), direction, duration);
+        this->getParent()->addChild(grenade);
+
+        grenade->runAction(Sequence::create(
+            DelayTime::create(duration + 2.0f), // Duration of throw + explosion delay
+            CallFunc::create([grenade]() {
+                GrenadeEnemyPool::getInstance()->returnObject(grenade);
+                }),
+            nullptr
+        ));
+
+        this->playGrenadeSound();
+    }
 }
+
 
 void PlayerGame2::reload()
 {
@@ -402,14 +388,27 @@ void PlayerGame2::createPhysicsBody() {
     if (this->getPhysicsBody() != nullptr) {
         this->removeComponent(this->getPhysicsBody());
     }
-    auto physicsBody = PhysicsBody::createBox(this->getContentSize());
-    physicsBody->setDynamic(true);
-    physicsBody->setGravityEnable(false);
-    physicsBody->setCategoryBitmask(0x01); // Category bitmask for player
-    physicsBody->setCollisionBitmask(0x04); // Collides with items
-    physicsBody->setContactTestBitmask(0x04); // Test contact with items
-    this->addComponent(physicsBody);
+
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    auto originalSize = bodySprite->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/PlayerGame2.plist", "PlayerGame2", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "PlayerGame2", originalSize, 0.1f);
+
+    if (physicsBody) {
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setCollisionBitmask(0x02);
+        this->setPhysicsBody(physicsBody);
+    }
 }
+
+Size PlayerGame2::GetSize() {
+    return GetContentSizeSprite(bodySprite);
+}
+
 void PlayerGame2::playReloadSound() {
     SoundController::getInstance()->playSoundEffect("assets_game/sounds/Game2/reload.mp3");
 }

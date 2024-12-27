@@ -1,7 +1,6 @@
 ﻿#include "PlayerGame3.h"
 #include "Constants/Constants.h"
 #include "Controller/SoundController.h"
-#include "utils/MathFunction.h"
 #include "Manager/PlayerMovementManager.h"
 #include "Manager/ObjectPoolGame3.h"
 #include "Controller/GameController.h"
@@ -44,10 +43,18 @@ bool PlayerGame3::init()
     timeSinceLastShot = 0.0f;
     bulletCount = 1;
 
+    // Initialize movement and shooting state
+    isMovementAndShootingDisabled = false;
+
     // Preload shoot sound effect
     Constants::QuantityBulletPlayerGame3 = 100;
 
     return true;
+}
+
+void PlayerGame3::setMovementAndShootingDisabled(bool disabled)
+{
+    isMovementAndShootingDisabled = disabled;
 }
 
 void PlayerGame3::setupInitialPosition()
@@ -151,6 +158,8 @@ void PlayerGame3::onMouseUp(Event* event)
 }
 
 void PlayerGame3::shootBullet(const Vec2& target) {
+    if (isMovementAndShootingDisabled) return;
+
     if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
 
     Vec2 turretPosition = this->convertToWorldSpace(turretSprite->getPosition());
@@ -231,6 +240,8 @@ void PlayerGame3::onMouseMove(Event* event)
 
 void PlayerGame3::update(float delta)
 {
+    if (isMovementAndShootingDisabled) return;
+
     playerMovement->update(delta);
 
     // Get the visible size and origin of the screen
@@ -262,6 +273,8 @@ void PlayerGame3::update(float delta)
 }
 
 void PlayerGame3::updateTurretRotation() {
+    if (isMovementAndShootingDisabled) return;
+
     if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
 
     if (turretSprite) {

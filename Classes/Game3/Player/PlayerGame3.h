@@ -32,6 +32,8 @@ public:
     // Bullet count management
     void increaseBulletCount();
 
+    void setMovementAndShootingDisabled(bool disabled);
+
 private:
     // Helper methods
     cocos2d::Size GetSize();
@@ -62,6 +64,7 @@ private:
     cocos2d::Vec2 turretWorldPos; // Turret world position
     cocos2d::Vec2 localAnchorPoint; // Local anchor point
     cocos2d::Vec2 turretPosition; // Turret position
+    bool isMovementAndShootingDisabled;
 };
 
 #endif // __PLAYER_GAME3_H__

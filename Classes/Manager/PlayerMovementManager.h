@@ -20,6 +20,7 @@ public:
     void update(float delta);
     float getSpeed() const;
     void setEnabled(bool enabled);
+    cocos2d::Vec2 getVelocity() const;
 
 private:
     void updateDirection();

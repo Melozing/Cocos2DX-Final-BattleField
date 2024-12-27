@@ -53,12 +53,10 @@ void EnemyPlaneBullet::initAnimation() {
 }
 
 void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spawnWithSkill, const std::string& direction, const std::string& position) {
-    auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
-    if (enemy) {
-        enemy->createPhysicsBody();
-        enemy->resetSprite();
-        enemy->setVisible(true);
-        parent->addChild(enemy);
+        this->createPhysicsBody();
+        this->resetSprite();
+        this->setVisible(true);
+
         auto visibleSize = Director::getInstance()->getVisibleSize();
 
         // Define fixed y-coordinates for spawning
@@ -78,21 +76,20 @@ void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool s
         }
 
         if (direction == "Right") {
-            enemy->setPosition(Vec2(-enemy->getContentSize().width / 2, fixedY));
-            enemy->moveFromLeftToRight(visibleSize, Constants::EnemyPlaneBulletGame3Speed);
+            this->setPosition(Vec2(-this->getContentSize().width / 2, fixedY));
+            this->moveFromLeftToRight(visibleSize, Constants::EnemyPlaneBulletGame3Speed);
         }
         else {
-            enemy->setPosition(Vec2(visibleSize.width + enemy->getContentSize().width / 2, fixedY));
-            enemy->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBulletGame3Speed);
+            this->setPosition(Vec2(visibleSize.width + this->getContentSize().width / 2, fixedY));
+            this->moveFromRightToLeft(visibleSize, Constants::EnemyPlaneBulletGame3Speed);
         }
 
         if (spawnWithSkill) {
             // Schedule to show warning sign and spawn bullets
-            enemy->scheduleOnce([enemy](float) {
-                enemy->showWarningSign();
+            this->scheduleOnce([this](float) {
+                this->showWarningSign();
                 }, skillTime, "show_warning_sign_key");
         }
-    }
 }
 
 
@@ -159,6 +156,7 @@ void EnemyPlaneBullet::createPhysicsBody() {
 }
 
 void EnemyPlaneBullet::returnToPool() {
+    warningSign->setVisible(false);
     this->stopAllActions();
     this->unschedule("show_warning_sign_key");
     this->unschedule("spawn_bullets_key");

@@ -1,39 +1,43 @@
-// SniperEnemyGame2.h
 #ifndef __SNIPER_ENEMY_GAME2_H__
 #define __SNIPER_ENEMY_GAME2_H__
 
 #include "cocos2d.h"
+#include "Game2/Enemy/EnemyBase.h"
+#include "Game2/Player/PlayerGame2.h"
+#include "SniperBulletGame2.h"
 
-class SniperEnemyGame2 : public cocos2d::Sprite
-{
+class SniperEnemyGame2 : public EnemyBase {
 public:
-    SniperEnemyGame2();
-    virtual ~SniperEnemyGame2();
-
-    static SniperEnemyGame2* createSniperEnemyGame2();
+    static SniperEnemyGame2* create();
     virtual bool init() override;
-
+    virtual void reset() override;
+    void setTarget(PlayerGame2* target);
+    void setInitialDirection();
     void update(float delta) override;
-    void shootBullet();
-    void die();
-	void updateRotationToPlayer();
-    bool onContactBegin(cocos2d::PhysicsContact& contact);
 
 private:
-    void createIdleAnimation();
-    void createShootAnimation();
-    void createDeathAnimation();
+    void initAnimation();
+    void createPhysicsBody();
+    void flipSpriteBasedOnDirection(const cocos2d::Vec2& direction);
+    void switchToShootAnimation();
+    void switchToRunAnimation();
+    void shootBullet();
 
-    cocos2d::Vec2 _velocity;
-    float _speed;
-    bool _isShooting;
-    bool _isDead;
+    PlayerGame2* targetPlayer;
+    cocos2d::Sprite* runSprite;
+    cocos2d::Sprite* shootSprite;
+    SniperBulletGame2* bullet;
 
-    cocos2d::RepeatForever* _idleAnimation;
-    cocos2d::Animate* _shootAnimation;
-    cocos2d::Animate* _deathAnimation;
+    enum class State {
+        Moving,
+        Shooting
+    };
 
-    float _shootCooldown;
+    State currentState;
+    float stateTime;
+    float moveDuration;
+    float shootDuration;
+    bool hasShotBullet;
 };
 
 #endif // __SNIPER_ENEMY_GAME2_H__

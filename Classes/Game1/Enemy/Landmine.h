@@ -19,7 +19,6 @@ public:
     void triggerPreExplosion();
     void triggerExplosion();
 private:
-    void returnToPool();
     cocos2d::SpriteBatchNode* _spriteBatchNodeLandmine;
     cocos2d::SpriteBatchNode* _spriteBatchNodePreExplosion;
     cocos2d::SpriteBatchNode* _spriteBatchNodeExplosion;
@@ -27,6 +26,7 @@ private:
     cocos2d::Sprite* _preExplosionSprite;
     cocos2d::Sprite* _explosionSprite;
     cocos2d::Sprite* explosionSpriteDump;
+    PhysicsBody* explosionBody;
 };
 
 #endif // __LANDMINE_H__

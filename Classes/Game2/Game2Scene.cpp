@@ -1,23 +1,19 @@
 ﻿#include "Game2/Game2Scene.h"
 #include "Manager/PhysicsManager.h"
+#include "Manager/ObjectPoolGame2.h"
 #include "Constants/Constants.h"
 #include "Manager/BackgroundManager.h"
-#include "Game2/Player/Petard.h"
-
-#include "Game2/Enemy/Enemyh/MeleeEnemy.h"
-#include "Game2/Enemy/Enemyh/SniperEnemy.h"
-#include "Game2/Enemy/Enemyh/SuicideBomberEnemy.h"
-#include "Game2/Enemy/Enemyh/RifleEnemy.h"
+#include "Game2/Player/Cannon.h"
+#include "Game2/Enemy/BunkerGame2.h"
 #include "Controller/GameController.h"
-#include "Game2/Items/ItemsSpawn.h"
 #include "ui/CocosGUI.h"
-
 #include "audio/include/AudioEngine.h"
+
 USING_NS_CC;
 
 cocos2d::Scene* Game2Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game2Scene::create();
     scene->addChild(layer);
     return scene;
@@ -35,50 +31,167 @@ bool Game2Scene::init() {
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
     BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/bg_game_2.png", Constants::ORDER_LAYER_BACKGROUND);
 
-    // Petard
-    auto petard = Petard::create();
-    if (petard)
-    {
-        petard->createPhysicsBody();
-        this->addChild(petard);
-        petard->setupInitialPosition();
-        CCLOG("Petard added to scene");
-    }
-    else
-    {
-        CCLOG("Failed to add Petard to scene");
-    }
-
-    //Loading bar health Petard
-
-    _player = PlayerGame2::createPlayerGame2();
-    if (!_player) {
-        return false;
-    }
-
-    _player->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    _player->setName("PlayerGame2");
-    this->addChild(_player);
-    setupKeyboardEventListeners();
+    preloadAssets();
+    setupContactListener();
+    setupBackground();
+    createGround();
+    setupCannon();
+    setupPlayer();
     setupCursor();
-    this->schedule([this](float delta) {
-        spawnEnemies();
-        }, 5.0f, "spawn_enemy_key");
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+    setupKeyboardEventListeners();
+    initHealthBar();
+    initPools();
+    setupBunkers();
 
     this->scheduleUpdate();
     return true;
 }
 
+void Game2Scene::setupContactListener() {
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(Game2Scene::onContactBegin, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+}
+
 void Game2Scene::preloadAssets() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/BulletPlayer3Game.plist");
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/SniperEnemyRun.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/SniperEnemyShoot.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/SuicideBomberEnemy.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/effects/explosion.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/walkriffle.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/sniper-enemy.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/melee-enemy.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGame2Hands.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGame2Body.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/CannonGame2_.plist");
 };
+
+void Game2Scene::initHealthBar() {
+    // Implement health bar initialization
+}
+
+void Game2Scene::initPools() {
+    BunkerGame2Pool::getInstance()->resetPool();
+    MeleeEnemyGame2Pool::getInstance()->resetPool();
+    SniperEnemyGame2Pool::getInstance()->resetPool();
+    SuicideBomberEnemyPool::getInstance()->resetPool();
+    BulletGame2Pool::getInstance()->resetPool();
+    SniperBulletGame2Pool::getInstance()->resetPool();
+
+    BunkerGame2Pool::getInstance()->initPool(10);
+    MeleeEnemyGame2Pool::getInstance()->initPool(10);
+    SniperEnemyGame2Pool::getInstance()->initPool(10);
+    SuicideBomberEnemyPool::getInstance()->initPool(10);
+    BulletGame2Pool::getInstance()->initPool(10);
+    SuicideBomberEnemyPool::getInstance()->initPool(10);
+    SniperBulletGame2Pool::getInstance()->initPool(10);
+}
+
+void Game2Scene::setupBackground() {
+    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/game2/bg_game_2.png", Constants::ORDER_LAYER_BACKGROUND);
+}
+
+bool Game2Scene::onContactBegin(cocos2d::PhysicsContact& contact) {
+    auto bodyA = contact.getShapeA()->getBody();
+    auto bodyB = contact.getShapeB()->getBody();
+
+    auto nodeA = bodyA->getNode();
+    auto nodeB = bodyB->getNode();
+
+    if (nodeA && nodeB) {
+        auto suicideBomberEnemyA = dynamic_cast<SuicideBomberEnemy*>(nodeA);
+        auto sniperEnemyA = dynamic_cast<SniperEnemyGame2*>(nodeA);
+        auto playerNodeA = dynamic_cast<PlayerGame2*>(nodeA);
+        auto cannonA = dynamic_cast<Cannon*>(nodeA);
+        auto groundCannonA = dynamic_cast<GroundCannonGame2*>(nodeA);
+
+        auto suicideBomberEnemyB = dynamic_cast<SuicideBomberEnemy*>(nodeB);
+        auto sniperEnemyB = dynamic_cast<SniperEnemyGame2*>(nodeB);
+        auto playerNodeB = dynamic_cast<PlayerGame2*>(nodeB);
+        auto cannonB = dynamic_cast<Cannon*>(nodeB);
+        auto groundCannonB = dynamic_cast<GroundCannonGame2*>(nodeB);
+
+        if ((suicideBomberEnemyA && groundCannonB) || (suicideBomberEnemyB && groundCannonA)) {
+            handleSuicideBomberEnemyCollision(suicideBomberEnemyA ? suicideBomberEnemyA : suicideBomberEnemyB, cannonA ? cannonA : cannonB);
+            return true;
+        }
+        if ((sniperEnemyA && groundCannonB) || (sniperEnemyB && groundCannonA)) {
+            auto sniperEnemy = sniperEnemyA ? sniperEnemyA : sniperEnemyB;
+            sniperEnemy->setPosition(sniperEnemy->getPosition() - contact.getContactData()->normal * 5);
+            return true;
+        }
+        if ((playerNodeA && groundCannonB) || (playerNodeB && groundCannonA)) {
+            auto playerNode = playerNodeA ? playerNodeA : playerNodeB;
+            playerNode->setPosition(playerNode->getPosition() - contact.getContactData()->normal * 3);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+void Game2Scene::handleSuicideBomberEnemyCollision(SuicideBomberEnemy* enemy, Cannon* cannon) {
+    enemy->explode();
+    enemy->returnToPool();
+}
+
+void Game2Scene::createGround() {
+    groundSprite = GroundCannonGame2::createGround();
+    if (groundSprite) {
+        const auto visibleSize = Director::getInstance()->getVisibleSize();
+        groundSprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+        this->addChild(groundSprite, Constants::ORDER_LAYER_BACKGROUND);
+    }
+}
+
+void Game2Scene::setupCannon() {
+    _cannon = Cannon::create();
+    if (!_cannon) {
+        CCLOG("Failed to create Cannon");
+        return;
+    }
+    this->addChild(_cannon);
+    _cannon->setPosition(Vec2(groundSprite->getPositionX(), groundSprite->getPositionY() - groundSprite->getContentSize().height / 2 + _cannon->getContentSize().height / 2)); // Position cannon on the ground
+}
+
+void Game2Scene::setupBunkers() {
+    const auto visibleSize = Director::getInstance()->getVisibleSize();
+    const Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    float padding = SpriteController::calculateScreenRatio(0.07f);
+
+    Vec2 positions[4] = {
+        Vec2(origin.x + padding, origin.y + padding),
+        Vec2(origin.x + visibleSize.width - padding, origin.y + padding),
+        Vec2(origin.x + padding, origin.y + visibleSize.height - padding),
+        Vec2(origin.x + visibleSize.width - padding, origin.y + visibleSize.height - padding)
+    };
+
+    for (const auto& pos : positions) {
+        auto bunker = BunkerGame2Pool::getInstance()->getObject();
+        bunker->setPosition(pos);
+        bunker->setTargetCannon(_cannon);
+        bunker->setPlayer(_player);
+        this->addChild(bunker);
+    }
+}
+
+void Game2Scene::setupPlayer() {
+    PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
+    _playerAttributes = &PlayerAttributes::getInstance();
+    _player = PlayerGame2::createPlayerGame2();
+    if (!_player) {
+        CCLOG("Failed to create PlayerGame2");
+        return;
+    }
+    const auto visibleSize = Director::getInstance()->getVisibleSize();
+    const Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    _player->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    _player->setName("PlayerGame2");
+    this->addChild(_player);
+}
 
 void Game2Scene::checkGameOver() {
     /* if (_playerAttributes->GetHealth() <= 0) {
@@ -97,14 +210,6 @@ void Game2Scene::checkGameOver() {
              Constants::pathSoundTrackGame1
          );
      }*/
-}
-
-void Game2Scene::resetGameState() {
-    this->unscheduleAllCallbacks();
-    _isGameOver = false;
-    PlayerAttributes::getInstance().SetHealth(Constants::Player_Health2);
-    _playerAttributes = &PlayerAttributes::getInstance();
-    this->scheduleUpdate();
 }
 
 void Game2Scene::setupCursor() {
@@ -141,125 +246,4 @@ void Game2Scene::update(float delta) {
         _player->setPosition(pos);
     }
     checkGameOver();
-}
-
-void Game2Scene::spawnEnemies() {
-    const auto visibleSize = Director::getInstance()->getVisibleSize();
-    const Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    Vec2 spawnPoints[] = {
-        Vec2(585, 330),
-        Vec2(1520, 460),
-        Vec2(1020, 900)
-    };
-    for (const auto& point : spawnPoints) {
-        float x = point.x * (visibleSize.width / 1920.0f);
-        float y = point.y * (visibleSize.height / 1080.0f);
-        //spawnEnemy("MeleeEnemy", Vec2(x + origin.x, y + origin.y));
-        spawnEnemy("RifleEnemy", Vec2(x + origin.x, y + origin.y));
-    }
-}
-
-void Game2Scene::spawnEnemy(const std::string& enemyType, const cocos2d::Vec2& position) {
-    EnemyBase* enemy = nullptr;
-
-    if (enemyType == "MeleeEnemy") {
-        enemy = MeleeEnemy::create();
-    }
-    else if (enemyType == "RifleEnemy") {
-        enemy = RifleEnemy::create();
-    }
-    /*else if (enemyType == "InvEnemy") {
-        enemy = InvEnemy::create();
-    }
-    else if (enemyType == "SuicideBomberEnemy") {
-        enemy = SuicideBomberEnemy::create();
-    }
-    else if (enemyType == "BossEnemy") {
-        enemy = BossEnemy::create();
-    }*/
-    if (enemy) {
-        enemy->setName("Enemy");
-        enemy->setPosition(position);
-        this->addChild(enemy);
-        enemy->scheduleUpdate();
-    }
-}
-
-bool Game2Scene::onContactBegin(PhysicsContact& contact) {
-    auto nodeA = contact.getShapeA()->getBody()->getNode();
-    auto nodeB = contact.getShapeB()->getBody()->getNode();
-
-    if (!nodeA || !nodeB) {
-        return false;
-    }
-
-    // Handle collision between player and items
-    if ((nodeA->getName() == "PlayerGame2" && nodeB->getName() == "ItemsSpawn") ||
-        (nodeB->getName() == "PlayerGame2" && nodeA->getName() == "ItemsSpawn")) {
-        auto item = dynamic_cast<ItemsSpawn*>(nodeA->getName() == "PlayerGame2" ? nodeB : nodeA);
-        if (item) {
-            switch (item->getType()) {
-            case ItemsSpawn::ItemType::AMMO:
-                _player->pickUpAmmo(30);
-                break;
-            case ItemsSpawn::ItemType::HEALTH:
-                _player->pickUpHealth(20);
-                break;
-            case ItemsSpawn::ItemType::GRENADE:
-                _player->pickUpGrenade(1);
-                break;
-            }
-            item->removeFromParent();
-        }
-    }
-
-
-    // Handle collision between player and grenade
-    if ((nodeA->getName() == "PlayerGame2" && nodeB->getName() == "Grenade") ||
-        (nodeB->getName() == "PlayerGame2" && nodeA->getName() == "Grenade")) {
-        if (nodeA->getName() == "Grenade") {
-            nodeA->removeFromParent();
-        }
-        else {
-            nodeB->removeFromParent();
-        }
-        _player->die();
-    }
-
-	// Enemy vs Grenade
-    if ((nodeA->getName() == "Enemy" && nodeB->getName() == "Grenade") ||
-        (nodeB->getName() == "Enemy" && nodeA->getName() == "Grenade")) {
-        if (nodeA->getName() == "Grenade") {
-            nodeA->removeFromParent();
-        }
-        else {
-            nodeB->removeFromParent();
-        }
-        if (nodeA->getName() == "Enemy") {
-            auto enemy = dynamic_cast<MeleeEnemy*>(nodeA);
-            if (enemy) {
-                enemy->die();
-            }
-        }
-        else {
-            auto enemy = dynamic_cast<MeleeEnemy*>(nodeB);
-            if (enemy) {
-                enemy->die();
-            }
-        }
-    }
-
-    if ((nodeA->getName() == "Bullet" && nodeB->getName() == "Enemy") ||
-        (nodeB->getName() == "Bullet" && nodeA->getName() == "Enemy")) {
-        auto bullet = (nodeA->getName() == "Bullet") ? nodeA : nodeB;
-        auto enemy = (nodeA->getName() == "Enemy") ? nodeA : nodeB;
-
-        auto enemyBase = dynamic_cast<EnemyBase*>(enemy);
-        auto bulletGame2 = dynamic_cast<BulletGame2*>(bullet);
-        if (enemyBase && bulletGame2) {
-            enemyBase->takeDamage(bulletGame2->getDamage());
-        }
-        bullet->removeFromParent();
-    }
-    return true;
 }

@@ -27,7 +27,7 @@ bool BulletPlayerGame3::init()
 
     initAnimation();
 
-    this->setSpeed(Constants::BulletGame3Speed);
+    this->setSpeed(Constants::BulletPlayerGame2Speed);
 
     return true;
 }
@@ -40,7 +40,7 @@ void BulletPlayerGame3::initAnimation() {
     }
 
     modelCharac = Sprite::createWithSpriteFrameName("BulletPlayer3Game1.png");
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.1f)); // Adjust scale as needed
+    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.03f)); // Adjust scale as needed
     spriteBatchNode->addChild(modelCharac, Constants::ORDER_LAYER_PLAYER - 1);
 
     auto animateCharac = Animate::create(SpriteController::createAnimation("BulletPlayer3Game", 31, 0.005f)); // Adjust frame count and duration as needed
@@ -59,7 +59,7 @@ void BulletPlayerGame3::createPhysicsBody() {
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBody("BulletPlayer3Game", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "BulletPlayer3Game", originalSize, 0.5f);
+    physicsCache->resizeBody(physicsBody, "BulletPlayer3Game", originalSize, 0.1f);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);
@@ -140,6 +140,7 @@ void BulletPlayerGame3::removeWhenOutOfScreen()
 
 void BulletPlayerGame3::returnPool() {
     this->unscheduleUpdate(); // Stop the update when returning to the pool
+    this->stopAllActions();
     this->reset();
     if (this->getParent() != nullptr) {
         this->removeFromParent();

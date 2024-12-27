@@ -79,15 +79,6 @@
     <Filter Include="src\Gameplay\Enemy\EnemyGame3">
       <UniqueIdentifier>{90a5611c-0c27-4f26-8fa6-01f493318a62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Gameplay\Enemy\EnemyGame2\Enemyh">
-      <UniqueIdentifier>{6f565c7e-243a-4576-ac25-38d12858d65a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Gameplay\Enemy\EnemyGame2\EnemyCpp">
-      <UniqueIdentifier>{b86b6162-9293-482b-b168-ce6709301518}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Grenade">
-      <UniqueIdentifier>{7c98527b-5b19-44a1-a243-16e904393be1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Controller\SoundAndMusic">
       <UniqueIdentifier>{18c232ed-47ac-44ab-a961-f0d8a229e5a5}</UniqueIdentifier>
     </Filter>
@@ -172,14 +163,8 @@
     <Filter Include="src\Gameplay\Items\Game2">
       <UniqueIdentifier>{b2ccccaa-96be-4f86-83b2-4b0139cb97cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Gameplay\Player\PlayerGame2\Petard">
-      <UniqueIdentifier>{8f261ca5-0719-4633-9423-263b5c2b5a4a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Gameplay\Player\PlayerGame2\PlayerGame2">
       <UniqueIdentifier>{a12b4d92-f665-4e47-bc3f-0a4e2cedc275}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard">
-      <UniqueIdentifier>{579e9b8e-9355-40f5-9bb2-c7c8077dbad1}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\UXUI\Badge">
       <UniqueIdentifier>{3b650970-4079-4688-bde8-1e862425da92}</UniqueIdentifier>
@@ -195,6 +180,33 @@
     </Filter>
     <Filter Include="src\Library">
       <UniqueIdentifier>{731bb78d-889c-4bc2-bc8d-a3e00ae818aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2\Cannon">
+      <UniqueIdentifier>{8f261ca5-0719-4633-9423-263b5c2b5a4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2\Cannon\Bullet_Petard">
+      <UniqueIdentifier>{579e9b8e-9355-40f5-9bb2-c7c8077dbad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\BunkerGame2">
+      <UniqueIdentifier>{c13a9030-5e5b-4a03-8eca-c206ead5386f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\MeleeEnemyGame2">
+      <UniqueIdentifier>{5e5cff07-0449-496a-bf6b-95e9b38e381c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\SniperEnemyGame2">
+      <UniqueIdentifier>{6a7afe90-c652-4059-ba51-3cf8a5260356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\SuicideBomberEnemy">
+      <UniqueIdentifier>{17a2ed1c-3dfe-4801-8f18-6f040231492e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2\GroundCannon">
+      <UniqueIdentifier>{2a31898e-8531-4c0a-b706-86d890796cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Enemy\EnemyGame2\SniperEnemyGame2\SniperBulletGame2">
+      <UniqueIdentifier>{3824561e-5f63-4aa1-9eb7-5dce78276430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gameplay\Player\PlayerGame2\GrenadeAndBullet">
+      <UniqueIdentifier>{7c98527b-5b19-44a1-a243-16e904393be1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +258,6 @@
     <ClCompile Include="..\Classes\Panel\VictoryPanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp">
       <Filter>src\Gameplay\Player\PlayerGame1</Filter>
     </ClCompile>
@@ -297,9 +306,6 @@
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Grenade\Grenade.cpp">
-      <Filter>src\Grenade</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Controller\SoundController.cpp">
       <Filter>src\Controller\SoundAndMusic</Filter>
     </ClCompile>
@@ -339,26 +345,11 @@
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\MeleeEnemy.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SniperEnemy.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\SuicideBomberEnemy.cpp">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\EnemyCpp</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Panel\BasePanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBase.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Grenade\BulletGame2.cpp">
-      <Filter>src\Grenade</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Grenade\PoolBulletGame2.cpp">
-      <Filter>src\Grenade</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game3\enemy\EnemyPlaneBullet.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
@@ -417,13 +408,9 @@
     <ClCompile Include="..\Classes\Game2\Player\PlayerGame2.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
     </ClCompile>
-    <ClCompile Include="Petard.cpp">
-      <Filter>src\Gameplay\Player\PlayerGame2\Petard</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Game2\Player\Bullet_Petard.cpp">
-      <Filter>src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard</Filter>
+      <Filter>src\Gameplay\Player\PlayerGame2\Cannon\Bullet_Petard</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Enemy\EnemyCpp\RifleEnemy.cpp" />
     <ClCompile Include="..\Classes\UIGame\Badge.cpp">
       <Filter>src\UXUI\Badge</Filter>
     </ClCompile>
@@ -439,15 +426,39 @@
     <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game2\Items\ItemsSpawn.cpp" />
-    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp">
-      <Filter>src\Library</Filter>
+    <ClCompile Include="..\Classes\UIGame\LibraryWindow.cpp" />
+    <ClCompile Include="..\Classes\Scene\SceneFinishGame.cpp">
+      <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Library\UILibrary.cpp">
-      <Filter>src\Library</Filter>
+    <ClCompile Include="..\Classes\Manager\ObjectPoolGame2.cpp">
+      <Filter>src\Manager\Game2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp">
-      <Filter>src\Library</Filter>
+    <ClCompile Include="..\Classes\Game2\Enemy\BunkerGame2.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\BunkerGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\MeleeEnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\SniperEnemyGame2.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\SniperEnemyGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\SuicideBomberEnemy.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\SuicideBomberEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\GroundCannonGame2.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2\GroundCannon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\Cannon.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Enemy\SniperBulletGame2.cpp">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\SniperEnemyGame2\SniperBulletGame2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\Grenade.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Game2\Player\BulletGame2.cpp">
+      <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -499,9 +510,6 @@
     <ClInclude Include="..\Classes\Panel\VictoryPanel.h">
       <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Game1\Player\PlayerGame1.h">
       <Filter>src\Gameplay\Player\PlayerGame1</Filter>
     </ClInclude>
@@ -550,9 +558,6 @@
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyBase.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Grenade\Grenade.h">
-      <Filter>src\Grenade</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Controller\SoundController.h">
       <Filter>src\Controller\SoundAndMusic</Filter>
     </ClInclude>
@@ -595,26 +600,11 @@
     <ClInclude Include="..\Classes\Game2\Enemy\EnemyUtils.h">
       <Filter>src\Gameplay\Enemy\EnemyGame2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\MeleeEnemy.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SniperEnemy.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\SuicideBomberEnemy.h">
-      <Filter>src\Gameplay\Enemy\EnemyGame2\Enemyh</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Panel\BasePanel.h">
       <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBase.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Grenade\BulletGame2.h">
-      <Filter>src\Grenade</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Grenade\PoolBulletGame2.h">
-      <Filter>src\Grenade</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game3\enemy\EnemyPlaneBullet.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBullet</Filter>
@@ -673,13 +663,12 @@
     <ClInclude Include="..\Classes\Game2\Player\PlayerGame2.h">
       <Filter>src\Gameplay\Player\PlayerGame2\PlayerGame2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Player\Petard.h">
-      <Filter>src\Gameplay\Player\PlayerGame2\Petard</Filter>
+    <ClInclude Include="..\Classes\Game2\Player\Cannon.h">
+      <Filter>src\Gameplay\Player\PlayerGame2\Cannon</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Player\Bullet_Petard.h">
-      <Filter>src\Gameplay\Player\PlayerGame2\Petard\Bullet_Petard</Filter>
+      <Filter>src\Gameplay\Player\PlayerGame2\Cannon\Bullet_Petard</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Enemy\Enemyh\RifleEnemy.h" />
     <ClInclude Include="..\Classes\UIGame\Badge.h">
       <Filter>src\UXUI\Badge</Filter>
     </ClInclude>
@@ -695,15 +684,36 @@
     <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Game2\Items\ItemsSpawn.h" />
-    <ClInclude Include="..\Classes\Library\ItemLibrary.h">
-      <Filter>src\Library</Filter>
+    <ClInclude Include="..\Classes\UIGame\LibraryWindow.h" />
+    <ClInclude Include="..\Classes\Scene\SceneFinishGame.h">
+      <Filter>src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Library\UILibrary.h">
-      <Filter>src\Library</Filter>
+    <ClInclude Include="..\Classes\Manager\ObjectPoolGame2.h">
+      <Filter>src\Manager\Game2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h">
-      <Filter>src\Library</Filter>
+    <ClInclude Include="..\Classes\Game2\Enemy\BunkerGame2.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\BunkerGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\MeleeEnemyGame2.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\MeleeEnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\SniperEnemyGame2.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\SniperEnemyGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\SuicideBomberEnemy.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\SuicideBomberEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\GroundCannonGame2.h">
+      <Filter>src\Gameplay\Player\PlayerGame2\GroundCannon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Enemy\SniperBulletGame2.h">
+      <Filter>src\Gameplay\Enemy\EnemyGame2\SniperEnemyGame2\SniperBulletGame2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\BulletGame2.h">
+      <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Game2\Player\Grenade.h">
+      <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

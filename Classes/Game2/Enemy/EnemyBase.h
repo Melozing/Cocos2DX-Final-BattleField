@@ -1,43 +1,23 @@
-// EnemyBase.h
-#pragma once
+#ifndef __ENEMY_BASE_H__
+#define __ENEMY_BASE_H__
 
 #include "cocos2d.h"
-#include "Constants/Constants.h"
-#include "Controller/SpriteController.h"
-#include "Game2/Enemy/EnemyUtils.h"
 
-class EnemyBase : public cocos2d::Sprite, public SpriteController {
+class EnemyBase : public cocos2d::Sprite {
 public:
-    EnemyBase();
-    virtual ~EnemyBase();
     virtual bool init() override;
     virtual void update(float delta) override;
-    void die();
-    void attack();
-    void moveToPlayer();
-    void setHealth(int health);
-    int getHealth() const;
-    void setSpeed(float speed);
-    float getSpeed() const;
-    void setDamage(int damage);
-    int getDamage() const;
-    void setAttackRange(float range);
-    float getAttackRange() const;
     void updateRotationToPlayer();
-    void takeDamage(int damage);
-    Size GetSize();
-    virtual void createPhysicsBody();
+    void moveToPlayer();
+    virtual void reset();
+    void explode();
+    void dropRandomItem();
+    void returnToPool();
+    void resetSprite();
 
 protected:
-    int _health;
-    float _speed;
-    int _damage;
-    float _attackRange;
-    bool _isDead;
-    bool _isAttacking;
-    bool _isMoving;
-
-    virtual Animation* createIdleAnimation();
-    virtual Animation* createAttackAnimation();
-    virtual Animation* createDeathAnimation(); 
+    cocos2d::Sprite* modelCharac; 
 };
+
+#endif // __ENEMY_BASE_H__
+

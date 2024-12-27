@@ -10,7 +10,7 @@
 #include "Game3/enemy/MissileForEnemyPlane.h"
 #include "Game3/enemy/BulletForEnemyPlane.h"
 #include "Game3/enemy/FinisherMissiles.h"
-#include "Game3/enemy/EnemyPlaneBoss.h" // Include EnemyPlaneBoss
+#include "Game3/enemy/EnemyPlaneBoss.h" 
 #include "LoadingBar/CustomLoadingBar.h"
 #include <Game2/Cursor/Cursor.h>
 #include "UIGame/Badge.h"
@@ -27,7 +27,6 @@ public:
     CREATE_FUNC(Game3Scene);
 
     void updateBulletLabel(cocos2d::Ref* sender);
-    void updateBulletLabel();
     CityCollisionArea* getCityCollisionArea() const;
 
     // Method to handle the boss's ultimate skill
@@ -37,14 +36,19 @@ public:
     void showUltimateSkillBadge(Ref* sender);
     void hideUltimateSkillBadge(Ref* sender);
 
+    // Method to spawn or update the boss
+    void spawnOrUpdateBoss(float timeToUltimate);
+
 private:
     ~Game3Scene();
     // Physics world
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
+    void transitionToNextScene(Ref* sender);
 
     // Boss 
-    EnemyPlaneBoss* enemyBoos;
+    EnemyPlaneBoss* enemyBoss = nullptr;
+    void initBoss();
 
     // Cursor
     Cursor* _cursor;
@@ -54,6 +58,7 @@ private:
 
     // Health bar
     CustomLoadingBar* healthBar;
+    PlayerGame3* playerGame3;
 
     // Elapsed time
     float _elapsedTime;
@@ -61,8 +66,9 @@ private:
     // Setup methods
     void setupBackground();
     void setupPlayer();
-    void initSpawning();
-    void initBossSpawning();
+    void initBulletSpawning(const std::string& jsonFilePath);
+    void initBoomSpawning(const std::string& jsonFilePath);
+    void initBossSpawning(const std::string& jsonFilePath);
     void setupCursor();
     void setupEventListeners(PlayerGame3* player);
     void initPools();
