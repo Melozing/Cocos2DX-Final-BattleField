@@ -45,10 +45,10 @@ void EnemyPlaneBullet::initAnimation() {
     }
 
     modelCharac = Sprite::createWithSpriteFrameName("EnemyPlaneBullet1.png");
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.07f));
+    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.13f));
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(SpriteController::createAnimation("EnemyPlaneBullet", 7, 0.07f));
+    auto animateCharac = Animate::create(SpriteController::createAnimation("EnemyPlaneBullet", 39, 0.033f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
@@ -60,9 +60,9 @@ void EnemyPlaneBullet::spawnEnemy(cocos2d::Node* parent, float skillTime, bool s
         auto visibleSize = Director::getInstance()->getVisibleSize();
 
         // Define fixed y-coordinates for spawning
-        float lowY = visibleSize.height * 0.4f;
-        float midY = visibleSize.height * 0.5f;
-        float highY = visibleSize.height * 0.6f;
+        float lowY = visibleSize.height * 0.65f;
+        float midY = visibleSize.height * 0.7f;
+        float highY = visibleSize.height * 0.75f;
 
         float fixedY;
         if (position == "low") {
@@ -108,12 +108,13 @@ void EnemyPlaneBullet::showWarningSign() {
 }
 
 void EnemyPlaneBullet::hideWarningSign() {
-    warningSign->setVisible(false);
     warningSign->stopAllActions();
+    this->unschedule("show_warning_sign_key");
+    warningSign->setVisible(false);
 }
 
 void EnemyPlaneBullet::spawnBullets() {
-    hideWarningSign(); // Hide warning sign when spawning bullets
+    this->hideWarningSign(); // Hide warning sign when spawning bullets
 
     bool movingFromLeft = this->getPositionX() < Director::getInstance()->getVisibleSize().width / 2;
 
@@ -145,7 +146,7 @@ void EnemyPlaneBullet::createPhysicsBody() {
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBody("EnemyPlaneBullet", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "EnemyPlaneBullet", originalSize, 0.2f);
+    physicsCache->resizeBody(physicsBody, "EnemyPlaneBullet", originalSize, 0.9f);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);
@@ -156,9 +157,7 @@ void EnemyPlaneBullet::createPhysicsBody() {
 }
 
 void EnemyPlaneBullet::returnToPool() {
-    warningSign->setVisible(false);
-    this->stopAllActions();
-    this->unschedule("show_warning_sign_key");
+    this->hideWarningSign();
     this->unschedule("spawn_bullets_key");
     this->setVisible(false);
     this->removeFromParentAndCleanup(false);

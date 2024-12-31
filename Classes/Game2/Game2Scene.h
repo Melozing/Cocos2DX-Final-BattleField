@@ -5,7 +5,9 @@
 #include "Cursor/Cursor.h"
 #include "Scene/BaseScene.h"
 #include "Game2/Enemy/SuicideBomberEnemy.h"
+#include "Game2/Enemy/SniperEnemyGame2.h"
 #include "Game2/Player/PlayerGame2.h"
+#include "Game2/Player/BulletGame2.h"
 #include "Game2/Player/Cannon.h"
 #include "Game2/Player/GroundCannonGame2.h" 
 #include "LoadingBar/CustomLoadingBar.h"
@@ -44,7 +46,7 @@ private:
     // Handles the beginning of a physics contact event
     bool onContactBegin(cocos2d::PhysicsContact& contact);
     void handleSuicideBomberEnemyCollision(SuicideBomberEnemy* enemy, Cannon* cannon);
-
+    void handleSniperEnemyAndBulletPlayerCollision(SniperEnemyGame2* enemy, BulletGame2* bullet);
     // Flag to check if the game is over
     bool _isGameOver;
 

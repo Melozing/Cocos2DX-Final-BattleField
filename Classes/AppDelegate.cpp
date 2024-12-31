@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "Scene/MainMenuScene.h"
+#include "Scene/SceneFinishGame.h"
 #include "Constants/Constants.h"
 #include "Controller/SoundController.h"
 #include "Controller/GameController.h"

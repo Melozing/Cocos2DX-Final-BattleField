@@ -31,6 +31,11 @@ public:
     bool musicStarted;
     int audioID;
 
+    // Check Tutorial
+    bool isTutorialLayerActive() const;
+    void setTutorialLayerActive(bool active);
+
+
 private:
     // Private constructor for singleton pattern
     GameController();
@@ -47,6 +52,9 @@ private:
     bool paused;
     std::string currentSoundtrackPath;
     Cursor* _cursor;
+
+    //Check Tutorial
+    bool tutorialLayerActive;
 };
 
 #endif // __GAME_CONTROLLER_H__

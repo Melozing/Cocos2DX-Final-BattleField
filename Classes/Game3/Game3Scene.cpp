@@ -23,7 +23,7 @@ USING_NS_CC;
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
     
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game3Scene::create();
     scene->addChild(layer);
 
@@ -58,15 +58,19 @@ bool Game3Scene::init() {
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
     this->addChild(cityCollisionArea);
 
+    checkAndUpdateBackground();
+
     return true;
 }
 
 void Game3Scene::preloadAssets() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/gameplay/BackgroundNormal.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/gameplay/BackgroundBreak.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/BulletPlayer3Game.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/enemy_plane_boom.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBoom.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBoss.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBullet.plist");
@@ -77,7 +81,30 @@ void Game3Scene::preloadAssets() {
 }
 
 void Game3Scene::setupBackground() {
-    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/Game3Background.png", Constants::ORDER_LAYER_BACKGROUND);
+    // Initialize background state flags
+    isBackgroundNormal = false;
+    isBackgroundBreak = false;
+
+    // Preload backgrounds
+    std::vector<std::string> backgrounds = { "BackgroundNormal", "BackgroundBreak" };
+    BackgroundManager::getInstance()->preloadBackgrounds(this, backgrounds, 129, 0.033f);
+}
+
+void Game3Scene::checkAndUpdateBackground() {
+    if (healthBar->getPercent() > 50) {
+        if (!isBackgroundNormal) {
+            BackgroundManager::getInstance()->transitionBackground("BackgroundNormal", 0.15f);
+            isBackgroundNormal = true;
+            isBackgroundBreak = false;
+        }
+    }
+    else {
+        if (!isBackgroundBreak) {
+            BackgroundManager::getInstance()->transitionBackground("BackgroundBreak", 0.15f);
+            isBackgroundNormal = false;
+            isBackgroundBreak = true;
+        }
+    }
 }
 
 void Game3Scene::setupPlayer() {
@@ -626,6 +653,7 @@ void Game3Scene::checkHealthBar() {
 void Game3Scene::updateHealthBar(float health) {
     healthBar->setPercent(health);
     checkHealthBar();
+    checkAndUpdateBackground();
 }
 
 void Game3Scene::handleBossDamage(float damage) {

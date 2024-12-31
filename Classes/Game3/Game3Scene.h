@@ -45,6 +45,7 @@ private:
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
     void transitionToNextScene(Ref* sender);
+    void checkAndUpdateBackground();
 
     // Boss 
     EnemyPlaneBoss* enemyBoss = nullptr;
@@ -114,6 +115,10 @@ private:
     void updateUltimateSkillCountdown(float dt);
     float ultimateSkillTimeRemaining;
     bool finisherMissilesHandled = false;
+
+    // Background
+    bool isBackgroundNormal;
+    bool isBackgroundBreak;
 };
 
 #endif // __GAME3SCENE_SCENE_H__

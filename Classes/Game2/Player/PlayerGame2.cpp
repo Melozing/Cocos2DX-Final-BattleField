@@ -300,6 +300,11 @@ void PlayerGame2::shootBullet(const Vec2& direction)
         bullet->setPosition(this->getPosition());
         bullet->setDirection(direction);
         bullet->setSpeed(Constants::BulletGame3Speed);
+        bullet->spawn();
+
+        if (bullet->getParent() != nullptr) {
+            bullet->removeFromParent();
+        }
         this->getParent()->addChild(bullet);
         currentMagazine--;
         updateAmmoDisplay();

@@ -33,6 +33,7 @@ bool SniperEnemyGame2::init()
     moveDuration = 1.0f; 
     shootDuration = 1.5f; 
     hasShotBullet = false;
+    health = maxHealth;
     return true;
 }
 
@@ -52,6 +53,18 @@ void SniperEnemyGame2::initAnimation() {
     shootSprite->runAction(RepeatForever::create(shootAnimate));
 
     shootSprite->setVisible(false);
+
+    deathSprite = Sprite::createWithSpriteFrameName("SniperEnemyDeath1.png");
+    deathSprite->setScale(SpriteController::updateSpriteScale(deathSprite, 0.07f));
+    this->addChild(deathSprite);
+
+    auto deathAnimate = Animate::create(SpriteController::createAnimation("SniperEnemyDeath", 5, 0.1f));
+    deathSprite->runAction(Sequence::create(deathAnimate, CallFunc::create([this]() {
+        this->removeFromParent();
+        SniperEnemyGame2Pool::getInstance()->returnObject(this);
+        }), nullptr));
+
+    deathSprite->setVisible(false);
 }
 
 void SniperEnemyGame2::createPhysicsBody() {
@@ -82,6 +95,7 @@ void SniperEnemyGame2::reset()
     runSprite->setVisible(true);
     shootSprite->setVisible(false);
     hasShotBullet = false;
+    health = maxHealth;
 }
 
 void SniperEnemyGame2::setTarget(PlayerGame2* target) {
@@ -163,6 +177,21 @@ void SniperEnemyGame2::switchToRunAnimation()
     shootSprite->setVisible(false);
 }
 
+void SniperEnemyGame2::switchToDeathAnimation() {
+    runSprite->setVisible(false);
+    shootSprite->setVisible(false);
+    deathSprite->setVisible(true);
+
+    auto deathAnimate = Animate::create(SpriteController::createAnimation("SniperEnemyDeath", 5, 0.1f));
+    auto sequence = Sequence::create(deathAnimate, CallFunc::create([this]() {
+        this->removeFromParent();
+        this->returnToPool();
+        }), nullptr);
+
+    deathSprite->runAction(sequence);
+}
+
+
 void SniperEnemyGame2::shootBullet()
 {
     bullet = SniperBulletGame2Pool::getInstance()->getObject();
@@ -171,5 +200,31 @@ void SniperEnemyGame2::shootBullet()
     bullet->setDirection(targetPlayer->getPosition() - this->getPosition());
     bullet->spawn();
 
+    if (bullet->getParent() != nullptr) {
+        bullet->removeFromParent();
+    }
+
     this->getParent()->addChild(bullet);
+}
+
+void SniperEnemyGame2::takeDamage(float damage) {
+    if (currentState == State::Dead) {
+        return;
+    }
+
+    health -= damage;
+    blinkRed();
+
+    if (health <= 0) {
+        currentState = State::Dead;
+        switchToDeathAnimation();
+    }
+}
+
+void SniperEnemyGame2::blinkRed() {
+    auto tintToRed = TintTo::create(0.05f, 255, 0, 0);
+    auto tintToNormal = TintTo::create(0.05f, 255, 255, 255);
+    auto sequence = Sequence::create(tintToRed, tintToNormal, nullptr);
+    runSprite->runAction(sequence);
+    shootSprite->runAction(sequence->clone());
 }

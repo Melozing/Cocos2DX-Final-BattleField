@@ -1,5 +1,6 @@
 #include "EnemyBase.h"
 #include "Game2/Player/PlayerGame2.h"
+#include "Manager/ObjectPoolGame2.h"
 #include "Constants/Constants.h"
 #include "Controller/SoundController.h"
 #include "FX/Explodable.h"
@@ -101,7 +102,12 @@ void EnemyBase::returnToPool() {
     this->setVisible(false);
     this->removeFromParentAndCleanup(false);
     this->reset();
-    // Add logic to return to the appropriate pool if needed
+    if (dynamic_cast<SuicideBomberEnemy*>(this)) {
+        SuicideBomberEnemyPool::getInstance()->returnObject(static_cast<SuicideBomberEnemy*>(this));
+    }
+    else if (dynamic_cast<SniperEnemyGame2*>(this)) {
+        SniperEnemyGame2Pool::getInstance()->returnObject(static_cast<SniperEnemyGame2*>(this));
+    }
 }
 
 void EnemyBase::resetSprite() {
@@ -111,10 +117,3 @@ void EnemyBase::resetSprite() {
     this->stopAllActions();
     this->setVisible(true);
 }
-
-// Uncomment and implement if needed
-// Vec2 EnemyBase::getPlayerPosition() {
-//     // Assuming PlayerGame2 is a singleton or can be accessed globally
-//     return PlayerGame2::getInstance()->getPosition();
-// }
-
