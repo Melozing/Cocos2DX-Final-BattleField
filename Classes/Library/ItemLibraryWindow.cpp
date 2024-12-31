@@ -18,20 +18,24 @@ bool ItemLibraryWindow::init() {
     createInfoSection();
     createExitButton();
 
+    
     return true;
 }
 
 void ItemLibraryWindow::createBackground() {
     Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
     mainBg = Sprite::create("assets_game/UXUI/Collection/c_full_header.png");
     if (!mainBg) {
         CCLOG("Failed to create mainBg sprite");
         return;
     }
     mainBg->setContentSize(Size(visibleSize.width * 0.8, visibleSize.height * 0.8));
-    mainBg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    mainBg->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     this->addChild(mainBg);
+}
+
+cocos2d::Rect ItemLibraryWindow::getMainBgBoundingBox() const {
+    return mainBg->getBoundingBox();
 }
 
 void ItemLibraryWindow::createExitButton() {
@@ -152,9 +156,3 @@ void ItemLibraryWindow::updateItemInfo(const ItemData& item) {
         itemInfoImage->setPosition(Vec2(infoScrollView->getContentSize().width / 2, infoScrollView->getContentSize().height - itemInfoLabel->getContentSize().height - 10));
     }
 }
-
-
-
-
-
-

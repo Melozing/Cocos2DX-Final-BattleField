@@ -10,7 +10,7 @@ class ItemLibraryWindow : public cocos2d::Layer {
 public:
     virtual bool init();
     CREATE_FUNC(ItemLibraryWindow);
-
+    cocos2d::Rect getMainBgBoundingBox() const;
 private:
     void createBackground();
     void createItemSection();

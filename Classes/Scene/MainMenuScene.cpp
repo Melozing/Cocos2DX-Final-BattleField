@@ -96,7 +96,7 @@ bool MainMenu::init() {
     }
 
     // Create and position collection button
-    auto collectionButton = ui::Button::create("assets_game/UXUI/Collection/Info.png");
+    collectionButton = ui::Button::create("assets_game/UXUI/Collection/Info.png");
     collectionButton->setScale(SpriteController::updateSpriteScale(collectionButton, 0.08f));
     collectionButton->setPosition(Vec2(visibleSize.width - collectionButton->getContentSize().width / 2 - 10, collectionButton->getContentSize().height / 2 + 10)); // Position at the bottom right
     collectionButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
@@ -116,19 +116,38 @@ void MainMenu::startLoading(std::string nameScene) {
 
 void MainMenu::toggleItemLibraryWindow() {
     if (itemLibraryWindow) {
-        itemLibraryWindow->removeFromParent();
-        itemLibraryWindow = nullptr;
-        overlayLayer->removeFromParent();
-        overlayLayer = nullptr;
+        // Animate closing the item library window
+        auto scaleDown = ScaleTo::create(0.3f, 0.0f);
+        //auto moveToButton = MoveTo::create(0.3f, collectionButton->getPosition());
+        auto removeWindow = CallFunc::create([this]() {
+            itemLibraryWindow->removeFromParent();
+            itemLibraryWindow = nullptr;
+            overlayLayer->removeFromParent();
+            overlayLayer = nullptr;
+            });
+        //auto sequence = Sequence::create(Spawn::create(scaleDown, moveToButton, nullptr), removeWindow, nullptr);
+        auto sequence = Sequence::create(scaleDown, removeWindow, nullptr);
+        itemLibraryWindow->runAction(sequence);
     }
     else {
         itemLibraryWindow = ItemLibraryWindow::create();
+        itemLibraryWindow->setScale(0.0f);
+        //itemLibraryWindow->setPosition(collectionButton->getPosition());
         this->addChild(itemLibraryWindow, 10);
+
+        // Animate opening the item library window
+        auto scaleUp = ScaleTo::create(0.3f, 1.0f);
+        //auto moveToCenter = MoveTo::create(0.3f, Vec2(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height / 2));
+        //itemLibraryWindow->runAction(Spawn::create(scaleUp, moveToCenter, nullptr));
+        itemLibraryWindow->runAction(scaleUp);
+        // Create and add overlay layer
         overlayLayer = LayerColor::create(Color4B(0, 0, 0, 0));
         this->addChild(overlayLayer, 9);
+
+        // Add touch listener to overlay layer to close the item library window when clicking outside
         auto touchListener = EventListenerTouchOneByOne::create();
         touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
-            if (itemLibraryWindow && !itemLibraryWindow->getBoundingBox().containsPoint(touch->getLocation())) {
+            if (itemLibraryWindow && !itemLibraryWindow->getMainBgBoundingBox().containsPoint(touch->getLocation())) {
                 toggleItemLibraryWindow();
                 return true;
             }
