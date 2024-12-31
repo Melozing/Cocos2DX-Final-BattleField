@@ -174,3 +174,8 @@ const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victo
 //UserDefault UI
 const std::string Constants::UD_musicVolume = "musicVolume";
 const std::string Constants::UD_effectsVolume = "effectsVolume";
+
+//Tutorial 
+const std::string Constants::DONT_SHOW_TUTORIAL_GAME1 = "DONT_SHOW_TUTORIAL_GAME1";
+const std::string Constants::DONT_SHOW_TUTORIAL_GAME2 = "DONT_SHOW_TUTORIAL_GAME2";
+const std::string Constants::DONT_SHOW_TUTORIAL_GAME3 = "DONT_SHOW_TUTORIAL_GAME3";

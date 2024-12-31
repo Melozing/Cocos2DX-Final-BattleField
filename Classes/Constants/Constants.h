@@ -163,6 +163,11 @@ public:
     //UserDefault UI
     static const std::string UD_musicVolume;
     static const std::string UD_effectsVolume;
+
+    //Tutorial
+    static const std::string DONT_SHOW_TUTORIAL_GAME1;
+    static const std::string DONT_SHOW_TUTORIAL_GAME2;
+    static const std::string DONT_SHOW_TUTORIAL_GAME3;
 };
 
 #endif // __CONSTANTS_H__

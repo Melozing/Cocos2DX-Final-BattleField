@@ -12,6 +12,7 @@
 #include "Constants/Constants.h"
 #include "ui/UILoadingBar.h"
 #include "Manager/BackgroundManager.h"
+#include "Manager/TutorialLayer.h"
 
 #include <ctime> 
 #include "json/document.h"
@@ -24,7 +25,7 @@ using namespace cocos2d::experimental;
 
 cocos2d::Scene* Game1Scene::createScene() {
     auto scene = Scene::createWithPhysics(); // Create scene with physics
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game1Scene::create();
     layer->setPhysicWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
@@ -60,6 +61,7 @@ bool Game1Scene::init() {
     initSpawning();
     initCursor();
     setupContactListener();
+    showTutorialIfNeeded();
 
     this->scheduleUpdate();
     return true;
@@ -229,8 +231,6 @@ void Game1Scene::initSound() {
         }, "loading_bar_update_key");
 }
 
-
-
 void Game1Scene::initSpawning() {
     enemySpawnMap["FallingRock"] = [this](const cocos2d::Size& size) { SpawnFallingRockAndBomb(size); };
     enemySpawnMap["RandomBoom"] = [this](const cocos2d::Size& size) { SpawnRandomBoom(size); };
@@ -252,6 +252,18 @@ void Game1Scene::initSpawning() {
         }, "json_based_spawning_key");
 }
 
+void Game1Scene::showTutorialIfNeeded() {
+    bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
+    if (!dontShowTutorial) {
+        std::vector<std::string> slideImages = {
+            "assets_game/UXUI/Tutorial/Game1/image1.jpg",
+            "assets_game/UXUI/Tutorial/Game1/image2.jpg",
+            "assets_game/UXUI/Tutorial/Game1/image3.jpg"
+        };
+        auto tutorialLayer = TutorialLayer::create(slideImages, Constants::DONT_SHOW_TUTORIAL_GAME1);
+        this->addChild(tutorialLayer, Constants::ORDER_LAYER_UI); // Add tutorial layer on top
+    }
+}
 
 void Game1Scene::setPhysicsBodyChar(PhysicsBody* physicBody, int num) {
     physicBody->setCollisionBitmask(num);

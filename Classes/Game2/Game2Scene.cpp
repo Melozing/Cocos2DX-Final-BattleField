@@ -58,6 +58,7 @@ void Game2Scene::preloadAssets() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/BulletPlayer3Game.plist");
 
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/SniperEnemyDeath.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/SniperEnemyRun.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/SniperEnemyShoot.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/SuicideBomberEnemy.plist");
@@ -103,17 +104,23 @@ bool Game2Scene::onContactBegin(cocos2d::PhysicsContact& contact) {
         auto suicideBomberEnemyA = dynamic_cast<SuicideBomberEnemy*>(nodeA);
         auto sniperEnemyA = dynamic_cast<SniperEnemyGame2*>(nodeA);
         auto playerNodeA = dynamic_cast<PlayerGame2*>(nodeA);
+        auto playerBulletA = dynamic_cast<BulletGame2*>(nodeA);
         auto cannonA = dynamic_cast<Cannon*>(nodeA);
         auto groundCannonA = dynamic_cast<GroundCannonGame2*>(nodeA);
 
         auto suicideBomberEnemyB = dynamic_cast<SuicideBomberEnemy*>(nodeB);
         auto sniperEnemyB = dynamic_cast<SniperEnemyGame2*>(nodeB);
         auto playerNodeB = dynamic_cast<PlayerGame2*>(nodeB);
+        auto playerBulletB = dynamic_cast<BulletGame2*>(nodeB);
         auto cannonB = dynamic_cast<Cannon*>(nodeB);
         auto groundCannonB = dynamic_cast<GroundCannonGame2*>(nodeB);
 
         if ((suicideBomberEnemyA && groundCannonB) || (suicideBomberEnemyB && groundCannonA)) {
             handleSuicideBomberEnemyCollision(suicideBomberEnemyA ? suicideBomberEnemyA : suicideBomberEnemyB, cannonA ? cannonA : cannonB);
+            return true;
+        }
+        if ((sniperEnemyA && playerBulletB) || (sniperEnemyB && playerBulletA)) {
+            handleSniperEnemyAndBulletPlayerCollision(sniperEnemyA ? sniperEnemyA : sniperEnemyB, playerBulletA ? playerBulletA : playerBulletB);
             return true;
         }
         if ((sniperEnemyA && groundCannonB) || (sniperEnemyB && groundCannonA)) {
@@ -135,6 +142,11 @@ bool Game2Scene::onContactBegin(cocos2d::PhysicsContact& contact) {
 void Game2Scene::handleSuicideBomberEnemyCollision(SuicideBomberEnemy* enemy, Cannon* cannon) {
     enemy->explode();
     enemy->returnToPool();
+}
+
+void Game2Scene::handleSniperEnemyAndBulletPlayerCollision(SniperEnemyGame2* enemy, BulletGame2* bullet) {
+    enemy->takeDamage(-1);
+    bullet->returnPool();
 }
 
 void Game2Scene::createGround() {

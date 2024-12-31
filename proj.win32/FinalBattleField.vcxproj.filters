@@ -460,6 +460,9 @@
     <ClCompile Include="..\Classes\Game2\Player\BulletGame2.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Manager\TutorialLayer.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -714,6 +717,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Player\Grenade.h">
       <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\TutorialLayer.h">
+      <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

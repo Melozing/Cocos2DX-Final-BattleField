@@ -111,8 +111,11 @@ private:
     // Cursor
     void initCursor();
 
-    //Preload 
+    // Preload 
     void preloadAssets();
+
+    // Tutorial
+    void showTutorialIfNeeded();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include "cocos2d.h"
-#include "Controller/SpriteController.h"
-
 class SniperBulletGame2 : public cocos2d::Sprite, public SpriteController
 {
 public:
