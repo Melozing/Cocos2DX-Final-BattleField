@@ -16,6 +16,7 @@ private:
     void createItemSection();
     void createInfoSection();
     void createExitButton();
+    void createIntroSection(); // New function for introduction
     void updateItemInfo(const ItemData& item);
 
     cocos2d::Sprite* mainBg;
@@ -23,7 +24,7 @@ private:
     cocos2d::Label* itemInfoLabel;
     cocos2d::ui::ScrollView* infoScrollView;
     cocos2d::Sprite* itemInfoImage;
+    cocos2d::Label* introLabel; // Add introLabel as a member variable
 };
-
 #endif // __ITEM_LIBRARY_WINDOW_H__
 

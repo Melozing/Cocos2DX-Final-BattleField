@@ -426,7 +426,6 @@
     <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\UIGame\LibraryWindow.cpp" />
     <ClCompile Include="..\Classes\Scene\SceneFinishGame.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
@@ -459,6 +458,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Player\BulletGame2.cpp">
       <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp" />
+    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp" />
+    <ClCompile Include="..\Classes\Library\UILibrary.cpp" />
+    <ClCompile Include="..\Classes\UIGame\IntroScene.cpp">
+      <Filter>src\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -684,7 +689,6 @@
     <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\UIGame\LibraryWindow.h" />
     <ClInclude Include="..\Classes\Scene\SceneFinishGame.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
@@ -714,6 +718,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Game2\Player\Grenade.h">
       <Filter>src\Gameplay\Player\PlayerGame2\GrenadeAndBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Library\ItemLibrary.h" />
+    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h" />
+    <ClInclude Include="..\Classes\Library\UILibrary.h" />
+    <ClInclude Include="..\Classes\UIGame\IntroScene.h">
+      <Filter>src\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -118,28 +118,24 @@ void MainMenu::toggleItemLibraryWindow() {
     if (itemLibraryWindow) {
         // Animate closing the item library window
         auto scaleDown = ScaleTo::create(0.3f, 0.0f);
-        //auto moveToButton = MoveTo::create(0.3f, collectionButton->getPosition());
         auto removeWindow = CallFunc::create([this]() {
             itemLibraryWindow->removeFromParent();
             itemLibraryWindow = nullptr;
             overlayLayer->removeFromParent();
             overlayLayer = nullptr;
             });
-        //auto sequence = Sequence::create(Spawn::create(scaleDown, moveToButton, nullptr), removeWindow, nullptr);
         auto sequence = Sequence::create(scaleDown, removeWindow, nullptr);
         itemLibraryWindow->runAction(sequence);
     }
     else {
         itemLibraryWindow = ItemLibraryWindow::create();
         itemLibraryWindow->setScale(0.0f);
-        //itemLibraryWindow->setPosition(collectionButton->getPosition());
         this->addChild(itemLibraryWindow, 10);
 
         // Animate opening the item library window
         auto scaleUp = ScaleTo::create(0.3f, 1.0f);
-        //auto moveToCenter = MoveTo::create(0.3f, Vec2(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height / 2));
-        //itemLibraryWindow->runAction(Spawn::create(scaleUp, moveToCenter, nullptr));
         itemLibraryWindow->runAction(scaleUp);
+
         // Create and add overlay layer
         overlayLayer = LayerColor::create(Color4B(0, 0, 0, 0));
         this->addChild(overlayLayer, 9);
@@ -156,3 +152,4 @@ void MainMenu::toggleItemLibraryWindow() {
         _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, overlayLayer);
     }
 }
+

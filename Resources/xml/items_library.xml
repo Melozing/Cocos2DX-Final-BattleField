@@ -11,5 +11,35 @@
         <name>Health Potion</name>
         <description>Restores health.</description>
     </item>
+    <item>
+        <id>3</id>
+        <imagePath>assets_game/items/grenade.png</imagePath>
+        <name>Grenade</name>
+        <description>luu dan</description>
+    </item>
+    <item>
+        <id>4</id>
+        <imagePath>assets_game/items/UpgradeBulletItem.png</imagePath>
+        <name>Upgrade Bullet</name>
+        <description>update dan</description>
+    </item>
+    <item>
+        <id>5</id>
+        <imagePath>assets_game/items/non_coi.png</imagePath>
+        <name>Mu coi</name>
+        <description>Mu coi</description>
+    </item>
+    <item>
+        <id>6</id>
+        <imagePath>assets_game/items/HealthRecoveryItem.png</imagePath>
+        <name>Health Recovery</name>
+        <description>Health Recovery</description>
+    </item>
+    <item>
+        <id>7</id>
+        <imagePath>assets_game/items/medkit.png</imagePath>
+        <name>medkit</name>
+        <description>medkit</description>
+    </item>
     <!-- Add more items as needed -->
 </items>
