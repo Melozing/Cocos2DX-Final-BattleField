@@ -339,7 +339,7 @@
     <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp">
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillI.cpp">
+    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkill.cpp">
       <Filter>src\Gameplay\Skill\Game1</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyUtils.cpp">
@@ -426,7 +426,6 @@
     <ClCompile Include="..\Classes\Game3\enemy\FinisherMissiles.cpp">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\UIGame\LibraryWindow.cpp" />
     <ClCompile Include="..\Classes\Scene\SceneFinishGame.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
@@ -463,6 +462,9 @@
     <ClCompile Include="..\Classes\Manager\TutorialLayer.cpp">
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp" />
+    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp" />
+    <ClCompile Include="..\Classes\Library\UILibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -687,7 +689,6 @@
     <ClInclude Include="..\Classes\Game3\enemy\FinisherMissiles.h">
       <Filter>src\Gameplay\Enemy\EnemyGame3\EnemyPlaneBoss</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\UIGame\LibraryWindow.h" />
     <ClInclude Include="..\Classes\Scene\SceneFinishGame.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
@@ -721,6 +722,9 @@
     <ClInclude Include="..\Classes\Manager\TutorialLayer.h">
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Library\ItemLibrary.h" />
+    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h" />
+    <ClInclude Include="..\Classes\Library\UILibrary.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

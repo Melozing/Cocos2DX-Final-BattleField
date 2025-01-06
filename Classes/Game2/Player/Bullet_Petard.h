@@ -6,7 +6,7 @@ class Bullet_Petard : public cocos2d::Sprite
 {
 public:
     static Bullet_Petard* createBullet();
-    virtual bool init();
+    virtual bool init() override;
     void initOptions();
     void addEvents();
     void addAnimation();

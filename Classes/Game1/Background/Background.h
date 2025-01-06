@@ -10,7 +10,7 @@ public:
 
     virtual bool init(const std::string& filePath, float scrollSpeed);
 
-    void update(float delta);
+    void update(float delta) override;
 
 private:
     cocos2d::Sprite* background1;

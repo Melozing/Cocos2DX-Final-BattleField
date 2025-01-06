@@ -8,7 +8,7 @@
 
 class ItemLibraryWindow : public cocos2d::Layer {
 public:
-    virtual bool init();
+    virtual bool init() override;
     CREATE_FUNC(ItemLibraryWindow);
 
 private:

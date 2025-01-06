@@ -146,7 +146,7 @@ void Game1Scene::initPlayer(const Size& visibleSize) {
     _player->createPhysicsBody();
     this->scheduleOnce([this](float) {
         _player->moveToCenterAndExit();
-        }, Constants::soundtrackGame1Duration - 6.0f, "handlePlayerWinKey");
+        }, Constants::soundtrackGame1Duration - 8.0f, "handlePlayerWinKey");
     addChild(_player, Constants::ORDER_LAYER_CHARACTER);
 }
 
@@ -253,6 +253,7 @@ void Game1Scene::initSpawning() {
 }
 
 void Game1Scene::showTutorialIfNeeded() {
+    //cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     if (!dontShowTutorial) {
         std::vector<std::string> slideImages = {
@@ -411,9 +412,10 @@ void Game1Scene::updateLoadingBar(float dt) {
                 },
                 Constants::pathSoundTrackGame1
                 ,
-                []() {  GameController::getInstance()->changeScene(Constants::GAME2_SCENE_NAME);
+                []() {  GameController::getInstance()->changeScene(Constants::GAME3_SCENE_NAME);
                 }
             );
+            UserDefault::getInstance()->setBoolForKey(Constants::IS_ACTIVE_GAME2.c_str(),true);
             _cursor->setVisible(false);
             _isGameOver = true;
         }
@@ -460,10 +462,12 @@ void Game1Scene::resetGameState() {
 
 // Function to initialize the spawn schedule from JSON
 void Game1Scene::initializeSpawnSchedule() {
-    // Log the start of the initialization
-
     // Example of reading a JSON file and initializing the spawn schedule
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename("json/spawn_enemies_game1.json");
+    std::string filePath = FileUtils::getInstance()->fullPathForFilename("/json/spawn_enemies_game1.json");
+
+    // Log the full path to the console
+    CCLOG("Full path for spawn schedule file: %s", filePath.c_str());
+
 
     FILE* fp = fopen(filePath.c_str(), "rb");
     if (!fp) {
@@ -520,6 +524,7 @@ Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
 }
 
 void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
+    CCLOG("SPAWNING BULLET");
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
@@ -572,7 +577,7 @@ void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
 void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     Vec2 spawnPosition = getRandomSpawnPosition(size);
     int randomEnemy = rand() % 3;
-
+    CCLOG("SPAWNING ROCK");
     switch (randomEnemy) {
     case 0: {
         // Spawn FallingRock
@@ -648,6 +653,7 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
 }
 
 void Game1Scene::SpawnCollectibleItem(const Size& size) {
+    CCLOG("SPAWNING ITEM");
     Vec2 spawnPosition = getRandomSpawnPosition(size);
     if (!isPositionOccupied(spawnPosition)) {
         // Randomly choose between HealthItem and AmmoItem

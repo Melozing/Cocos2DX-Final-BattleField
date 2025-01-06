@@ -23,7 +23,7 @@ USING_NS_CC;
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
     
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game3Scene::create();
     scene->addChild(layer);
 
@@ -40,9 +40,8 @@ bool Game3Scene::init() {
 
     preloadAssets();
     setupBackground();
-    setupPlayer();
-    initPools();
     setupCursor();
+    initPools();
     initBoss();
     initBulletSpawning(Constants::JSON_GAME3_ENEMYBULLET_PHASE_1_PATH);
     initBoomSpawning(Constants::JSON_GAME3_ENEMYBOOM_PHASE_1_PATH);
@@ -51,6 +50,7 @@ bool Game3Scene::init() {
     initHealthBar();
     initBossHealthBar();
     initSound();
+    setupPlayer();
     initBulletBadge();
     initUltimateSkillBadge();
 
@@ -67,6 +67,9 @@ void Game3Scene::preloadAssets() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/gameplay/BackgroundNormal.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/gameplay/BackgroundBreak.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGoLeft.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGoRight.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerIdle.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/BulletPlayer3Game.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
@@ -75,7 +78,6 @@ void Game3Scene::preloadAssets() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBoss.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBullet.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/rocket.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/warning_rocket.plist");
 }
@@ -120,13 +122,17 @@ void Game3Scene::setupPlayer() {
 
 void Game3Scene::initBulletBadge() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    float padding = SpriteController::calculateScreenRatio(0.05f); // Adjust the padding as needed
+    float paddingHeight = SpriteController::calculateScreenHeightRatio(0.05f); // Adjust the padding as needed
+    float paddingWeight = SpriteController::calculateScreenRatio(0.07f); // Adjust the padding as needed
     
     auto spriteBadge = Sprite::create("assets_game/UXUI/Panel/Table_03.png");
-    bulletBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
-    bulletBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.07f)); // Adjust the scale as needed
-    bulletBadge->updateLabel("Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3));
-    bulletBadge->setBadgePosition(Vec2(visibleSize.width - bulletBadge->getContentSize().width / 2 - padding, bulletBadge->getContentSize().height / 2 + padding));
+    bulletBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 20);
+    bulletBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.1f)); // Adjust the scale as needed
+    std::string labelText = "Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3);
+    bulletBadge->updateLabel(labelText);
+    float xOffset = -SpriteController::calculateScreenRatio(0.037f);
+    bulletBadge->adjustLabelPosition(xOffset, 0);
+    bulletBadge->setBadgePosition(Vec2(visibleSize.width - bulletBadge->getContentSize().width / 2 - paddingWeight, bulletBadge->getContentSize().height / 2 + paddingHeight));
     this->addChild(bulletBadge);
 
     // Register to listen for bullet count change notifications
@@ -145,13 +151,22 @@ void Game3Scene::initBulletBadge() {
     );
 }
 
+std::string Game3Scene::formatTime(int totalSeconds) {
+    int minutes = totalSeconds / 60;
+    int seconds = totalSeconds % 60;
+    char buffer[6];
+    snprintf(buffer, sizeof(buffer), "%02d:%02d", minutes, seconds);
+    return std::string(buffer);
+}
+
+
 void Game3Scene::initUltimateSkillBadge() {
     ultimateSkillBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
     auto spriteBadge = Sprite::create("assets_game/UXUI/Panel/Table_03.png");
     ultimateSkillBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
     ultimateSkillBadge->setBadgePosition(Vec2(50, Director::getInstance()->getVisibleSize().height - 50));
     ultimateSkillBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.07f)); // Adjust the scale as needed
-    std::string timeText = std::to_string(static_cast<int>(ultimateSkillTimeRemaining));
+    std::string timeText = formatTime(static_cast<int>(ultimateSkillTimeRemaining));
     ultimateSkillBadge->updateLabel(timeText);
     this->addChild(ultimateSkillBadge);
     ultimateSkillBadge->setVisible(false);
@@ -182,7 +197,7 @@ void Game3Scene::updateUltimateSkillCountdown(float dt) {
         this->unschedule("UltimateSkillCountdown");
     }
     else {
-        std::string timeText = std::to_string(static_cast<int>(ultimateSkillTimeRemaining));
+        std::string timeText = formatTime(static_cast<int>(ultimateSkillTimeRemaining));
         ultimateSkillBadge->updateLabel(timeText);
     }
 }
@@ -238,22 +253,23 @@ void Game3Scene::initHealthBar() {
 
 void Game3Scene::initBossHealthBar() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
+    float paddingBottom = SpriteController::calculateScreenHeightRatio(0.023f);
     bossHealthBar = CustomLoadingBar::create("assets_game/UXUI/Loading/BossbarGame3.png", "assets_game/UXUI/Loading/BossbarGame3_Border.png", 0.25f);
-    bossHealthBar->setLoadingBarRotation(-90);
-    bossHealthBar->setLoadingBarPosition(Vec2(visibleSize.width - bossHealthBar->getLoadingBar()->getContentSize().height / 2, visibleSize.height / 2));
+    //bossHealthBar->setLoadingBarRotation(-90);
+    bossHealthBar->setLoadingBarPosition(Vec2(visibleSize.width / 2, bossHealthBar->getLoadingBar()->getContentSize().height / 2 + paddingBottom));
 
     // Adjust the border position to be lower than the loading bar
     auto loadingPos = bossHealthBar->getLoadingBar()->getPosition();
-    float loadingBarHeight = SpriteController::calculateScreenRatio(0.0035f);
+    float loadingBarHeight = SpriteController::calculateScreenHeightRatio(0.0035f);
     float loadingBarWeight = SpriteController::calculateScreenRatio(0.0011f);
     loadingPos.y -= loadingBarHeight; // Move the border lower
     loadingPos.x -= loadingBarWeight; // Move the border lower
     bossHealthBar->setBorderPosition(loadingPos);
 
-    bossHealthBar->setBorderRotation(-90);
+    //bossHealthBar->setBorderRotation(-90);
     bossHealthBar->setPercent(0);
-    bossHealthBar->setLoadingBarScale(SpriteController::updateSpriteScale(bossHealthBar->getLoadingBar(), 0.133f));
-    bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.17f));
+    bossHealthBar->setLoadingBarScale(SpriteController::updateSpriteScale(bossHealthBar->getLoadingBar(), 0.4325f));
+    bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.5f));
     bossHealthBar->setVisible(false);
     this->addChild(bossHealthBar, Constants::ORDER_LAYER_UI);
 
@@ -436,6 +452,8 @@ void Game3Scene::setupCursor() {
         CCLOG("Failed to create Cursor");
         return;
     }
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    _cursor->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _cursor->setName("Cursor");
     this->addChild(_cursor, Constants::ORDER_LAYER_UI + 99);
 }
@@ -504,7 +522,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
         else if (player && IncreaseBullet) {
             IncreaseBullet->stopMovement();
             IncreaseBullet->applyPickupEffect();
-            Constants::QuantityBulletPlayerGame3 += 50;
+            Constants::QuantityBulletPlayerGame3 += 70;
             updateBulletLabel(nullptr);
         }
         else if (player && itemUpgradeBullet) {
@@ -605,7 +623,7 @@ void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlan
         enemyBoom->dropRandomItem();
         bullet->returnPool();
     }
-    else if (enemyBoss = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
+    else if (enemyBoss == dynamic_cast<EnemyPlaneBoss*>(enemy)) {
         this->handleBossDamage(Constants::BulletDamageGame3);
         bullet->hideModelCharac();
         bullet->explode();

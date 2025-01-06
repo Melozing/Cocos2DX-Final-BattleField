@@ -78,7 +78,8 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spa
         this->createPhysicsBody();
 
         // Schedule to spawn boom at the specified skill time
-        this->scheduleOnce([this, spawnFromLeft = (direction == "leftToRight")](float dt) {
+        bool spawnFromLeft = (direction == "leftToRight");
+        this->scheduleOnce([this, spawnFromLeft](float dt) {
             this->spawnBoom(spawnFromLeft);
             }, skillTime, "spawn_boom_key");
 }

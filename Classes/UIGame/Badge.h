@@ -9,6 +9,7 @@ public:
     void setBadgePosition(const cocos2d::Vec2& position);
     void updateLabel(std::string& text);
     void blinkRed();
+    void adjustLabelPosition(float xOffset, float yOffset);
 
 private:
     bool init(const std::string& badgeImage, const std::string& font, float fontSize);

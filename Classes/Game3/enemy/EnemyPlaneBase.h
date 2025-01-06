@@ -16,7 +16,7 @@ public:
     void explode();
     void reset();
     void dropRandomItem();
-    void update(float delta);
+    void update(float delta) override;
 protected:
     cocos2d::Sprite* modelCharac;
 };

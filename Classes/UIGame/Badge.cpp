@@ -64,3 +64,9 @@ void Badge::blinkRed() {
     badgeSprite->runAction(sequence);
 }
 
+void Badge::adjustLabelPosition(float xOffset, float yOffset) {
+    if (badgeLabel) {
+        Vec2 currentPos = badgeLabel->getPosition();
+        badgeLabel->setPosition(currentPos.x + xOffset, currentPos.y + yOffset);
+    }
+}

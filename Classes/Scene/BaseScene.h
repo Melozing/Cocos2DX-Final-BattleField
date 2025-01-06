@@ -15,6 +15,7 @@ public:
     void registerNotification();
     void unregisterNotification();
     Cursor* _cursor;
+
 private:
     void onExit() override;
     std::function<cocos2d::Scene* ()> _sceneCreationFunc;

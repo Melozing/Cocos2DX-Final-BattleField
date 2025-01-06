@@ -1,9 +1,8 @@
 #include "AppDelegate.h"
 #include "Scene/MainMenuScene.h"
-#include "Scene/SceneFinishGame.h"
 #include "Constants/Constants.h"
-#include "Controller/SoundController.h"
 #include "Controller/GameController.h"
+#include "Controller/SoundController.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -52,13 +51,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Set the design resolution size to 16:9
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
 
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
     director->setAnimationInterval(1.0f / 60);
 
     // Register packages
     register_all_packages();
 
-    // Initialize GameController and load MainMenuScene
     GameController::getInstance();
     GameController::getInstance()->init();
 
