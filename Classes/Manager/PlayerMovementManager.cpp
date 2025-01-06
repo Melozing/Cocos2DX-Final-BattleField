@@ -12,6 +12,12 @@ PlayerMovement::~PlayerMovement()
 {
 }
 
+bool PlayerMovement::isMoving() const
+{
+    return _direction != Vec2::ZERO;
+}
+
+
 void PlayerMovement::onKeyPressed(EventKeyboard::KeyCode keyCode)
 {
     _keys[keyCode] = true;

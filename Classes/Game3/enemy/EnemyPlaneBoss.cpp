@@ -234,11 +234,13 @@ void EnemyPlaneBoss::fadeOutAndRemove() {
 void EnemyPlaneBoss::updatePhase() {
     // Increment the phase
     if (currentPhase == Phase::PHASE_1) {
+        Constants::HealthEnemyPlaneBoss = 1000;
         SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase2, false);
         currentPhase = Phase::PHASE_2;
     }
     else {
         currentPhase = Phase::PHASE_1;
+        Constants::HealthEnemyPlaneBoss = 2000;
         SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase1, false);
     }
 }

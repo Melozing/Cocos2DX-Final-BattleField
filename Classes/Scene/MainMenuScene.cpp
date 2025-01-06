@@ -5,7 +5,7 @@
 #include "Controller/GameController.h"
 #include "Controller/SoundController.h"
 #include "Manager/BackgroundManager.h"
-#include "Library/ItemLibraryWindow.h" // Include the header for ItemLibraryWindow
+#include "Library/ItemLibraryWindow.h" 
 
 USING_NS_CC;
 
@@ -28,10 +28,11 @@ bool MainMenu::init() {
     auto sprite = Sprite::create("assets_game/UXUI/Buttons/Game_1.png");
 
     // Calculate positions
-    float buttonSpacing = SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_BUTTONS_MAINMENU); // Adjust this value to set the spacing between buttons
+    float buttonSpacing = SpriteController::calculateScreenHeightRatio(Constants::PADDING_VERTICAL_BUTTONS_MAINMENU); // Adjust this value to set the spacing between buttons
     float buttonY = visibleSize.height / 2;
     float buttonG2Y = buttonY - buttonSpacing;
     float buttonG3Y = buttonG2Y - buttonSpacing;
+    float buttonG4Y = buttonG3Y - buttonSpacing;
 
     // Create and position button
     auto button = ui::Button::create("assets_game/UXUI/Buttons/Game_1.png");
@@ -46,15 +47,23 @@ bool MainMenu::init() {
         });
     this->addChild(button);
 
+    // Check UserDefault value for buttonG2
+    bool isButtonG2Active = UserDefault::getInstance()->getBoolForKey(Constants::IS_ACTIVE_GAME2.c_str());
+
     // Create and position buttonG2
-    auto buttonG2 = ui::Button::create("assets_game/UXUI/Buttons/Game_2.png");
+    auto buttonG2 = ui::Button::create(
+        isButtonG2Active ? "assets_game/UXUI/Buttons/Game_2_active.png" : "assets_game/UXUI/Buttons/Game_2_inactive.png"
+    );
     buttonG2->setScale(SpriteController::updateSpriteScale(sprite, 0.08f));
     buttonG2->setPosition(Vec2(visibleSize.width / 2, buttonG2Y));
+    //buttonG2->setEnabled(isButtonG2Active); // Disable button if inactive
     buttonG2->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED) {
-            SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
-            SoundController::getInstance()->playSoundEffect(Constants::ClickStartGameSFX);
-            startLoading(Constants::GAME2_SCENE_NAME); // Start loading when button is pressed
+        if (type == ui::Widget::TouchEventType::ENDED && isButtonG2Active) {
+            if (isButtonG2Active) {
+                SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
+                SoundController::getInstance()->playSoundEffect(Constants::ClickStartGameSFX);
+                startLoading(Constants::GAME3_SCENE_NAME); // Start loading when button is pressed
+            }
         }
         });
     this->addChild(buttonG2);
@@ -70,12 +79,12 @@ bool MainMenu::init() {
             startLoading(Constants::GAME3_SCENE_NAME); // Start loading when button is pressed
         }
         });
-    this->addChild(buttonG3);
+    //this->addChild(buttonG3);
 
     // Create and position exit button
     auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Exit_BTN.png");
     exitButton->setScale(SpriteController::updateSpriteScale(exitButton, 0.08f));
-    exitButton->setPosition(Vec2(visibleSize.width / 2, exitButton->getContentSize().height / 2 + 10)); // Position at the bottom
+    exitButton->setPosition(Vec2(visibleSize.width / 2, buttonG4Y)); // Position at the bottom
     exitButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);

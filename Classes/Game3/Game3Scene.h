@@ -119,6 +119,9 @@ private:
     // Background
     bool isBackgroundNormal;
     bool isBackgroundBreak;
+
+    // Format Text
+    std::string Game3Scene::formatTime(int totalSeconds);
 };
 
 #endif // __GAME3SCENE_SCENE_H__

@@ -31,6 +31,7 @@ bool PlayerGame3::init()
 
     setupInitialPosition();
     setupTurret();
+    setupWheelsAndHandle();
     setupEventListeners();
     setupManagers();
     initAnimation();
@@ -64,24 +65,67 @@ void PlayerGame3::setupInitialPosition()
 
     // Calculate the initial position based on the padding
     float initialPosX = visibleSize.width / 2; // Center horizontally
-    float initialPosY = SpriteController::calculateScreenRatio(0.05f); // Padding from the bottom
+    float initialPosY = SpriteController::calculateScreenHeightRatio(0.14f); // Padding from the bottom
 
     // Set the initial position of the player
     this->setPosition(Vec2(initialPosX, initialPosY));
     this->setAnchorPoint(Vec2(0.5, 0.5));
 }
 
+void PlayerGame3::setupWheelsAndHandle()
+{
+    // Create left wheel sprite and add to player
+    leftWheelSprite = Sprite::create("assets_game/player/LeftWheel.png");
+    if (leftWheelSprite) {
+        leftWheelSprite->setScale(SpriteController::updateSpriteScale(leftWheelSprite, 0.035f));
+        leftWheelSprite->setAnchorPoint(Vec2(0.5, 0.5));
+        leftWheelSprite->setPosition(Vec2(this->getContentSize().width - SpriteController::calculateScreenRatio(0.02), this->getContentSize().height - SpriteController::calculateScreenHeightRatio(0.02)));
+        this->addChild(leftWheelSprite, Constants::ORDER_LAYER_PLAYER + 1);
+    }
+    else {
+        CCLOG("Failed to load texture for Left Wheel");
+    }
+
+    // Create right wheel sprite and add to player
+    rightWheelSprite = Sprite::create("assets_game/player/RightWheel.png");
+    if (rightWheelSprite) {
+        rightWheelSprite->setScale(SpriteController::updateSpriteScale(rightWheelSprite, 0.035f));
+        rightWheelSprite->setAnchorPoint(Vec2(0.5, 0.5));
+        rightWheelSprite->setPosition(Vec2(this->getContentSize().width + SpriteController::calculateScreenRatio(0.02), this->getContentSize().height - SpriteController::calculateScreenHeightRatio(0.02)));
+        this->addChild(rightWheelSprite, Constants::ORDER_LAYER_PLAYER + 1);
+    }
+    else {
+        CCLOG("Failed to load texture for Right Wheel");
+    }
+
+    // Create handle sprite and add to player
+    handleSprite = Sprite::create("assets_game/player/Circle.png");
+    if (handleSprite) {
+        handleSprite->setScale(SpriteController::updateSpriteScale(handleSprite, 0.019f));
+        handleSprite->setAnchorPoint(Vec2(0.5, 0.5));
+        handleSprite->setPosition(Vec2(this->getContentSize().width - SpriteController::calculateScreenRatio(0.005), this->getContentSize().height + SpriteController::calculateScreenHeightRatio(0.02)));
+        this->addChild(handleSprite, Constants::ORDER_LAYER_PLAYER + 1);
+    }
+    else {
+        CCLOG("Failed to load texture for Handle");
+    }
+}
+
+
 void PlayerGame3::setupTurret()
 {
     if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
+    // Limit the rotation angle to prevent the turret from pointing downwards
+    minAngle = 10.0f; // Minimum angle limit
+    maxAngle = 170.0f;  // Maximum angle limit
 
     // Create turret sprite and add to tank
     turretSprite = Sprite::create("assets_game/player/tank_barrel_2.png");
     if (turretSprite) {
-        turretSprite->setScale(SpriteController::updateSpriteScale(turretSprite, 0.08f));
-        turretSprite->setAnchorPoint(Vec2(0.5, 0.0f)); // Center-bottom
-        turretSprite->setPosition(Vec2((this->getContentSize().width / 2) + SpriteController::calculateScreenRatio(0.005f), this->getContentSize().height + SpriteController::calculateScreenRatio(0.016f)));
-        this->addChild(turretSprite, Constants::ORDER_LAYER_PLAYER);
+        turretSprite->setScale(SpriteController::updateSpriteScale(turretSprite, 0.079f));
+        turretSprite->setAnchorPoint(Vec2(0.35, 0.3f)); // Center-bottom
+        turretSprite->setPosition(Vec2((this->getContentSize().width / 2) - SpriteController::calculateScreenRatio(0.01f), this->getContentSize().height + SpriteController::calculateScreenRatio(0.016f)));
+        this->addChild(turretSprite, Constants::ORDER_LAYER_PLAYER - 1);
     }
     else {
         CCLOG("Failed to load texture for Turret");
@@ -109,15 +153,42 @@ void PlayerGame3::setupManagers()
     playerMovement = new PlayerMovement(this, Constants::PLAYER_SPEED_GAME3);
 }
 
-void PlayerGame3::initAnimation()
-{
-    modelCharac = Sprite::createWithSpriteFrameName("tank_1.png");
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, Constants::PlayerScale3));
-    this->addChild(modelCharac, Constants::ORDER_LAYER_PLAYER);
+void PlayerGame3::initAnimation() {
+    // Create idle sprite batch node
+    idleBatchNode = SpriteBatchNode::create("assets_game/player/PlayerIdle.png");
+    if (idleBatchNode->getParent() == nullptr) {
+        this->addChild(idleBatchNode, Constants::ORDER_LAYER_PLAYER);
+    }
 
-    auto animateCharac = Animate::create(createAnimation("tank_", 8, 0.07f));
-    modelCharac->runAction(RepeatForever::create(animateCharac));
-    createPhysicsBody();
+    // Create idle sprite
+    idleSprite = Sprite::createWithSpriteFrameName("PlayerIdle0.png");
+    idleSprite->setScale(SpriteController::updateSpriteScale(idleSprite, Constants::PlayerScale3));
+    idleBatchNode->addChild(idleSprite, Constants::ORDER_LAYER_PLAYER);
+
+    // Run animations
+    auto animateIdle = Animate::create(SpriteController::createAnimation("PlayerIdle", 39, 0.033f));
+    idleSprite->runAction(RepeatForever::create(animateIdle));
+    this->createPhysicsBody();
+}
+
+void PlayerGame3::rotateSpritesContinuously(float angle)
+{
+    // Create rotation actions
+    auto rotate = RotateBy::create(0.1f, angle);
+    auto repeatRotation = RepeatForever::create(rotate);
+
+    // Run actions on sprites
+    leftWheelSprite->runAction(repeatRotation->clone());
+    rightWheelSprite->runAction(repeatRotation->clone());
+    handleSprite->runAction(repeatRotation->clone());
+}
+
+void PlayerGame3::stopRotatingSprites()
+{
+    // Stop all rotation actions
+    leftWheelSprite->stopAllActions();
+    rightWheelSprite->stopAllActions();
+    handleSprite->stopAllActions();
 }
 
 void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -126,6 +197,16 @@ void PlayerGame3::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
         || keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
     {
         playerMovement->onKeyPressed(keyCode);
+
+        // Start rotating sprites continuously
+        if (keyCode == EventKeyboard::KeyCode::KEY_A || keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
+        {
+            rotateSpritesContinuously(-35.0f); // Rotate left
+        }
+        else if (keyCode == EventKeyboard::KeyCode::KEY_D || keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
+        {
+            rotateSpritesContinuously(35.0f); // Rotate right
+        }
     }
 }
 
@@ -135,6 +216,12 @@ void PlayerGame3::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
         || keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
     {
         playerMovement->onKeyReleased(keyCode);
+
+        // Stop rotating sprites when key is released
+        if (!playerMovement->isMoving())
+        {
+            stopRotatingSprites();
+        }
     }
 }
 
@@ -175,14 +262,20 @@ void PlayerGame3::shootBullet(const Vec2& target) {
         __NotificationCenter::getInstance()->postNotification("BlinkRedBadge", nullptr);
         return;
     }
-        
 
-    direction = target - this->getPosition();
-    direction.normalize();
-    if (direction.y < 0) {
-        direction.y = 0;
-    }
+    // Calculate the angle to the target
+    Vec2 direction = target - turretPosition;
+    float angle = CC_RADIANS_TO_DEGREES(direction.getAngle());
 
+    // Limit the angle within the specified range
+    if (angle < minAngle) angle = minAngle;
+    if (angle > maxAngle) angle = maxAngle;
+
+    // Convert the limited angle back to a direction vector
+    float limitedAngleRadians = CC_DEGREES_TO_RADIANS(angle);
+    Vec2 limitedDirection = Vec2(cosf(limitedAngleRadians), sinf(limitedAngleRadians));
+
+    // Define the angles for multiple bullets
     std::vector<float> angles;
     if (bulletCount == 1) {
         angles = { 0.0f };
@@ -194,27 +287,31 @@ void PlayerGame3::shootBullet(const Vec2& target) {
         angles = { -15.0f, 0.0f, 15.0f };
     }
 
+    // Shoot bullets with the calculated angles
     for (float angleOffset : angles) {
         float angleInRadians = CC_DEGREES_TO_RADIANS(angleOffset);
-        Vec2 BulletTestDirection = Vec2(
-            direction.x * cos(angleInRadians) - direction.y * sin(angleInRadians),
-            direction.x * sin(angleInRadians) + direction.y * cos(angleInRadians)
+        Vec2 bulletDirection = Vec2(
+            limitedDirection.x * cos(angleInRadians) - limitedDirection.y * sin(angleInRadians),
+            limitedDirection.x * sin(angleInRadians) + limitedDirection.y * cos(angleInRadians)
         );
 
-        auto BulletPlayerGame3 = BulletPoolPlayerGame3::getInstance()->getObject();
-        if (BulletPlayerGame3->getParent() != nullptr) {
-            BulletPlayerGame3->removeFromParent();
+        auto bullet = BulletPoolPlayerGame3::getInstance()->getObject();
+        if (bullet) {
+            if (bullet->getParent() != nullptr) {
+                bullet->removeFromParent();
+            }
+            bullet->setPosition(turretPosition);
+            bullet->setDirection(bulletDirection);
+            bullet->spawn();
+            
+            this->getParent()->addChild(bullet);
         }
-        BulletPlayerGame3->setPosition(turretPosition);
-        BulletPlayerGame3->setDirection(BulletTestDirection);
-        BulletPlayerGame3->spawn();
-        this->getParent()->addChild(BulletPlayerGame3, Constants::ORDER_LAYER_PLAYER - 99);
-        Constants::QuantityBulletPlayerGame3 --;
     }
 
-    SoundController::getInstance()->playSoundEffect(Constants::PlayerGame3ShootSFX);
+    // Update the time since the last shot and decrease the bullet count
     timeSinceLastShot = 0.0f;
-
+    Constants::QuantityBulletPlayerGame3--;
+    SoundController::getInstance()->playSoundEffect(Constants::PlayerGame3ShootSFX);
     // Send notification about bullet count change
     __NotificationCenter::getInstance()->postNotification("BulletCountChanged", nullptr);
 }
@@ -235,13 +332,34 @@ void PlayerGame3::onMouseMove(Event* event)
     EventMouse* e = (EventMouse*)event;
     _mousePos = Vec2(e->getCursorX(), e->getCursorY());
 
+    checkCursorRange();
     updateTurretRotation();
+}
+
+void PlayerGame3::checkCursorRange() {
+    Vec2 turretPositionCheck = this->convertToWorldSpace(turretSprite->getPosition());
+
+    Vec2 direction = _mousePos - turretPositionCheck;
+
+    // Normalize the direction vector
+    direction.normalize();
+
+    // Calculate the angle in degrees
+    float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
+
+    if (angle < minAngle || angle > maxAngle)
+    {
+        updateCursorColor(true);
+    }
+    else
+    {
+        updateCursorColor(false);
+    }
 }
 
 void PlayerGame3::update(float delta)
 {
     if (isMovementAndShootingDisabled) return;
-
     playerMovement->update(delta);
 
     // Get the visible size and origin of the screen
@@ -290,12 +408,13 @@ void PlayerGame3::updateTurretRotation() {
         // Calculate the angle in degrees
         float angle = CC_RADIANS_TO_DEGREES(atan2(direction.y, direction.x));
 
-        // Limit the rotation angle to prevent the turret from pointing downwards
-        if (angle < 0.0f) {
-            return;
+        if (angle < minAngle)
+        {
+            angle = minAngle;
         }
-        else if (angle > 180.0f) {
-            return;
+        else if (angle > maxAngle)
+        {
+            angle = maxAngle;
         }
 
         // Set the turret's rotation (adjusting for the initial orientation)
@@ -310,26 +429,32 @@ float PlayerGame3::calculateDistanceToMouse(const Vec2& position) {
     return position.distance(_mousePos);
 }
 
+void PlayerGame3::updateCursorColor(bool isWithinRange) {
+    auto cursor = dynamic_cast<Cursor*>(this->getParent()->getChildByName("Cursor"));
+    if (cursor) {
+        if (!isWithinRange) {
+            cursor->setColor(Color3B::GREEN);
+        }
+        else {
+            cursor->setColor(Color3B::RED);
+        }
+    }
+}
+
 bool PlayerGame3::updateDistanceToMouse(const Vec2& position) {
     distanceToMouse = calculateDistanceToMouse(position);
 
     // Change cursor color based on distance
-    auto cursor = dynamic_cast<Cursor*>(this->getParent()->getChildByName("Cursor"));
-    if (cursor) {
-        if (distanceToMouse < SpriteController::calculateScreenRatio(Constants::DISTANCE_FROM_PLAYER_TO_POINTER)) {
-            cursor->changeColor(Color3B::RED);
-            return false;
-        }
-        else {
-            cursor->changeColor(Color3B::GREEN);
-            return true;
-        }
+    if (distanceToMouse < SpriteController::calculateScreenRatio(Constants::DISTANCE_FROM_PLAYER_TO_POINTER)) {
+       updateCursorColor(true);
+       return false;
     }
-    return false;
+
+    return true;
 }
 
 Size PlayerGame3::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSizeSprite(idleSprite);
 }
 
 void PlayerGame3::createPhysicsBody() {
@@ -338,11 +463,11 @@ void PlayerGame3::createPhysicsBody() {
     }
 
     auto physicsCache = PhysicsShapeCache::getInstance();
-    auto originalSize = modelCharac->getTexture()->getContentSize();
+    auto originalSize = idleSprite->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/PlayerGame3.plist", "PlayerGame3", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "PlayerGame3", originalSize, 0.9f);
+    physicsCache->resizeBody(physicsBody, "PlayerGame3", originalSize, 0.3f);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);

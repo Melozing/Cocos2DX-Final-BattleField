@@ -13,7 +13,7 @@ public:
 
     // Create and initialize methods
     static PlayerGame2* createPlayerGame2();
-    virtual bool init();
+    virtual bool init() override;
 
     // Animation initialization methods
     void initAnimation();
@@ -30,7 +30,7 @@ public:
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
     // Update method
-    void update(float delta);
+    void update(float delta) override;
 
     // Player control methods
     void RotateToMouse();
