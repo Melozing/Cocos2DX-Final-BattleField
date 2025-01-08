@@ -31,6 +31,7 @@ private:
     std::string userDefaultKey;
     cocos2d::Size originalSpriteSize;
     bool buttonsPositionUpdated;
+    cocos2d::Sprite* borderSprite;
 };
 
 #endif // TUTORIALLAYER_H

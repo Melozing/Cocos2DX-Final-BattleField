@@ -26,7 +26,7 @@ bool EnemyPlaneBullet::init() {
 
     // Initialize warning sign
     warningSign = Sprite::create("assets_game/enemies/WarningSignBulletPlane.png");
-    warningSign->setScale(SpriteController::updateSpriteScale(modelCharac, 0.02f));
+    warningSign->setScale(SpriteController::updateSpriteScale(modelCharac, 0.1f));
     warningSign->setVisible(false);
     this->addChild(warningSign);
     reset();

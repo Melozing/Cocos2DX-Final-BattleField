@@ -22,6 +22,10 @@ bool TutorialLayer::init(const std::vector<std::string>& slideImages, const std:
         return false;
     }
 
+    // Create a semi-transparent background
+    auto background = LayerColor::create(Color4B(0, 0, 0, 180));
+    this->addChild(background);
+
     this->slideImages = slideImages;
     this->userDefaultKey = userDefaultKey;
     this->currentSlideIndex = 0;
@@ -29,6 +33,11 @@ bool TutorialLayer::init(const std::vector<std::string>& slideImages, const std:
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+
+    // Create border sprite
+    borderSprite = cocos2d::Sprite::create("assets_game/UXUI/Panel/Panel_Tutorial.png"); // Use your border image path
+    borderSprite->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2);
+    this->addChild(borderSprite, Constants::ORDER_LAYER_UI - 1); // Add border sprite behind slideSprite
 
     // Create slide sprite
     slideSprite = cocos2d::Sprite::create(slideImages[currentSlideIndex]);
@@ -38,14 +47,22 @@ bool TutorialLayer::init(const std::vector<std::string>& slideImages, const std:
 
 
     // Create buttons and labels
-    createButtonsAndLabels();
+    this->createButtonsAndLabels();
 
-    updateSlide();
+    this->updateSlide();
 
 
     // Notify to hide cursor
     __NotificationCenter::getInstance()->postNotification("HideCursorNotification");
     GameController::getInstance()->toggleCursorVisibility(true);
+
+    // Pause the game after the tutorial layer is added
+    this->runAction(cocos2d::Sequence::create(
+        DelayTime::create(1.0f),
+        cocos2d::CallFunc::create([this]() {
+            this->pauseGame();
+            }),
+        nullptr));
 
     return true;
 }
@@ -84,8 +101,8 @@ void TutorialLayer::createButtonsAndLabels() {
 
     // Create skip button
     skipButton = cocos2d::ui::Button::create(
-        "assets_game/UXUI/Panel/Forward_BTN.png",
-        "assets_game/UXUI/Panel/Forward_BTN_Active.png");
+        "assets_game/UXUI/Panel/Green_button.png",
+        "assets_game/UXUI/Panel/Green_button.png");
     skipButton->setScale(SpriteController::updateSpriteScale(skipButton, 0.05));
     skipButton->addClickEventListener(CC_CALLBACK_0(TutorialLayer::onSkipClicked, this));
     this->addChild(skipButton, Constants::ORDER_LAYER_UI);
@@ -96,7 +113,7 @@ void TutorialLayer::updateSlide() {
     slideSprite->setTexture(slideImages[currentSlideIndex]);
 
     // Set the size of the slide sprite to a fixed size
-    auto fixedSize = cocos2d::Size(SpriteController::calculateScreenRatio(0.4f), SpriteController::calculateScreenHeightRatio(0.73f)); // Set your desired fixed size here
+    auto fixedSize = cocos2d::Size(SpriteController::calculateScreenRatio(0.6f), SpriteController::calculateScreenHeightRatio(0.93f)); // Set your desired fixed size here
 
     // Get the original size of the new texture
     auto originalSize = slideSprite->getContentSize();
@@ -113,28 +130,27 @@ void TutorialLayer::updateSlide() {
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     slideSprite->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 
+    // Adjust the border sprite size and position
+    borderSprite->setScale(scale * 0.98f); // Adjust the scale factor as needed to fit around the slideSprite
+    borderSprite->setPosition(slideSprite->getPosition());
+
     // Update the state of the prev and next buttons
     prevButton->setEnabled(currentSlideIndex > 0);
     nextButton->setEnabled(currentSlideIndex < slideImages.size() - 1);
 
     // Update button positions only once
     if (!buttonsPositionUpdated) {
-        float paddingTop = SpriteController::calculateScreenRatio(0.02f);
-        float spacing = SpriteController::calculateScreenRatio(0.015f);
-        prevButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x - spacing, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
-        nextButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x + spacing, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
-        dontShowAgainCheckbox->setPosition(cocos2d::Vec2(slideSprite->getPosition().x - this->GetSize().width / 2.2, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
+        float paddingHorizontal = SpriteController::calculateScreenRatio(0.05f);
+        prevButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x - slideSprite->getContentSize().width * slideSprite->getScale() / 2 - paddingHorizontal, slideSprite->getPosition().y));
+        nextButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x + slideSprite->getContentSize().width * slideSprite->getScale() / 2 + paddingHorizontal, slideSprite->getPosition().y));
+        float paddingTop = SpriteController::calculateScreenRatio(0.05f);
+        float paddingWidth = SpriteController::calculateScreenRatio(0.065f);
+        dontShowAgainCheckbox->setPosition(cocos2d::Vec2(borderSprite->getPosition().x / 2 - paddingWidth, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
         label->setPosition(dontShowAgainCheckbox->getPosition() + cocos2d::Vec2(SpriteController::calculateScreenRatio(0.053f), 0));
-        skipButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x + this->GetSize().width / 2.2, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
+        skipButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x + this->GetSize().width / 2, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
+        __NotificationCenter::getInstance()->postNotification("HideCursorNotification");
         buttonsPositionUpdated = true;
     }
-    // Pause the game after the tutorial layer is added
-    this->runAction(cocos2d::Sequence::create(
-        cocos2d::DelayTime::create(1.0f), // Delay to ensure the layer is fully added
-        cocos2d::CallFunc::create([this]() {
-            this->pauseGame();
-            }),
-        nullptr));
 }
 
 

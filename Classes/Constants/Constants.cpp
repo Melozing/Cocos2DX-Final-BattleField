@@ -79,7 +79,7 @@ const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 
 // SHIELD GAME 1
 const float Constants::SHIELD_DURATION = 0.3f;
-const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
+const float Constants::PLAYER_HEALTH_PADDING_Y = 0.07f;
 const float Constants::SHIELD_TIME_OF_EXISTENCE = 5.0f;
 
 //game1

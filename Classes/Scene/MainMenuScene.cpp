@@ -120,7 +120,7 @@ bool MainMenu::init() {
 
 void MainMenu::startLoading(std::string nameScene) {
     auto loadingScene = LoadingScene::createScene(nameScene);
-    Director::getInstance()->replaceScene(TransitionFade::create(1.0, loadingScene));
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, loadingScene));
 }
 
 void MainMenu::toggleItemLibraryWindow() {

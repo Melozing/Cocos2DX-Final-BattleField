@@ -24,6 +24,14 @@ bool VictoryPanel::init(const std::function<void()>& retryAction, const std::fun
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
+    this->removeChild(boardSprite);
+
+    // Create a new board sprite specific to GameOverPanel
+    boardSprite = Sprite::create("assets_game/UXUI/Panel/Board_Victory.png");
+    boardSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
+    boardSprite->setScale(SpriteController::updateSpriteScale(boardSprite, 0.525f));
+    boardSprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + SpriteController::calculateScreenRatio(0.03f)));
+    this->addChild(boardSprite);
 
     // Create exit button
     auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png");
@@ -46,7 +54,7 @@ bool VictoryPanel::init(const std::function<void()>& retryAction, const std::fun
     boardSprite->addChild(retryButton);
 
     // Create next scene button
-    auto nextSceneButton = ui::Button::create("assets_game/UXUI/Panel/Back_BTN.png", "assets_game/UXUI/Panel/Back_BTN.png");
+    auto nextSceneButton = ui::Button::create("assets_game/UXUI/Panel/Next_Round_BTN.png", "assets_game/UXUI/Panel/Next_Round_BTN.png");
     nextSceneButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     nextSceneButton->setPosition(Vec2(retryButton->getPosition().x + nextSceneButton->getContentSize().width + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON),
         nextSceneButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
