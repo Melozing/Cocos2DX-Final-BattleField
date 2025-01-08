@@ -24,6 +24,14 @@ bool GameOverPanel::init(const std::function<void()>& retryAction, const std::fu
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
+    this->removeChild(boardSprite);
+
+    // Create a new board sprite specific to GameOverPanel
+    boardSprite = Sprite::create("assets_game/UXUI/Panel/Board_Gameover.png");
+    boardSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
+    boardSprite->setScale(SpriteController::updateSpriteScale(boardSprite, 0.525f));
+    boardSprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + SpriteController::calculateScreenRatio(0.03f)));
+    this->addChild(boardSprite);
 
     // Create retry button
     auto retryButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png");

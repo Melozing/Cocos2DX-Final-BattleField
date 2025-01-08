@@ -253,13 +253,14 @@ void Game1Scene::initSpawning() {
 }
 
 void Game1Scene::showTutorialIfNeeded() {
-    //cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
+    cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     if (!dontShowTutorial) {
         std::vector<std::string> slideImages = {
             "assets_game/UXUI/Tutorial/Game1/image1.jpg",
             "assets_game/UXUI/Tutorial/Game1/image2.jpg",
-            "assets_game/UXUI/Tutorial/Game1/image3.jpg"
+            "assets_game/UXUI/Tutorial/Game1/image3.jpg",
+            "assets_game/UXUI/Tutorial/Game1/image4.jpg"
         };
         auto tutorialLayer = TutorialLayer::create(slideImages, Constants::DONT_SHOW_TUTORIAL_GAME1);
         this->addChild(tutorialLayer, Constants::ORDER_LAYER_UI); // Add tutorial layer on top

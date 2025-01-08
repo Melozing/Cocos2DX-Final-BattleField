@@ -11,6 +11,10 @@ CustomLoadingBar* CustomLoadingBar::create(const std::string& loadingBarImage, c
     return nullptr;
 }
 
+Size CustomLoadingBar::GetSize() {
+    return SpriteController::GetContentSizeSprite(border);
+}
+
 bool CustomLoadingBar::init(const std::string& loadingBarImage, const std::string& borderImage, float scale) {
     if (!Node::init()) {
         return false;

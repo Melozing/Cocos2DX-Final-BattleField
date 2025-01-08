@@ -208,7 +208,7 @@ void Game2Scene::setupPlayer() {
 void Game2Scene::checkGameOver() {
     /* if (_playerAttributes->GetHealth() <= 0) {
          _isGameOver = true;
-         auto gameOverLabel = Label::createWithTTF("Game Over", "fonts/Marker Felt.ttf", 48);
+         auto gameOverLabel = Label::createWithTTF("Game Over", "", 48);
          gameOverLabel->setPosition(Director::getInstance()->getVisibleSize() / 2);
          this->addChild(gameOverLabel);
 

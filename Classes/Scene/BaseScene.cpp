@@ -14,7 +14,7 @@ bool BaseScene::init() {
     // Add keyboard event listener for pause and resume functionality
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
-        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
+        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE || keyCode == EventKeyboard::KeyCode::KEY_P) {
             if (GameController::getInstance()->isPaused() || GameController::getInstance()->isTutorialLayerActive()) return;
             if (!GameController::getInstance()->isGameOver()) {
                 if (_cursor) {
