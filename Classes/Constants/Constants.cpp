@@ -11,7 +11,7 @@ const std::string Constants::ButtonClickSFX = "assets_game/sounds/UI/ButtonClick
 const std::string Constants::OpenPanel = "assets_game/sounds/UI/OpenPanel.mp3";
 const std::string Constants::SoundRadioEndGame = "assets_game/sounds/UI/ban_tin_chien_thang.mp3";
 const std::string Constants::SoundTrackEndGame = "assets_game/sounds/UI/quoc_ca.mp3";
-
+const std::string Constants::Library = "assets_game/sounds/UI/welcome_lib.mp3";
 //SCREEN
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
 const std::string Constants::GAME1_SCENE_NAME = "Game1Scene";

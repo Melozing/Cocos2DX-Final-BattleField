@@ -3,7 +3,6 @@
 #include "Constants/Constants.h"
 #include "Controller/GameController.h"
 #include "Controller/SoundController.h"
-
 // #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
@@ -88,6 +87,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     SoundController::getInstance()->setMusicVolume(UserDefault::getInstance()->getFloatForKey(Constants::UD_musicVolume.c_str()));
 
     auto scene = MainMenu::createScene();
+    //auto scene = IntroScene::createScene();
     director->runWithScene(scene);
 
     return true;
