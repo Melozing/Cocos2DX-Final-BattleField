@@ -12,7 +12,7 @@ public:
     const static std::string ClickStartGameSFX;
     const static std::string ButtonClickSFX;
     const static std::string OpenPanel;
-
+    const static std::string Library;
     // Constants for enemy scale
     static const float FLYING_BULLET_SPEED;
     static const float FALLINGROCK_START_Y;

@@ -234,6 +234,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Scene\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\Scene\SceneFinishGame.cpp" />
     <ClCompile Include="..\Classes\UIGame\Badge.cpp" />
+    <ClCompile Include="..\Classes\UIGame\IntroScene.cpp" />
     <ClCompile Include="..\Classes\utils\MathFunction.cpp" />
     <ClCompile Include="..\Classes\utils\PhysicsShapeCache.cpp" />
     <ClCompile Include="main.cpp" />
@@ -324,6 +325,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Scene\MainMenuScene.h" />
     <ClInclude Include="..\Classes\Scene\SceneFinishGame.h" />
     <ClInclude Include="..\Classes\UIGame\Badge.h" />
+    <ClInclude Include="..\Classes\UIGame\IntroScene.h" />
     <ClInclude Include="..\Classes\utils\MathFunction.h" />
     <ClInclude Include="..\Classes\utils\PhysicsShapeCache.h" />
     <ClInclude Include="main.h" />
