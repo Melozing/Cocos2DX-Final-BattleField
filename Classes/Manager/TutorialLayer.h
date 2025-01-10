@@ -10,7 +10,7 @@ public:
     virtual bool init(const std::vector<std::string>& slideImages, const std::string& userDefaultKey);
     void pauseGame();
     virtual void onEnter() override;
-    virtual void onExit() override;
+    virtual ~TutorialLayer();
 
 private:
     void updateSlide();

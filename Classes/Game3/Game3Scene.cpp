@@ -47,7 +47,6 @@ bool Game3Scene::init() {
     initBulletSpawning(Constants::JSON_GAME3_ENEMYBULLET_PHASE_1_PATH);
     initBoomSpawning(Constants::JSON_GAME3_ENEMYBOOM_PHASE_1_PATH);
     initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_1_PATH);
-    setupContactListener();
     initHealthBar();
     initBulletBadge();
     initBossHealthBar();
@@ -55,6 +54,8 @@ bool Game3Scene::init() {
     setupPlayer();
     initUltimateSkillBadge();
     showTutorialIfNeeded();
+    setupContactListener();
+    setupMobile();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
@@ -63,6 +64,15 @@ bool Game3Scene::init() {
     checkAndUpdateBackground();
 
     return true;
+}
+
+void Game3Scene::setupMobile() {
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        initControlButtons();
+        initTouchListener();
+    }
 }
 
 void Game3Scene::updateHealth(float newHealth) {
@@ -83,11 +93,33 @@ void Game3Scene::showTutorialIfNeeded() {
     cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME3.c_str(), false);
     bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME3.c_str(), false);
     if (!dontShowTutorial) {
+        if (_cursor)
+        {
+            _cursor->hideCursor();
+        }
+        auto imageTutorial = "assets_game/UXUI/Tutorial/Game3/image1.jpg";
+
+        auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+        if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+            platform == cocos2d::Application::Platform::OS_MAC) {
+            imageTutorial = "assets_game/UXUI/Tutorial/Game3/image1_mobile.jpg";
+        }
+
         std::vector<std::string> slideImages = {
-            "assets_game/UXUI/Tutorial/Game3/image1.jpg"
+            imageTutorial,
+            "assets_game/UXUI/Tutorial/Game3/image2.jpg",
+            "assets_game/UXUI/Tutorial/Game3/image3.jpg",
+            "assets_game/UXUI/Tutorial/Game3/image4.jpg"
         };
         auto tutorialLayer = TutorialLayer::create(slideImages, Constants::DONT_SHOW_TUTORIAL_GAME3);
         this->addChild(tutorialLayer, Constants::ORDER_LAYER_UI); // Add tutorial layer on top
+    }
+    else
+    {
+        if (_cursor)
+        {
+            _cursor->showCursor();
+        }
     }
 }
 
@@ -154,6 +186,12 @@ void Game3Scene::setupPlayer() {
     playerGame3->setName(Constants::PlayerGame3Name);
     this->addChild(playerGame3);
     setupEventListeners(playerGame3);
+    // Add touch event listener
+
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->onTouchBegan = CC_CALLBACK_2(PlayerGame3::onTouchBegan, playerGame3);
+    touchListener->onTouchMoved = CC_CALLBACK_2(PlayerGame3::onTouchMoved, playerGame3);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, playerGame3);
 }
 
 void Game3Scene::initBulletBadge() {
@@ -296,6 +334,13 @@ void Game3Scene::initHealthBar() {
     auto frontHealthBar = Sprite::create("assets_game/UXUI/Loading/health_player_game3_front.png");
     backHealthBar->setPosition(Vec2(xPos, yPos));
     float paddingHeightFront = SpriteController::calculateScreenHeightRatio(0.015f);
+    
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        paddingHeightFront = SpriteController::calculateScreenHeightRatio(0.009);
+    }
+
     frontHealthBar->setPosition(Vec2(xPos, yPos - paddingHeightFront));
     backHealthBar->setScale(SpriteController::updateSpriteScale(backHealthBar, 0.155f));
     frontHealthBar->setScale(SpriteController::updateSpriteScale(backHealthBar, 0.155f));
@@ -371,30 +416,33 @@ void Game3Scene::initSound() {
 }
 
 void Game3Scene::initBulletSpawning(const std::string& jsonFilePath) {
-    // Read JSON file
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
-    FILE* fp = fopen(filePath.c_str(), "rb");
-    if (!fp) {
-        CCLOG("Failed to open JSON file");
+     // Read JSON file
+    std::string fileContent = FileUtils::getInstance()->getStringFromFile(jsonFilePath);
+    if (fileContent.empty()) {
+        CCLOG("Failed to read JSON file: %s", jsonFilePath.c_str());
         return;
     }
 
-    char readBuffer[65536];
-    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    // Parse the JSON content
     rapidjson::Document document;
-    document.ParseStream(is);
-    fclose(fp);
+    document.Parse(fileContent.c_str());
 
-    const auto& spawnEvents = document["spawnEvents"];
-    for (const auto& event : spawnEvents.GetArray()) {
-        std::string enemyType = event["enemyType"].GetString();
-        float spawnTime = event["spawnTime"].GetFloat();
-        float skillTime = event["skillTime"].GetFloat();
-        bool spawnSkill = event["spawnSkill"].GetBool();
-        std::string direction = event["direction"].GetString();
-        std::string position = event["position"].GetString();
+    if (!document.IsObject() || !document.HasMember("spawnEvents") || !document["spawnEvents"].IsArray()) {
+        CCLOG("Invalid JSON format: %s", jsonFilePath.c_str());
+        return;
+    }
 
-        this->scheduleOnce([=, &event](float) {
+    const rapidjson::Value& spawnEvents = document["spawnEvents"];
+    for (rapidjson::SizeType i = 0; i < spawnEvents.Size(); ++i) {
+        const rapidjson::Value& enemyData = spawnEvents[i];
+        std::string enemyType = enemyData["enemyType"].GetString();
+        float spawnTime = enemyData["spawnTime"].GetFloat();
+        float skillTime = enemyData["skillTime"].GetFloat();
+        bool spawnSkill = enemyData["spawnSkill"].GetBool();
+        std::string direction = enemyData["direction"].GetString();
+        std::string position = enemyData["position"].GetString();
+
+        this->scheduleOnce([=](float) {
             if (enemyType == "EnemyPlaneBullet") {
                 auto enemy = EnemyPlaneBulletPool::getInstance()->getObject();
                 if (enemy) {
@@ -408,29 +456,32 @@ void Game3Scene::initBulletSpawning(const std::string& jsonFilePath) {
 
 void Game3Scene::initBoomSpawning(const std::string& jsonFilePath) {
     // Read JSON file
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
-    FILE* fp = fopen(filePath.c_str(), "rb");
-    if (!fp) {
-        CCLOG("Failed to open JSON file");
+    std::string fileContent = FileUtils::getInstance()->getStringFromFile(jsonFilePath);
+    if (fileContent.empty()) {
+        CCLOG("Failed to read JSON file: %s", jsonFilePath.c_str());
         return;
     }
 
-    char readBuffer[65536];
-    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    // Parse the JSON content
     rapidjson::Document document;
-    document.ParseStream(is);
-    fclose(fp);
+    document.Parse(fileContent.c_str());
 
-    const auto& spawnEvents = document["spawnEvents"];
-    for (const auto& event : spawnEvents.GetArray()) {
-        std::string enemyType = event["enemyType"].GetString();
-        float spawnTime = event["spawnTime"].GetFloat();
-        float skillTime = event["skillTime"].GetFloat();
-        bool spawnSkill = event["spawnSkill"].GetBool();
-        std::string direction = event["direction"].GetString();
-        std::string position = event["position"].GetString();
+    if (!document.IsObject() || !document.HasMember("spawnEvents") || !document["spawnEvents"].IsArray()) {
+        CCLOG("Invalid JSON format: %s", jsonFilePath.c_str());
+        return;
+    }
 
-        this->scheduleOnce([=, &event](float) {
+    const rapidjson::Value& spawnEvents = document["spawnEvents"];
+    for (rapidjson::SizeType i = 0; i < spawnEvents.Size(); ++i) {
+        const rapidjson::Value& enemyData = spawnEvents[i];
+        std::string enemyType = enemyData["enemyType"].GetString();
+        float spawnTime = enemyData["spawnTime"].GetFloat();
+        float skillTime = enemyData["skillTime"].GetFloat();
+        bool spawnSkill = enemyData["spawnSkill"].GetBool();
+        std::string direction = enemyData["direction"].GetString();
+        std::string position = enemyData["position"].GetString();
+
+        this->scheduleOnce([=](float) {
             if (enemyType == "EnemyPlaneBoom") {
                 auto enemy = EnemyPlaneBoomPool::getInstance()->getObject();
                 if (enemy) {
@@ -443,34 +494,29 @@ void Game3Scene::initBoomSpawning(const std::string& jsonFilePath) {
 }
 
 void Game3Scene::initBossSpawning(const std::string& jsonFilePath) {
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
-    FILE* fp = fopen(filePath.c_str(), "rb");
-    if (!fp) {
-        CCLOG("Failed to open JSON file");
+    // Read JSON file
+    std::string fileContent = FileUtils::getInstance()->getStringFromFile(jsonFilePath);
+    if (fileContent.empty()) {
+        CCLOG("Failed to read JSON file: %s", jsonFilePath.c_str());
         return;
     }
 
-    char readBuffer[65536];
-    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    // Parse the JSON content
     rapidjson::Document document;
-    document.ParseStream(is);
-    fclose(fp);
+    document.Parse(fileContent.c_str());
 
     if (!document.IsObject() || !document.HasMember("bossSpawnEvents") || !document["bossSpawnEvents"].IsArray()) {
-        CCLOG("Invalid JSON format for boss spawn events");
+        CCLOG("Invalid JSON format: %s", jsonFilePath.c_str());
         return;
     }
 
-    const auto& bossSpawnEvents = document["bossSpawnEvents"];
-    for (const auto& event : bossSpawnEvents.GetArray()) {
-        if (!event.IsObject()) {
-            CCLOG("Invalid boss spawn event format");
-            continue;
-        }
+    const rapidjson::Value& spawnEvents = document["bossSpawnEvents"];
+    for (rapidjson::SizeType i = 0; i < spawnEvents.Size(); ++i) {
+        const rapidjson::Value& enemyData = spawnEvents[i];
 
-        std::string enemyType = event["enemyType"].GetString();
-        float spawnTime = event["spawnTime"].GetFloat();
-        float timeToUltimate = event["timeToUltimate"].GetFloat();
+        std::string enemyType = enemyData["enemyType"].GetString();
+        float spawnTime = enemyData["spawnTime"].GetFloat();
+        float timeToUltimate = enemyData["timeToUltimate"].GetFloat();
 
         this->scheduleOnce([=](float) {
             if (enemyType == "EnemyPlaneBoss") {
@@ -505,35 +551,16 @@ void Game3Scene::setupCursor() {
         CCLOG("Failed to create Cursor");
         return;
     }
+    _cursor->showCursor();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     _cursor->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _cursor->setName("Cursor");
     this->addChild(_cursor, Constants::ORDER_LAYER_UI - 10);
-
-    __NotificationCenter::getInstance()->addObserver(
-        this,
-        callfuncO_selector(Game3Scene::hideCursor),
-        "HideCursorNotification",
-        nullptr
-    );
-
-    __NotificationCenter::getInstance()->addObserver(
-        this,
-        callfuncO_selector(Game3Scene::showCursor),
-        "ShowCursorNotification",
-        nullptr
-    );
-}
-
-void Game3Scene::hideCursor(Ref* sender) {
-    if (_cursor) {
-        _cursor->setVisible(false);
-    }
 }
 
 void Game3Scene::showCursor(Ref* sender) {
     if (_cursor) {
-        _cursor->setVisible(true);
+        _cursor->showCursor();
     }
 }
 
@@ -548,10 +575,27 @@ void Game3Scene::setupEventListeners(PlayerGame3* player) {
     _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, player);
 }
 
+
 void Game3Scene::setupContactListener() {
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(Game3Scene::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+}
+
+void Game3Scene::initTouchListener() {
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->onTouchBegan = CC_CALLBACK_2(Game3Scene::onTouchBegan, this);
+    touchListener->onTouchEnded = CC_CALLBACK_2(Game3Scene::onTouchEnded, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+}
+
+bool Game3Scene::onTouchBegan(Touch* touch, Event* event) {
+    playerGame3->onMouseDown(nullptr); // Simulate mouse down event
+    return true;
+}
+
+void Game3Scene::onTouchEnded(Touch* touch, Event* event) {
+     playerGame3->onMouseUp(nullptr); // Simulate mouse up event
 }
 
 bool Game3Scene::onContactBegin(PhysicsContact& contact) {
@@ -836,4 +880,55 @@ void Game3Scene::handleFinisherMissilesCityCollision(FinisherMissiles*  Finisher
             nullptr
         ));
     }
+}
+
+void Game3Scene::initControlButtons() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+	float paddingTop = SpriteController::calculateScreenHeightRatio(0.1f);
+	float paddingWidth = SpriteController::calculateScreenRatio(0.1f);
+	float spacingWidth = SpriteController::calculateScreenRatio(0.18f);
+
+    // Create left button
+	auto spriteButton = Sprite::create("assets_game/UXUI/Panel/Next_Round_BTN.png");
+    leftButton = cocos2d::ui::Button::create("assets_game/UXUI/Panel/Next_Round_BTN.png", "assets_game/UXUI/Panel/Next_Round_BTN.png");
+    leftButton->setScale(SpriteController::updateSpriteScale(spriteButton , 0.3));
+    leftButton->setPosition(Vec2(origin.x / 2 + paddingWidth,
+        origin.y / 2 + paddingTop));
+    leftButton->setOpacity(120);
+    leftButton->addTouchEventListener([this](Ref* sender, cocos2d::ui::Widget::TouchEventType type) {
+        switch (type) {
+        case cocos2d::ui::Widget::TouchEventType::BEGAN:
+            playerGame3->startMovingLeft();
+            break;
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+        case cocos2d::ui::Widget::TouchEventType::CANCELED:
+            playerGame3->stopMoving();
+            break;
+        default:
+            break;
+        }
+        });
+    this->addChild(leftButton, Constants::ORDER_LAYER_UI - 5);
+
+    // Create right button
+    rightButton = cocos2d::ui::Button::create("assets_game/UXUI/Panel/Next_Round_BTN.png", "assets_game/UXUI/Panel/Next_Round_BTN.png");
+    rightButton->setScale(SpriteController::updateSpriteScale(spriteButton, 0.3));
+    rightButton->setPosition(Vec2(leftButton->getPositionX() + spacingWidth,
+        leftButton->getPositionY()));
+    rightButton->setOpacity(120);
+    rightButton->addTouchEventListener([this](Ref* sender, cocos2d::ui::Widget::TouchEventType type) {
+        switch (type) {
+        case cocos2d::ui::Widget::TouchEventType::BEGAN:
+            playerGame3->startMovingRight();
+            break;
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+        case cocos2d::ui::Widget::TouchEventType::CANCELED:
+            playerGame3->stopMoving();
+            break;
+        default:
+            break;
+        }
+        });
+    this->addChild(rightButton, Constants::ORDER_LAYER_UI - 5);
 }

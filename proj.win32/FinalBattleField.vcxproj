@@ -215,6 +215,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Library\UILibrary.cpp" />
     <ClCompile Include="..\Classes\LoadingBar\CustomLoadingBar.cpp" />
     <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp" />
+    <ClCompile Include="..\Classes\Manager\Joystick.cpp" />
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame1.cpp" />
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame2.cpp" />
     <ClCompile Include="..\Classes\Manager\ObjectPoolGame3.cpp" />
@@ -305,6 +306,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Library\UILibrary.h" />
     <ClInclude Include="..\Classes\LoadingBar\CustomLoadingBar.h" />
     <ClInclude Include="..\Classes\Manager\BackgroundManager.h" />
+    <ClInclude Include="..\Classes\Manager\Joystick.h" />
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame1.h" />
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame2.h" />
     <ClInclude Include="..\Classes\Manager\ObjectPoolGame3.h" />

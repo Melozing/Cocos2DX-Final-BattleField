@@ -189,8 +189,15 @@ void Landmine::triggerExplosion() {
     auto originalSize = explosionSpriteDump->getTexture()->getContentSize();
     auto scaledSize = this->GetSize();
 
+    float scaleFactor = 1.5f;
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        scaleFactor = 0.8f;
+    }
     explosionBody = physicsCache->createBody("RandomBoomExplosionGame1", originalSize, scaledSize);
-    physicsCache->resizeBody(explosionBody, "RandomBoomExplosionGame1", originalSize, 1.5f);
+    physicsCache->resizeBody(explosionBody, "RandomBoomExplosionGame1", originalSize, scaleFactor);
+   
     if (explosionBody) {
         explosionBody->setCollisionBitmask(0x02); // Unique bitmask for missiles
         explosionBody->setContactTestBitmask(true);

@@ -11,40 +11,56 @@
 class PlayerGame1 : public cocos2d::Sprite, public SpriteController
 {
 public:
+    // Initialization
     static PlayerGame1* createPlayer();
-
     virtual bool init() override;
-
     void initAnimation();
-    void takeDamage();
-    bool canTakeDamage();
-    Size GetSize();
-    void removePhysicsBody();
 
-    void playDamageEffect();
-    void playHealthIncreaseEffect();
-
+    // Movement and Control
+    void setJoystickDirection(const cocos2d::Vec2& direction);
+    void disableMovement();
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void update(float delta) override;
+    void setupMovementBoundaries();
+    void setupKeyboardListener();
+    void setupPlayerMovement();
 
+    // Health and Damage
+    void takeDamage();
+    bool canTakeDamage();
+    void playDamageEffect();
+    void playHealthIncreaseEffect();
+
+    // Shield
     void setShield(ShieldSkill* shield);
+    void updateShieldPosition(float dt);
     ShieldSkill* _shield;
-    void disableMovement();
-    void fadeOutAndDisable();
+
+    // Physics
     void createPhysicsBody();
+    void removePhysicsBody();
+
+    // Other
+    Size GetSize();
+    void fadeOutAndDisable();
     void moveToCenterAndExit();
 
 private:
+    // Health
     int _health = 3;
-    float minX, maxX, minY, maxY;
     float _damageCooldown = 1.0f;
     float _lastDamageTime = 0.0f;
+
+    // Movement boundaries
+    float minX, maxX, minY, maxY;
+
+    // Components
     PlayerAttributes* attributes;
     GameController* gameController;
     Sprite* modelCharac;
     PlayerMovement* playerMovement;
-    void updateShieldPosition(float dt);
+    cocos2d::Vec2 _joystickDirection;
 };
 
 #endif // __PLAYERGAME1_H__

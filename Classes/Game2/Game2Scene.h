@@ -21,9 +21,6 @@ public:
     // Initializes the scene
     virtual bool init() override;
 
-    // Macro to create the Game2Scene object
-    CREATE_FUNC(Game2Scene);
-
     // Updates the scene every frame
     void update(float delta) override;
 

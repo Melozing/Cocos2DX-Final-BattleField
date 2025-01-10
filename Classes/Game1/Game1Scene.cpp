@@ -14,11 +14,10 @@
 #include "Manager/BackgroundManager.h"
 #include "Manager/TutorialLayer.h"
 
-#include <ctime> 
 #include "json/document.h"
 #include "json/filereadstream.h"
-#include <fstream>
-#include <cmath> 
+#include "json/stringbuffer.h"
+#include "json/writer.h"
 
 USING_NS_CC;
 using namespace cocos2d::experimental;
@@ -62,6 +61,7 @@ bool Game1Scene::init() {
     initCursor();
     setupContactListener();
     showTutorialIfNeeded();
+    mobileSetup();
 
     this->scheduleUpdate();
     return true;
@@ -72,11 +72,9 @@ void Game1Scene::preloadAssets() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/pre_explosion.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/ExplosionLandmine.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/falling_rock.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/landmine.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/FallingTree.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/flying_bullet_left.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/warning_rocket.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/rocket.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
@@ -84,6 +82,83 @@ void Game1Scene::preloadAssets() {
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/items/Health.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/Canon.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/shield.plist");
+}
+
+void Game1Scene::registerNotificationListeners() {
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game1Scene::disableJoystick),
+        "DisableJoystickNotification",
+        nullptr
+    );
+
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game1Scene::enableJoystick),
+        "EnableJoystickNotification",
+        nullptr
+    );
+}
+
+void Game1Scene::mobileSetup() {
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        initJoystick();
+        initTouchListener();
+        registerNotificationListeners();
+    }
+}
+
+Game1Scene::~Game1Scene() {
+    __NotificationCenter::getInstance()->removeObserver(this, "HideCursorNotification");
+    __NotificationCenter::getInstance()->removeObserver(this, "ShowCursorNotification");
+    __NotificationCenter::getInstance()->removeObserver(this, "DisableJoystickNotification");
+    __NotificationCenter::getInstance()->removeObserver(this, "EnableJoystickNotification");
+}
+
+void Game1Scene::disableJoystick(Ref* sender) {
+    setJoystickEnabled(false);
+}
+
+void Game1Scene::enableJoystick(Ref* sender) {
+    setJoystickEnabled(true);
+}
+
+void Game1Scene::setJoystickEnabled(bool enabled) {
+    if (_joystick) {
+        _joystick->setEnabled(enabled);
+    }
+}
+void Game1Scene::initTouchListener() {
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->onTouchBegan = [this](Touch* touch, Event* event) {
+        if (!_joystick->getEnabled()) return true;
+        Vec2 touchLocation = touch->getLocation();
+        _joystick->setPosition(touchLocation);
+        _joystick->setVisible(true);
+        return true;
+        };
+
+    touchListener->onTouchEnded = [this](Touch* touch, Event* event) {
+        _joystick->setVisible(false);
+        };
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+}
+
+void Game1Scene::initJoystick() {
+    auto sprite = Sprite::create("assets_game/player/joystick_base.png");
+    _joystick = Joystick::create("assets_game/player/joystick_base.png", "assets_game/player/joystick_stick.png");
+    _joystick->setJoystickScale(SpriteController::updateSpriteScale(sprite, 0.4f));
+    _joystick->setVisible(false);
+    this->addChild(_joystick, Constants::ORDER_LAYER_UI);
+
+    _joystick->onDirectionChanged = [this](const Vec2& direction) {
+        if (_player) {
+            _player->setJoystickDirection(direction);
+        }
+        };
 }
 
 void Game1Scene::initCursor() {
@@ -256,8 +331,16 @@ void Game1Scene::showTutorialIfNeeded() {
     cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     if (!dontShowTutorial) {
+		auto imageTutorial = "assets_game/UXUI/Tutorial/Game1/image1.jpg";
+
+        auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+        if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+            platform == cocos2d::Application::Platform::OS_MAC) {
+            imageTutorial = "assets_game/UXUI/Tutorial/Game1/image1_mobile.jpg";
+        }
+
         std::vector<std::string> slideImages = {
-            "assets_game/UXUI/Tutorial/Game1/image1.jpg",
+            imageTutorial,
             "assets_game/UXUI/Tutorial/Game1/image2.jpg",
             "assets_game/UXUI/Tutorial/Game1/image3.jpg",
             "assets_game/UXUI/Tutorial/Game1/image4.jpg"
@@ -463,32 +546,25 @@ void Game1Scene::resetGameState() {
 
 // Function to initialize the spawn schedule from JSON
 void Game1Scene::initializeSpawnSchedule() {
-    // Example of reading a JSON file and initializing the spawn schedule
-    std::string filePath = FileUtils::getInstance()->fullPathForFilename("/json/spawn_enemies_game1.json");
+    // Get the full path of the JSON file
+    std::string filePath = "json/spawn_enemies_game1.json";
+    std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filePath);
 
-    // Log the full path to the console
-    CCLOG("Full path for spawn schedule file: %s", filePath.c_str());
+    // Read the file content as a string
+    std::string fileContent = FileUtils::getInstance()->getStringFromFile(fullPath);
 
-
-    FILE* fp = fopen(filePath.c_str(), "rb");
-    if (!fp) {
-        CCLOG("Failed to open spawn schedule file.");
-        return;
-    }
-
-    char readBuffer[65536];
-    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    // Parse the JSON string using RapidJSON
     rapidjson::Document document;
-    document.ParseStream(is);
-    fclose(fp);
+    document.Parse(fileContent.c_str());
 
     if (document.HasParseError()) {
-        CCLOG("Error parsing spawn schedule JSON.");
+        CCLOG("Error parsing JSON file: %s", filePath.c_str());
         return;
     }
 
+    // Check if the JSON document is an array
     if (!document.IsArray()) {
-        CCLOG("Spawn schedule JSON is not an array.");
+        CCLOG("JSON file is not an array: %s", filePath.c_str());
         return;
     }
 
@@ -525,7 +601,6 @@ Vec2 Game1Scene::getRandomSpawnPosition(const Size& size) {
 }
 
 void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
-    CCLOG("SPAWNING BULLET");
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
@@ -578,7 +653,6 @@ void Game1Scene::SpawnFanBullet(cocos2d::Size size) {
 void Game1Scene::SpawnFallingRockAndBomb(Size size) {
     Vec2 spawnPosition = getRandomSpawnPosition(size);
     int randomEnemy = rand() % 3;
-    CCLOG("SPAWNING ROCK");
     switch (randomEnemy) {
     case 0: {
         // Spawn FallingRock
@@ -654,7 +728,6 @@ void Game1Scene::SpawnRandomBoom(cocos2d::Size size) {
 }
 
 void Game1Scene::SpawnCollectibleItem(const Size& size) {
-    CCLOG("SPAWNING ITEM");
     Vec2 spawnPosition = getRandomSpawnPosition(size);
     if (!isPositionOccupied(spawnPosition)) {
         // Randomly choose between HealthItem and AmmoItem

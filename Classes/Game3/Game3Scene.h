@@ -76,14 +76,16 @@ private:
     void initBoomSpawning(const std::string& jsonFilePath);
     void initBossSpawning(const std::string& jsonFilePath);
     void setupCursor();
-    void hideCursor(Ref* sender);
-    void showCursor(Ref* sender);
+    virtual void showCursor(Ref* sender) override;
     void setupEventListeners(PlayerGame3* player);
     void initPools();
     void setupContactListener();
 
     // Contact listener
     bool onContactBegin(cocos2d::PhysicsContact& contact);
+    void initTouchListener();
+    bool onTouchBegan(Touch* touch, Event* event);
+    void onTouchEnded(Touch* touch, Event* event);
 
     // Collision handling methods
     void handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlaneBase* enemy);
@@ -127,7 +129,7 @@ private:
     bool isBackgroundBreak;
 
     // Format Text
-    std::string Game3Scene::formatTime(int totalSeconds);
+    std::string formatTime(int totalSeconds);
 
     //Health Circle
     cocos2d::ProgressTimer* healthBarCircle; // Progress timer for circular health bar
@@ -136,6 +138,13 @@ private:
 
     // Tutorial
     void showTutorialIfNeeded();
+
+    // Setup Android
+    cocos2d::ui::Button* leftButton;
+    cocos2d::ui::Button* rightButton;
+
+    void initControlButtons();
+    void setupMobile();
 };
 
 #endif // __GAME3SCENE_SCENE_H__

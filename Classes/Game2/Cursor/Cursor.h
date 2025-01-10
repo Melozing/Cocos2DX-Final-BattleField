@@ -11,6 +11,8 @@ public:
     void setInitialPosition();
     void changeSprite(const std::string& filename);
     void changeColor(const cocos2d::Color3B& color);
+    void hideCursor(); 
+    void showCursor();
 
 private:
     void onMouseMove(cocos2d::Event* event);

@@ -61,6 +61,7 @@ bool TutorialLayer::init(const std::vector<std::string>& slideImages, const std:
         DelayTime::create(1.0f),
         cocos2d::CallFunc::create([this]() {
             this->pauseGame();
+            __NotificationCenter::getInstance()->postNotification("DisableJoystickNotification");
             }),
         nullptr));
 
@@ -199,12 +200,12 @@ void TutorialLayer::onEnter() {
     GameController::getInstance()->setTutorialLayerActive(true);
 }
 
-void TutorialLayer::onExit() {
-    Layer::onExit();
+TutorialLayer::~TutorialLayer() {
     GameController::getInstance()->setTutorialLayerActive(false);
     GameController::getInstance()->toggleCursorVisibility(false);
     SoundController::getInstance()->resumeMusic(Constants::currentSoundTrackPath);
-    
+
     // Notify to show cursor
     __NotificationCenter::getInstance()->postNotification("ShowCursorNotification");
+    __NotificationCenter::getInstance()->postNotification("EnableJoystickNotification", (Ref*)true);
 }

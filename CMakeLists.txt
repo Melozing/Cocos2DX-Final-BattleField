@@ -122,6 +122,7 @@ list(APPEND GAME_SOURCE
     Classes/Manager/SpriteBatchNodeManager.cpp
     Classes/Manager/SpriteFrameCacheManager.cpp
     Classes/Manager/TutorialLayer.cpp
+    Classes/Manager/Joystick.cpp
     Classes/Panel/BasePanel.cpp
     Classes/Panel/GameOverPanel.cpp
     Classes/Panel/PausePanel.cpp
@@ -210,6 +211,7 @@ list(APPEND GAME_HEADER
     Classes/Manager/SpriteBatchNodeManager.h
     Classes/Manager/SpriteFrameCacheManager.h
     Classes/Manager/TutorialLayer.h
+    Classes/Manager/Joystick.h
     Classes/Panel/BasePanel.h
     Classes/Panel/GameOverPanel.h
     Classes/Panel/PausePanel.h
