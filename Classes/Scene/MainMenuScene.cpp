@@ -101,6 +101,8 @@ bool MainMenu::init() {
     collectionButton->setPosition(Vec2(visibleSize.width - collectionButton->getContentSize().width / 2 - 10, collectionButton->getContentSize().height / 2 + 10)); // Position at the bottom right
     collectionButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
+            SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
             toggleItemLibraryWindow();
         }
         });

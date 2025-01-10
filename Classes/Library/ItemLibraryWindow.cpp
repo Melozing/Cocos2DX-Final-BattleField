@@ -1,8 +1,30 @@
 ﻿#include "Library/ItemLibraryWindow.h"
 #include "Scene/MainMenuScene.h"
 #include "ui/UIWidget.h"
+#include "Controller/SoundController.h"
 USING_NS_CC;
 using namespace ui;
+
+namespace {
+    const float MAIN_BG_SCALE = 0.8f;
+    const float INTRO_SCALE_FACTOR = 0.7f;
+    const float INTRO_OFFSET_Y = 50.0f;
+    const float ITEM_PADDING_X = 20.0f;
+    const float ITEM_PADDING_Y = 20.0f;
+    const float EXIT_BUTTON_SCALE = 0.6f;
+    const float EXIT_BUTTON_OFFSET_X = 40.0f;
+    const float EXIT_BUTTON_OFFSET_Y = 35.0f;
+    const float ITEM_LAYOUT_WIDTH = 120.0f;
+    const float ITEM_LAYOUT_HEIGHT = 120.0f;
+    const float ITEM_LABEL_OFFSET_Y = -10.0f;
+    const float INFO_IMAGE_OFFSET_Y = 100.0f;
+    const float INFO_LABEL_OFFSET_Y = 50.0f;
+    const float INFO_LABEL_FONT_SIZE = 24.0f;
+    const float INFO_NAME_LABEL_FONT_SIZE = 28.0f;
+    const float INFO_SHORT_DESC_LABEL_FONT_SIZE = 20.0f;
+    const float INFO_DESC_LABEL_FONT_SIZE = 20.0f;
+    const float INFO_LABEL_PADDING_Y = 20.0f;
+}
 
 bool ItemLibraryWindow::init() {
     if (!Layer::init()) {
@@ -15,7 +37,7 @@ bool ItemLibraryWindow::init() {
     }
 
     createBackground();
-    createIntroSection(); // Call the new function for introduction
+    createTitleLabel();
     createItemSection();
     createInfoSection();
     createExitButton();
@@ -27,36 +49,58 @@ void ItemLibraryWindow::createBackground() {
     Size visibleSize = Director::getInstance()->getVisibleSize();
     mainBg = Sprite::create("assets_game/UXUI/Collection/c_full_header.png");
     if (!mainBg) {
-        CCLOG("Failed to create mainBg sprite");
         return;
     }
-    mainBg->setContentSize(Size(visibleSize.width * 0.8, visibleSize.height * 0.8));
+    mainBg->setContentSize(Size(visibleSize.width * MAIN_BG_SCALE, visibleSize.height * MAIN_BG_SCALE));
     mainBg->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     this->addChild(mainBg);
 }
+
+void ItemLibraryWindow::createTitleLabel() {
+    Size mainBgSize = mainBg->getContentSize();
+    auto titleLabel = Label::createWithSystemFont("Library", "Arial", INFO_LABEL_FONT_SIZE);
+    if (!titleLabel) {
+        CCLOG("Failed to create titleLabel");
+        return;
+    }
+    titleLabel->setTextColor(Color4B::GREEN);
+    titleLabel->enableBold();
+    titleLabel->setPosition(Vec2(mainBgSize.width / 2, mainBgSize.height - EXIT_BUTTON_OFFSET_Y));
+    mainBg->addChild(titleLabel);
+
+    // Thêm EventListener cho titleLabel
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = [this, titleLabel](Touch* touch, Event* event) {
+        if (titleLabel->getBoundingBox().containsPoint(touch->getLocation())) {
+            SoundController::getInstance()->playSoundEffect(Constants::Library);
+            return true;
+        }
+        return false;
+        };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, titleLabel);
+}
+
+
 
 cocos2d::Rect ItemLibraryWindow::getMainBgBoundingBox() const {
     return mainBg->getBoundingBox();
 }
 
 void ItemLibraryWindow::createIntroSection() {
-    // Add introduction background image
     auto introBg = Sprite::create("assets_game/UXUI/Collection/intro.png");
     if (!introBg) {
         CCLOG("Failed to create introBg sprite");
         return;
     }
-    const float scaleFactor = 0.7f; // 70%
     const Size mainBgSize = mainBg->getContentSize();
-    const Size targetSize = Size(mainBgSize.width * scaleFactor, introBg->getContentSize().height);
+    const Size targetSize = Size(mainBgSize.width * INTRO_SCALE_FACTOR, introBg->getContentSize().height);
     float scaleX = targetSize.width / introBg->getContentSize().width;
     float scaleY = targetSize.height / introBg->getContentSize().height;
     introBg->setScale(scaleX, scaleY);
-    introBg->setPosition(Vec2(mainBgSize.width / 2, mainBgSize.height - introBg->getContentSize().height * scaleY / 2 - 50));
+    introBg->setPosition(Vec2(mainBgSize.width / 2, mainBgSize.height - introBg->getContentSize().height * scaleY / 2 - INTRO_OFFSET_Y));
     mainBg->addChild(introBg);
 
-    // Create intro label
-    introLabel = Label::createWithSystemFont("Welcome to the Item Library", "Arial", 24);
+    introLabel = Label::createWithSystemFont("Welcome to the Item Library", "Arial", INFO_LABEL_FONT_SIZE);
     if (!introLabel) {
         CCLOG("Failed to create introLabel");
         return;
@@ -71,11 +115,12 @@ void ItemLibraryWindow::createExitButton() {
         CCLOG("Failed to create exitButton");
         return;
     }
-    exitButton->setScale(0.6f);
-    exitButton->setPosition(Vec2(mainBg->getContentSize().width - 40, mainBg->getContentSize().height - 35));
+    exitButton->setScale(EXIT_BUTTON_SCALE);
+    exitButton->setPosition(Vec2(mainBg->getContentSize().width - EXIT_BUTTON_OFFSET_X, mainBg->getContentSize().height - EXIT_BUTTON_OFFSET_Y));
     exitButton->addClickEventListener([=](Ref* sender) {
         auto mainMenuScene = dynamic_cast<MainMenu*>(Director::getInstance()->getRunningScene());
         if (mainMenuScene) {
+			SoundController::getInstance()->playSoundEffect(Constants::Library);
             mainMenuScene->toggleItemLibraryWindow();
         }
         });
@@ -85,41 +130,44 @@ void ItemLibraryWindow::createExitButton() {
 void ItemLibraryWindow::createItemSection() {
     auto itemsBg = Sprite::create("assets_game/UXUI/Collection/c_full.png");
     if (!itemsBg) {
+        CCLOG("Failed to create itemsBg sprite");
         return;
     }
-    itemsBg->setContentSize(Size(mainBg->getContentSize().width / 3 - 10, mainBg->getContentSize().height - 60));
+    const Size mainBgSize = mainBg->getContentSize();
+    itemsBg->setContentSize(Size(mainBgSize.width / 3 - 10, mainBgSize.height - 60));
     itemsBg->setAnchorPoint(Vec2(-0.04f, 0));
     itemsBg->setPosition(Vec2(5, 5));
     mainBg->addChild(itemsBg);
 
     scrollView = ScrollView::create();
     if (!scrollView) {
+        CCLOG("Failed to create scrollView");
         return;
     }
+    const Size itemsBgSize = itemsBg->getContentSize();
     scrollView->setDirection(ScrollView::Direction::VERTICAL);
-    scrollView->setContentSize(itemsBg->getContentSize());
+    scrollView->setContentSize(itemsBgSize);
+    scrollView->setInnerContainerSize(itemsBgSize);
     scrollView->setBounceEnabled(true);
-    scrollView->setScrollBarEnabled(false);
+    scrollView->setScrollBarEnabled(false); // Disable default scroll bar
     scrollView->setAnchorPoint(Vec2(0.5, 0.5));
-    scrollView->setPosition(Vec2(itemsBg->getContentSize().width / 2, itemsBg->getContentSize().height / 2 - 15));
+    scrollView->setPosition(Vec2(itemsBgSize.width / 2, itemsBgSize.height / 2 - 15));
     itemsBg->addChild(scrollView);
 
     const auto& items = ItemLibrary::getInstance().getItems();
     int columns = 2;
-    float paddingX = 20.0f;
-    float paddingY = 20.0f;
-    float itemWidth = (itemsBg->getContentSize().width - (columns + 1) * paddingX) / columns;
+    float itemWidth = (itemsBgSize.width - (columns + 1) * ITEM_PADDING_X) / columns;
     float itemHeight = itemWidth;
     int rows = (items.size() + columns - 1) / columns;
-    float totalHeight = rows * (itemHeight + paddingY) + paddingY;
+    float totalHeight = rows * (itemHeight + ITEM_PADDING_Y) + ITEM_PADDING_Y;
     scrollView->setInnerContainerSize(Size(scrollView->getContentSize().width, totalHeight));
 
     for (size_t i = 0; i < items.size(); ++i) {
         int row = i / columns;
         int col = i % columns;
 
-        float posX = paddingX + col * (itemWidth + paddingX) + itemWidth / 2;
-        float posY = totalHeight - paddingY - row * (itemHeight + paddingY) - itemHeight / 2;
+        float posX = ITEM_PADDING_X + col * (itemWidth + ITEM_PADDING_X) + itemWidth / 2;
+        float posY = totalHeight - ITEM_PADDING_Y - row * (itemHeight + ITEM_PADDING_Y) - itemHeight / 2;
         auto itemLayout = UILibrary::createItemLayout(items[i], [=]() {
             updateItemInfo(items[i]);
             });
@@ -131,6 +179,20 @@ void ItemLibraryWindow::createItemSection() {
         itemLayout->setPosition(Vec2(posX, posY));
         scrollView->addChild(itemLayout);
     }
+
+    // Add mouse scroll event listener to scrollView
+    auto mouseListener = EventListenerMouse::create();
+    mouseListener->onMouseScroll = [=](Event* event) {
+        EventMouse* e = (EventMouse*)event;
+        if (scrollView->getBoundingBox().containsPoint(e->getLocationInView())) {
+            float delta = e->getScrollY() * 10; // Adjust scroll speed
+            auto newPos = scrollView->getInnerContainerPosition().y + delta;
+            newPos = std::max(newPos, scrollView->getContentSize().height - scrollView->getInnerContainerSize().height);
+            newPos = std::min(newPos, 0.0f);
+            scrollView->setInnerContainerPosition(Vec2(0, newPos));
+        }
+        };
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(mouseListener, scrollView);
 }
 
 void ItemLibraryWindow::createInfoSection() {
@@ -139,106 +201,105 @@ void ItemLibraryWindow::createInfoSection() {
         CCLOG("Failed to create infoBg sprite");
         return;
     }
-    infoBg->setContentSize(Size(mainBg->getContentSize().width * 2 / 3 - 10, mainBg->getContentSize().height - 60));
+    const Size mainBgSize = mainBg->getContentSize();
+    infoBg->setContentSize(Size(mainBgSize.width * 2 / 3 - 10, mainBgSize.height - 60));
     infoBg->setAnchorPoint(Vec2(0, 0));
-    infoBg->setPosition(Vec2(mainBg->getContentSize().width / 3, 5));
+    infoBg->setPosition(Vec2(mainBgSize.width / 3, 5));
     mainBg->addChild(infoBg);
 
-    infoScrollView = ScrollView::create();
+    infoScrollView = UILibrary::createScrollView(infoBg->getContentSize() - Size(20, 20));
     if (!infoScrollView) {
         return;
     }
-    infoScrollView->setDirection(ScrollView::Direction::VERTICAL);
-    infoScrollView->setContentSize(infoBg->getContentSize() - Size(20, 20));
-    infoScrollView->setBounceEnabled(true);
-    infoScrollView->setScrollBarEnabled(false);
     infoScrollView->setAnchorPoint(Vec2(0.5, 0.5));
     infoScrollView->setPosition(Vec2(infoBg->getContentSize().width / 2, infoBg->getContentSize().height / 2));
     infoBg->addChild(infoScrollView);
 
-    // Create custom scroll bar background
-    auto scrollBarBg = Sprite::create("assets_game/UXUI/Collection/Scroll Bar/scroll_bar.png");
-    scrollBarBg->setAnchorPoint(Vec2(1.0, 0.5));
-    scrollBarBg->setContentSize(Size(scrollBarBg->getContentSize().width, infoBg->getContentSize().height - 20)); // Adjust height
-    scrollBarBg->setPosition(Vec2(infoBg->getContentSize().width - 5, infoBg->getContentSize().height / 2));
-    infoBg->addChild(scrollBarBg);
-
-    // Create custom scroll bar handler
-    auto scrollBarHandler = Sprite::create("assets_game/UXUI/Collection/Scroll Bar/scroll_handler-HOVER.png");
-    scrollBarHandler->setAnchorPoint(Vec2(0.5, 0.5));
-    scrollBarHandler->setPosition(Vec2(scrollBarBg->getContentSize().width / 2, scrollBarBg->getContentSize().height / 2));
-    scrollBarBg->addChild(scrollBarHandler);
-
-    // Add touch event listener to scroll bar handler
-    auto touchListener = EventListenerTouchOneByOne::create();
-    touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
-        if (scrollBarHandler->getBoundingBox().containsPoint(touch->getLocation())) {
-            return true;
-        }
-        return false;
-        };
-    touchListener->onTouchMoved = [=](Touch* touch, Event* event) {
-        auto delta = touch->getDelta();
-        auto newPos = scrollBarHandler->getPositionY() + delta.y;
-        newPos = std::max(newPos, scrollBarHandler->getContentSize().height / 2);
-        newPos = std::min(newPos, scrollBarBg->getContentSize().height - scrollBarHandler->getContentSize().height / 2);
-        scrollBarHandler->setPositionY(newPos);
-
-        float percent = (newPos - scrollBarHandler->getContentSize().height / 2) / (scrollBarBg->getContentSize().height - scrollBarHandler->getContentSize().height);
-        float maxScrollHeight = infoScrollView->getInnerContainerSize().height - infoScrollView->getContentSize().height;
-        infoScrollView->setInnerContainerPosition(Vec2(0, -maxScrollHeight * percent));
-        };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, scrollBarHandler);
-
-    // Add scroll event listener to infoScrollView
-    infoScrollView->addEventListener([=](Ref* sender, ScrollView::EventType type) {
-        if (type == ScrollView::EventType::SCROLLING) {
-            float percent = -infoScrollView->getInnerContainerPosition().y / (infoScrollView->getInnerContainerSize().height - infoScrollView->getContentSize().height);
-            float newPos = percent * (scrollBarBg->getContentSize().height - scrollBarHandler->getContentSize().height) + scrollBarHandler->getContentSize().height / 2;
-            scrollBarHandler->setPositionY(newPos);
-        }
-        });
+    createIntroSection();
 
     itemInfoImage = Sprite::create();
     if (!itemInfoImage) {
         CCLOG("Failed to create itemInfoImage");
         return;
     }
-    itemInfoImage->setPosition(Vec2(infoScrollView->getContentSize().width / 2, infoScrollView->getContentSize().height - 100));
+    itemInfoImage->setPosition(Vec2(infoScrollView->getContentSize().width / 2, infoScrollView->getContentSize().height - INFO_IMAGE_OFFSET_Y));
     itemInfoImage->setAnchorPoint(Vec2(0.5, 1.0));
     infoScrollView->addChild(itemInfoImage);
-
-    // Create intro label
-    introLabel = Label::createWithSystemFont("", "Arial", 24);
-    if (!introLabel) {
-        CCLOG("Failed to create introLabel");
-        return;
-    }
-    introLabel->setPosition(Vec2(infoScrollView->getContentSize().width / 2, infoScrollView->getContentSize().height - 50));
-    infoScrollView->addChild(introLabel);
 }
 
 void ItemLibraryWindow::updateItemInfo(const ItemData& item) {
-    std::string info = item.name + "\n\n" + item.description;
-    introLabel->setString(info);
+    Label* nameLabel = dynamic_cast<Label*>(infoScrollView->getChildByName("nameLabel"));
+    if (!nameLabel) {
+        nameLabel = Label::createWithSystemFont(item.name, "Arial", INFO_NAME_LABEL_FONT_SIZE);
+        nameLabel->setAnchorPoint(Vec2(0, 1));
+        nameLabel->setPosition(Vec2(10, infoScrollView->getContentSize().height - 10));
+        nameLabel->setTextColor(Color4B::WHITE);
+        nameLabel->enableBold();
+        nameLabel->setName("nameLabel");
+        infoScrollView->addChild(nameLabel);
+    }
+    else {
+        nameLabel->setString(item.name);
+    }
 
-    itemInfoImage->setTexture(item.imagePath);
-    Size imageSize = itemInfoImage->getContentSize();
-    Size infoSize = infoScrollView->getContentSize();
-    float scaleX = (infoSize.width - 20) / imageSize.width;
-    float scaleY = (infoSize.height / 2 - 20) / imageSize.height;
-    float scale = std::min(scaleX, scaleY);
-    itemInfoImage->setScale(scale);
+    Label* shortDescriptionLabel = dynamic_cast<Label*>(infoScrollView->getChildByName("shortDescriptionLabel"));
+    if (!shortDescriptionLabel) {
+        shortDescriptionLabel = Label::createWithSystemFont(item.shortDescription, "Arial", INFO_SHORT_DESC_LABEL_FONT_SIZE);
+        shortDescriptionLabel->setAnchorPoint(Vec2(0, 1));
+        shortDescriptionLabel->setPosition(Vec2(10, nameLabel->getPositionY() - nameLabel->getContentSize().height - 10));
+        shortDescriptionLabel->setTextColor(Color4B::WHITE);
+        shortDescriptionLabel->setName("shortDescriptionLabel");
+        infoScrollView->addChild(shortDescriptionLabel);
+    }
+    else {
+        shortDescriptionLabel->setString(item.shortDescription);
+    }
+    float contentStartY = shortDescriptionLabel->getPositionY() - shortDescriptionLabel->getContentSize().height - INFO_LABEL_PADDING_Y;
 
-    Size labelSize = introLabel->getContentSize();
-    float newHeight = labelSize.height + itemInfoImage->getContentSize().height * scale + 20;
-    if (newHeight > infoScrollView->getContentSize().height) {
-        infoScrollView->setInnerContainerSize(Size(infoScrollView->getContentSize().width, newHeight + 20));
-        itemInfoImage->setPosition(Vec2(infoScrollView->getContentSize().width / 2, newHeight - labelSize.height - 10));
+    if (!item.imageInfo.empty()) {
+        itemInfoImage->setTexture(item.imageInfo);
+
+        // Scale ảnh
+        Size imageSize = itemInfoImage->getContentSize();
+        float scale = (infoScrollView->getContentSize().width * 0.8) / imageSize.width;
+        itemInfoImage->setScale(scale);
+        itemInfoImage->setVisible(true);
+
+        // Cập nhật vị trí ảnh
+        itemInfoImage->setAnchorPoint(Vec2(0.5, 1));
+        itemInfoImage->setPosition(Vec2(infoScrollView->getContentSize().width / 2, contentStartY));
+
+        contentStartY -= (imageSize.height * scale + INFO_LABEL_PADDING_Y);
+    }
+    else {
+        itemInfoImage->setVisible(false);
+    }
+
+    Label* descriptionLabel = dynamic_cast<Label*>(infoScrollView->getChildByName("descriptionLabel"));
+    if (item.imageInfo.empty()) {
+        if (!descriptionLabel) {
+            descriptionLabel = Label::createWithSystemFont(item.description, "Arial", INFO_DESC_LABEL_FONT_SIZE);
+            descriptionLabel->setAnchorPoint(Vec2(0, 1));
+            descriptionLabel->setPosition(Vec2(10, contentStartY));
+            descriptionLabel->setTextColor(Color4B::WHITE);
+            descriptionLabel->setName("descriptionLabel");
+            infoScrollView->addChild(descriptionLabel);
+        }
+        else {
+            descriptionLabel->setString(item.description);
+        }
+        contentStartY -= (descriptionLabel->getContentSize().height + INFO_LABEL_PADDING_Y);
+    }
+    else if (descriptionLabel) {
+        descriptionLabel->removeFromParent();
+    }
+
+    float totalHeight = infoScrollView->getContentSize().height - contentStartY;
+    if (totalHeight > infoScrollView->getContentSize().height) {
+        infoScrollView->setInnerContainerSize(Size(infoScrollView->getContentSize().width, totalHeight + 20));
     }
     else {
         infoScrollView->setInnerContainerSize(infoScrollView->getContentSize());
-        itemInfoImage->setPosition(Vec2(infoScrollView->getContentSize().width / 2, infoScrollView->getContentSize().height - labelSize.height - 10));
     }
 }
 
