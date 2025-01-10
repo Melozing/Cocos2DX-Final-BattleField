@@ -7,18 +7,33 @@
 
 class BaseScene : public cocos2d::Scene {
 public:
+    // Initialization
     virtual bool init() override;
-    void setSceneCreationFunc(const std::function<cocos2d::Scene* ()>& func);
     CREATE_FUNC(BaseScene);
-    void hideCursor(Ref* sender);
-    void showCursor(Ref* sender);
+
+    // Scene management
+    void setSceneCreationFunc(const std::function<cocos2d::Scene* ()>& func);
+
+    // Cursor management
+    virtual void hideCursor(Ref* sender);
+    virtual void showCursor(Ref* sender);
+
+    // Notification registration
     void registerNotification();
-    void unregisterNotification();
+
+    // Cursor instance
     Cursor* _cursor;
 
 private:
-    void onExit() override;
+    // Scene creation function
     std::function<cocos2d::Scene* ()> _sceneCreationFunc;
+
+    // UI elements
+    void createPauseButton();
+
+    // Game state handling
+    void handlePause();
+    void handleResume();
 };
 
 #endif // BASE_SCENE_H

@@ -67,6 +67,12 @@ void PlayerGame3::setupInitialPosition()
     float initialPosX = visibleSize.width / 2; // Center horizontally
     float initialPosY = SpriteController::calculateScreenHeightRatio(0.14f); // Padding from the bottom
 
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        initialPosY = SpriteController::calculateScreenHeightRatio(0.09f);
+    }
+
     // Set the initial position of the player
     this->setPosition(Vec2(initialPosX, initialPosY));
     this->setAnchorPoint(Vec2(0.5, 0.5));
@@ -146,6 +152,19 @@ void PlayerGame3::setupEventListeners()
     mouseListener->onMouseDown = CC_CALLBACK_1(PlayerGame3::onMouseDown, this);
     mouseListener->onMouseUp = CC_CALLBACK_1(PlayerGame3::onMouseUp, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+}
+
+bool PlayerGame3::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
+{
+    _touchPos = touch->getLocation();
+    updateTurretRotation();
+    return true; 
+}
+
+void PlayerGame3::onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event)
+{
+    _touchPos = touch->getLocation();
+    updateTurretRotation();
 }
 
 void PlayerGame3::setupManagers()
@@ -237,11 +256,7 @@ void PlayerGame3::onMouseDown(Event* event)
 
 void PlayerGame3::onMouseUp(Event* event)
 {
-    EventMouse* e = (EventMouse*)event;
-    if (e->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT)
-    {
-        isMouseDown = false;
-    }
+    isMouseDown = false;
 }
 
 void PlayerGame3::shootBullet(const Vec2& target) {
@@ -265,7 +280,15 @@ void PlayerGame3::shootBullet(const Vec2& target) {
 
     // Calculate the angle to the target
     Vec2 direction = target - turretPosition;
+
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        direction = _touchPos - turretPosition;
+    }
+
     float angle = CC_RADIANS_TO_DEGREES(direction.getAngle());
+
 
     // Limit the angle within the specified range
     if (angle < minAngle) angle = minAngle;
@@ -362,6 +385,13 @@ void PlayerGame3::update(float delta)
     if (isMovementAndShootingDisabled) return;
     playerMovement->update(delta);
 
+    if (isMovingLeft) {
+        this->setPositionX(this->getPositionX() - playerMovement->getSpeed() * delta);
+    }
+    if (isMovingRight) {
+        this->setPositionX(this->getPositionX() + playerMovement->getSpeed() * delta);
+    }
+
     // Get the visible size and origin of the screen
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
@@ -402,6 +432,11 @@ void PlayerGame3::updateTurretRotation() {
         // Calculate the direction vector from the turret to the mouse position
         Vec2 direction = _mousePos - turretPosition;
 
+        auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+        if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+            platform == cocos2d::Application::Platform::OS_MAC) {
+            direction = _touchPos - turretPosition;
+        }
         // Normalize the direction vector
         direction.normalize();
 
@@ -475,4 +510,19 @@ void PlayerGame3::createPhysicsBody() {
 
         this->setPhysicsBody(physicsBody);
     }
+}
+
+void PlayerGame3::startMovingLeft() {
+    isMovingLeft = true;
+    isMovingRight = false;
+}
+
+void PlayerGame3::startMovingRight() {
+    isMovingLeft = false;
+    isMovingRight = true;
+}
+
+void PlayerGame3::stopMoving() {
+    isMovingLeft = false;
+    isMovingRight = false;
 }

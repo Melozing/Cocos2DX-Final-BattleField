@@ -58,13 +58,13 @@ bool MainMenu::init() {
     buttonG2->setPosition(Vec2(visibleSize.width / 2, buttonG2Y));
     //buttonG2->setEnabled(isButtonG2Active); // Disable button if inactive
     buttonG2->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
-        if (type == ui::Widget::TouchEventType::ENDED && isButtonG2Active) {
-            if (isButtonG2Active) {
+        //if (type == ui::Widget::TouchEventType::ENDED && isButtonG2Active) {
+            //if (isButtonG2Active) {
                 SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
                 SoundController::getInstance()->playSoundEffect(Constants::ClickStartGameSFX);
                 startLoading(Constants::GAME3_SCENE_NAME); // Start loading when button is pressed
-            }
-        }
+            //}
+        //}
         });
     this->addChild(buttonG2);
 
@@ -105,7 +105,9 @@ bool MainMenu::init() {
     }
 
     // Create and position collection button
+
     collectionButton = ui::Button::create("assets_game/UXUI/Collection/Info.png");
+
     collectionButton->setScale(SpriteController::updateSpriteScale(collectionButton, 0.08f));
     collectionButton->setPosition(Vec2(visibleSize.width - collectionButton->getContentSize().width / 2 - 10, collectionButton->getContentSize().height / 2 + 10)); // Position at the bottom right
     collectionButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {

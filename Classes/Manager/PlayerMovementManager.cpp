@@ -17,6 +17,10 @@ bool PlayerMovement::isMoving() const
     return _direction != Vec2::ZERO;
 }
 
+void PlayerMovement::setDirection(const cocos2d::Vec2& direction)
+{
+    _direction = direction;
+}
 
 void PlayerMovement::onKeyPressed(EventKeyboard::KeyCode keyCode)
 {

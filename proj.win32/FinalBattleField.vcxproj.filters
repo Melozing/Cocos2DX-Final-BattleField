@@ -465,6 +465,9 @@
     <ClCompile Include="..\Classes\Library\ItemLibrary.cpp" />
     <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp" />
     <ClCompile Include="..\Classes\Library\UILibrary.cpp" />
+    <ClCompile Include="..\Classes\Manager\Joystick.cpp">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -725,6 +728,9 @@
     <ClInclude Include="..\Classes\Library\ItemLibrary.h" />
     <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h" />
     <ClInclude Include="..\Classes\Library\UILibrary.h" />
+    <ClInclude Include="..\Classes\Manager\Joystick.h">
+      <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

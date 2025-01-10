@@ -31,11 +31,11 @@ const float Constants::PADDING_VERTICAL_UI_PANEL = -0.07f;
 const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.1f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER = 0.07f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER_PADDING = 0.7f;
-const float Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.3f;
+float Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.35f;
+float Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.15f;
 const float Constants::PADDING_VERTICAL_UI_EXITBUTTON = -0.11f;
 const float Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON = 0.05f;
 const float Constants::PADDING_HORIZONTAL_UI_EXIT_BUTTON = -0.14f;
-const float Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.15f;
 const float Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING = 0.07f;
 
 const std::string Constants::FONT_GAME = "fonts/Patriot-Black.otf";

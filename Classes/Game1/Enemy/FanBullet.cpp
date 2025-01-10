@@ -80,7 +80,10 @@ void FanBullet::createPhysicsBody() {
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/EnemyFanBullet.plist", "EnemyFanBullet", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "EnemyFanBullet", originalSize, 0.14f);
+    
+    float scaleSize = 0.14f;
+
+    physicsCache->resizeBody(physicsBody, "EnemyFanBullet", originalSize, scaleSize);
 
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);

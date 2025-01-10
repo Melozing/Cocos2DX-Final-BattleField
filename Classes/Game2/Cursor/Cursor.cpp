@@ -66,3 +66,11 @@ void Cursor::changeSprite(const std::string& filename) {
 void Cursor::changeColor(const Color3B& color) {
     this->setColor(color);
 }
+
+void Cursor::hideCursor() {
+    this->setVisible(false);
+}
+
+void Cursor::showCursor() {
+    this->setVisible(true);
+}

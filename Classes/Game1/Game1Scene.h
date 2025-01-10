@@ -14,18 +14,18 @@
 #include "LoadingBar/CustomLoadingBar.h"
 #include "Scene/BaseScene.h"
 #include "ui/UILoadingBar.h"
+#include "Manager/Joystick.h"
 #include "Controller/SoundController.h"
 #include <functional>
 
 class Game1Scene : public BaseScene {
 public:
-    // Public methods
     static cocos2d::Scene* createScene();
     virtual bool init() override;
     CREATE_FUNC(Game1Scene);
+	~Game1Scene();
     virtual void update(float delta) override;
 
-    // New method to reset game state
     void resetGameState();
 
 private:
@@ -116,6 +116,18 @@ private:
 
     // Tutorial
     void showTutorialIfNeeded();
+
+	// Joystick
+    Joystick* _joystick; 
+    void initJoystick();
+    void initTouchListener();
+    void registerNotificationListeners();
+    void disableJoystick(Ref* sender);
+    void enableJoystick(Ref* sender);
+    void setJoystickEnabled(bool enabled);
+
+    // For Mobile
+    void mobileSetup();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

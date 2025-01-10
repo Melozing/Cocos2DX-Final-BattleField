@@ -73,6 +73,14 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
         });
     boardSprite->addChild(backButton);
 
+
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.17f;
+        Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.07f;
+    }
+
     // Create music slider
     musicSlider = ui::Slider::create();
     musicSlider->loadBarTexture("assets_game/UXUI/Panel/Slider_Back.png");

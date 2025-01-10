@@ -23,6 +23,11 @@ public:
     void onMouseDown(cocos2d::Event* event);
     void onMouseUp(cocos2d::Event* event);
 
+    // Event handling methods
+    bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+    void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
+    cocos2d::Vec2 _touchPos;
+
     // Update method
     void update(float delta) override;
 
@@ -31,6 +36,11 @@ public:
 
     // Bullet count management
     void increaseBulletCount();
+
+    // Move Left and Right
+    void startMovingLeft();
+    void startMovingRight();
+    void stopMoving();
 
     void setMovementAndShootingDisabled(bool disabled);
 
@@ -78,6 +88,10 @@ private:
     void setupWheelsAndHandle();
     void updateCursorColor(bool isWithinRange);
     void checkCursorRange();
+
+    // Check Move left & right
+    bool isMovingLeft;
+    bool isMovingRight;
 };
 
 #endif // __PLAYER_GAME3_H__

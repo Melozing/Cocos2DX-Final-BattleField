@@ -14,7 +14,16 @@ bool PlayerGame1::init()
     }
 
     _health = 3;
+    setupMovementBoundaries();
+    setupKeyboardListener();
+    setupPlayerMovement();
+    this->schedule(CC_SCHEDULE_SELECTOR(PlayerGame1::updateShieldPosition), 0.0001f);
 
+    return true;
+}
+
+void PlayerGame1::setupMovementBoundaries()
+{
     float restrictedWidth = SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDWIDTH);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     float restrictedHeight = visibleSize.height - SpriteController::calculateScreenRatio(Constants::PLAYER_RESTRICTEDHEIGHT);
@@ -28,22 +37,34 @@ bool PlayerGame1::init()
     float halfRestrictedHeight = restrictedHeight / 2;
     minY = centerY - halfRestrictedHeight;
     maxY = centerY + halfRestrictedHeight;
+}
 
+void PlayerGame1::setupKeyboardListener()
+{
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = CC_CALLBACK_2(PlayerGame1::onKeyPressed, this);
     keyboardListener->onKeyReleased = CC_CALLBACK_2(PlayerGame1::onKeyReleased, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+}
 
+void PlayerGame1::setupPlayerMovement()
+{
     playerMovement = new PlayerMovement(this, Constants::PLAYER_MOVESPEED, minX, maxX, minY, maxY);
     playerMovement->setEnabled(true);
-    this->schedule(CC_SCHEDULE_SELECTOR(PlayerGame1::updateShieldPosition), 0.0001f);
-
-    return true;
 }
+
+// The rest of the methods remain unchanged
 
 void PlayerGame1::removePhysicsBody() {
     if (this->getPhysicsBody()) {
         this->removeComponent(this->getPhysicsBody());
+    }
+}
+
+void PlayerGame1::setJoystickDirection(const cocos2d::Vec2& direction) {
+    _joystickDirection = direction;
+    if (playerMovement) {
+        playerMovement->setDirection(direction);
     }
 }
 
@@ -144,12 +165,12 @@ void PlayerGame1::playDamageEffect() {
     auto tintToRed = TintTo::create(0.1f, 255, 0, 0);
     auto tintToNormal = TintTo::create(0.1f, 255, 255, 255);
     auto sequence = Sequence::create(
-        tintToRed, 
-        blinkAction, 
-        tintToNormal, 
+        tintToRed,
+        blinkAction,
+        tintToNormal,
         CallFunc::create([this]() {
             this->modelCharac->setVisible(true); // Ensure the sprite is visible
-            }), 
+            }),
         nullptr);
     modelCharac->runAction(sequence);
 }
