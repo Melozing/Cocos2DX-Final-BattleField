@@ -10,8 +10,14 @@ public:
     virtual bool init() override;
     void setSceneCreationFunc(const std::function<cocos2d::Scene* ()>& func);
     CREATE_FUNC(BaseScene);
+    void hideCursor(Ref* sender);
+    void showCursor(Ref* sender);
+    void registerNotification();
+    void unregisterNotification();
     Cursor* _cursor;
+
 private:
+    void onExit() override;
     std::function<cocos2d::Scene* ()> _sceneCreationFunc;
 };
 

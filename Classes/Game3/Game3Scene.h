@@ -39,12 +39,19 @@ public:
     // Method to spawn or update the boss
     void spawnOrUpdateBoss(float timeToUltimate);
 
+    // Update the health percentage
+    void updateHealth(float newHealth);
+
+    // Set the maximum health value
+    void setMaxHealth(float health);
+
 private:
     ~Game3Scene();
     // Physics world
     cocos2d::PhysicsWorld* world;
     void setPhysicWorld(cocos2d::PhysicsWorld* m_world) { world = m_world; }
     void transitionToNextScene(Ref* sender);
+    void checkAndUpdateBackground();
 
     // Boss 
     EnemyPlaneBoss* enemyBoss = nullptr;
@@ -57,7 +64,6 @@ private:
     CityCollisionArea* cityCollisionArea;
 
     // Health bar
-    CustomLoadingBar* healthBar;
     PlayerGame3* playerGame3;
 
     // Elapsed time
@@ -70,6 +76,8 @@ private:
     void initBoomSpawning(const std::string& jsonFilePath);
     void initBossSpawning(const std::string& jsonFilePath);
     void setupCursor();
+    void hideCursor(Ref* sender);
+    void showCursor(Ref* sender);
     void setupEventListeners(PlayerGame3* player);
     void initPools();
     void setupContactListener();
@@ -89,7 +97,6 @@ private:
     // Health bar methods
     void initHealthBar();
     void checkHealthBar();
-    void updateHealthBar(float health);
 
     //Boss bar methods 
     CustomLoadingBar* bossHealthBar;
@@ -114,6 +121,21 @@ private:
     void updateUltimateSkillCountdown(float dt);
     float ultimateSkillTimeRemaining;
     bool finisherMissilesHandled = false;
+
+    // Background
+    bool isBackgroundNormal;
+    bool isBackgroundBreak;
+
+    // Format Text
+    std::string Game3Scene::formatTime(int totalSeconds);
+
+    //Health Circle
+    cocos2d::ProgressTimer* healthBarCircle; // Progress timer for circular health bar
+    float maxHealthCircle = 100;             // Maximum health value
+    float currentHealthCircle = 100;         // Current health value
+
+    // Tutorial
+    void showTutorialIfNeeded();
 };
 
 #endif // __GAME3SCENE_SCENE_H__

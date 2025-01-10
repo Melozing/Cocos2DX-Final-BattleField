@@ -28,7 +28,7 @@ const int Constants::ORDER_LAYER_PLAYER = 2;
 const int Constants::ORDER_LAYER_ITEM = 3;
 const int Constants::ORDER_LAYER_BACKGROUND = -99;
 const float Constants::PADDING_VERTICAL_UI_PANEL = -0.07f;
-const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.05f;
+const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.1f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER = 0.07f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER_PADDING = 0.7f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.3f;
@@ -79,7 +79,7 @@ const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 
 // SHIELD GAME 1
 const float Constants::SHIELD_DURATION = 0.3f;
-const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
+const float Constants::PLAYER_HEALTH_PADDING_Y = 0.07f;
 const float Constants::SHIELD_TIME_OF_EXISTENCE = 5.0f;
 
 //game1
@@ -144,7 +144,7 @@ float Constants::HealthEnemyPlaneBoss = 1000.0f;
 float Constants::CurrentHealthEnemyPlaneBoss = 0.0f;
 float Constants::CURRENT_PERCENT_BOSS_HEALTHBAR = 0.0f;
 float Constants::TimeToUltimate = 0.0f;
-const float Constants::BulletDamageGame3 = 60.0f;
+const float Constants::BulletDamageGame3 = 10.0f;
 int Constants::QuantityBulletPlayerGame3 = 100;
 int Constants::DamageBulletForCity = 5;
 int Constants::DamageBoomForCity = 7;
@@ -174,3 +174,11 @@ const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victo
 //UserDefault UI
 const std::string Constants::UD_musicVolume = "musicVolume";
 const std::string Constants::UD_effectsVolume = "effectsVolume";
+
+//Tutorial 
+const std::string Constants::DONT_SHOW_TUTORIAL_GAME1 = "DONT_SHOW_TUTORIAL_GAME1";
+const std::string Constants::DONT_SHOW_TUTORIAL_GAME2 = "DONT_SHOW_TUTORIAL_GAME2";
+const std::string Constants::DONT_SHOW_TUTORIAL_GAME3 = "DONT_SHOW_TUTORIAL_GAME3";
+
+//Active Game
+const std::string Constants::IS_ACTIVE_GAME2 = "IS_ACTIVE_GAME2";

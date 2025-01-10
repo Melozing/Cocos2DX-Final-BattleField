@@ -11,6 +11,7 @@
 #include "Controller/GameController.h"
 
 #include "Manager/BackgroundManager.h"
+#include "Manager/TutorialLayer.h"
 #include "Scene/SceneFinishGame.h"
 #include "ui/CocosGUI.h"
 
@@ -23,7 +24,7 @@ USING_NS_CC;
 cocos2d::Scene* Game3Scene::createScene() {
     auto scene = Scene::createWithPhysics();
     
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Game3Scene::create();
     scene->addChild(layer);
 
@@ -40,44 +41,108 @@ bool Game3Scene::init() {
 
     preloadAssets();
     setupBackground();
-    setupPlayer();
-    initPools();
     setupCursor();
+    initPools();
     initBoss();
     initBulletSpawning(Constants::JSON_GAME3_ENEMYBULLET_PHASE_1_PATH);
     initBoomSpawning(Constants::JSON_GAME3_ENEMYBOOM_PHASE_1_PATH);
     initBossSpawning(Constants::JSON_GAME3_BOSS_PHASE_1_PATH);
     setupContactListener();
     initHealthBar();
+    initBulletBadge();
     initBossHealthBar();
     initSound();
-    initBulletBadge();
+    setupPlayer();
     initUltimateSkillBadge();
+    showTutorialIfNeeded();
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
     this->addChild(cityCollisionArea);
 
+    checkAndUpdateBackground();
+
     return true;
 }
 
+void Game3Scene::updateHealth(float newHealth) {
+    // Clamp the health value
+    if (newHealth < 0) newHealth = 0;
+    if (newHealth > maxHealthCircle) newHealth = maxHealthCircle;
+
+    // Update current health
+    currentHealthCircle = newHealth;
+
+    // Calculate percentage
+    float percentage = (currentHealthCircle / maxHealthCircle) * 100;
+    healthBarCircle->setPercentage(percentage);
+    checkHealthBar();
+}
+
+void Game3Scene::showTutorialIfNeeded() {
+    cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME3.c_str(), false);
+    bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME3.c_str(), false);
+    if (!dontShowTutorial) {
+        std::vector<std::string> slideImages = {
+            "assets_game/UXUI/Tutorial/Game3/image1.jpg"
+        };
+        auto tutorialLayer = TutorialLayer::create(slideImages, Constants::DONT_SHOW_TUTORIAL_GAME3);
+        this->addChild(tutorialLayer, Constants::ORDER_LAYER_UI); // Add tutorial layer on top
+    }
+}
+
+void Game3Scene::setMaxHealth(float health) {
+    if (health > 0) {
+        maxHealthCircle = health;
+        currentHealthCircle = health; // Reset current health to max
+        updateHealth(health); // Update health bar and label
+    }
+}
+
 void Game3Scene::preloadAssets() {
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/gameplay/BackgroundNormal.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/gameplay/BackgroundBreak.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGoLeft.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerGoRight.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/PlayerIdle.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/BulletPlayer3Game.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/enemy_plane_boom.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBoom.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBoss.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/EnemyPlaneBullet.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/fx/explosions.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/player/tank.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/rocket.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/enemies/warning_rocket.plist");
 }
 
 void Game3Scene::setupBackground() {
-    BackgroundManager::getInstance()->setBackground(this, "assets_game/gameplay/Game3Background.png", Constants::ORDER_LAYER_BACKGROUND);
+    // Initialize background state flags
+    isBackgroundNormal = false;
+    isBackgroundBreak = false;
+
+    // Preload backgrounds
+    std::vector<std::string> backgrounds = { "BackgroundNormal", "BackgroundBreak" };
+    BackgroundManager::getInstance()->preloadBackgrounds(this, backgrounds, 129, 0.033f);
+}
+
+void Game3Scene::checkAndUpdateBackground() {
+    if (currentHealthCircle >= 50) {
+        if (!isBackgroundNormal) {
+            BackgroundManager::getInstance()->transitionBackground("BackgroundNormal", 0.15f);
+            isBackgroundNormal = true;
+            isBackgroundBreak = false;
+        }
+    }
+    else {
+        if (!isBackgroundBreak) {
+            BackgroundManager::getInstance()->transitionBackground("BackgroundBreak", 0.15f);
+            isBackgroundNormal = false;
+            isBackgroundBreak = true;
+        }
+    }
 }
 
 void Game3Scene::setupPlayer() {
@@ -92,14 +157,17 @@ void Game3Scene::setupPlayer() {
 }
 
 void Game3Scene::initBulletBadge() {
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    float padding = SpriteController::calculateScreenRatio(0.05f); // Adjust the padding as needed
-    
+    Constants::QuantityBulletPlayerGame3 = 100;
     auto spriteBadge = Sprite::create("assets_game/UXUI/Panel/Table_03.png");
-    bulletBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
-    bulletBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.07f)); // Adjust the scale as needed
-    bulletBadge->updateLabel("Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3));
-    bulletBadge->setBadgePosition(Vec2(visibleSize.width - bulletBadge->getContentSize().width / 2 - padding, bulletBadge->getContentSize().height / 2 + padding));
+    bulletBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 25);
+    bulletBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.09f)); // Adjust the scale as needed
+    std::string labelText = std::to_string(Constants::QuantityBulletPlayerGame3);
+    bulletBadge->updateLabel(labelText);
+    float paddingWidth = SpriteController::calculateScreenRatio(0.1f);
+    float paddingHeight = SpriteController::calculateScreenHeightRatio(0.035f);
+    float xOffset = -SpriteController::calculateScreenRatio(0.039f);
+    bulletBadge->adjustLabelPosition(xOffset, 0);
+    bulletBadge->setBadgePosition(Vec2(healthBarCircle->getPosition().x - paddingWidth, healthBarCircle->getPosition().y - paddingHeight));
     this->addChild(bulletBadge);
 
     // Register to listen for bullet count change notifications
@@ -118,13 +186,26 @@ void Game3Scene::initBulletBadge() {
     );
 }
 
+std::string Game3Scene::formatTime(int totalSeconds) {
+    int minutes = totalSeconds / 60;
+    int seconds = totalSeconds % 60;
+    char buffer[6];
+    snprintf(buffer, sizeof(buffer), "%02d:%02d", minutes, seconds);
+    return std::string(buffer);
+}
+
+
 void Game3Scene::initUltimateSkillBadge() {
-    ultimateSkillBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
-    auto spriteBadge = Sprite::create("assets_game/UXUI/Panel/Table_03.png");
-    ultimateSkillBadge = Badge::createBadge("assets_game/UXUI/Panel/Table_03.png", Constants::FONT_GAME, 24);
-    ultimateSkillBadge->setBadgePosition(Vec2(50, Director::getInstance()->getVisibleSize().height - 50));
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    
+    ultimateSkillBadge = Badge::createBadge("assets_game/UXUI/Panel/Ultimate_Boss_Badge.png", Constants::FONT_GAME, 24);
+    auto spriteBadge = Sprite::create("assets_game/UXUI/Panel/Ultimate_Boss_Badge.png");
+    float paddingWidth = SpriteController::calculateScreenRatio(0.045f);
     ultimateSkillBadge->setScale(SpriteController::updateSpriteScale(spriteBadge, 0.07f)); // Adjust the scale as needed
-    std::string timeText = std::to_string(static_cast<int>(ultimateSkillTimeRemaining));
+    ultimateSkillBadge->setBadgePosition(Vec2(visibleSize.width / 2 - bossHealthBar->GetSize().width / 2 - paddingWidth, bulletBadge->getPosition().y));
+    float xOffset = SpriteController::calculateScreenRatio(0.025f);
+    ultimateSkillBadge->adjustLabelPosition(xOffset, 0);
+    std::string timeText = formatTime(static_cast<int>(ultimateSkillTimeRemaining));
     ultimateSkillBadge->updateLabel(timeText);
     this->addChild(ultimateSkillBadge);
     ultimateSkillBadge->setVisible(false);
@@ -155,7 +236,7 @@ void Game3Scene::updateUltimateSkillCountdown(float dt) {
         this->unschedule("UltimateSkillCountdown");
     }
     else {
-        std::string timeText = std::to_string(static_cast<int>(ultimateSkillTimeRemaining));
+        std::string timeText = formatTime(static_cast<int>(ultimateSkillTimeRemaining));
         ultimateSkillBadge->updateLabel(timeText);
     }
 }
@@ -168,7 +249,7 @@ void Game3Scene::handleBossUltimateSkill(Ref* sender) {
 }
 
 void Game3Scene::updateBulletLabel(Ref* sender) {
-    std::string bulletText = "Bullets: " + std::to_string(Constants::QuantityBulletPlayerGame3);
+    std::string bulletText = std::to_string(Constants::QuantityBulletPlayerGame3);
     bulletBadge->updateLabel(bulletText);
 }
 
@@ -178,6 +259,8 @@ void Game3Scene::blinkRedBadge(Ref* sender) {
 
 Game3Scene::~Game3Scene() {
     // Remove observer when the scene is destroyed
+    __NotificationCenter::getInstance()->removeObserver(this, "HideCursorNotification");
+    __NotificationCenter::getInstance()->removeObserver(this, "ShowCursorNotification");
     __NotificationCenter::getInstance()->removeObserver(this, "HANDLE_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "HIDE_ULTIMATE_SKILL_BADGE");
     __NotificationCenter::getInstance()->removeObserver(this, "BulletCountChanged");
@@ -190,43 +273,56 @@ Game3Scene::~Game3Scene() {
 }
 
 void Game3Scene::initHealthBar() {
+    auto sprite = Sprite::create("assets_game/UXUI/Loading/Red_circle.png");
+    healthBarCircle = ProgressTimer::create(sprite);
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    healthBar = CustomLoadingBar::create("assets_game/UXUI/Loading/health_bar_g3_progress.png", "assets_game/UXUI/Loading/health_bar_g3_border.png", 0.25f);
-    healthBar->setLoadingBarRotation(-90);
-    healthBar->setLoadingBarPosition(Vec2(healthBar->getLoadingBar()->getContentSize().height + SpriteController::calculateScreenRatio(0.03f) / 2, visibleSize.height / 2));
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    float paddingHeight = SpriteController::calculateScreenHeightRatio(0.08f); // Adjust the padding as needed
+    float paddingWeight = SpriteController::calculateScreenRatio(0.05f); // Adjust the padding as needed
+    float xPos = origin.x + visibleSize.width - paddingWeight;
+    float yPos = origin.y / 2 + paddingHeight;
 
-    // Adjust the border position to be lower than the loading bar
-    auto loadingPos = healthBar->getLoadingBar()->getPosition();
-    float loadingBarHeight = SpriteController::calculateScreenRatio(0.01f);
-    loadingPos.y -= loadingBarHeight; // Move the border lower
-    healthBar->setBorderPosition(loadingPos);
+    // Initialize the ProgressTimer with the sprite
+    healthBarCircle->setType(ProgressTimer::Type::RADIAL);
+    healthBarCircle->setScale(SpriteController::updateSpriteScale(sprite,0.145f));
+    healthBarCircle->setMidpoint(Vec2(0.5f, 0.5f));
+    healthBarCircle->setBarChangeRate(Vec2(0, 1));  // Radial change from bottom
+    healthBarCircle->setPercentage(100);            // Start at 100% health
+    healthBarCircle->setPosition(Vec2(xPos, yPos));   // Default position
+    healthBarCircle->setRotation(180);   // Default position
 
-    healthBar->setBorderRotation(-90);
-    healthBar->setPercent(100);
-    healthBar->setLoadingBarScale(SpriteController::updateSpriteScale(healthBar->getLoadingBar(), 0.133f));
-    healthBar->setBorderScale(SpriteController::updateSpriteScale(healthBar->getBorder(), 0.155f));
+    auto backHealthBar = Sprite::create("assets_game/UXUI/Loading/health_player_game3_back.png");
+    auto frontHealthBar = Sprite::create("assets_game/UXUI/Loading/health_player_game3_front.png");
+    backHealthBar->setPosition(Vec2(xPos, yPos));
+    float paddingHeightFront = SpriteController::calculateScreenHeightRatio(0.015f);
+    frontHealthBar->setPosition(Vec2(xPos, yPos - paddingHeightFront));
+    backHealthBar->setScale(SpriteController::updateSpriteScale(backHealthBar, 0.155f));
+    frontHealthBar->setScale(SpriteController::updateSpriteScale(backHealthBar, 0.155f));
 
-    this->addChild(healthBar, Constants::ORDER_LAYER_UI);
+    this->addChild(frontHealthBar, Constants::ORDER_LAYER_UI + 1);
+    this->addChild(healthBarCircle, Constants::ORDER_LAYER_UI);
+    this->addChild(backHealthBar, Constants::ORDER_LAYER_UI - 1);
 }
 
 void Game3Scene::initBossHealthBar() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     bossHealthBar = CustomLoadingBar::create("assets_game/UXUI/Loading/BossbarGame3.png", "assets_game/UXUI/Loading/BossbarGame3_Border.png", 0.25f);
-    bossHealthBar->setLoadingBarRotation(-90);
-    bossHealthBar->setLoadingBarPosition(Vec2(visibleSize.width - bossHealthBar->getLoadingBar()->getContentSize().height / 2, visibleSize.height / 2));
+    //bossHealthBar->setLoadingBarRotation(-90);
+    bossHealthBar->setLoadingBarPosition(Vec2(visibleSize.width / 2, bulletBadge->getPosition().y));
 
     // Adjust the border position to be lower than the loading bar
     auto loadingPos = bossHealthBar->getLoadingBar()->getPosition();
-    float loadingBarHeight = SpriteController::calculateScreenRatio(0.0035f);
+    float loadingBarHeight = SpriteController::calculateScreenHeightRatio(0.0035f);
     float loadingBarWeight = SpriteController::calculateScreenRatio(0.0011f);
     loadingPos.y -= loadingBarHeight; // Move the border lower
     loadingPos.x -= loadingBarWeight; // Move the border lower
     bossHealthBar->setBorderPosition(loadingPos);
 
-    bossHealthBar->setBorderRotation(-90);
+    //bossHealthBar->setBorderRotation(-90);
     bossHealthBar->setPercent(0);
-    bossHealthBar->setLoadingBarScale(SpriteController::updateSpriteScale(bossHealthBar->getLoadingBar(), 0.133f));
-    bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.17f));
+    bossHealthBar->setLoadingBarScale(SpriteController::updateSpriteScale(bossHealthBar->getLoadingBar(), 0.4325f));
+    bossHealthBar->setBorderScale(SpriteController::updateSpriteScale(bossHealthBar->getBorder(), 0.5f));
     bossHealthBar->setVisible(false);
     this->addChild(bossHealthBar, Constants::ORDER_LAYER_UI);
 
@@ -409,8 +505,36 @@ void Game3Scene::setupCursor() {
         CCLOG("Failed to create Cursor");
         return;
     }
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    _cursor->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _cursor->setName("Cursor");
-    this->addChild(_cursor, Constants::ORDER_LAYER_UI + 99);
+    this->addChild(_cursor, Constants::ORDER_LAYER_UI - 10);
+
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::hideCursor),
+        "HideCursorNotification",
+        nullptr
+    );
+
+    __NotificationCenter::getInstance()->addObserver(
+        this,
+        callfuncO_selector(Game3Scene::showCursor),
+        "ShowCursorNotification",
+        nullptr
+    );
+}
+
+void Game3Scene::hideCursor(Ref* sender) {
+    if (_cursor) {
+        _cursor->setVisible(false);
+    }
+}
+
+void Game3Scene::showCursor(Ref* sender) {
+    if (_cursor) {
+        _cursor->setVisible(true);
+    }
 }
 
 void Game3Scene::setupEventListeners(PlayerGame3* player) {
@@ -477,7 +601,7 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
         else if (player && IncreaseBullet) {
             IncreaseBullet->stopMovement();
             IncreaseBullet->applyPickupEffect();
-            Constants::QuantityBulletPlayerGame3 += 50;
+            Constants::QuantityBulletPlayerGame3 += 70;
             updateBulletLabel(nullptr);
         }
         else if (player && itemUpgradeBullet) {
@@ -488,11 +612,11 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
         else if (player && HealthRecovery) {
             HealthRecovery->stopMovement();
             HealthRecovery->applyPickupEffect();
-            if (healthBar->getPercent() <= 0) return true;
+            if (currentHealthCircle <= 0) return true;
             // Assuming you have a method to get the current health
-            float currentHealth = healthBar->getPercent();
+            float currentHealth = currentHealthCircle;
             float newHealth = currentHealth + 10; // Decrease health by 10 (example value)
-            updateHealthBar(newHealth);
+            updateHealth(newHealth);
         }
         else {
             player = dynamic_cast<PlayerGame3*>(nodeB);
@@ -546,11 +670,11 @@ bool Game3Scene::onContactBegin(PhysicsContact& contact) {
             }
             else if (player && HealthRecovery) {
                 HealthRecovery->applyPickupEffect();
-                if (healthBar->getPercent() <= 0) return true;
+                if (currentHealthCircle <= 0) return true;
                 // Assuming you have a method to get the current health
-                float currentHealth = healthBar->getPercent();
+                float currentHealth = currentHealthCircle;
                 float newHealth = currentHealth + 10; // Decrease health by 10 (example value)
-                updateHealthBar(newHealth);
+                updateHealth(newHealth);
             }
         }
     }
@@ -578,7 +702,7 @@ void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlan
         enemyBoom->dropRandomItem();
         bullet->returnPool();
     }
-    else if (enemyBoss = dynamic_cast<EnemyPlaneBoss*>(enemy)) {
+    else if (enemyBoss == dynamic_cast<EnemyPlaneBoss*>(enemy)) {
         this->handleBossDamage(Constants::BulletDamageGame3);
         bullet->hideModelCharac();
         bullet->explode();
@@ -587,33 +711,33 @@ void Game3Scene::handleBulletEnemyCollision(BulletPlayerGame3* bullet, EnemyPlan
 
 void Game3Scene::handleBulletForEnemyCityCollision(BulletForEnemyPlane* bulletForEnemy) {
     bulletForEnemy->explode();
-    if (healthBar->getPercent() <= 0) return;
+    if (currentHealthCircle <= 0) return;
     // Assuming you have a method to get the current health
-    float currentHealth = healthBar->getPercent();
+    float currentHealth = currentHealthCircle;
     float newHealth = currentHealth - Constants::DamageBulletForCity; // Decrease health by 10 (example value)
-    updateHealthBar(newHealth);
+    updateHealth(newHealth);
 }
 
 void Game3Scene::handleMissileEnemyCityCollision(MissileForEnemyPlane* missileEnemy) {
     missileEnemy->explode();
-    if (healthBar->getPercent() <= 0) return;
+    if (currentHealthCircle <= 0) return;
     // Assuming you have a method to get the current health
-    float currentHealth = healthBar->getPercent();
+    float currentHealth = currentHealthCircle;
     float newHealth = currentHealth - Constants::DamageBoomForCity; // Decrease health by 10 (example value)
-    updateHealthBar(newHealth);
+    updateHealth(newHealth);
 }
 
 void Game3Scene::handleBoomCityCollision(BoomForEnemyPlane* boom) {
     boom->explode();
 
-    if (healthBar->getPercent() <= 0) return;
-    float currentHealth = healthBar->getPercent();
+    if (currentHealthCircle <= 0) return;
+    float currentHealth = currentHealthCircle;
     float newHealth = currentHealth - Constants::DamageBoomForCity; // Decrease health by 10 (example value)
-    updateHealthBar(newHealth);
+    updateHealth(newHealth);
 }
 
 void Game3Scene::checkHealthBar() {
-    if (healthBar->getPercent() <= 0) {
+    if (currentHealthCircle <= 0) {
         this->stopAllActions();
         GameController::getInstance()->GameOver(
             []() { Director::getInstance()->end(); }, // Exit action
@@ -621,11 +745,6 @@ void Game3Scene::checkHealthBar() {
             Constants::pathSoundBossGame3Phase1 // Soundtrack path
         );
     }
-}
-
-void Game3Scene::updateHealthBar(float health) {
-    healthBar->setPercent(health);
-    checkHealthBar();
 }
 
 void Game3Scene::handleBossDamage(float damage) {
@@ -694,7 +813,7 @@ void Game3Scene::handleFinisherMissilesCityCollision(FinisherMissiles*  Finisher
     // Set health of player and health bar to 0
     FinisherMissilesBoss->explode();
     if (!finisherMissilesHandled) {
-        this->healthBar->setPercent(0);
+        currentHealthCircle = 0;
 
         finisherMissilesHandled = true;
         // Trigger explosion effect in CityCollisionArea

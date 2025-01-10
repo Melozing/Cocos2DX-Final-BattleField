@@ -47,6 +47,11 @@ void BunkerGame2::spawnEnemy(float dt) {
         if (enemy) {
             enemy->setTarget(targetCannon);
             enemy->setPosition(this->getPosition());
+
+            if (enemy->getParent() != nullptr) {
+                enemy->removeFromParent();
+            }
+
             this->getParent()->addChild(enemy);
         }
         break;
@@ -56,6 +61,11 @@ void BunkerGame2::spawnEnemy(float dt) {
         if (sniperEnemy) {
             sniperEnemy->setPosition(this->getPosition());
             sniperEnemy->setTarget(targetPlayer);
+
+            if (sniperEnemy->getParent() != nullptr) {
+                sniperEnemy->removeFromParent();
+            }
+
             this->getParent()->addChild(sniperEnemy);
         }
         break;

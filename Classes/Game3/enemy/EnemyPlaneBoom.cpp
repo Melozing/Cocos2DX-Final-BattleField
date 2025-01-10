@@ -1,6 +1,7 @@
 ﻿#include "EnemyPlaneBoom.h"
 #include "Manager/ObjectPoolGame3.h"
 #include "Constants/Constants.h"
+#include "utils/PhysicsShapeCache.h"
 
 USING_NS_CC;
 
@@ -29,17 +30,17 @@ Size EnemyPlaneBoom::GetSize() {
 }
 
 void EnemyPlaneBoom::initAnimation() {
-    spriteBatchNode = SpriteBatchNode::create("assets_game/enemies/enemy_plane_boom.png");
+    spriteBatchNode = SpriteBatchNode::create("assets_game/enemies/EnemyPlaneBoom.png");
 
     if (spriteBatchNode->getParent() == nullptr) {
         this->addChild(spriteBatchNode);
     }
 
-    modelCharac = Sprite::createWithSpriteFrameName("Plane_enemy_bom1.png");
-    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.07f));
+    modelCharac = Sprite::createWithSpriteFrameName("EnemyPlaneBoom1.png");
+    modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.1f));
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(SpriteController::createAnimation("Plane_enemy_bom", 8, 0.07f));
+    auto animateCharac = Animate::create(SpriteController::createAnimation("EnemyPlaneBoom", 39, 0.033f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
@@ -49,9 +50,9 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spa
         auto visibleSize = Director::getInstance()->getVisibleSize();
 
         // Define fixed y-coordinates for spawning
-        float lowY = visibleSize.height * 0.7f;
-        float midY = visibleSize.height * 0.8f;
-        float highY = visibleSize.height * 0.9f;
+        float lowY = visibleSize.height * 0.85f;
+        float midY = visibleSize.height * 0.9f;
+        float highY = visibleSize.height * 0.95f;
 
         float fixedY;
         if (position == "low") {
@@ -77,7 +78,8 @@ void EnemyPlaneBoom::spawnEnemy(cocos2d::Node* parent, float skillTime, bool spa
         this->createPhysicsBody();
 
         // Schedule to spawn boom at the specified skill time
-        this->scheduleOnce([this, spawnFromLeft = (direction == "leftToRight")](float dt) {
+        bool spawnFromLeft = (direction == "leftToRight");
+        this->scheduleOnce([this, spawnFromLeft](float dt) {
             this->spawnBoom(spawnFromLeft);
             }, skillTime, "spawn_boom_key");
 }
@@ -109,9 +111,19 @@ void EnemyPlaneBoom::createPhysicsBody() {
         this->removeComponent(this->getPhysicsBody());
     }
 
-    auto physicsBody = PhysicsBody::createBox(this->GetSize());
-    physicsBody->setContactTestBitmask(true);
-    physicsBody->setDynamic(false);
-    physicsBody->setGravityEnable(false);
-    this->addComponent(physicsBody);
+    auto physicsCache = PhysicsShapeCache::getInstance();
+    physicsCache->addShapesWithFile("physicsBody/EnemyPlaneBoom.plist");
+
+    auto originalSize = modelCharac->getTexture()->getContentSize();
+    auto scaledSize = this->GetSize();
+
+    auto physicsBody = physicsCache->createBody("EnemyPlaneBoom", originalSize, scaledSize);
+    physicsCache->resizeBody(physicsBody, "EnemyPlaneBoom", originalSize, 0.9f);
+    if (physicsBody) {
+        physicsBody->setContactTestBitmask(true);
+        physicsBody->setDynamic(false);
+        physicsBody->setGravityEnable(false);
+
+        this->setPhysicsBody(physicsBody);
+    }
 }

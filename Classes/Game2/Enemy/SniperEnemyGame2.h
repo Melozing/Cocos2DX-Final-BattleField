@@ -14,6 +14,7 @@ public:
     void setTarget(PlayerGame2* target);
     void setInitialDirection();
     void update(float delta) override;
+    void takeDamage(float damage);
 
 private:
     void initAnimation();
@@ -21,16 +22,20 @@ private:
     void flipSpriteBasedOnDirection(const cocos2d::Vec2& direction);
     void switchToShootAnimation();
     void switchToRunAnimation();
+    void switchToDeathAnimation();
     void shootBullet();
+    void blinkRed();
 
     PlayerGame2* targetPlayer;
     cocos2d::Sprite* runSprite;
     cocos2d::Sprite* shootSprite;
+    cocos2d::Sprite* deathSprite;
     SniperBulletGame2* bullet;
 
     enum class State {
         Moving,
-        Shooting
+        Shooting,
+        Dead
     };
 
     State currentState;
@@ -38,6 +43,8 @@ private:
     float moveDuration;
     float shootDuration;
     bool hasShotBullet;
+    float health;
+    const float maxHealth = 3.0f;
 };
 
 #endif // __SNIPER_ENEMY_GAME2_H__

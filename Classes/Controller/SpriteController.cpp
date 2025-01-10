@@ -84,6 +84,11 @@ float SpriteController::calculateScreenRatio(float ratio) {
     return (visibleSize.width * ratio);
 }
 
+float SpriteController::calculateScreenHeightRatio(float ratio) {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    return (visibleSize.height * ratio);
+}
+
 float SpriteController::updateSpriteScale(cocos2d::Node* node, float size) {
     if (node) {
         auto visibleSize = Director::getInstance()->getVisibleSize();

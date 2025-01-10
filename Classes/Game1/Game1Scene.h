@@ -23,7 +23,7 @@ public:
     static cocos2d::Scene* createScene();
     virtual bool init() override;
     CREATE_FUNC(Game1Scene);
-    virtual void update(float delta);
+    virtual void update(float delta) override;
 
     // New method to reset game state
     void resetGameState();
@@ -111,8 +111,11 @@ private:
     // Cursor
     void initCursor();
 
-    //Preload 
+    // Preload 
     void preloadAssets();
+
+    // Tutorial
+    void showTutorialIfNeeded();
 };
 
 #endif // __GAME1SCENE_SCENE_H__

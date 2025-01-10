@@ -21,6 +21,7 @@ public:
     float getSpeed() const;
     void setEnabled(bool enabled);
     cocos2d::Vec2 getVelocity() const;
+    bool isMoving() const;
 
 private:
     void updateDirection();

@@ -26,7 +26,7 @@ public:
 
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-    void update(float delta);
+    void update(float delta) override;
 
     void setShield(ShieldSkill* shield);
     ShieldSkill* _shield;

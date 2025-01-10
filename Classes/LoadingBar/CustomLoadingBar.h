@@ -13,7 +13,8 @@ public:
     void setPercent(float percent);
     float getPercent() const;
     ui::LoadingBar* getLoadingBar() const;
-    cocos2d::Sprite* getBorder() const const;
+    cocos2d::Sprite* getBorder() const;
+    cocos2d::Size GetSize();
 
     void setLoadingBarPosition(const Vec2& position);
     void setBorderPosition(const Vec2& position);

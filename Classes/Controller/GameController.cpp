@@ -32,6 +32,7 @@ void GameController::init() {
     gameTime = 0.0f;
     gameOver = false;
     paused = false;
+    tutorialLayerActive = false;
     audioID = AudioEngine::INVALID_AUDIO_ID;
     currentSoundtrackPath = "";
 }
@@ -234,4 +235,12 @@ void GameController::changeScene(const std::string& sceneName) {
     auto director = Director::getInstance();
     auto newScene = LoadingScene::createScene(sceneName);
     director->replaceScene(TransitionFade::create(1.0, newScene));
+}
+
+bool GameController::isTutorialLayerActive() const {
+    return tutorialLayerActive;
+}
+
+void GameController::setTutorialLayerActive(bool active) {
+    tutorialLayerActive = active;
 }

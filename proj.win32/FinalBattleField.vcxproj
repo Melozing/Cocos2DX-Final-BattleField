@@ -177,7 +177,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game1\Items\HealthItem.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\HealthPlayerGame1.cpp" />
     <ClCompile Include="..\Classes\Game1\Player\PlayerGame1.cpp" />
-    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkillI.cpp" />
+    <ClCompile Include="..\Classes\Game1\Skills\ShieldSkill.cpp" />
     <ClCompile Include="..\Classes\Game2\Cursor\Cursor.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\BunkerGame2.cpp" />
     <ClCompile Include="..\Classes\Game2\Enemy\EnemyBase.cpp" />
@@ -223,6 +223,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Manager\PositionManager.cpp" />
     <ClCompile Include="..\Classes\Manager\SpriteBatchNodeManager.cpp" />
     <ClCompile Include="..\Classes\Manager\SpriteFrameCacheManager.cpp" />
+    <ClCompile Include="..\Classes\Manager\TutorialLayer.cpp" />
     <ClCompile Include="..\Classes\Panel\BasePanel.cpp" />
     <ClCompile Include="..\Classes\Panel\GameOverPanel.cpp" />
     <ClCompile Include="..\Classes\Panel\PausePanel.cpp" />
@@ -313,6 +314,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Manager\PositionManager.h" />
     <ClInclude Include="..\Classes\Manager\SpriteBatchNodeManager.h" />
     <ClInclude Include="..\Classes\Manager\SpriteFrameCacheManager.h" />
+    <ClInclude Include="..\Classes\Manager\TutorialLayer.h" />
     <ClInclude Include="..\Classes\Panel\BasePanel.h" />
     <ClInclude Include="..\Classes\Panel\GameOverPanel.h" />
     <ClInclude Include="..\Classes\Panel\PausePanel.h" />

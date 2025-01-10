@@ -51,8 +51,10 @@ private:
 
     // Member variables
     cocos2d::Sprite* turretSprite; // Turret sprite
-    cocos2d::Sprite* modelCharac; // Character model sprite
     cocos2d::Vec2 _mousePos; // Mouse position
+    cocos2d::Sprite* leftWheelSprite;
+    cocos2d::Sprite* rightWheelSprite;
+    cocos2d::Sprite* handleSprite;
     PlayerMovement* playerMovement; // Player movement manager
     bool isShooting; // Shooting state
     float distanceToMouse; // Distance to mouse
@@ -65,6 +67,17 @@ private:
     cocos2d::Vec2 localAnchorPoint; // Local anchor point
     cocos2d::Vec2 turretPosition; // Turret position
     bool isMovementAndShootingDisabled;
+    float minAngle;
+    float maxAngle;
+
+    // Member variables for animations
+    cocos2d::SpriteBatchNode* idleBatchNode;
+    cocos2d::Sprite* idleSprite;
+    void rotateSpritesContinuously(float angle);
+    void stopRotatingSprites();
+    void setupWheelsAndHandle();
+    void updateCursorColor(bool isWithinRange);
+    void checkCursorRange();
 };
 
 #endif // __PLAYER_GAME3_H__
