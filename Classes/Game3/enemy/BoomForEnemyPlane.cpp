@@ -38,7 +38,7 @@ bool BoomForEnemyPlane::init() {
 }
 
 Size BoomForEnemyPlane::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSize(modelCharac);
 }
 
 void BoomForEnemyPlane::createPhysicsBody() {

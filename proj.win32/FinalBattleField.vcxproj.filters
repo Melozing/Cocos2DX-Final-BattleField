@@ -208,6 +208,9 @@
     <Filter Include="src\Gameplay\Player\PlayerGame2\GrenadeAndBullet">
       <UniqueIdentifier>{7c98527b-5b19-44a1-a243-16e904393be1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UXUI\Library">
+      <UniqueIdentifier>{9f74f587-2bb9-4655-847b-5e6e6639221f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -462,11 +465,21 @@
     <ClCompile Include="..\Classes\Manager\TutorialLayer.cpp">
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp" />
-    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp" />
-    <ClCompile Include="..\Classes\Library\UILibrary.cpp" />
     <ClCompile Include="..\Classes\Manager\Joystick.cpp">
       <Filter>src\Manager\AllUse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UIGame\IntroScene.cpp" />
+    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp">
+      <Filter>src\UXUI\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp">
+      <Filter>src\UXUI\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Library\UILibrary.cpp">
+      <Filter>src\UXUI\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Panel\SettingPanel.cpp">
+      <Filter>src\UXUI\Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -725,11 +738,21 @@
     <ClInclude Include="..\Classes\Manager\TutorialLayer.h">
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Library\ItemLibrary.h" />
-    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h" />
-    <ClInclude Include="..\Classes\Library\UILibrary.h" />
     <ClInclude Include="..\Classes\Manager\Joystick.h">
       <Filter>src\Manager\AllUse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UIGame\IntroScene.h" />
+    <ClInclude Include="..\Classes\Library\UILibrary.h">
+      <Filter>src\UXUI\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Library\ItemLibrary.h">
+      <Filter>src\UXUI\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h">
+      <Filter>src\UXUI\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Panel\SettingPanel.h">
+      <Filter>src\UXUI\Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

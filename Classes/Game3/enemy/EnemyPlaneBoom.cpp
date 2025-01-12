@@ -26,7 +26,7 @@ bool EnemyPlaneBoom::init() {
 }
 
 Size EnemyPlaneBoom::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }
 
 void EnemyPlaneBoom::initAnimation() {

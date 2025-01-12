@@ -31,7 +31,7 @@ bool BaseScene::init() {
     // Create the pause button
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         createPauseButton();
     }
 

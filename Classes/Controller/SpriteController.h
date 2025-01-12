@@ -16,7 +16,7 @@ public:
     static float updateSpriteScale(cocos2d::Node* node, float size);
     static float calculateScreenRatio(float ratio);
     static float calculateScreenHeightRatio(float ratio);
-    static Size GetContentSizeSprite(Sprite* sprite);
+    static Size GetContentSize(Node* node);
 private:
     // Sprite and animation
     Sprite* modelCharac;

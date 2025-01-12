@@ -56,7 +56,7 @@ void Landmine::reset() {
 }
 
 Size Landmine::GetSize() {
-    return GetContentSizeSprite(_currentSprite);
+    return GetContentSize(_currentSprite);
 }
 
 void Landmine::initAnimation() {
@@ -179,7 +179,7 @@ void Landmine::triggerExplosion() {
     auto explosionAnimation = createAnimation("ExplosionLandmine", 5, _animationDelay);
     auto animate = Animate::create(explosionAnimation);
 
-    //Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width, GetContentSizeSprite(explosionSprite).height);
+    //Size reducedSize = Size(GetContentSize(explosionSprite).width, GetContentSize(explosionSprite).height);
     explosionSpriteDump = Sprite::createWithSpriteFrameName("ExplosionLandmine5.png");
     explosionSpriteDump->setScale(SpriteController::updateSpriteScale(explosionSpriteDump, 0.15f));
 
@@ -192,7 +192,7 @@ void Landmine::triggerExplosion() {
     float scaleFactor = 1.5f;
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         scaleFactor = 0.8f;
     }
     explosionBody = physicsCache->createBody("RandomBoomExplosionGame1", originalSize, scaledSize);

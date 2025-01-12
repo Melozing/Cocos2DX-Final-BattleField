@@ -106,5 +106,5 @@ void SuicideBomberEnemy::flipSpriteBasedOnDirection(const Vec2& direction) {
 }
 
 Size SuicideBomberEnemy::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSize(modelCharac);
 }

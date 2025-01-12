@@ -163,7 +163,7 @@ void PhysicsShapeCache::resizeBody(PhysicsBody* physicsBody, const std::string& 
     }
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         scaleFactor = scaleFactor * 0.6f;
     }
 

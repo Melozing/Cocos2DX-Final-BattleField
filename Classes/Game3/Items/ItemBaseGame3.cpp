@@ -23,7 +23,7 @@ void ItemBaseGame3::createPhysicsBodyFromPlist(const std::string& plistFile, con
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         physicsCache->resizeBody(physicsBody, shapeName, originalSize, 0.8f);
     }
 

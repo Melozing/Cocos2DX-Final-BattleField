@@ -67,7 +67,7 @@ void Cannon::setupInitialPosition()
 }
 
 Size Cannon::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSize(modelCharac);
 }
 
 void Cannon::createPhysicsBody() {

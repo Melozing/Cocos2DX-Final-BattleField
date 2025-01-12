@@ -91,7 +91,7 @@ void HealthItem::applyEffect() {
 }
 
 Size HealthItem::getScaledSize() const {
-    return SpriteController::GetContentSizeSprite(_currentSprite);;
+    return SpriteController::GetContentSize(_currentSprite);;
 }
 
 void HealthItem::RemovePhysicBody() {

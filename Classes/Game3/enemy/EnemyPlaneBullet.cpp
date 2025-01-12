@@ -34,7 +34,7 @@ bool EnemyPlaneBullet::init() {
 }
 
 Size EnemyPlaneBullet::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }
 
 void EnemyPlaneBullet::initAnimation() {

@@ -136,7 +136,7 @@ void PlayerGame1::initAnimation()
 }
 
 Size PlayerGame1::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }
 
 void PlayerGame1::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)

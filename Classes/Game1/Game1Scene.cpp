@@ -103,7 +103,7 @@ void Game1Scene::registerNotificationListeners() {
 void Game1Scene::mobileSetup() {
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         initJoystick();
         initTouchListener();
         registerNotificationListeners();
@@ -335,7 +335,7 @@ void Game1Scene::showTutorialIfNeeded() {
 
         auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
         if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-            platform == cocos2d::Application::Platform::OS_MAC) {
+            platform == cocos2d::Application::Platform::OS_IPHONE) {
             imageTutorial = "assets_game/UXUI/Tutorial/Game1/image1_mobile.jpg";
         }
 

@@ -15,10 +15,15 @@ Scene* LoadingScene::createScene(const std::string& nextSceneName) {
 bool LoadingScene::init() {
     if (!Scene::init()) return false;
 
-    initCursor();
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("assets_game/UXUI/Loading/LoadingIcon.plist");
     initBackground();
     initLoadingBar();
 
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
+        initCursor();
+    }
     // Start loading after a brief delay
     loadingBar->setVisible(false); // Initially hide the loading bar
     this->scheduleOnce([this](float) {
@@ -45,7 +50,7 @@ void LoadingScene::initCursor() {
 void LoadingScene::initBackground() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
-    BackgroundManager::getInstance()->setBackground(this, "assets_game/UXUI/Background/background_ui.jpg");
+    BackgroundManager::getInstance()->setBackgroundWithOverlay(this, "assets_game/UXUI/Background/bg_loading.jpg");
 }
 
 void LoadingScene::initLoadingBar() {
@@ -56,8 +61,6 @@ void LoadingScene::initLoadingBar() {
     customLoadingBar->setLoadingBarPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + customLoadingBar->getLoadingBar()->getContentSize().height + SpriteController::calculateScreenRatio(0.05f)));
 
     auto loadingPos = customLoadingBar->getLoadingBar()->getPosition();
-    float loadingBarHeight = customLoadingBar->getLoadingBar()->getContentSize().height * customLoadingBar->getLoadingBar()->getScaleY() + SpriteController::calculateScreenRatio(0.001f);
-    loadingPos.y += loadingBarHeight;
     customLoadingBar->setBorderPosition(loadingPos);
 
     customLoadingBar->setLoadingBarScale(SpriteController::updateSpriteScale(customLoadingBar->getLoadingBar(), 0.57f));
@@ -66,6 +69,45 @@ void LoadingScene::initLoadingBar() {
     this->addChild(customLoadingBar);
 
     loadingBar = customLoadingBar->getLoadingBar();
+
+    // Add nail sprites to the left and right corners of the loading bar
+    auto nailLeft = Sprite::create("assets_game/UXUI/Loading/nail_left.png");
+    auto nailRight = Sprite::create("assets_game/UXUI/Loading/nail_right.png");
+
+	auto paddingWidth = SpriteController::calculateScreenRatio(0.015f);
+    
+    // Set positions for the nail sprites
+    nailLeft->setPosition(Vec2(loadingPos.x - SpriteController::GetContentSize(customLoadingBar->getBorder()).width / 2 + paddingWidth, loadingPos.y));
+    nailRight->setPosition(Vec2(loadingPos.x + SpriteController::GetContentSize(customLoadingBar->getBorder()).width / 2 - paddingWidth, loadingPos.y));
+
+    // Set scales for the nail sprites
+    nailLeft->setScale(SpriteController::updateSpriteScale(nailLeft, 0.03f));
+    nailRight->setScale(SpriteController::updateSpriteScale(nailRight, 0.03f));
+
+    // Add nail sprites to the scene
+    this->addChild(nailLeft, Constants::ORDER_LAYER_UI + 9999);
+    this->addChild(nailRight, Constants::ORDER_LAYER_UI + 9999);
+
+    // Initialize the loading icon
+    initLoadingIcon();
+}
+
+void LoadingScene::initLoadingIcon() {
+    loadingIconBatchNode = SpriteBatchNode::create("assets_game/UXUI/Loading/LoadingIcon.png");
+    if (loadingIconBatchNode->getParent() == nullptr) {
+        this->addChild(loadingIconBatchNode);
+    }
+
+    loadingIcon = Sprite::createWithSpriteFrameName("LoadingIcon1.png");
+    loadingIcon->setScale(SpriteController::updateSpriteScale(loadingIcon, 0.1f));
+
+    auto loadingPos = customLoadingBar->getLoadingBar()->getPosition();
+    loadingIcon->setPosition(Vec2(loadingPos.x, loadingPos.y + SpriteController::calculateScreenRatio(0.035f)));
+
+    loadingIconBatchNode->addChild(loadingIcon);
+
+    auto animate = Animate::create(SpriteController::createAnimation("LoadingIcon", 39, 0.033));
+    loadingIcon->runAction(RepeatForever::create(animate));
 }
 
 void LoadingScene::setNextSceneName(const std::string& sceneName) {

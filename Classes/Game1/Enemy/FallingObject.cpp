@@ -37,5 +37,5 @@ void FallingObject::returnToPool() {
 }
 
 Size FallingObject::GetSize() {
-    return GetContentSizeSprite(_currentSprite);
+    return GetContentSize(_currentSprite);
 }

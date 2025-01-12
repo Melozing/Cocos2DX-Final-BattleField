@@ -69,7 +69,7 @@ void BulletPlayerGame3::createPhysicsBody() {
 }
 
 Size BulletPlayerGame3::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }
 
 void BulletPlayerGame3::setDirection(const Vec2& direction)

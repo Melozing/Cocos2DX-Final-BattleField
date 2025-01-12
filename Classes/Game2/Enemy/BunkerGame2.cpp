@@ -80,7 +80,7 @@ void BunkerGame2::spawnEnemy(float dt) {
 }
 
 Size BunkerGame2::GetSize() {
-    return SpriteController::GetContentSizeSprite(modalSprite);
+    return SpriteController::GetContentSize(modalSprite);
 }
 
 void BunkerGame2::createPhysicsBody() {

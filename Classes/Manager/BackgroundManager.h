@@ -13,6 +13,7 @@ public:
     void showBackground(const std::string& spriteFrameName);
     void hideAllBackgrounds();
     void transitionBackground(const std::string& spriteFrameName, float duration);
+    void setBackgroundWithBlur(cocos2d::Node* parent, const std::string& backgroundFile, int zOrder = Constants::ORDER_LAYER_BACKGROUND, float blurRadius = 10.0f); // Add this line
 
 private:
     BackgroundManager() = default;

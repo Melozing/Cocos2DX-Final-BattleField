@@ -73,24 +73,24 @@ void TutorialLayer::createButtonsAndLabels() {
 
     // Create prev button
     prevButton = cocos2d::ui::Button::create(
-        "assets_game/UXUI/Collection/Scroll Bar/scroll_bot_arrow.png",
-        "assets_game/UXUI/Collection/Scroll Bar/scroll_bot_arrow-HOVER.png");
-    prevButton->setScale(SpriteController::updateSpriteScale(prevButton, 0.05));
+        "assets_game/UXUI/Panel/back_active.png",
+        "assets_game/UXUI/Panel/back_inactive.png");
+    prevButton->setScale(SpriteController::updateSpriteScale(prevButton, 0.1));
     prevButton->addClickEventListener(CC_CALLBACK_0(TutorialLayer::onPrevClicked, this));
     this->addChild(prevButton, Constants::ORDER_LAYER_UI);
 
     // Create next button
     nextButton = cocos2d::ui::Button::create(
-        "assets_game/UXUI/Collection/Scroll Bar/scroll_top_arrow.png",
-        "assets_game/UXUI/Collection/Scroll Bar/scroll_top_arrow-HOVER.png");
-    nextButton->setScale(SpriteController::updateSpriteScale(nextButton, 0.05));
+        "assets_game/UXUI/Panel/prev_active.png",
+        "assets_game/UXUI/Panel/prev_inactive.png");
+    nextButton->setScale(SpriteController::updateSpriteScale(nextButton, 0.1));
     nextButton->addClickEventListener(CC_CALLBACK_0(TutorialLayer::onNextClicked, this));
     this->addChild(nextButton, Constants::ORDER_LAYER_UI);
 
     // Create checkbox and label
     dontShowAgainCheckbox = cocos2d::ui::CheckBox::create(
-        "assets_game/UXUI/Panel/SliderNode_Normal.png",
-        "assets_game/UXUI/Panel/SliderNode_Pressed.png");
+        "assets_game/UXUI/Panel/check_box_inactive.png",
+        "assets_game/UXUI/Panel/check_box_active.png");
     dontShowAgainCheckbox->setScale(SpriteController::updateSpriteScale(dontShowAgainCheckbox, 0.05));
     dontShowAgainCheckbox->addEventListener(CC_CALLBACK_2(TutorialLayer::onCheckboxClicked, this));
     this->addChild(dontShowAgainCheckbox, Constants::ORDER_LAYER_UI);
@@ -102,9 +102,9 @@ void TutorialLayer::createButtonsAndLabels() {
 
     // Create skip button
     skipButton = cocos2d::ui::Button::create(
-        "assets_game/UXUI/Panel/Green_button.png",
-        "assets_game/UXUI/Panel/Green_button.png");
-    skipButton->setScale(SpriteController::updateSpriteScale(skipButton, 0.05));
+        "assets_game/UXUI/Panel/skip_button.png",
+        "assets_game/UXUI/Panel/skip_button.png");
+    skipButton->setScale(SpriteController::updateSpriteScale(skipButton, 0.1));
     skipButton->addClickEventListener(CC_CALLBACK_0(TutorialLayer::onSkipClicked, this));
     this->addChild(skipButton, Constants::ORDER_LAYER_UI);
 }
@@ -132,7 +132,7 @@ void TutorialLayer::updateSlide() {
     slideSprite->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 
     // Adjust the border sprite size and position
-    borderSprite->setScale(scale * 0.98f); // Adjust the scale factor as needed to fit around the slideSprite
+    borderSprite->setScale(scale * 1.615f); // Adjust the scale factor as needed to fit around the slideSprite
     borderSprite->setPosition(slideSprite->getPosition());
 
     // Update the state of the prev and next buttons
@@ -145,10 +145,11 @@ void TutorialLayer::updateSlide() {
         prevButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x - slideSprite->getContentSize().width * slideSprite->getScale() / 2 - paddingHorizontal, slideSprite->getPosition().y));
         nextButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x + slideSprite->getContentSize().width * slideSprite->getScale() / 2 + paddingHorizontal, slideSprite->getPosition().y));
         float paddingTop = SpriteController::calculateScreenRatio(0.05f);
-        float paddingWidth = SpriteController::calculateScreenRatio(0.065f);
+        float paddingWidth = SpriteController::calculateScreenRatio(0.05f);
+        float paddingWidthSkip = SpriteController::calculateScreenRatio(0.04f);
         dontShowAgainCheckbox->setPosition(cocos2d::Vec2(borderSprite->getPosition().x / 2 - paddingWidth, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
         label->setPosition(dontShowAgainCheckbox->getPosition() + cocos2d::Vec2(SpriteController::calculateScreenRatio(0.053f), 0));
-        skipButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x + this->GetSize().width / 2, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
+        skipButton->setPosition(cocos2d::Vec2(slideSprite->getPosition().x + this->GetSize().width / 2 - paddingWidthSkip, slideSprite->getPosition().y - this->GetSize().height / 2 - paddingTop));
         __NotificationCenter::getInstance()->postNotification("HideCursorNotification");
         buttonsPositionUpdated = true;
     }
@@ -187,7 +188,7 @@ void TutorialLayer::onCheckboxClicked(cocos2d::Ref* sender, cocos2d::ui::CheckBo
 }
 
 cocos2d::Size TutorialLayer::GetSize() {
-    return SpriteController::GetContentSizeSprite(slideSprite);
+    return SpriteController::GetContentSize(slideSprite);
 }
 
 void TutorialLayer::pauseGame() {

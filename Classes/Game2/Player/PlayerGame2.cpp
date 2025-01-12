@@ -411,7 +411,7 @@ void PlayerGame2::createPhysicsBody() {
 }
 
 Size PlayerGame2::GetSize() {
-    return GetContentSizeSprite(bodySprite);
+    return GetContentSize(bodySprite);
 }
 
 void PlayerGame2::playReloadSound() {

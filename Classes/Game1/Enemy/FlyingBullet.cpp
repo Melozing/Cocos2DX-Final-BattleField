@@ -32,7 +32,7 @@ bool FlyingBullet::init() {
 }
 
 Size FlyingBullet::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }
 
 void FlyingBullet::initAnimation(bool fromLeft) {
