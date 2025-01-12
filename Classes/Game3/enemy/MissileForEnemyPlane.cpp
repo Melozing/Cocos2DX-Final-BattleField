@@ -43,7 +43,7 @@ void MissileForEnemyPlane::initAnimation() {
 }
 
 Size MissileForEnemyPlane::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSize(modelCharac);
 }
 
 void MissileForEnemyPlane::createPhysicsBody() {

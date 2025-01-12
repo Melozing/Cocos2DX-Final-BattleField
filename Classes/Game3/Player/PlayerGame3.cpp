@@ -69,7 +69,7 @@ void PlayerGame3::setupInitialPosition()
 
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         initialPosY = SpriteController::calculateScreenHeightRatio(0.09f);
     }
 
@@ -283,7 +283,7 @@ void PlayerGame3::shootBullet(const Vec2& target) {
 
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         direction = _touchPos - turretPosition;
     }
 
@@ -434,7 +434,7 @@ void PlayerGame3::updateTurretRotation() {
 
         auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
         if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-            platform == cocos2d::Application::Platform::OS_MAC) {
+            platform == cocos2d::Application::Platform::OS_IPHONE) {
             direction = _touchPos - turretPosition;
         }
         // Normalize the direction vector
@@ -489,7 +489,7 @@ bool PlayerGame3::updateDistanceToMouse(const Vec2& position) {
 }
 
 Size PlayerGame3::GetSize() {
-    return SpriteController::GetContentSizeSprite(idleSprite);
+    return SpriteController::GetContentSize(idleSprite);
 }
 
 void PlayerGame3::createPhysicsBody() {

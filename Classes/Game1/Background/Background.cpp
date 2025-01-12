@@ -32,9 +32,9 @@ bool Background::init(const std::string& filePath, float scrollSpeed)
     background2->setAnchorPoint(Vec2(0.5, 0.5));
 
     background1->setScale(visibleSize.width / background1->getContentSize().width,
-        visibleSize.height / SpriteController::GetContentSizeSprite(background1).height);
+        visibleSize.height / SpriteController::GetContentSize(background1).height);
     background2->setScale(visibleSize.width / background2->getContentSize().width,
-        visibleSize.height / SpriteController::GetContentSizeSprite(background2).height);
+        visibleSize.height / SpriteController::GetContentSize(background2).height);
 
     background1->setPosition(visibleSize.width / 2, (visibleSize.height / 2));
     background2->setPosition(visibleSize.width / 2, (visibleSize.height + visibleSize.height / 2));
@@ -54,7 +54,7 @@ void Background::update(float delta)
 
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
 		hightBonus = SpriteController::calculateScreenHeightRatio(0.205);
     }
 

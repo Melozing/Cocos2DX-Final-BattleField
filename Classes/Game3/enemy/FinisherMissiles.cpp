@@ -43,7 +43,7 @@ void FinisherMissiles::initAnimation() {
 }
 
 Size FinisherMissiles::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSize(modelCharac);
 }
 
 void FinisherMissiles::createPhysicsBody() {

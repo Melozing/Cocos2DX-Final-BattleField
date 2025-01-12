@@ -68,7 +68,7 @@ void BulletGame2::createPhysicsBody() {
 }
 
 Size BulletGame2::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }
 
 void BulletGame2::setDirection(const Vec2& direction)

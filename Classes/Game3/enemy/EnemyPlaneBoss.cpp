@@ -148,7 +148,7 @@ void EnemyPlaneBoss::reset() {
 }
 
 Size EnemyPlaneBoss::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSize(modelCharac);
 }
 
 void EnemyPlaneBoss::takeDamage(float damage) {

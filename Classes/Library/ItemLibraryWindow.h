@@ -21,7 +21,7 @@ private:
     void createTitleLabel();
     void updateItemInfo(const ItemData& item);
 
-    cocos2d::Sprite* mainBg;
+    cocos2d::Sprite* backgroundSprite;
     cocos2d::ui::ScrollView* scrollView;
     cocos2d::Label* itemInfoLabel;
     cocos2d::ui::ScrollView* infoScrollView;

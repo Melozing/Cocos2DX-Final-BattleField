@@ -7,7 +7,7 @@
 			<key>EnemyPlaneBoom0.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{579,450},{179,74}}</string>
+				<string>{{581,75},{179,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -15,13 +15,13 @@
 				<key>sourceColorRect</key>
 				<string>{{21,9},{179,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{578,677},{179,74}}</string>
+				<string>{{580,450},{179,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -29,153 +29,153 @@
 				<key>sourceColorRect</key>
 				<string>{{21,9},{179,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom10.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{391,225},{184,74}}</string>
+				<string>{{392,0},{184,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{16,9},{184,74}}</string>
+				<string>{{16,10},{184,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom11.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{391,150},{184,74}}</string>
+				<string>{{392,226},{184,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{16,9},{184,74}}</string>
+				<string>{{16,10},{184,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom12.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{390,75},{185,74}}</string>
+				<string>{{392,151},{185,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{15,9},{185,74}}</string>
+				<string>{{15,10},{185,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom13.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{390,377},{186,74}}</string>
+				<string>{{391,306},{186,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{14,9},{186,74}}</string>
+				<string>{{14,10},{186,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom14.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{390,302},{186,74}}</string>
+				<string>{{390,685},{186,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{14,9},{186,74}}</string>
+				<string>{{14,10},{186,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom15.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{577,752},{187,74}}</string>
+				<string>{{193,755},{187,73}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{13,9},{187,74}}</string>
+				<string>{{13,11},{187,73}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom16.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{389,752},{187,74}}</string>
+				<string>{{200,76},{187,73}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{13,9},{187,74}}</string>
+				<string>{{13,11},{187,73}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom17.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{389,677},{188,74}}</string>
+				<string>{{390,610},{188,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{12,9},{188,74}}</string>
+				<string>{{12,11},{188,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom18.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{389,602},{188,74}}</string>
+				<string>{{390,535},{188,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{12,9},{188,74}}</string>
+				<string>{{12,11},{188,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom19.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{389,527},{189,74}}</string>
+				<string>{{390,460},{189,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{11,9},{189,74}}</string>
+				<string>{{11,11},{189,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{578,602},{180,74}}</string>
+				<string>{{580,375},{180,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -183,83 +183,83 @@
 				<key>sourceColorRect</key>
 				<string>{{20,9},{180,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom20.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{389,452},{189,74}}</string>
+				<string>{{390,385},{189,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{11,9},{189,74}}</string>
+				<string>{{11,11},{189,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom21.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{200,0},{190,74}}</string>
+				<string>{{390,76},{190,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{10,9},{190,74}}</string>
+				<string>{{10,11},{190,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom22.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{199,149},{190,73}}</string>
+				<string>{{199,150},{190,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{10,10},{190,73}}</string>
+				<string>{{10,11},{190,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom23.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{198,378},{191,73}}</string>
+				<string>{{200,0},{191,75}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{9,10},{191,73}}</string>
+				<string>{{9,10},{191,75}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom24.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{198,302},{191,75}}</string>
+				<string>{{198,385},{191,76}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{9,8},{191,75}}</string>
+				<string>{{9,8},{191,76}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom25.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{198,223},{192,78}}</string>
+				<string>{{198,306},{192,78}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -267,13 +267,13 @@
 				<key>sourceColorRect</key>
 				<string>{{8,6},{192,78}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom26.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{196,518},{192,79}}</string>
+				<string>{{0,749},{192,79}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -281,13 +281,13 @@
 				<key>sourceColorRect</key>
 				<string>{{8,5},{192,79}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom27.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{195,746},{193,80}}</string>
+				<string>{{198,225},{193,80}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -295,13 +295,13 @@
 				<key>sourceColorRect</key>
 				<string>{{7,4},{193,80}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom28.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{195,664},{193,81}}</string>
+				<string>{{196,524},{193,81}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -309,27 +309,27 @@
 				<key>sourceColorRect</key>
 				<string>{{7,3},{193,81}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom29.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,736},{194,79}}</string>
+				<string>{{195,674},{194,80}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{6,5},{194,79}}</string>
+				<string>{{6,4},{194,80}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{577,375},{180,74}}</string>
+				<string>{{579,610},{180,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -337,133 +337,133 @@
 				<key>sourceColorRect</key>
 				<string>{{20,9},{180,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom30.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,664},{194,71}}</string>
+				<string>{{0,674},{194,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{6,13},{194,71}}</string>
+				<string>{{6,10},{194,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom31.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,591},{195,72}}</string>
+				<string>{{0,599},{195,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{5,12},{195,72}}</string>
+				<string>{{5,10},{195,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom32.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,518},{195,72}}</string>
+				<string>{{0,524},{195,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{5,12},{195,72}}</string>
+				<string>{{5,10},{195,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom33.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,445},{196,72}}</string>
+				<string>{{0,450},{196,73}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{4,12},{196,72}}</string>
+				<string>{{4,10},{196,73}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom34.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,371},{197,73}}</string>
+				<string>{{0,375},{197,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{3,11},{197,73}}</string>
+				<string>{{3,9},{197,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom35.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,297},{197,73}}</string>
+				<string>{{0,300},{197,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{3,11},{197,73}}</string>
+				<string>{{3,9},{197,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom36.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,223},{197,73}}</string>
+				<string>{{0,225},{197,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{3,10},{197,73}}</string>
+				<string>{{3,9},{197,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom37.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,149},{198,73}}</string>
+				<string>{{0,150},{198,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{2,10},{198,73}}</string>
+				<string>{{2,9},{198,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom38.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,75},{199,73}}</string>
+				<string>{{0,75},{199,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{1,10},{199,73}}</string>
+				<string>{{1,9},{199,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom39.png</key>
@@ -477,13 +477,13 @@
 				<key>sourceColorRect</key>
 				<string>{{1,9},{199,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{577,300},{181,74}}</string>
+				<string>{{579,535},{181,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -491,13 +491,13 @@
 				<key>sourceColorRect</key>
 				<string>{{19,9},{181,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom5.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{576,225},{181,74}}</string>
+				<string>{{578,151},{181,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -505,13 +505,13 @@
 				<key>sourceColorRect</key>
 				<string>{{19,9},{181,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom6.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{576,150},{182,74}}</string>
+				<string>{{578,300},{182,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -519,49 +519,49 @@
 				<key>sourceColorRect</key>
 				<string>{{18,9},{182,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom7.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{576,75},{182,74}}</string>
+				<string>{{577,226},{182,73}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{18,9},{182,74}}</string>
+				<string>{{18,10},{182,73}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom8.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{575,0},{183,74}}</string>
+				<string>{{577,685},{183,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{17,9},{183,74}}</string>
+				<string>{{17,10},{183,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 			<key>EnemyPlaneBoom9.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{391,0},{183,74}}</string>
+				<string>{{577,0},{183,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{17,9},{183,74}}</string>
+				<string>{{17,10},{183,74}}</string>
 				<key>sourceSize</key>
-				<string>{204,86}</string>
+				<string>{204,85}</string>
 			</dict>
 
 		</dict>
@@ -571,7 +571,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{765,827}</string>
+			<string>{761,829}</string>
 			<key>textureFileName</key>
 			<string>EnemyPlaneBoom.png</string>
 			</dict>

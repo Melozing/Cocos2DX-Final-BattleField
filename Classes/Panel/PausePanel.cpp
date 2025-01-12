@@ -76,7 +76,7 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
 
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.17f;
         Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.07f;
     }

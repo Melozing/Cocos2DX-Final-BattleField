@@ -74,7 +74,7 @@ void HealthPlayerGame1::positionHealthSprites() {
     float spacing = SpriteController::calculateScreenRatio(Constants::PLAYER_HEALTH_PADDING_X);
 
     for (int i = 0; i < _healthSprites.size(); ++i) {
-        auto spriteSize = SpriteController::GetContentSizeSprite(_healthSprites[i]);
+        auto spriteSize = SpriteController::GetContentSize(_healthSprites[i]);
         _backgroundSprites[i]->setPosition(Vec2(startX + i * (spriteSize.width + spacing), startY));
         _healthSprites[i]->setPosition(Vec2(startX + i * (spriteSize.width + spacing), startY));
     }

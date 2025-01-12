@@ -101,7 +101,7 @@ void AmmoItem::playEffectAndRemove() {
 }
 
 Size AmmoItem::getScaledSize() const {
-    return SpriteController::GetContentSizeSprite(_currentSprite);;
+    return SpriteController::GetContentSize(_currentSprite);;
 }
 
 void AmmoItem::returnToPool() {

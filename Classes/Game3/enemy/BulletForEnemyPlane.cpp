@@ -37,7 +37,7 @@ bool BulletForEnemyPlane::init() {
 }
 
 Size BulletForEnemyPlane::GetSize() {
-    return SpriteController::GetContentSizeSprite(modelCharac);
+    return SpriteController::GetContentSize(modelCharac);
 }
 
 void BulletForEnemyPlane::createPhysicsBody() {

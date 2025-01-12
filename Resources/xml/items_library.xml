@@ -43,7 +43,40 @@
 		<id>6</id>
 		<imagePath>assets_game/items/HealthRecoveryItem.png</imagePath>
 		<name>Health Recovery</name>
-		<shortDescription>Restores health over time</shortDescription>
+		<shortDescription>
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over timeRestores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+			Restores health over time
+		</shortDescription>
 		<description>Health Recovery</description>
 		<imageInfo></imageInfo>
 	</item>
@@ -55,5 +88,4 @@
 		<description>medkit</description>
 		<imageInfo>xml/intro.webp</imageInfo>
 	</item>
-	<!-- Add more items as needed -->
 </items>

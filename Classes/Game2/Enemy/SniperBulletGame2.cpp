@@ -69,7 +69,7 @@ void SniperBulletGame2::createPhysicsBody() {
 }
 
 Size SniperBulletGame2::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }
 
 void SniperBulletGame2::setDirection(const Vec2& direction)

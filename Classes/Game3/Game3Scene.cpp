@@ -69,7 +69,7 @@ bool Game3Scene::init() {
 void Game3Scene::setupMobile() {
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         initControlButtons();
         initTouchListener();
     }
@@ -101,7 +101,7 @@ void Game3Scene::showTutorialIfNeeded() {
 
         auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
         if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-            platform == cocos2d::Application::Platform::OS_MAC) {
+            platform == cocos2d::Application::Platform::OS_IPHONE) {
             imageTutorial = "assets_game/UXUI/Tutorial/Game3/image1_mobile.jpg";
         }
 
@@ -337,7 +337,7 @@ void Game3Scene::initHealthBar() {
     
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         paddingHeightFront = SpriteController::calculateScreenHeightRatio(0.009);
     }
 

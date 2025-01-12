@@ -81,7 +81,7 @@ Joystick* Joystick::create(const std::string& baseImage, const std::string& thum
         if (!_enabled) return;
         Vec2 touchLocation = touch->getLocation();
         Vec2 basePosition = _base->getPosition();
-        float maxRadius = SpriteController::GetContentSizeSprite(_base).width / 2;
+        float maxRadius = SpriteController::GetContentSize(_base).width / 2;
 
         Vec2 direction = touchLocation - basePosition;
         if (direction.length() > maxRadius) {

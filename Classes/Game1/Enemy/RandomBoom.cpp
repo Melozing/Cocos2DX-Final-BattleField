@@ -113,7 +113,7 @@ void RandomBoom::launchMissile(const Vec2& targetPosition) {
 
 
 Size RandomBoom::GetSize() {
-    return GetContentSizeSprite(_warningSprite);
+    return GetContentSize(_warningSprite);
 }
 
 
@@ -148,7 +148,7 @@ void RandomBoom::onMissileHitTarget() {
     auto explosionAnimation = createAnimation("explosions", 10, 0.041f);
     auto animate = Animate::create(explosionAnimation);
 
-    //Size reducedSize = Size(GetContentSizeSprite(explosionSprite).width, GetContentSizeSprite(explosionSprite).height);
+    //Size reducedSize = Size(GetContentSize(explosionSprite).width, GetContentSize(explosionSprite).height);
     explosionSpriteDump = Sprite::createWithSpriteFrameName("explosions7.png");
     explosionSpriteDump->setScale(SpriteController::updateSpriteScale(explosionSpriteDump, 0.15f));
     
@@ -161,7 +161,7 @@ void RandomBoom::onMissileHitTarget() {
     float scaleFactor = 1.0f;
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_MAC) {
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
         scaleFactor = 0.6f;
     }
 

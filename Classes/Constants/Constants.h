@@ -10,6 +10,7 @@ public:
     static const std::string SoundRadioEndGame;
     static const std::string SoundTrackEndGame;
     const static std::string ClickStartGameSFX;
+    const static std::string ClickButtonGameSFX;
     const static std::string ButtonClickSFX;
     const static std::string OpenPanel;
     const static std::string Library;

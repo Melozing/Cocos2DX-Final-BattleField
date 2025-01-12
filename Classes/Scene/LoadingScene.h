@@ -23,13 +23,16 @@ private:
     void initLoadingBar();
     void initBackground();
     void initCursor();
-    void preloadAssets(); // Add this line
+    void preloadAssets();
+    void initLoadingIcon();
 
     Cursor* _cursor;
     ui::LoadingBar* loadingBar;
     CustomLoadingBar* customLoadingBar;
     Sprite* border;
-    std::string nextSceneName; // Store the name of the next scene
+    std::string nextSceneName;
+    Sprite* loadingIcon;
+    cocos2d::SpriteBatchNode* loadingIconBatchNode;
 };
 
 #endif // __LOADING_SCENE_H__

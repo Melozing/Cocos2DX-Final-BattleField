@@ -14,6 +14,17 @@ bool BasePanel::init() {
     // Create a semi-transparent background
     auto background = LayerColor::create(Color4B(0, 0, 0, 180));
     this->addChild(background);
+    
+    // Add touch listener to intercept touch events
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->setSwallowTouches(true); // Ensure touches are not propagated to layers below
+    touchListener->onTouchBegan = [this](Touch* touch, Event* event) {
+        if (this->isVisible())
+        {
+            return true; // Return true to indicate that the touch event has been handled
+        }
+        };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, background);
 
     // Create board sprite
     boardSprite = Sprite::create("assets_game/UXUI/Panel/Board.png");

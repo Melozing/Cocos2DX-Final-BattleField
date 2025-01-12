@@ -18,11 +18,14 @@ float SpriteController::updateSpriteScale(Sprite* sprite, float size)
     return scale;
 }
 
-Size SpriteController::GetContentSizeSprite(Sprite* sprite) {
-    auto originalSize = sprite->getContentSize();
-    auto scaledSize = Size(originalSize.width * sprite->getScaleX(),
-        originalSize.height * sprite->getScaleY());
-    return scaledSize;
+Size SpriteController::GetContentSize(Node* node) {
+    if (node) {
+        auto originalSize = node->getContentSize();
+        auto scaledSize = Size(originalSize.width * node->getScaleX(),
+            originalSize.height * node->getScaleY());
+        return scaledSize;
+    }
+    return Size::ZERO;
 }
 
 void SpriteController::changeAnimation(const std::string& namePrefix, int numOrder)

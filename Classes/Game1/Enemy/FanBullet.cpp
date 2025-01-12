@@ -115,5 +115,5 @@ void FanBullet::removeWhenOutOfScreen() {
 }
 
 cocos2d::Size FanBullet::GetSize() {
-    return GetContentSizeSprite(modelCharac);
+    return GetContentSize(modelCharac);
 }

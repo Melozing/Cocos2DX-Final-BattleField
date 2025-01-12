@@ -127,6 +127,7 @@ list(APPEND GAME_SOURCE
     Classes/Panel/GameOverPanel.cpp
     Classes/Panel/PausePanel.cpp
     Classes/Panel/VictoryPanel.cpp
+    Classes/Panel/SettingPanel.cpp
     Classes/PlayerAttributes/PlayerAttributes.cpp
     Classes/Scene/BaseScene.cpp
     Classes/Scene/LoadingScene.cpp
@@ -216,6 +217,7 @@ list(APPEND GAME_HEADER
     Classes/Panel/GameOverPanel.h
     Classes/Panel/PausePanel.h
     Classes/Panel/VictoryPanel.h
+    Classes/Panel/SettingPanel.h
     Classes/PlayerAttributes/PlayerAttributes.h
     Classes/Scene/BaseScene.h
     Classes/Scene/LoadingScene.h
