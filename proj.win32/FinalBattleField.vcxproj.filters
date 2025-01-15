@@ -469,17 +469,11 @@
       <Filter>src\Manager\AllUse</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\UIGame\IntroScene.cpp" />
-    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp">
-      <Filter>src\UXUI\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp">
-      <Filter>src\UXUI\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Library\UILibrary.cpp">
-      <Filter>src\UXUI\Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Panel\SettingPanel.cpp">
       <Filter>src\UXUI\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Library\LibraryWindow.cpp">
+      <Filter>src\UXUI\Library</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -742,17 +736,11 @@
       <Filter>src\Manager\AllUse</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\UIGame\IntroScene.h" />
-    <ClInclude Include="..\Classes\Library\UILibrary.h">
-      <Filter>src\UXUI\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Library\ItemLibrary.h">
-      <Filter>src\UXUI\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h">
-      <Filter>src\UXUI\Library</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Panel\SettingPanel.h">
       <Filter>src\UXUI\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Library\LibraryWindow.h">
+      <Filter>src\UXUI\Library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -44,6 +44,13 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
         });
     boardSprite->addChild(quitButton);
 
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
+        platform == cocos2d::Application::Platform::OS_IPHONE) {
+        Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.17f;
+        Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.07f;
+    }
+
     // Create music slider
     musicSlider = ui::Slider::create();
     musicSlider->loadBarTexture("assets_game/UXUI/Panel/Slider_Back.png");

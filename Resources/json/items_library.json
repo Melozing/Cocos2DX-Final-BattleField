@@ -1,15 +1,32 @@
 [
     {
-        "id": 1,
-        "imagePath": "assets_game/items/IncreaseBulletCountItem.png",
-        "name": "Increase Bullet Count",
-        "description": "Increases the number of bullets you can carry."
+        "iconPath": "assets_game/items/HealthRecoveryItem.png",
+        "name": "Hộp sửa chữa",
+        "imagePath": "assets_game/items/HealthRecoveryItem.png",
+        "content": "This is the content for item 1.This is the content for items the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item s the content for item 1.This is the content for item  6.This is the content for item 6.This is the content for item 6.This is the content for item 6."
     },
     {
-        "id": 2,
+        "iconPath": "assets_game/items/hop_dan.png",
+        "name": "Hộp đạn",
         "imagePath": "assets_game/items/hop_dan.png",
-        "name": "Health Potion",
-        "description": "Restores health."
+        "content": "This is the content for item 6.This is the content for item 6.This is the content for item 6.This is the content for item 6.This is the content for item 6.This is the content for item 6."
+    },
+    {
+        "iconPath": "assets_game/items/IncreaseBulletCountItem.png",
+        "name": "Item 3",
+        "imagePath": "assets_game/items/IncreaseBulletCountItem.png",
+        "content": "This is the content for item 6.This is the content for item 6.This is the content for item 6.This is the content for item 6."
+    },
+    {
+        "iconPath": "assets_game/items/non_coi.png",
+        "name": "Item 4",
+        "imagePath": "assets_game/items/non_coi.png",
+        "content": "This is the content for item 5.This is the content for item 6.This is the content for item 6.This is the content for item 6."
+    },
+    {
+        "iconPath": "assets_game/items/UpgradeBulletItem.png",
+        "name": "Item 5",
+        "imagePath": "assets_game/items/UpgradeBulletItem.png",
+        "content": "This is the content for item 4.This is the content for item 6.This is the content for item 6.This is the content for item 6."
     }
-    // Add more items as needed
 ]
