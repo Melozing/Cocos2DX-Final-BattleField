@@ -210,9 +210,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Game3\Player\CityCollisionArea.cpp" />
     <ClCompile Include="..\Classes\Game3\Player\PlayerGame3.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
-    <ClCompile Include="..\Classes\Library\ItemLibrary.cpp" />
-    <ClCompile Include="..\Classes\Library\ItemLibraryWindow.cpp" />
-    <ClCompile Include="..\Classes\Library\UILibrary.cpp" />
+    <ClCompile Include="..\Classes\Library\LibraryWindow.cpp" />
     <ClCompile Include="..\Classes\LoadingBar\CustomLoadingBar.cpp" />
     <ClCompile Include="..\Classes\Manager\BackgroundManager.cpp" />
     <ClCompile Include="..\Classes\Manager\Joystick.cpp" />
@@ -303,9 +301,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Game3\Player\CityCollisionArea.h" />
     <ClInclude Include="..\Classes\Game3\Player\PlayerGame3.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
-    <ClInclude Include="..\Classes\Library\ItemLibrary.h" />
-    <ClInclude Include="..\Classes\Library\ItemLibraryWindow.h" />
-    <ClInclude Include="..\Classes\Library\UILibrary.h" />
+    <ClInclude Include="..\Classes\Library\LibraryWindow.h" />
     <ClInclude Include="..\Classes\LoadingBar\CustomLoadingBar.h" />
     <ClInclude Include="..\Classes\Manager\BackgroundManager.h" />
     <ClInclude Include="..\Classes\Manager\Joystick.h" />

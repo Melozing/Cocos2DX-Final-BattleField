@@ -60,7 +60,7 @@ void EnemyPlaneBoss::initAnimation() {
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.7f)); // Adjust scale as needed
     spriteBatchNode->addChild(modelCharac, Constants::ORDER_LAYER_CHARACTER);
 
-    auto animateCharac = Animate::create(SpriteController::createAnimation("EnemyPlaneBoss", 3, 0.1f)); // Adjust frame count and duration as needed
+    auto animateCharac = Animate::create(SpriteController::createAnimation("EnemyPlaneBoss", 79, 0.017f)); // Adjust frame count and duration as needed
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
@@ -400,7 +400,7 @@ void EnemyPlaneBoss::createPhysicsBody() {
     auto scaledSize = this->GetSize();
 
     auto physicsBody = physicsCache->createBodyFromPlist("physicsBody/EnemyPlaneBoss.plist", "EnemyPlaneBoss", originalSize, scaledSize);
-    physicsCache->resizeBody(physicsBody, "EnemyPlaneBoss", originalSize, 1.40f);
+    physicsCache->resizeBody(physicsBody, "EnemyPlaneBoss", originalSize, 6.10f);
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);

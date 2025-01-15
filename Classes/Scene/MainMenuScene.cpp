@@ -5,7 +5,7 @@
 #include "Controller/GameController.h"
 #include "Controller/SoundController.h"
 #include "Manager/BackgroundManager.h"
-#include "Library/ItemLibraryWindow.h"
+#include "Library/LibraryWindow.h"
 
 USING_NS_CC;
 
@@ -20,6 +20,8 @@ bool MainMenu::init() {
 
     // Set Sound
     SoundController::getInstance()->playMusic(Constants::MainMenuTrackPath, true);
+    
+    auto visibleSize = Director::getInstance()->getVisibleSize();
 
     // Setup scene elements
     setupBackground();
@@ -33,7 +35,18 @@ bool MainMenu::init() {
         setupCursor();
     }
 
+    // Register notification listener
+    NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(MainMenu::onCloseLibraryWindow), "CloseLibraryWindow", nullptr);
+
     return true; // Initialization succeeded
+}
+
+MainMenu::~MainMenu() {
+    // Remove notification listener
+    NotificationCenter::getInstance()->removeObserver(this, "CloseLibraryWindow");
+}
+
+void MainMenu::onCloseLibraryWindow(Ref* sender) {
 }
 
 void MainMenu::setupBackground() {
@@ -164,7 +177,7 @@ void MainMenu::setupButtons() {
             if (type == ui::Widget::TouchEventType::ENDED) {
                 SoundController::getInstance()->stopMusic(Constants::currentSoundTrackPath);
                 SoundController::getInstance()->playSoundEffect(Constants::ClickStartGameSFX);
-                startLoading(Constants::GAME2_SCENE_NAME); // Start loading when button is pressed
+                startLoading(Constants::GAME3_SCENE_NAME); 
             }
             });
         buttonG2->addChild(playButton2);
@@ -212,14 +225,16 @@ void MainMenu::setupCollectionButton() {
 
     collectionButton = ui::Button::create("assets_game/UXUI/Collection/info.png");
     collectionButton->setScale(SpriteController::updateSpriteScale(collectionButton, 0.1f));
+    collectionButton->setAnchorPoint(Vec2(0.5,0.5));
     collectionButton->setPosition(Vec2(visibleSize.width / 2, bottomBar->getPositionY() + buttonSpacing));
     collectionButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
-            toggleItemLibraryWindow();
+            itemLibraryWindow->toggleItemLibraryWindow(collectionButton->getPosition());
         }
         });
     this->addChild(collectionButton);
+    createItemLibrary();
 }
 
 void MainMenu::startLoading(std::string nameScene) {
@@ -227,43 +242,11 @@ void MainMenu::startLoading(std::string nameScene) {
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, loadingScene));
 }
 
-void MainMenu::toggleItemLibraryWindow() {
-    if (itemLibraryWindow) {
-        // Animate closing the item library window
-        auto scaleDown = ScaleTo::create(0.3f, 0.0f);
-        auto removeWindow = CallFunc::create([this]() {
-            itemLibraryWindow->removeFromParent();
-            itemLibraryWindow = nullptr;
-            overlayLayer->removeFromParent();
-            overlayLayer = nullptr;
-            });
-        auto sequence = Sequence::create(scaleDown, removeWindow, nullptr);
-        itemLibraryWindow->runAction(sequence);
-    }
-    else {
-        itemLibraryWindow = ItemLibraryWindow::create();
-        itemLibraryWindow->setScale(0.0f);
-        this->addChild(itemLibraryWindow, 10);
-
-        // Animate opening the item library window
-        auto scaleUp = ScaleTo::create(0.3f, 1.0f);
-        itemLibraryWindow->runAction(scaleUp);
-
-        // Create and add overlay layer
-        overlayLayer = LayerColor::create(Color4B(0, 0, 0, 0));
-        this->addChild(overlayLayer, 9);
-
-        // Add touch listener to overlay layer to close the item library window when clicking outside
-        auto touchListener = EventListenerTouchOneByOne::create();
-        touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
-            if (itemLibraryWindow && !itemLibraryWindow->getMainBgBoundingBox().containsPoint(touch->getLocation())) {
-                toggleItemLibraryWindow();
-                return true;
-            }
-            return false;
-            };
-        _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, overlayLayer);
-    }
+void MainMenu::createItemLibrary() {
+    itemLibraryWindow = LibraryWindow::create();
+    itemLibraryWindow->setVisible(false);
+    itemLibraryWindow->setPosition(collectionButton->getPosition());
+    this->addChild(itemLibraryWindow, Constants::ORDER_LAYER_LAYOUT_UI + 10);
 }
 
 void MainMenu::switchBoard(int boardIndex) {

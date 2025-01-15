@@ -5,7 +5,7 @@
 #include "ui/CocosGUI.h"
 #include "Game2/Cursor/Cursor.h"
 #include "Panel/SettingPanel.h"
-#include "Library/ItemLibraryWindow.h"
+#include "Library/LibraryWindow.h"
 
 USING_NS_CC;
 
@@ -20,8 +20,8 @@ public:
     // Macro to create the MainMenu instance
     CREATE_FUNC(MainMenu);
 
-    // Toggle the item library window
-    void toggleItemLibraryWindow();
+    // Destructor
+    ~MainMenu(); // Add destructor
 
 private:
     // Method to start loading the next scene
@@ -33,8 +33,7 @@ private:
     // UI elements
     cocos2d::ui::Button* collectionButton;
     cocos2d::ui::Button* settingButton;
-    ItemLibraryWindow* itemLibraryWindow;
-    cocos2d::LayerColor* overlayLayer;
+    LibraryWindow* itemLibraryWindow;
 
     // Boards
     int currentBoardIndex;
@@ -55,6 +54,12 @@ private:
 
     void showSettingPanel();
     void hideSettingPanel();
+
+    // Library window
+    void createItemLibrary();
+
+    // Notification callback
+    void onCloseLibraryWindow(Ref* sender);
 };
 
 #endif // __MAIN_MENU_SCENE_H__
