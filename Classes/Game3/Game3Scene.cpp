@@ -90,7 +90,7 @@ void Game3Scene::updateHealth(float newHealth) {
 }
 
 void Game3Scene::showTutorialIfNeeded() {
-    cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME3.c_str(), false);
+    //cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME3.c_str(), false);
     bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME3.c_str(), false);
     if (!dontShowTutorial) {
         if (_cursor)

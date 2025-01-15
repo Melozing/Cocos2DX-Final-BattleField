@@ -328,7 +328,7 @@ void Game1Scene::initSpawning() {
 }
 
 void Game1Scene::showTutorialIfNeeded() {
-    cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
+   //cocos2d::UserDefault::getInstance()->setBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     bool dontShowTutorial = cocos2d::UserDefault::getInstance()->getBoolForKey(Constants::DONT_SHOW_TUTORIAL_GAME1.c_str(), false);
     if (!dontShowTutorial) {
 		auto imageTutorial = "assets_game/UXUI/Tutorial/Game1/image1.jpg";

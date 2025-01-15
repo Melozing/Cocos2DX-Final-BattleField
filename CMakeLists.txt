@@ -108,10 +108,7 @@ list(APPEND GAME_SOURCE
     Classes/Game3/Items/UpgradeBulletItemGame3.cpp
     Classes/Game3/Player/CityCollisionArea.cpp
     Classes/Game3/Player/PlayerGame3.cpp
-    Classes/Library/ItemLibrary.cpp
     Classes/Library/LibraryWindow.cpp
-    Classes/Library/ItemLibraryWindow.cpp
-    Classes/Library/UILibrary.cpp
     Classes/LoadingBar/CustomLoadingBar.cpp
     Classes/Manager/BackgroundManager.cpp
     Classes/Manager/ObjectPoolGame1.cpp
@@ -199,9 +196,6 @@ list(APPEND GAME_HEADER
     Classes/Game3/Items/UpgradeBulletItemGame3.h
     Classes/Game3/Player/CityCollisionArea.h
     Classes/Game3/Player/PlayerGame3.h
-    Classes/Library/ItemLibrary.h
-    Classes/Library/ItemLibraryWindow.h
-    Classes/Library/UILibrary.h
     Classes/Library/LibraryWindow.h
     Classes/LoadingBar/CustomLoadingBar.h
     Classes/Manager/BackgroundManager.h

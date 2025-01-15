@@ -225,9 +225,9 @@ void Game2Scene::checkGameOver() {
 }
 
 void Game2Scene::setupCursor() {
-    _cursor = Cursor::create("assets_game/textures/Cursor/Cursor.png");
+    /*_cursor = Cursor::create("assets_game/textures/Cursor/Cursor.png");
     _cursor->setScale(SpriteController::updateSpriteScale(_cursor, 0.03f));
-    this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR);
+    this->addChild(_cursor, Constants::ORDER_LAYER_CURSOR);*/
 }
 
 void Game2Scene::setupKeyboardEventListeners() {
