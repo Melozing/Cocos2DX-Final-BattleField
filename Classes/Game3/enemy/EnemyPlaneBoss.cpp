@@ -240,7 +240,7 @@ void EnemyPlaneBoss::updatePhase() {
     }
     else {
         currentPhase = Phase::PHASE_1;
-        Constants::HealthEnemyPlaneBoss = 1700;
+        Constants::HealthEnemyPlaneBoss = 3000;
         SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase1, false);
     }
 }

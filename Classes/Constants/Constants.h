@@ -158,6 +158,7 @@ public:
     static const float PADDING_HORIZONTAL_UI_EXIT_BUTTON;
     static const float PADDING_HORIZONTAL_UI_SLIDER_SPACING;
     static const std::string FONT_GAME;
+    static const std::string FONT_GAME_PARAGRAPH;
     static const std::string FONT_ROLE_CREDIT;
     static const std::string FONT_NAME_CREDIT;
 

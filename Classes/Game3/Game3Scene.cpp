@@ -786,7 +786,7 @@ void Game3Scene::checkHealthBar() {
         GameController::getInstance()->GameOver(
             []() { Director::getInstance()->end(); }, // Exit action
             []() -> Scene* { return Game3Scene::createScene(); }, // Create scene function
-            Constants::pathSoundBossGame3Phase1 // Soundtrack path
+            Constants::currentSoundTrackPath // Soundtrack path
         );
     }
 }

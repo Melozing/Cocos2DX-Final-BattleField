@@ -48,7 +48,7 @@ void EnemyPlaneBullet::initAnimation() {
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.13f));
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(SpriteController::createAnimation("EnemyPlaneBullet", 39, 0.033f));
+    auto animateCharac = Animate::create(SpriteController::createForwardReverseAnimation("EnemyPlaneBullet", 80, 0.017f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 

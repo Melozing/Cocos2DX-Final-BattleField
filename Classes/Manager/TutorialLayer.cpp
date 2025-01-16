@@ -139,6 +139,12 @@ void TutorialLayer::updateSlide() {
     prevButton->setEnabled(currentSlideIndex > 0);
     nextButton->setEnabled(currentSlideIndex < slideImages.size() - 1);
 
+    // Hide prevButton if on the first slide
+    prevButton->setVisible(currentSlideIndex > 0);
+
+    // Hide nextButton if on the last slide
+    nextButton->setVisible(currentSlideIndex < slideImages.size() - 1);
+
     // Update button positions only once
     if (!buttonsPositionUpdated) {
         float paddingHorizontal = SpriteController::calculateScreenRatio(0.05f);
@@ -154,7 +160,6 @@ void TutorialLayer::updateSlide() {
         buttonsPositionUpdated = true;
     }
 }
-
 
 void TutorialLayer::onPrevClicked() {
     if (currentSlideIndex > 0) {

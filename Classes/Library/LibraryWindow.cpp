@@ -1,4 +1,4 @@
-#include "LibraryWindow.h"
+﻿#include "LibraryWindow.h"
 #include "Controller/SpriteController.h"
 #include "Constants/Constants.h"
 #include "json/document.h"
@@ -69,7 +69,7 @@ void LibraryWindow::addTopCenterLabel() {
         paddingHight = SpriteController::calculateScreenHeightRatio(0.008);
         fontSize = 24;
     }
-    topCenterLabel = Label::createWithTTF("Library", Constants::FONT_GAME, fontSize);
+    topCenterLabel = Label::createWithTTF("Thư Viện", Constants::FONT_GAME, fontSize);
     if (topCenterLabel)
     {
         topCenterLabel->setPosition(Vec2(backgroundImage->getContentSize().width / 2,
@@ -166,6 +166,7 @@ void LibraryWindow::setupScollItems() {
         inactiveBackground->setPosition(Vec2(x, y));
         itemButton->setPosition(Vec2(x, y));
 
+        // Add touch event listener for itemButton
         itemButton->addTouchEventListener([this, i](Ref* sender, ui::Widget::TouchEventType type) {
             if (type == ui::Widget::TouchEventType::ENDED) {
                 this->displayItemDetails(i);
@@ -173,6 +174,24 @@ void LibraryWindow::setupScollItems() {
                 this->updateItemStates();
             }
             });
+
+        // Add touch event listener for inactiveBackground
+        auto touchListener = EventListenerTouchOneByOne::create();
+        touchListener->onTouchBegan = [this, i](Touch* touch, Event* event) {
+            auto target = static_cast<Sprite*>(event->getCurrentTarget());
+            Vec2 locationInNode = target->convertToNodeSpace(touch->getLocation());
+            Size size = target->getContentSize();
+            Rect rect = Rect(0, 0, size.width, size.height);
+
+            if (rect.containsPoint(locationInNode)) {
+                this->displayItemDetails(i);
+                this->items[i].isActive = true;
+                this->updateItemStates();
+                return true;
+            }
+            return false;
+            };
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, inactiveBackground);
 
         itemScrollView->addChild(activeBackground);
         itemScrollView->addChild(inactiveBackground);
@@ -188,7 +207,6 @@ void LibraryWindow::setupScollItems() {
     // Ensure the ScrollView starts at the top
     itemScrollView->jumpToTop();
 }
-
 
 void LibraryWindow::updateItemStates() {
     for (size_t i = 0; i < items.size(); ++i) {
@@ -251,25 +269,29 @@ void LibraryWindow::displayItemDetails(size_t index) {
 
     // Update rightInfoImage with the item's image
     auto itemsImg = Sprite::create(items[index].imagePath);
-	itemsImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	auto paddingHPosImg = SpriteController::calculateScreenHeightRatio(0.3);
-    auto paddingWPosImg = SpriteController::calculateScreenRatio(0.1);
-    itemsImg->setScale(SpriteController::updateSpriteScale(itemsImg, 0.25f));
-    itemsImg->setPosition(Vec2(rightInfoImage->getContentSize().width / 2 - SpriteController::GetContentSize(itemsImg).width - paddingWPosImg, rightInfoImage->getContentSize().height - paddingHPosImg));
+    itemsImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    auto paddingHPosImg = SpriteController::calculateScreenRatio(0.23);
+    auto paddingWPosImg = SpriteController::calculateScreenRatio(0.22);
+    auto paddingWPosText = SpriteController::calculateScreenRatio(0.4);
+    itemsImg->setScale(SpriteController::updateSpriteScale(itemsImg, 0.7f));
+    itemsImg->setPosition(Vec2(rightInfoImage->getContentSize().width / 2 - paddingWPosImg, rightInfoImage->getContentSize().height - paddingHPosImg));
     rightInfoImage->addChild(itemsImg);
 
     // Create a Label for the item's name
-    auto itemNameLabel = Label::createWithTTF(items[index].name, Constants::FONT_GAME, 40);
-    itemNameLabel->setTextColor(Color4B::YELLOW);
+    auto paddingHNameImg = SpriteController::calculateScreenRatio(0.13);
+    auto itemNameLabel = Label::createWithTTF(items[index].name, Constants::FONT_GAME, 60);
+    itemNameLabel->setTextColor(Color4B(0xFC, 0xFF, 0xA2, 0xFF));
+    itemNameLabel->setContentSize(rightInfoImage->getContentSize() / 2);
     itemNameLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-    itemNameLabel->setPosition(Vec2(itemsImg->getPosition().x / 2 + SpriteController::GetContentSize(itemsImg).width  + paddingWPosImg, itemsImg->getPosition().y));
+    itemNameLabel->setPosition(Vec2(itemsImg->getPosition().x / 2 + paddingWPosText, itemsImg->getPosition().y + paddingHNameImg));
     rightInfoImage->addChild(itemNameLabel);
 
     // Create a ScrollView for the content
     auto contentScrollView = ui::ScrollView::create();
     contentScrollView->setDirection(ui::ScrollView::Direction::VERTICAL);
-    contentScrollView->setContentSize(paperSpriteFront->getContentSize());
-    contentScrollView->setPosition(Vec2::ZERO);
+    contentScrollView->setContentSize(paperSpriteFront->getContentSize() * 0.8f); // Make the content smaller
+    contentScrollView->setPosition(Vec2((paperSpriteFront->getContentSize().width - contentScrollView->getContentSize().width) / 2,
+        (paperSpriteFront->getContentSize().height - contentScrollView->getContentSize().height) / 2)); // Center the content
     contentScrollView->setBounceEnabled(true);
     paperSpriteFront->addChild(contentScrollView);
 
@@ -277,8 +299,9 @@ void LibraryWindow::displayItemDetails(size_t index) {
     float padding = 20.0f; // Adjust this value as needed
 
     // Create a Label for the content
-    auto contentLabel = Label::createWithTTF(items[index].content, Constants::FONT_GAME, 20);
+    auto contentLabel = Label::createWithTTF(items[index].content, Constants::FONT_GAME_PARAGRAPH, 45);
     contentLabel->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+    contentLabel->setTextColor(Color4B(0x3C, 0x2C, 0x23, 0xFF));
     contentLabel->setWidth(contentScrollView->getContentSize().width - 2 * padding);
     contentLabel->setPosition(Vec2(padding, contentScrollView->getInnerContainerSize().height - padding));
 
@@ -289,6 +312,7 @@ void LibraryWindow::displayItemDetails(size_t index) {
 
     contentScrollView->addChild(contentLabel);
 }
+
 
 void LibraryWindow::addRightInfoImage() {
     // Add a right information image

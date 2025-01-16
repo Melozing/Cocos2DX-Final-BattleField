@@ -29,7 +29,7 @@ const int Constants::ORDER_LAYER_PLAYER = 2;
 const int Constants::ORDER_LAYER_ITEM = 3;
 const int Constants::ORDER_LAYER_BACKGROUND = -99;
 const float Constants::PADDING_VERTICAL_UI_PANEL = -0.07f;
-const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.27f;
+const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.12f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER = 0.07f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER_PADDING = 0.7f;
 float Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.35f;
@@ -40,6 +40,7 @@ const float Constants::PADDING_HORIZONTAL_UI_EXIT_BUTTON = -0.14f;
 const float Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING = 0.07f;
 
 const std::string Constants::FONT_GAME = "fonts/Patriot-Black.otf";
+const std::string Constants::FONT_GAME_PARAGRAPH = "fonts/VL_TypewriterBasiX-Regular.ttf";
 const std::string Constants::FONT_ROLE_CREDIT = "fonts/AmericanCaptainPatrius02Fre-PvPd.ttf";
 const std::string Constants::FONT_NAME_CREDIT = "fonts/LostType2023-Regular.otf";
 

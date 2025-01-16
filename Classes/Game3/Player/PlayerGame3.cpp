@@ -423,7 +423,10 @@ void PlayerGame3::update(float delta)
 void PlayerGame3::updateTurretRotation() {
     if (isMovementAndShootingDisabled) return;
 
-    if (GameController::getInstance()->isGameOver() || GameController::getInstance()->isPaused()) return;
+    if (GameController::getInstance()->isGameOver() 
+        || GameController::getInstance()->isPaused() 
+        || GameController::getInstance()->isTutorialLayerActive()
+        ) return;
 
     if (turretSprite) {
         // Get the turret's world position

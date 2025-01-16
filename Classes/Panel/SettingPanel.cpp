@@ -25,17 +25,21 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
     auto origin = Director::getInstance()->getVisibleOrigin();
 
     // Create exit button
-    exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png");
-    exitButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    exitButton->setPosition(Vec2(boardSprite->getContentSize().width - exitButton->getContentSize().width / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_EXIT_BUTTON),
-        boardSprite->getContentSize().height - exitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
-    exitButton->addClickEventListener([this, exitAction](Ref* sender) {
+    auto paddingHCloseBtn = SpriteController::calculateScreenRatio(0.06f);
+    auto paddingWCloseBtn = SpriteController::calculateScreenRatio(0.1f);
+    // Create and position the close button
+    exitButton = ui::Button::create("assets_game/UXUI/Collection/close_btn.png");
+    exitButton->setScale(SpriteController::updateSpriteScale(exitButton, 0.135f));
+    exitButton->setPosition(Vec2(SpriteController::GetContentSize(boardSprite).width + exitButton->getContentSize().width + paddingWCloseBtn,
+        SpriteController::GetContentSize(boardSprite).height + exitButton->getContentSize().height + paddingHCloseBtn));
+    exitButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+        SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
         playSoundAndExecuteCallback(exitAction);
         });
-    boardSprite->addChild(exitButton);
+    this->addChild(exitButton, -2);
 
     // Create resume button
-    quitButton = ui::Button::create("assets_game/UXUI/Panel/Play_BTN.png", "assets_game/UXUI/Panel/Play_BTN_Active.png");
+    quitButton = ui::Button::create("assets_game/UXUI/Panel/Exit_BTN.png", "assets_game/UXUI/Panel/Exit_BTN_Active.png");
     quitButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     quitButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 - SpriteController::calculateScreenRatio(0.04f),
         quitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
@@ -157,7 +161,6 @@ bool SettingPanel::init() {
 }
 
 void SettingPanel::playSoundAndExecuteCallback(const std::function<void()>& callback) {
-    SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
     if (callback) {
         callback();
     }

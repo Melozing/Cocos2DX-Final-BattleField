@@ -16,7 +16,9 @@ private:
     void playSoundAndExecuteCallback(const std::function<void()>& callback);
     void updateMusicButtonState();
     void updateSoundEffectButtonState();
+    void initCloseButton();
 
+    cocos2d::ui::Button* closeButton;
     cocos2d::ui::Slider* musicSlider;
     cocos2d::ui::Slider* soundEffectSlider;
     cocos2d::ui::Button* musicButton;

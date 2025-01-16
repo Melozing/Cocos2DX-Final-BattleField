@@ -13,7 +13,7 @@ bool BasePanel::init() {
 
     // Create a semi-transparent background
     auto background = LayerColor::create(Color4B(0, 0, 0, 180));
-    this->addChild(background);
+    this->addChild(background, -3);
     
     // Add touch listener to intercept touch events
     auto touchListener = EventListenerTouchOneByOne::create();
@@ -31,7 +31,7 @@ bool BasePanel::init() {
     boardSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
     boardSprite->setScale(SpriteController::updateSpriteScale(boardSprite, 0.525f));
     boardSprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + SpriteController::calculateScreenRatio(0.03f)));
-    this->addChild(boardSprite);
+    this->addChild(boardSprite, -1);
 
     return true;
 }

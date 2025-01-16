@@ -4,24 +4,164 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>EnemyPlaneBullet0.png</key>
+			<key>EnemyPlaneBullet1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{604,306},{187,57}}</string>
+				<string>{{0,1026},{192,57}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{28,7},{187,57}}</string>
+				<string>{{28,7},{192,57}}</string>
 				<key>sourceSize</key>
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet1.png</key>
+			<key>EnemyPlaneBullet10.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,738},{191,57}}</string>
+				<string>{{809,833},{190,59}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{25,7},{190,59}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet11.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{809,452},{190,59}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{25,7},{190,59}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet12.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{808,61},{191,59}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{24,7},{191,59}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet13.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{809,712},{191,59}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{24,7},{191,59}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet14.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{619,1024},{191,59}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{24,7},{191,59}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet15.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{809,0},{191,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{24,7},{191,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet16.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{809,772},{190,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{25,7},{190,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet17.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{616,0},{192,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{23,7},{192,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet18.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{809,391},{190,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{25,7},{190,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet19.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{619,963},{191,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{24,7},{191,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{616,61},{191,57}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -32,10 +172,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet10.png</key>
+			<key>EnemyPlaneBullet20.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{411,183},{193,61}}</string>
+				<string>{{615,257},{193,61}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -46,10 +186,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet11.png</key>
+			<key>EnemyPlaneBullet21.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{411,245},{192,61}}</string>
+				<string>{{809,252},{191,61}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{24,7},{191,61}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet22.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{616,901},{192,61}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -60,10 +214,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet12.png</key>
+			<key>EnemyPlaneBullet23.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{412,0},{192,61}}</string>
+				<string>{{615,132},{194,61}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{21,7},{194,61}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet24.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{616,839},{192,61}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -74,10 +242,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet13.png</key>
+			<key>EnemyPlaneBullet25.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{206,609},{195,62}}</string>
+				<string>{{615,776},{193,62}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{22,7},{193,62}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet26.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{614,328},{195,62}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -88,10 +270,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet14.png</key>
+			<key>EnemyPlaneBullet27.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{410,621},{194,62}}</string>
+				<string>{{615,194},{193,62}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{22,7},{193,62}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet28.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{614,455},{194,62}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -102,10 +298,38 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet15.png</key>
+			<key>EnemyPlaneBullet29.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{410,684},{194,63}}</string>
+				<string>{{613,649},{196,62}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{19,7},{196,62}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{809,194},{191,57}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{27,7},{191,57}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet30.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{614,391},{194,63}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -116,10 +340,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet16.png</key>
+			<key>EnemyPlaneBullet31.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{410,557},{197,63}}</string>
+				<string>{{613,585},{197,63}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -130,10 +354,38 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet17.png</key>
+			<key>EnemyPlaneBullet32.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{410,492},{198,64}}</string>
+				<string>{{613,521},{197,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{18,7},{197,63}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet33.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{613,712},{195,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{20,7},{195,63}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet34.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{414,521},{198,64}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -144,10 +396,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet18.png</key>
+			<key>EnemyPlaneBullet35.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{410,428},{198,63}}</string>
+				<string>{{414,586},{198,64}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{17,7},{198,64}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet36.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{414,651},{198,63}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -158,10 +424,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet19.png</key>
+			<key>EnemyPlaneBullet37.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{410,364},{199,63}}</string>
+				<string>{{414,328},{199,63}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -172,10 +438,38 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet2.png</key>
+			<key>EnemyPlaneBullet38.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{603,122},{190,57}}</string>
+				<string>{{414,392},{199,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{16,8},{199,63}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet39.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{414,715},{198,64}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{17,8},{198,64}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{810,314},{190,57}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -186,10 +480,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet20.png</key>
+			<key>EnemyPlaneBullet40.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{210,183},{200,64}}</string>
+				<string>{{414,263},{200,64}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -200,10 +494,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet21.png</key>
+			<key>EnemyPlaneBullet41.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{212,0},{199,64}}</string>
+				<string>{{414,198},{200,64}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{15,8},{200,64}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet42.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{414,456},{199,64}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -214,10 +522,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet22.png</key>
+			<key>EnemyPlaneBullet43.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{208,431},{201,65}}</string>
+				<string>{{414,852},{201,64}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{14,8},{201,64}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet44.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{414,917},{201,65}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -228,10 +550,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet23.png</key>
+			<key>EnemyPlaneBullet45.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{208,298},{202,65}}</string>
+				<string>{{415,0},{200,65}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{15,8},{200,65}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet46.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{212,0},{202,65}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -242,10 +578,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet24.png</key>
+			<key>EnemyPlaneBullet47.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{210,117},{201,65}}</string>
+				<string>{{414,132},{200,65}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{15,8},{200,65}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet48.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{414,66},{201,65}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -256,10 +606,38 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet25.png</key>
+			<key>EnemyPlaneBullet49.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{208,364},{201,66}}</string>
+				<string>{{210,292},{203,66}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{12,8},{203,66}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{810,121},{189,58}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{27,7},{189,58}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet50.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{413,785},{201,66}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -270,10 +648,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet26.png</key>
+			<key>EnemyPlaneBullet51.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,672},{204,65}}</string>
+				<string>{{211,182},{202,65}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{13,8},{202,65}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet52.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{209,472},{204,65}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -284,10 +676,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet27.png</key>
+			<key>EnemyPlaneBullet53.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{206,544},{203,64}}</string>
+				<string>{{211,116},{202,65}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{13,8},{202,65}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet54.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{210,359},{203,64}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -298,10 +704,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet28.png</key>
+			<key>EnemyPlaneBullet55.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,544},{205,64}}</string>
+				<string>{{208,720},{205,64}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -312,10 +718,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet29.png</key>
+			<key>EnemyPlaneBullet56.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{205,672},{204,63}}</string>
+				<string>{{208,655},{205,64}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{10,8},{205,64}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet57.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{208,785},{204,63}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -326,10 +746,38 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet3.png</key>
+			<key>EnemyPlaneBullet58.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{605,0},{189,58}}</string>
+				<string>{{209,538},{204,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{11,8},{204,63}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet59.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,900},{206,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{9,8},{206,63}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{811,512},{189,58}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -340,10 +788,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet30.png</key>
+			<key>EnemyPlaneBullet60.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,609},{205,62}}</string>
+				<string>{{413,1023},{205,62}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -354,10 +802,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet31.png</key>
+			<key>EnemyPlaneBullet61.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,419},{207,62}}</string>
+				<string>{{207,1023},{205,62}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{10,8},{205,62}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet62.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,655},{207,62}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -368,10 +830,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet32.png</key>
+			<key>EnemyPlaneBullet63.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,482},{206,61}}</string>
+				<string>{{207,900},{206,61}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -382,10 +844,38 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet33.png</key>
+			<key>EnemyPlaneBullet64.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,358},{207,60}}</string>
+				<string>{{0,964},{206,61}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{9,8},{206,61}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet65.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{207,962},{206,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{9,8},{206,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet66.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,839},{207,60}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -396,10 +886,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet34.png</key>
+			<key>EnemyPlaneBullet67.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,298},{207,59}}</string>
+				<string>{{0,778},{207,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{8,8},{207,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet68.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,718},{207,59}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -410,10 +914,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet35.png</key>
+			<key>EnemyPlaneBullet69.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,237},{208,60}}</string>
+				<string>{{0,472},{208,60}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -424,10 +928,52 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet36.png</key>
+			<key>EnemyPlaneBullet7.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,176},{209,60}}</string>
+				<string>{{810,649},{189,58}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{26,7},{189,58}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet70.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,594},{208,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{7,7},{208,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet71.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,533},{208,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{7,7},{208,60}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet72.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,351},{209,60}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -438,10 +984,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet37.png</key>
+			<key>EnemyPlaneBullet73.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,117},{209,58}}</string>
+				<string>{{0,412},{209,59}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{6,7},{209,59}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet74.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,292},{209,58}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -452,10 +1012,10 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet38.png</key>
+			<key>EnemyPlaneBullet75.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,58},{210,58}}</string>
+				<string>{{0,116},{210,58}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -466,7 +1026,35 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet39.png</key>
+			<key>EnemyPlaneBullet76.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,233},{210,58}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{5,7},{210,58}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet77.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,175},{210,57}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{5,7},{210,57}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet78.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,0},{211,57}}</string>
@@ -480,10 +1068,24 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet4.png</key>
+			<key>EnemyPlaneBullet79.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{605,180},{189,58}}</string>
+				<string>{{0,58},{211,57}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{4,7},{211,57}}</string>
+				<key>sourceSize</key>
+				<string>{221,78}</string>
+			</dict>
+
+			<key>EnemyPlaneBullet8.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{811,571},{189,58}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -494,58 +1096,16 @@
 				<string>{221,78}</string>
 			</dict>
 
-			<key>EnemyPlaneBullet5.png</key>
+			<key>EnemyPlaneBullet80.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{604,62},{190,59}}</string>
+				<string>{{811,952},{187,57}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{25,7},{190,59}}</string>
-				<key>sourceSize</key>
-				<string>{221,78}</string>
-			</dict>
-
-			<key>EnemyPlaneBullet6.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{205,736},{191,59}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{24,7},{191,59}}</string>
-				<key>sourceSize</key>
-				<string>{221,78}</string>
-			</dict>
-
-			<key>EnemyPlaneBullet7.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{412,62},{191,59}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{24,7},{191,59}}</string>
-				<key>sourceSize</key>
-				<string>{221,78}</string>
-			</dict>
-
-			<key>EnemyPlaneBullet8.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{412,122},{190,60}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{25,7},{190,60}}</string>
+				<string>{{28,7},{187,57}}</string>
 				<key>sourceSize</key>
 				<string>{221,78}</string>
 			</dict>
@@ -553,13 +1113,13 @@
 			<key>EnemyPlaneBullet9.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{604,245},{190,60}}</string>
+				<string>{{809,893},{190,58}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{25,7},{190,60}}</string>
+				<string>{{25,7},{190,58}}</string>
 				<key>sourceSize</key>
 				<string>{221,78}</string>
 			</dict>
@@ -571,7 +1131,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{795,796}</string>
+			<string>{1001,1086}</string>
 			<key>textureFileName</key>
 			<string>EnemyPlaneBullet.png</string>
 			</dict>
