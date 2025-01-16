@@ -33,15 +33,18 @@ bool PausePanel::init(const std::function<void()>& resumeCallback, const std::fu
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
-    // Create exit button
-    auto exitButton = ui::Button::create("assets_game/UXUI/Panel/Close_BTN.png", "assets_game/UXUI/Panel/Close_BTN.png");
-    exitButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    exitButton->setPosition(Vec2(boardSprite->getContentSize().width - exitButton->getContentSize().width / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_EXIT_BUTTON),
-        boardSprite->getContentSize().height - exitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_EXITBUTTON)));
-    exitButton->addClickEventListener([this, resumeCallback](Ref* sender) {
+    auto paddingHCloseBtn = SpriteController::calculateScreenRatio(0.06f);
+    auto paddingWCloseBtn = SpriteController::calculateScreenRatio(0.1f);
+    // Create and position the close button
+    closeButton = ui::Button::create("assets_game/UXUI/Collection/close_btn.png");
+    closeButton->setScale(SpriteController::updateSpriteScale(closeButton, 0.135f));
+    closeButton->setPosition(Vec2(SpriteController::GetContentSize(boardSprite).width + closeButton->getContentSize().width + paddingWCloseBtn,
+        SpriteController::GetContentSize(boardSprite).height + closeButton->getContentSize().height + paddingHCloseBtn));
+    closeButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         playSoundAndExecuteCallback(resumeCallback);
         });
-    boardSprite->addChild(exitButton);
+    this->addChild(closeButton, -2);
+
 
     // Create resume button
     auto resumeButton = ui::Button::create("assets_game/UXUI/Panel/Play_BTN.png", "assets_game/UXUI/Panel/Play_BTN_Active.png");

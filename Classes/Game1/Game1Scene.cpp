@@ -61,7 +61,10 @@ bool Game1Scene::init() {
     initCursor();
     setupContactListener();
     showTutorialIfNeeded();
-    mobileSetup();
+
+    this->scheduleOnce([this](float) {
+        mobileSetup();
+        }, 0.5f, "mobileSetupKey");
 
     this->scheduleUpdate();
     return true;

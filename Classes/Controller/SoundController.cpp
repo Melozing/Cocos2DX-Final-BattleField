@@ -22,9 +22,6 @@ void SoundController::preloadMusic(const std::string& filePath) {
 }
 
 int SoundController::playMusic(const std::string& filePath, bool loop) {
-    if (musicVolume == 0.0f) {
-        return -1; // Do not play music if volume is zero
-    }
     stopMusic(Constants::currentSoundTrackPath);
     Constants::currentSoundTrackPath = filePath;
     stopMusic(filePath);

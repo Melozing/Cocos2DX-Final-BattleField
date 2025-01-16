@@ -88,10 +88,9 @@ void MainMenu::setupBoards() {
 
 void MainMenu::setupButtons() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    auto sprite = Sprite::create("assets_game/UXUI/Main_Menu/Game_1_BG_BUTTON.png");
 
     // Calculate positions
-    float buttonSpacing = SpriteController::calculateScreenHeightRatio(Constants::PADDING_VERTICAL_BUTTONS_MAINMENU);
+    float buttonSpacing = SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_BUTTONS_MAINMENU);
     float buttonSpacingHeight = SpriteController::calculateScreenRatio(0.1);
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
@@ -108,7 +107,7 @@ void MainMenu::setupButtons() {
 
     // Create and position button
     auto button = ui::Button::create("assets_game/UXUI/Main_Menu/Game_1_BG_BUTTON.png");
-    button->setScale(SpriteController::updateSpriteScale(sprite, 0.5f));
+    button->setScale(SpriteController::updateSpriteScale(button, 0.5f));
     button->setPosition(Vec2(visibleSize.width * 0.7, buttonY));
     button->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
@@ -119,7 +118,7 @@ void MainMenu::setupButtons() {
 
     // Create and position play button inside button
     auto playButton1 = ui::Button::create("assets_game/UXUI/Main_Menu/Play_BTN.png");
-    auto playBtnScale = SpriteController::updateSpriteScale(playButton1, 0.3f);
+    auto playBtnScale = SpriteController::updateSpriteScale(playButton1, 0.13f);
     auto paddingWidth = SpriteController::calculateScreenRatio(0.025f);
 
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
@@ -141,7 +140,7 @@ void MainMenu::setupButtons() {
 
     // Create and position setting button
     settingButton = ui::Button::create("assets_game/UXUI/Panel/Setting.png");
-    settingButton->setScale(SpriteController::updateSpriteScale(sprite, 0.5f));
+    settingButton->setScale(SpriteController::updateSpriteScale(settingButton, 0.1f));
     settingButton->setPosition(Vec2(button->getPosition().x + SpriteController::GetContentSize(button).width /2.28, buttonY + buttonSpacing / 1.34f));
     settingButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
@@ -159,7 +158,7 @@ void MainMenu::setupButtons() {
     auto buttonG2 = ui::Button::create(
         isButtonG2Active ? "assets_game/UXUI/Main_Menu/Game_2_BG_BUTTON.png" : "assets_game/UXUI/Main_Menu/Game_2_BG_BUTTON_INACTIVE.png"
     );
-    buttonG2->setScale(SpriteController::updateSpriteScale(sprite, 0.5f));
+    buttonG2->setScale(SpriteController::updateSpriteScale(buttonG2, 0.5f));
     buttonG2->setPosition(Vec2(button->getPosition().x, buttonG2Y));
     buttonG2->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
@@ -169,7 +168,7 @@ void MainMenu::setupButtons() {
     this->addChild(buttonG2);
 
     // Create and position play button inside buttonG2
-    if (isButtonG2Active) {
+    if (!isButtonG2Active) {
         auto playButton2 = ui::Button::create("assets_game/UXUI/Main_Menu/Play_BTN.png");
         playButton2->setScale(playBtnScale);
         playButton2->setPosition(Vec2(buttonG2->getContentSize().width - playBtnSize.width / 2 - paddingWidth, buttonG2->getContentSize().height / 2));
@@ -185,7 +184,7 @@ void MainMenu::setupButtons() {
 
     //Create and position buttonG3
     auto buttonG3 = ui::Button::create("assets_game/UXUI/Main_Menu/Game_3_BG_BUTTON.png");
-    buttonG3->setScale(SpriteController::updateSpriteScale(sprite, 0.5f));
+    buttonG3->setScale(SpriteController::updateSpriteScale(buttonG3, 0.5f));
     buttonG3->setPosition(Vec2(button->getPosition().x, buttonG3Y));
     buttonG3->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {

@@ -40,7 +40,7 @@ void EnemyPlaneBoom::initAnimation() {
     modelCharac->setScale(SpriteController::updateSpriteScale(modelCharac, 0.1f));
     spriteBatchNode->addChild(modelCharac);
 
-    auto animateCharac = Animate::create(SpriteController::createAnimation("EnemyPlaneBoom", 39, 0.033f));
+    auto animateCharac = Animate::create(SpriteController::createForwardReverseAnimation("EnemyPlaneBoom", 80, 0.017f));
     modelCharac->runAction(RepeatForever::create(animateCharac));
 }
 
