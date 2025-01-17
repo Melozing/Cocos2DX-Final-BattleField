@@ -12,7 +12,6 @@ const std::string Constants::ButtonClickSFX = "assets_game/sounds/UI/ButtonClick
 const std::string Constants::OpenPanel = "assets_game/sounds/UI/OpenPanel.mp3";
 const std::string Constants::SoundRadioEndGame = "assets_game/sounds/UI/ban_tin_chien_thang.mp3";
 const std::string Constants::SoundTrackEndGame = "assets_game/sounds/UI/quoc_ca.mp3";
-const std::string Constants::Library = "assets_game/sounds/UI/welcome_lib.mp3";
 //SCREEN
 const cocos2d::Size Constants::DESIGN_SIZE = cocos2d::Size(960, 640);
 const std::string Constants::GAME1_SCENE_NAME = "Game1Scene";
@@ -28,16 +27,16 @@ const int Constants::ORDER_LAYER_CHARACTER = 1;
 const int Constants::ORDER_LAYER_PLAYER = 2;
 const int Constants::ORDER_LAYER_ITEM = 3;
 const int Constants::ORDER_LAYER_BACKGROUND = -99;
-const float Constants::PADDING_VERTICAL_UI_PANEL = -0.07f;
+const float Constants::PADDING_VERTICAL_UI_PANEL = 0.01f;
 const float Constants::PADDING_VERTICAL_BUTTONS_MAINMENU = 0.12f;
-const float Constants::PADDING_VERTICAL_UI_SLIDER = 0.07f;
+const float Constants::PADDING_VERTICAL_UI_SLIDER = 0.012f;
 const float Constants::PADDING_VERTICAL_UI_SLIDER_PADDING = 0.7f;
-float Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.35f;
-float Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.15f;
+float Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.05f;
+float Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.02f;
 const float Constants::PADDING_VERTICAL_UI_EXITBUTTON = -0.13f;
-const float Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON = 0.05f;
+const float Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON = 0.07f;
 const float Constants::PADDING_HORIZONTAL_UI_EXIT_BUTTON = -0.14f;
-const float Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING = 0.07f;
+const float Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING = 0.105f;
 
 const std::string Constants::FONT_GAME = "fonts/Patriot-Black.otf";
 const std::string Constants::FONT_GAME_PARAGRAPH = "fonts/VL_TypewriterBasiX-Regular.ttf";
@@ -81,7 +80,7 @@ const float Constants::PLAYER_HEALTH_PADDING_X_START = 0.05f;
 
 // SHIELD GAME 1
 const float Constants::SHIELD_DURATION = 0.3f;
-const float Constants::PLAYER_HEALTH_PADDING_Y = 0.07f;
+const float Constants::PLAYER_HEALTH_PADDING_Y = 0.05f;
 const float Constants::SHIELD_TIME_OF_EXISTENCE = 5.0f;
 
 //game1
@@ -148,8 +147,8 @@ float Constants::CURRENT_PERCENT_BOSS_HEALTHBAR = 0.0f;
 float Constants::TimeToUltimate = 0.0f;
 const float Constants::BulletDamageGame3 = 10.0f;
 int Constants::QuantityBulletPlayerGame3 = 100;
-int Constants::DamageBulletForCity = 5;
-int Constants::DamageBoomForCity = 7;
+int Constants::DamageBulletForCity = 2;
+int Constants::DamageBoomForCity = 5;
 const std::string Constants::PlayerGame3Name = "PlayerGame3Name";
 const std::string Constants::UPDATE_BULLET_LABEL = "UPDATE_BULLET_LABEL";
 const std::string Constants::JSON_GAME3_ENEMYBULLET_PHASE_1_PATH = "json/spawn_enemiesBullet_game3.json";
@@ -176,6 +175,7 @@ const std::string Constants::VICTORY_SOUNDTRACK_PATH = "assets_game/sounds/Victo
 //UserDefault UI
 const std::string Constants::UD_musicVolume = "musicVolume";
 const std::string Constants::UD_effectsVolume = "effectsVolume";
+const std::string Constants::UD_VICTORY = "UD_VICTORY";
 
 //Tutorial 
 const std::string Constants::DONT_SHOW_TUTORIAL_GAME1 = "DONT_SHOW_TUTORIAL_GAME1";

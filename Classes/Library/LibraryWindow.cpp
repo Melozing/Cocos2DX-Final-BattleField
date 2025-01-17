@@ -1,5 +1,6 @@
 ﻿#include "LibraryWindow.h"
 #include "Controller/SpriteController.h"
+#include "Controller/SoundController.h"
 #include "Constants/Constants.h"
 #include "json/document.h"
 
@@ -61,15 +62,11 @@ void LibraryWindow::setupOverlay() {
 
 void LibraryWindow::addTopCenterLabel() {
     // Add a label at the top center of the backgroundImage
-    float paddingHight = SpriteController::calculateScreenHeightRatio(0.04);
-    auto fontSize = 50;
-    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_IPHONE) {
-        paddingHight = SpriteController::calculateScreenHeightRatio(0.008);
-        fontSize = 24;
-    }
-    topCenterLabel = Label::createWithTTF("Thư Viện", Constants::FONT_GAME, fontSize);
+    float paddingHight = SpriteController::calculateScreenRatio(0.01);
+    auto fontSize = 40;
+ 
+    std::string topCenterText = u8"Thư viện";
+    topCenterLabel = Label::createWithTTF(topCenterText, Constants::FONT_GAME, fontSize);
     if (topCenterLabel)
     {
         topCenterLabel->setPosition(Vec2(backgroundImage->getContentSize().width / 2,
@@ -87,6 +84,7 @@ void LibraryWindow::initCloseButton() {
         SpriteController::GetContentSize(backgroundImage).height)/2);
     closeButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
+            SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
             this->toggleItemLibraryWindow(this->getPosition());
             NotificationCenter::getInstance()->postNotification("CloseLibraryWindow");
         }
@@ -100,16 +98,10 @@ void LibraryWindow::addLeftInfoImage() {
     if (leftInfoImage)
     {
         leftInfoImage->setScale(SpriteController::updateSpriteScale(leftInfoImage, 0.625f));
-   /*     leftInfoImage->setPosition(Vec2(SpriteController::GetContentSize(backgroundImage).width * 0.363f,
-            SpriteController::GetContentSize(backgroundImage).height * 0.57));*/
-        float paddingHight = SpriteController::calculateScreenHeightRatio(0.06);
+        float paddingHight = SpriteController::calculateScreenRatio(0.032);
         float paddingWeight = SpriteController::calculateScreenRatio(0.175);
-        auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-        if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-            platform == cocos2d::Application::Platform::OS_IPHONE) {
-            paddingHight = SpriteController::calculateScreenHeightRatio(0.03);
-        }
-        leftInfoImage->setPosition(backgroundImage->getPosition().x - paddingWeight, backgroundImage->getPosition().y - paddingHight);
+      
+        leftInfoImage->setPosition(backgroundImage->getPosition().x - paddingWeight, leftInfoImage->getPosition().y - paddingHight);
         leftInfoImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         this->addChild(leftInfoImage, Constants::ORDER_LAYER_LAYOUT_UI + 1);
         this->setupScollItems();
@@ -126,12 +118,12 @@ void LibraryWindow::setupScollItems() {
     leftInfoImage->addChild(itemScrollView);
 
     // Define the scale factor for the items
-    float scaleFactor = 0.29f; // Adjust this value as needed
-    float scaleFactorBackground = 0.55f; // Adjust this value as needed
+    float scaleFactor = 0.2f; // Adjust this value as needed
+    float scaleFactorBackground = 0.38f; // Adjust this value as needed
 
     // Calculate the number of columns and the padding between items
     const int numColumns = 2;
-    float padding = SpriteController::calculateScreenHeightRatio(0.02);
+    float padding = SpriteController::calculateScreenRatio(0.01);
 
     // Calculate the size of each item
     float itemWidth = (itemScrollView->getContentSize().width - (numColumns + 1) * padding) / numColumns;
@@ -265,26 +257,43 @@ void LibraryWindow::displayItemDetails(size_t index) {
     updateItemStates();
 
     rightInfoImage->removeAllChildrenWithCleanup(true);
+    rightInfoBackgroundImage->removeAllChildrenWithCleanup(true);
     paperSpriteFront->removeAllChildrenWithCleanup(true);
 
     // Update rightInfoImage with the item's image
     auto itemsImg = Sprite::create(items[index].imagePath);
     itemsImg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    auto paddingHPosImg = SpriteController::calculateScreenRatio(0.23);
-    auto paddingWPosImg = SpriteController::calculateScreenRatio(0.22);
+    auto paddingHPosImg = SpriteController::calculateScreenRatio(0.18);
+    auto paddingWPosImg = SpriteController::calculateScreenRatio(0.19);
     auto paddingWPosText = SpriteController::calculateScreenRatio(0.4);
-    itemsImg->setScale(SpriteController::updateSpriteScale(itemsImg, 0.7f));
+    itemsImg->setScale(SpriteController::updateSpriteScale(itemsImg, 0.5f));
     itemsImg->setPosition(Vec2(rightInfoImage->getContentSize().width / 2 - paddingWPosImg, rightInfoImage->getContentSize().height - paddingHPosImg));
     rightInfoImage->addChild(itemsImg);
+    
 
+    // Create a ScrollView for the content
+    auto contentScrollViewShort = ui::ScrollView::create();
+    contentScrollViewShort->setDirection(ui::ScrollView::Direction::VERTICAL);
+    contentScrollViewShort->setContentSize(rightInfoBackgroundImage->getContentSize()); // Set the content size to match rightInfoBackgroundImage
+    contentScrollViewShort->setPosition(Vec2((rightInfoBackgroundImage->getContentSize().width - contentScrollViewShort->getContentSize().width) / 2,
+        (rightInfoBackgroundImage->getContentSize().height - contentScrollViewShort->getContentSize().height) / 2)); // Center the content
+    contentScrollViewShort->setBounceEnabled(true);
+    rightInfoBackgroundImage->addChild(contentScrollViewShort);
+
+    // Define padding values
+    float padding = 20.0f; // Adjust this value as needed
+    
     // Create a Label for the item's name
-    auto paddingHNameImg = SpriteController::calculateScreenRatio(0.13);
-    auto itemNameLabel = Label::createWithTTF(items[index].name, Constants::FONT_GAME, 60);
+    auto itemNameLabel = Label::createWithTTF(items[index].name, Constants::FONT_GAME, 32);
     itemNameLabel->setTextColor(Color4B(0xFC, 0xFF, 0xA2, 0xFF));
-    itemNameLabel->setContentSize(rightInfoImage->getContentSize() / 2);
-    itemNameLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
-    itemNameLabel->setPosition(Vec2(itemsImg->getPosition().x / 2 + paddingWPosText, itemsImg->getPosition().y + paddingHNameImg));
-    rightInfoImage->addChild(itemNameLabel);
+    itemNameLabel->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+    itemNameLabel->setDimensions(contentScrollViewShort->getContentSize().width, 0); // Set the width to enable wrapping
+    itemNameLabel->setPosition(Vec2(padding, contentScrollViewShort->getInnerContainerSize().height - padding));
+
+    // Update the inner container size to fit the label
+    auto contentHeight = itemNameLabel->getContentSize().height + 2 * padding;
+    contentScrollViewShort->setInnerContainerSize(Size(contentScrollViewShort->getContentSize().width, contentHeight));
+    contentScrollViewShort->addChild(itemNameLabel);
 
     // Create a ScrollView for the content
     auto contentScrollView = ui::ScrollView::create();
@@ -295,24 +304,19 @@ void LibraryWindow::displayItemDetails(size_t index) {
     contentScrollView->setBounceEnabled(true);
     paperSpriteFront->addChild(contentScrollView);
 
-    // Define padding values
-    float padding = 20.0f; // Adjust this value as needed
-
     // Create a Label for the content
     auto contentLabel = Label::createWithTTF(items[index].content, Constants::FONT_GAME_PARAGRAPH, 45);
     contentLabel->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
     contentLabel->setTextColor(Color4B(0x3C, 0x2C, 0x23, 0xFF));
     contentLabel->setWidth(contentScrollView->getContentSize().width - 2 * padding);
-    contentLabel->setPosition(Vec2(padding, contentScrollView->getInnerContainerSize().height - padding));
 
     // Adjust the inner container size of the ScrollView based on the content size
-    float contentHeight = contentLabel->getContentSize().height + 2 * padding;
+    contentHeight = contentLabel->getContentSize().height + 2 * padding;
     contentScrollView->setInnerContainerSize(Size(contentScrollView->getContentSize().width, contentHeight));
     contentLabel->setPosition(Vec2(padding, contentScrollView->getInnerContainerSize().height - padding));
 
     contentScrollView->addChild(contentLabel);
 }
-
 
 void LibraryWindow::addRightInfoImage() {
     // Add a right information image
@@ -321,17 +325,10 @@ void LibraryWindow::addRightInfoImage() {
     {
         rightInfoImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         rightInfoImage->setScale(SpriteController::updateSpriteScale(rightInfoImage, 0.625f));
-     /*   rightInfoImage->setPosition(Vec2(SpriteController::GetContentSize(backgroundImage).width * 0.923f,
-            SpriteController::GetContentSize(backgroundImage).height * 0.57));*/
-        float paddingHight = SpriteController::calculateScreenHeightRatio(0.06);
+        float paddingHight = SpriteController::calculateScreenRatio(0.032);
         float paddingWeight = SpriteController::calculateScreenRatio(0.163);
-        auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-        if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-            platform == cocos2d::Application::Platform::OS_IPHONE) {
-            paddingHight = SpriteController::calculateScreenHeightRatio(0.03);
-        }
 
-        rightInfoImage->setPosition(backgroundImage->getPosition().x + paddingWeight, backgroundImage->getPosition().y - paddingHight);
+        rightInfoImage->setPosition(backgroundImage->getPosition().x + paddingWeight, leftInfoImage->getPosition().y);
         rightInfoImage->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         this->addChild(rightInfoImage, Constants::ORDER_LAYER_LAYOUT_UI + 1);
 
@@ -340,12 +337,9 @@ void LibraryWindow::addRightInfoImage() {
         paperSpriteFront = Sprite::create("assets_game/UXUI/Collection/paper_front.png");
         if (paperSprite)
         {
-            float paddingHightPaper = SpriteController::calculateScreenHeightRatio(0.17);
+            float paddingHightPaper = SpriteController::calculateScreenRatio(0.085);
             auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-            if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-                platform == cocos2d::Application::Platform::OS_IPHONE) {
-                paddingHightPaper = SpriteController::calculateScreenHeightRatio(0.07);
-            }
+
             paperSprite->setScale(SpriteController::updateSpriteScale(paperSprite, 0.35f));
             paperSprite->setPosition(Vec2(rightInfoImage->getPosition().x, rightInfoImage->getPosition().y - paddingHightPaper));
             paperSprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -355,8 +349,20 @@ void LibraryWindow::addRightInfoImage() {
             paperSpriteFront->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             this->addChild(paperSpriteFront, Constants::ORDER_LAYER_LAYOUT_UI + 2);
         }
+
+        // Add rightInfoBackgroundImage above rightInfoImage
+        rightInfoBackgroundImage = Sprite::create("assets_game/UXUI/Collection/short_script.png");
+        if (rightInfoBackgroundImage)
+        {
+			auto paddingBGShort = SpriteController::calculateScreenRatio(0.09);
+            //rightInfoBackgroundImage->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+            rightInfoBackgroundImage->setScale(SpriteController::updateSpriteScale(rightInfoBackgroundImage, 0.23f));
+            rightInfoBackgroundImage->setPosition(Vec2(rightInfoImage->getPosition().x + paddingBGShort, rightInfoImage->getPosition().y + paddingBGShort));
+            this->addChild(rightInfoBackgroundImage, Constants::ORDER_LAYER_LAYOUT_UI + 1);
+        }
     }
 }
+
 
 void LibraryWindow::toggleItemLibraryWindow(const Vec2& position)
 {

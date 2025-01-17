@@ -23,6 +23,7 @@ bool BasePanel::init() {
         {
             return true; // Return true to indicate that the touch event has been handled
         }
+        return false;
         };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, background);
 
@@ -38,15 +39,15 @@ bool BasePanel::init() {
 
 void BasePanel::addTitleLabel(const std::string& titleText) {
     // Create title label
-    auto titleLabel = Label::createWithTTF(titleText, Constants::FONT_GAME, 27);
-    titleLabel->setAnchorPoint(Vec2(0.5f, 0.5f));
+    auto titleLabel = Label::createWithTTF(titleText, Constants::FONT_GAME, 32);
+    //titleLabel->setAnchorPoint(Vec2(0.5f, 0.5f));
 
     // Calculate the position to be at the top center of the boardSprite
     auto boardSpriteSize = boardSprite->getContentSize();
     auto boardSpriteScale = boardSprite->getScale();
     auto titleLabelPosition = Vec2(
-        boardSprite->getPositionX() - SpriteController::calculateScreenRatio(0.003f),
-        boardSprite->getPositionY() + (boardSpriteSize.height * boardSpriteScale / 2) - SpriteController::calculateScreenRatio(0.07f)
+        boardSprite->getPositionX(),
+        boardSprite->getPositionY() + (boardSpriteSize.height * boardSpriteScale / 2) - SpriteController::calculateScreenRatio(0.03f)
     );
 
     titleLabel->setPosition(titleLabelPosition);

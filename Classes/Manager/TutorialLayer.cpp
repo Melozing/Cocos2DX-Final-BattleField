@@ -24,7 +24,7 @@ bool TutorialLayer::init(const std::vector<std::string>& slideImages, const std:
 
     // Create a semi-transparent background
     auto background = LayerColor::create(Color4B(0, 0, 0, 180));
-    this->addChild(background);
+    this->addChild(background, Constants::ORDER_LAYER_UI + 10);
 
     this->slideImages = slideImages;
     this->userDefaultKey = userDefaultKey;
@@ -37,13 +37,13 @@ bool TutorialLayer::init(const std::vector<std::string>& slideImages, const std:
     // Create border sprite
     borderSprite = cocos2d::Sprite::create("assets_game/UXUI/Panel/Panel_Tutorial.png"); // Use your border image path
     borderSprite->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2);
-    this->addChild(borderSprite, Constants::ORDER_LAYER_UI - 1); // Add border sprite behind slideSprite
+    this->addChild(borderSprite, Constants::ORDER_LAYER_UI + 11); // Add border sprite behind slideSprite
 
     // Create slide sprite
     slideSprite = cocos2d::Sprite::create(slideImages[currentSlideIndex]);
     originalSpriteSize = slideSprite->getContentSize();
     slideSprite->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2);
-    this->addChild(slideSprite, Constants::ORDER_LAYER_UI);
+    this->addChild(slideSprite, Constants::ORDER_LAYER_UI + 12);
 
 
     // Create buttons and labels
@@ -77,7 +77,7 @@ void TutorialLayer::createButtonsAndLabels() {
         "assets_game/UXUI/Panel/back_inactive.png");
     prevButton->setScale(SpriteController::updateSpriteScale(prevButton, 0.1));
     prevButton->addClickEventListener(CC_CALLBACK_0(TutorialLayer::onPrevClicked, this));
-    this->addChild(prevButton, Constants::ORDER_LAYER_UI);
+    this->addChild(prevButton, Constants::ORDER_LAYER_UI + 10);
 
     // Create next button
     nextButton = cocos2d::ui::Button::create(
@@ -85,7 +85,7 @@ void TutorialLayer::createButtonsAndLabels() {
         "assets_game/UXUI/Panel/prev_inactive.png");
     nextButton->setScale(SpriteController::updateSpriteScale(nextButton, 0.1));
     nextButton->addClickEventListener(CC_CALLBACK_0(TutorialLayer::onNextClicked, this));
-    this->addChild(nextButton, Constants::ORDER_LAYER_UI);
+    this->addChild(nextButton, Constants::ORDER_LAYER_UI + 10);
 
     // Create checkbox and label
     dontShowAgainCheckbox = cocos2d::ui::CheckBox::create(
@@ -93,12 +93,12 @@ void TutorialLayer::createButtonsAndLabels() {
         "assets_game/UXUI/Panel/check_box_active.png");
     dontShowAgainCheckbox->setScale(SpriteController::updateSpriteScale(dontShowAgainCheckbox, 0.05));
     dontShowAgainCheckbox->addEventListener(CC_CALLBACK_2(TutorialLayer::onCheckboxClicked, this));
-    this->addChild(dontShowAgainCheckbox, Constants::ORDER_LAYER_UI);
+    this->addChild(dontShowAgainCheckbox, Constants::ORDER_LAYER_UI + 10);
 
     label = cocos2d::Label::createWithTTF("Don't show again", Constants::FONT_GAME, 10);
     label->setAnchorPoint(Vec2(0.5, 0.5));
     label->setPosition(dontShowAgainCheckbox->getPosition());
-    this->addChild(label, Constants::ORDER_LAYER_UI);
+    this->addChild(label, Constants::ORDER_LAYER_UI + 10);
 
     // Create skip button
     skipButton = cocos2d::ui::Button::create(
@@ -106,7 +106,7 @@ void TutorialLayer::createButtonsAndLabels() {
         "assets_game/UXUI/Panel/skip_button.png");
     skipButton->setScale(SpriteController::updateSpriteScale(skipButton, 0.1));
     skipButton->addClickEventListener(CC_CALLBACK_0(TutorialLayer::onSkipClicked, this));
-    this->addChild(skipButton, Constants::ORDER_LAYER_UI);
+    this->addChild(skipButton, Constants::ORDER_LAYER_UI + 10);
 }
 
 void TutorialLayer::updateSlide() {
@@ -163,6 +163,7 @@ void TutorialLayer::updateSlide() {
 
 void TutorialLayer::onPrevClicked() {
     if (currentSlideIndex > 0) {
+        SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
         currentSlideIndex--;
         updateSlide();
     }
@@ -170,6 +171,7 @@ void TutorialLayer::onPrevClicked() {
 
 void TutorialLayer::onNextClicked() {
     if (currentSlideIndex < slideImages.size() - 1) {
+        SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
         currentSlideIndex++;
         updateSlide();
     }
@@ -177,11 +179,13 @@ void TutorialLayer::onNextClicked() {
 
 void TutorialLayer::onSkipClicked() {
     // Resume the game
+    SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
     cocos2d::Director::getInstance()->resume();
     this->removeFromParentAndCleanup(true);
 }
 
 void TutorialLayer::onCheckboxClicked(cocos2d::Ref* sender, cocos2d::ui::CheckBox::EventType type) {
+    SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
     if (type == cocos2d::ui::CheckBox::EventType::SELECTED) {
         // Save the preference to not show the tutorial again
         cocos2d::UserDefault::getInstance()->setBoolForKey(userDefaultKey.c_str(), true);

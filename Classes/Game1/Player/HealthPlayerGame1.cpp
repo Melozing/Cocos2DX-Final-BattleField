@@ -70,7 +70,7 @@ void HealthPlayerGame1::updateHealthSprites(int health) {
 void HealthPlayerGame1::positionHealthSprites() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     float startX = SpriteController::calculateScreenRatio(Constants::PLAYER_HEALTH_PADDING_X_START);
-    float startY = visibleSize.height - SpriteController::calculateScreenHeightRatio(Constants::PLAYER_HEALTH_PADDING_Y);
+    float startY = visibleSize.height - SpriteController::calculateScreenRatio(Constants::PLAYER_HEALTH_PADDING_Y);
     float spacing = SpriteController::calculateScreenRatio(Constants::PLAYER_HEALTH_PADDING_X);
 
     for (int i = 0; i < _healthSprites.size(); ++i) {

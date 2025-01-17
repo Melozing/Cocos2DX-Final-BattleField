@@ -45,9 +45,9 @@ bool VictoryPanel::init(const std::function<void()>& retryAction, const std::fun
 
     // Create retry button
     auto retryButton = ui::Button::create("assets_game/UXUI/Panel/Replay_BTN.png", "assets_game/UXUI/Panel/Replay_BTN_Active.png");
+    retryButton->setScale(SpriteController::updateSpriteScale(retryButton, 0.1f));
     retryButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    retryButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 - SpriteController::calculateScreenRatio(0.04f),
-        retryButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
+    retryButton->setPosition(Vec2(boardSprite->getContentSize().width / 2, SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
     retryButton->addClickEventListener([retryAction](Ref* sender) {
         retryAction();
         });
@@ -56,8 +56,9 @@ bool VictoryPanel::init(const std::function<void()>& retryAction, const std::fun
     // Create next scene button
     auto nextSceneButton = ui::Button::create("assets_game/UXUI/Panel/Next_Round_BTN.png", "assets_game/UXUI/Panel/Next_Round_BTN.png");
     nextSceneButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    nextSceneButton->setPosition(Vec2(retryButton->getPosition().x + nextSceneButton->getContentSize().width + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON),
-        nextSceneButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
+    nextSceneButton->setScale(SpriteController::updateSpriteScale(nextSceneButton, 0.1f));
+    nextSceneButton->setPosition(Vec2(retryButton->getPosition().x + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON),
+        retryButton->getPosition().y));
     nextSceneButton->addClickEventListener([nextSceneAction](Ref* sender) {
         nextSceneAction();
         });
@@ -66,13 +67,13 @@ bool VictoryPanel::init(const std::function<void()>& retryAction, const std::fun
     // Create back button
     auto backButton = ui::Button::create("assets_game/UXUI/Panel/Back_BTN.png", "assets_game/UXUI/Panel/Back_BTN_Active.png");
     backButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    backButton->setPosition(Vec2(retryButton->getPosition().x - backButton->getContentSize().width - SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON),
-        backButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
+    backButton->setScale(SpriteController::updateSpriteScale(backButton, 0.1f));
+    backButton->setPosition(Vec2(retryButton->getPosition().x - SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_PANEL_BUTTON),
+        retryButton->getPosition().y));
     backButton->addClickEventListener([backAction](Ref* sender) {
         backAction();
         });
     boardSprite->addChild(backButton);
 
-    this->addTitleLabel("Victory");
     return true;
 }

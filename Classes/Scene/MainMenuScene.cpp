@@ -19,7 +19,13 @@ bool MainMenu::init() {
     }
 
     // Set Sound
-    SoundController::getInstance()->playMusic(Constants::MainMenuTrackPath, true);
+    if (UserDefault::getInstance()->getBoolForKey(Constants::UD_VICTORY.c_str(), false)) {
+        SoundController::getInstance()->playMusic(Constants::MainMenuTrackPath, true);
+    }
+    else
+    {
+        SoundController::getInstance()->playMusic(Constants::SoundTrackEndGame, true);
+    }
     
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -118,12 +124,11 @@ void MainMenu::setupButtons() {
 
     // Create and position play button inside button
     auto playButton1 = ui::Button::create("assets_game/UXUI/Main_Menu/Play_BTN.png");
-    auto playBtnScale = SpriteController::updateSpriteScale(playButton1, 0.13f);
+    auto playBtnScale = SpriteController::updateSpriteScale(playButton1, 0.23f);
     auto paddingWidth = SpriteController::calculateScreenRatio(0.025f);
 
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
         platform == cocos2d::Application::Platform::OS_IPHONE) {
-        playBtnScale = SpriteController::updateSpriteScale(playButton1, 0.15f);
         paddingWidth = SpriteController::calculateScreenRatio(0.01f);
     }
     playButton1->setScale(playBtnScale);
@@ -168,7 +173,7 @@ void MainMenu::setupButtons() {
     this->addChild(buttonG2);
 
     // Create and position play button inside buttonG2
-    if (!isButtonG2Active) {
+    if (isButtonG2Active) {
         auto playButton2 = ui::Button::create("assets_game/UXUI/Main_Menu/Play_BTN.png");
         playButton2->setScale(playBtnScale);
         playButton2->setPosition(Vec2(buttonG2->getContentSize().width - playBtnSize.width / 2 - paddingWidth, buttonG2->getContentSize().height / 2));
@@ -219,7 +224,7 @@ void MainMenu::setupCollectionButton() {
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
     if (platform == cocos2d::Application::Platform::OS_ANDROID ||
         platform == cocos2d::Application::Platform::OS_IPHONE) {
-        buttonSpacing = SpriteController::calculateScreenHeightRatio(0.01f);
+        buttonSpacing = SpriteController::calculateScreenRatio(0.01f);
     }
 
     collectionButton = ui::Button::create("assets_game/UXUI/Collection/info.png");

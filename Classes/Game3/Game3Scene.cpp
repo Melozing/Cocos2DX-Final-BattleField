@@ -41,7 +41,6 @@ bool Game3Scene::init() {
 
     preloadAssets();
     setupBackground();
-    setupCursor();
     initPools();
     initBoss();
     initBulletSpawning(Constants::JSON_GAME3_ENEMYBULLET_PHASE_1_PATH);
@@ -56,6 +55,12 @@ bool Game3Scene::init() {
     showTutorialIfNeeded();
     setupContactListener();
     setupMobile();
+
+    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
+    if (platform == cocos2d::Application::Platform::OS_WINDOWS ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
+        setupCursor();
+    }
 
     // Create the collision area for the city
     cityCollisionArea = CityCollisionArea::createCityCollisionArea();
@@ -79,6 +84,7 @@ void Game3Scene::updateHealth(float newHealth) {
     // Clamp the health value
     if (newHealth < 0) newHealth = 0;
     if (newHealth > maxHealthCircle) newHealth = maxHealthCircle;
+    if (enemyBoss->getHealth() < 1 && enemyBoss->isVisible()) return;
 
     // Update current health
     currentHealthCircle = newHealth;
@@ -316,7 +322,7 @@ void Game3Scene::initHealthBar() {
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
-    float paddingHeight = SpriteController::calculateScreenHeightRatio(0.08f); // Adjust the padding as needed
+    float paddingHeight = SpriteController::calculateScreenRatio(0.04f); // Adjust the padding as needed
     float paddingWeight = SpriteController::calculateScreenRatio(0.05f); // Adjust the padding as needed
     float xPos = origin.x + visibleSize.width - paddingWeight;
     float yPos = origin.y / 2 + paddingHeight;
@@ -333,21 +339,16 @@ void Game3Scene::initHealthBar() {
     auto backHealthBar = Sprite::create("assets_game/UXUI/Loading/health_player_game3_back.png");
     auto frontHealthBar = Sprite::create("assets_game/UXUI/Loading/health_player_game3_front.png");
     backHealthBar->setPosition(Vec2(xPos, yPos));
-    float paddingHeightFront = SpriteController::calculateScreenHeightRatio(0.015f);
-    
-    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_IPHONE) {
-        paddingHeightFront = SpriteController::calculateScreenHeightRatio(0.009);
-    }
+    float paddingHeightFront = SpriteController::calculateScreenRatio(0.008f);
 
     frontHealthBar->setPosition(Vec2(xPos, yPos - paddingHeightFront));
     backHealthBar->setScale(SpriteController::updateSpriteScale(backHealthBar, 0.155f));
     frontHealthBar->setScale(SpriteController::updateSpriteScale(backHealthBar, 0.155f));
 
-    this->addChild(frontHealthBar, Constants::ORDER_LAYER_UI + 1);
+    this->addChild(backHealthBar, Constants::ORDER_LAYER_UI);
     this->addChild(healthBarCircle, Constants::ORDER_LAYER_UI);
-    this->addChild(backHealthBar, Constants::ORDER_LAYER_UI - 1);
+    this->addChild(frontHealthBar, Constants::ORDER_LAYER_UI);
+
 }
 
 void Game3Scene::initBossHealthBar() {
@@ -815,6 +816,7 @@ void Game3Scene::handleBossDamage(float damage) {
 }
 
 void Game3Scene::transitionToNextScene(Ref* sender) {
+    UserDefault::getInstance()->setBoolForKey(Constants::UD_VICTORY.c_str(), true);
     auto nextScene = SceneFinishGame::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(1.0f, nextScene));
 }
@@ -885,13 +887,13 @@ void Game3Scene::handleFinisherMissilesCityCollision(FinisherMissiles*  Finisher
 void Game3Scene::initControlButtons() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
-	float paddingTop = SpriteController::calculateScreenHeightRatio(0.1f);
+	float paddingTop = SpriteController::calculateScreenRatio(0.1f);
 	float paddingWidth = SpriteController::calculateScreenRatio(0.1f);
 	float spacingWidth = SpriteController::calculateScreenRatio(0.18f);
 
     // Create left button
 	auto spriteButton = Sprite::create("assets_game/UXUI/Panel/Next_Round_BTN.png");
-    leftButton = cocos2d::ui::Button::create("assets_game/UXUI/Panel/Next_Round_BTN.png", "assets_game/UXUI/Panel/Next_Round_BTN.png");
+    leftButton = cocos2d::ui::Button::create("assets_game/UXUI/Panel/Back_Round_BTN.png", "assets_game/UXUI/Panel/Back_Round_BTN_Active.png");
     leftButton->setScale(SpriteController::updateSpriteScale(spriteButton , 0.3));
     leftButton->setPosition(Vec2(origin.x / 2 + paddingWidth,
         origin.y / 2 + paddingTop));
@@ -912,7 +914,7 @@ void Game3Scene::initControlButtons() {
     this->addChild(leftButton, Constants::ORDER_LAYER_UI - 5);
 
     // Create right button
-    rightButton = cocos2d::ui::Button::create("assets_game/UXUI/Panel/Next_Round_BTN.png", "assets_game/UXUI/Panel/Next_Round_BTN.png");
+    rightButton = cocos2d::ui::Button::create("assets_game/UXUI/Panel/Next_Round_BTN.png", "assets_game/UXUI/Panel/Next_Round_BTN_Active.png");
     rightButton->setScale(SpriteController::updateSpriteScale(spriteButton, 0.3));
     rightButton->setPosition(Vec2(leftButton->getPositionX() + spacingWidth,
         leftButton->getPositionY()));
