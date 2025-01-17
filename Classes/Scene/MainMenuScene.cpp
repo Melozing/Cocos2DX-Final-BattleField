@@ -19,7 +19,7 @@ bool MainMenu::init() {
     }
 
     // Set Sound
-    if (UserDefault::getInstance()->getBoolForKey(Constants::UD_VICTORY.c_str(), false)) {
+    if (!UserDefault::getInstance()->getBoolForKey(Constants::UD_VICTORY.c_str())) {
         SoundController::getInstance()->playMusic(Constants::MainMenuTrackPath, true);
     }
     else

@@ -6,7 +6,7 @@ android {
     compileSdkVersion PROP_COMPILE_SDK_VERSION.toInteger()
 
     defaultConfig {
-        applicationId "org.cocos2dx.TrainCocos2dx"
+        applicationId "org.cocos2dx.FinalBattlefield"
         minSdkVersion PROP_MIN_SDK_VERSION
         targetSdkVersion PROP_TARGET_SDK_VERSION
         versionCode 1
@@ -120,6 +120,15 @@ android.applicationVariants.all { variant ->
             into "${buildDir}/intermediates/assets/${variant.dirName}"
             exclude "**/*.gz"
         }
+    }
+
+    // Rename the APK output
+    variant.outputs.all { output ->
+        def buildType = variant.buildType.name
+
+        // Set the new name for the APK
+        def newName = "FinalBattlefield.apk"
+        outputFileName = newName
     }
 }
 

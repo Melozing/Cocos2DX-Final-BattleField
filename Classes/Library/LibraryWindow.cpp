@@ -161,6 +161,7 @@ void LibraryWindow::setupScollItems() {
         // Add touch event listener for itemButton
         itemButton->addTouchEventListener([this, i](Ref* sender, ui::Widget::TouchEventType type) {
             if (type == ui::Widget::TouchEventType::ENDED) {
+                SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
                 this->displayItemDetails(i);
                 this->items[i].isActive = true;
                 this->updateItemStates();
@@ -176,6 +177,7 @@ void LibraryWindow::setupScollItems() {
             Rect rect = Rect(0, 0, size.width, size.height);
 
             if (rect.containsPoint(locationInNode)) {
+                SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
                 this->displayItemDetails(i);
                 this->items[i].isActive = true;
                 this->updateItemStates();
