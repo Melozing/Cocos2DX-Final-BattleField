@@ -66,6 +66,7 @@ void EnemyPlaneBoss::initAnimation() {
 
 void EnemyPlaneBoss::spawnEnemy(float timeToUltimate) {
     this->reset(); // Reset the boss state
+    this->setVisible(true);
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
@@ -142,7 +143,6 @@ void EnemyPlaneBoss::reset() {
     this->unschedule("drop_booms_key");
     this->unschedule("launch_missiles_key");
     this->stopAllActions();
-    this->setVisible(true);
     this->setScale(1.0f); // Reset scale to the original size
     Constants::CurrentHealthEnemyPlaneBoss = 0;
 }
@@ -233,9 +233,9 @@ void EnemyPlaneBoss::fadeOutAndRemove() {
 void EnemyPlaneBoss::updatePhase() {
     // Increment the phase
     if (currentPhase == Phase::PHASE_1) {
+        currentPhase = Phase::PHASE_2;
         Constants::HealthEnemyPlaneBoss = 3000;
         SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase2, false);
-        currentPhase = Phase::PHASE_2;
     }
     else {
         currentPhase = Phase::PHASE_1;
@@ -355,6 +355,7 @@ void EnemyPlaneBoss::moveUpAndReturnToPool() {
         CallFunc::create([this]() {
             this->isExploding = false; // Stop explosions
             //this->removeFromParentAndCleanup(false);
+            this->setVisible(false);
             EnemyPlaneBossPool::getInstance()->returnObject(this);
         }), nullptr);
 
