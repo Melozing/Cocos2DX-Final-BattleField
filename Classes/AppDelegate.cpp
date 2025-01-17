@@ -41,9 +41,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if (!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        // Create a window with 16:9 aspect ratio (Full HD)
-        //glview = GLViewImpl::createWithFullScreen("FinalBattleField");
-        glview = GLViewImpl::createWithRect("FinalBattleField", Rect(100, 100, 1280, 720));
+        // Create a window with resizable option
+        glview = GLViewImpl::createWithRect("FinalBattleField", Rect(100, 100, 1280, 720), 1.0f, true);
 #else
         glview = GLViewImpl::create("FinalBattleField");
 #endif
@@ -55,7 +54,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // Adjust content scale factor based on the frame size
     director->setContentScaleFactor(MIN(designResolutionSize.height / designResolutionSize.height, designResolutionSize.width / designResolutionSize.width));
-
 
     director->setDisplayStats(false);
     director->setAnimationInterval(1.0f / 60);
@@ -85,6 +83,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     return true;
 }
+
 
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
