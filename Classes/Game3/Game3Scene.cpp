@@ -92,6 +92,7 @@ void Game3Scene::updateHealth(float newHealth) {
     // Calculate percentage
     float percentage = (currentHealthCircle / maxHealthCircle) * 100;
     healthBarCircle->setPercentage(percentage);
+    checkAndUpdateBackground();
     checkHealthBar();
 }
 
