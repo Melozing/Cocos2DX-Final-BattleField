@@ -20,8 +20,8 @@ bool LoadingScene::init() {
     initLoadingBar();
 
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_IPHONE) {
+    if (platform == cocos2d::Application::Platform::OS_WINDOWS ||
+        platform == cocos2d::Application::Platform::OS_MAC) {
         initCursor();
     }
     // Start loading after a brief delay

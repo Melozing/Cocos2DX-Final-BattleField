@@ -64,7 +64,7 @@ bool Game1Scene::init() {
 
     this->scheduleOnce([this](float) {
         mobileSetup();
-        }, 0.5f, "mobileSetupKey");
+        }, 0.9f, "mobileSetupKey");
 
     this->scheduleUpdate();
     return true;

@@ -65,13 +65,7 @@ void PlayerGame3::setupInitialPosition()
 
     // Calculate the initial position based on the padding
     float initialPosX = visibleSize.width / 2; // Center horizontally
-    float initialPosY = SpriteController::calculateScreenHeightRatio(0.14f); // Padding from the bottom
-
-    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_IPHONE) {
-        initialPosY = SpriteController::calculateScreenHeightRatio(0.09f);
-    }
+    float initialPosY = SpriteController::calculateScreenRatio(0.05f); // Padding from the bottom
 
     // Set the initial position of the player
     this->setPosition(Vec2(initialPosX, initialPosY));

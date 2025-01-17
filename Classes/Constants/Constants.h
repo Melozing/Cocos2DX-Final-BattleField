@@ -165,6 +165,7 @@ public:
     //UserDefault UI
     static const std::string UD_musicVolume;
     static const std::string UD_effectsVolume;
+    static const std::string UD_VICTORY;
 
     //Tutorial
     static const std::string DONT_SHOW_TUTORIAL_GAME1;

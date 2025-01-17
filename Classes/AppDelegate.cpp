@@ -52,18 +52,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // Set the design resolution size
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
-    Size frameSize = glview->getFrameSize();
 
     // Adjust content scale factor based on the frame size
-    if (frameSize.height > mediumResolutionSize.height) {
-        director->setContentScaleFactor(MIN(largeResolutionSize.height / designResolutionSize.height, largeResolutionSize.width / designResolutionSize.width));
-    }
-    else if (frameSize.height > smallResolutionSize.height) {
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height / designResolutionSize.height, mediumResolutionSize.width / designResolutionSize.width));
-    }
-    else {
-        director->setContentScaleFactor(MIN(smallResolutionSize.height / designResolutionSize.height, smallResolutionSize.width / designResolutionSize.width));
-    }
+    director->setContentScaleFactor(MIN(designResolutionSize.height / designResolutionSize.height, designResolutionSize.width / designResolutionSize.width));
+
 
     director->setDisplayStats(false);
     director->setAnimationInterval(1.0f / 60);

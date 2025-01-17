@@ -25,14 +25,14 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
     auto origin = Director::getInstance()->getVisibleOrigin();
 
     // Create exit button
-    auto paddingHCloseBtn = SpriteController::calculateScreenRatio(0.06f);
-    auto paddingWCloseBtn = SpriteController::calculateScreenRatio(0.1f);
+    auto paddingHCloseBtn = SpriteController::calculateScreenRatio(0.08f);
+    auto paddingWCloseBtn = SpriteController::calculateScreenRatio(0.14f);
     // Create and position the close button
     exitButton = ui::Button::create("assets_game/UXUI/Collection/close_btn.png");
     exitButton->setScale(SpriteController::updateSpriteScale(exitButton, 0.135f));
     exitButton->setPosition(Vec2(SpriteController::GetContentSize(boardSprite).width + exitButton->getContentSize().width + paddingWCloseBtn,
         SpriteController::GetContentSize(boardSprite).height + exitButton->getContentSize().height + paddingHCloseBtn));
-    exitButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type) {
+    exitButton->addClickEventListener([this, exitAction](Ref* sender) {
         SoundController::getInstance()->playSoundEffect(Constants::ButtonClickSFX);
         playSoundAndExecuteCallback(exitAction);
         });
@@ -40,24 +40,18 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
 
     // Create resume button
     quitButton = ui::Button::create("assets_game/UXUI/Panel/Exit_BTN.png", "assets_game/UXUI/Panel/Exit_BTN_Active.png");
+    quitButton->setScale(SpriteController::updateSpriteScale(quitButton, 0.1f));
     quitButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    quitButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 - SpriteController::calculateScreenRatio(0.04f),
-        quitButton->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
+    quitButton->setPosition(Vec2(boardSprite->getContentSize().width / 2, 0 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_PANEL)));
     quitButton->addClickEventListener([this, quitAction](Ref* sender) {
         playSoundAndExecuteCallback(quitAction);
         });
     boardSprite->addChild(quitButton);
 
-    auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_IPHONE) {
-        Constants::PADDING_VERTICAL_UI_SLIDER_SPACING = 0.17f;
-        Constants::PADDING_HORIZONTAL_UI_SLIDER = 0.07f;
-    }
-
     // Create music slider
     musicSlider = ui::Slider::create();
     musicSlider->loadBarTexture("assets_game/UXUI/Panel/Slider_Back.png");
+    musicSlider->setScale(SpriteController::updateSpriteScale(musicSlider, 0.15f));
     musicSlider->loadSlidBallTextures("assets_game/UXUI/Panel/SliderNode_Normal.png", "assets_game/UXUI/Panel/SliderNode_Pressed.png", "assets_game/UXUI/Panel/SliderNode_Disabled.png");
     musicSlider->loadProgressBarTexture("assets_game/UXUI/Panel/Slider_PressBar.png");
 
@@ -70,7 +64,8 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
     float savedMusicVolume = UserDefault::getInstance()->getFloatForKey(Constants::UD_musicVolume.c_str(), 0.5f);
     musicSlider->setPercent(savedMusicVolume * 100);
 
-    musicSlider->setPosition(Vec2(boardSprite->getContentSize().width / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_SLIDER), boardSprite->getContentSize().height / 2 - SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_SLIDER)));
+    musicSlider->setPosition(Vec2(boardSprite->getContentSize().width / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_SLIDER),
+        boardSprite->getContentSize().height / 2 + SpriteController::calculateScreenRatio(Constants::PADDING_VERTICAL_UI_SLIDER)));
     musicSlider->addEventListener([this](Ref* sender, ui::Slider::EventType type) {
         if (type == ui::Slider::EventType::ON_PERCENTAGE_CHANGED) {
             float volume = musicSlider->getPercent() / 100.0f;
@@ -84,6 +79,7 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
     // Create sound effect slider
     soundEffectSlider = ui::Slider::create();
     soundEffectSlider->loadBarTexture("assets_game/UXUI/Panel/Slider_Back.png");
+    soundEffectSlider->setScale(SpriteController::updateSpriteScale(soundEffectSlider, 0.15f));
     soundEffectSlider->loadSlidBallTextures("assets_game/UXUI/Panel/SliderNode_Normal.png", "assets_game/UXUI/Panel/SliderNode_Pressed.png", "assets_game/UXUI/Panel/SliderNode_Disabled.png");
     soundEffectSlider->loadProgressBarTexture("assets_game/UXUI/Panel/Slider_PressBar.png");
 
@@ -109,8 +105,9 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
 
     // Create music button
     musicButton = ui::Button::create("assets_game/UXUI/Panel/Music_BTN_Active.png", "assets_game/UXUI/Panel/Music_BTN_Active.png");
+    musicButton->setScale(SpriteController::updateSpriteScale(musicButton, 0.05f));
     musicButton->setAnchorPoint(Vec2(0.5f, 0.5f));
-    musicButton->setPosition(Vec2(boardSprite->getContentSize().width / 2 - musicSlider->getContentSize().width / 2 - SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING),
+    musicButton->setPosition(Vec2(musicSlider->getPosition().x - SpriteController::calculateScreenRatio(Constants::PADDING_HORIZONTAL_UI_SLIDER_SPACING),
         musicSlider->getPosition().y));
     musicButton->addClickEventListener([this](Ref* sender) {
         if (musicSlider->getPercent() == 0) {
@@ -130,6 +127,7 @@ bool SettingPanel::init(const std::function<void()>& exitAction, const std::func
 
     // Create sound effect button
     soundEffectButton = ui::Button::create("assets_game/UXUI/Panel/SoundEffect_BTN_Active.png", "assets_game/UXUI/Panel/SoundEffect_BTN_Active.png");
+    soundEffectButton->setScale(SpriteController::updateSpriteScale(soundEffectButton, 0.05f));
     soundEffectButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     soundEffectButton->setPosition(Vec2(musicButton->getPosition().x, soundEffectSlider->getPosition().y));
     soundEffectButton->addClickEventListener([this](Ref* sender) {

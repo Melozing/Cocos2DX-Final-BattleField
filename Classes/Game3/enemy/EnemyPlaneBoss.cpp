@@ -176,7 +176,6 @@ void EnemyPlaneBoss::handleBossFinisher() {
 
     this->startExplosions();
 
-
     // Return active weapons to the pool
     auto boomPool = BoomForEnemyPlanePool::getInstance();
     for (auto& child : this->getParent()->getChildren()) {
@@ -234,13 +233,13 @@ void EnemyPlaneBoss::fadeOutAndRemove() {
 void EnemyPlaneBoss::updatePhase() {
     // Increment the phase
     if (currentPhase == Phase::PHASE_1) {
-        Constants::HealthEnemyPlaneBoss = 700;
+        Constants::HealthEnemyPlaneBoss = 3000;
         SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase2, false);
         currentPhase = Phase::PHASE_2;
     }
     else {
         currentPhase = Phase::PHASE_1;
-        Constants::HealthEnemyPlaneBoss = 3000;
+        Constants::HealthEnemyPlaneBoss = 700;
         SoundController::getInstance()->playMusic(Constants::pathSoundBossGame3Phase1, false);
     }
 }

@@ -39,6 +39,8 @@ private:
     cocos2d::Sprite* paperSpriteFront;
     cocos2d::Label* topCenterLabel;
     cocos2d::Sprite* overlayLayer;
+    cocos2d::Sprite* rightInfoBackgroundImage;
+
 
     // View item
     void loadItemData(const std::string& filePath);

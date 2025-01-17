@@ -21,11 +21,6 @@ void ItemBaseGame3::createPhysicsBodyFromPlist(const std::string& plistFile, con
 
     auto physicsBody = physicsCache->createBodyFromPlist(plistFile, shapeName, originalSize, scaledSize);
     auto platform = cocos2d::Application::getInstance()->getTargetPlatform();
-    
-    if (platform == cocos2d::Application::Platform::OS_ANDROID ||
-        platform == cocos2d::Application::Platform::OS_IPHONE) {
-        physicsCache->resizeBody(physicsBody, shapeName, originalSize, 0.8f);
-    }
 
     if (physicsBody) {
         physicsBody->setContactTestBitmask(true);
@@ -95,6 +90,7 @@ void ItemBaseGame3::applyPickupEffect() {
         this->removeComponent(this->getPhysicsBody());
     }
     this->stopAllActions();
+    this->setVisible(true);
     this->setOpacity(255);
 
     // Create scale and fade actions
