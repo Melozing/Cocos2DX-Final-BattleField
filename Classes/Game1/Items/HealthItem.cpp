@@ -64,7 +64,7 @@ void HealthItem::initPhysicsBody() {
 void HealthItem::applyEffect() {
     this->stopAllActions();
     this->RemovePhysicBody();
-    PlayerAttributes::getInstance().SetHealth(PlayerAttributes::getInstance().GetHealth() + 1);
+    PlayerAttributes::getInstance().IncreaseHealth(1);
 
     // Scale up to _scaleFactor times over 0.5 seconds
     auto scaleUp = ScaleTo::create(Constants::ITEM_EFFECT_DURATION, _spriteScale + Constants::ITEM_SCALE_FACTOR);

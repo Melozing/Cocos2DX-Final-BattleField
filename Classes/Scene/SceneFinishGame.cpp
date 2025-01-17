@@ -27,17 +27,10 @@ bool SceneFinishGame::init() {
 
 void SceneFinishGame::loadCredits(const std::string& jsonFilePath) {
     std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonFilePath);
-    FILE* fp = fopen(filePath.c_str(), "rb");
-    if (!fp) {
-        CCLOG("Failed to open JSON file: %s", filePath.c_str());
-        return;
-    }
+    std::string fileContent = FileUtils::getInstance()->getStringFromFile(filePath);
 
-    char readBuffer[65536];
-    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
     rapidjson::Document document;
-    document.ParseStream(is);
-    fclose(fp);
+    document.Parse(fileContent.c_str());
 
     if (document.HasParseError()) {
         CCLOG("Failed to parse JSON file: %s", filePath.c_str());
@@ -46,6 +39,7 @@ void SceneFinishGame::loadCredits(const std::string& jsonFilePath) {
 
     createScrollingCredits(document);
 }
+
 
 void SceneFinishGame::createScrollingCredits(const rapidjson::Document& document) {
     if (!document.IsObject()) return;
